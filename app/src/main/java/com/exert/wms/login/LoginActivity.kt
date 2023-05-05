@@ -127,9 +127,6 @@ class LoginActivity :
     override fun onBindData(binding: ActivityLoginBinding) {
         binding.viewModel = mViewModel
         binding.executePendingBindings()
-//        observeViewModel()
-
-
     }
 
     private fun enableErrorMessage(

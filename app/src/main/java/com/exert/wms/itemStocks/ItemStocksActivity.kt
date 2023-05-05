@@ -26,7 +26,6 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
 
     override fun onBindData(binding: ActivityItemStocksBinding) {
         binding.viewModel = mViewModel
-//        setSupportActionBar(binding.toolbarLayout.toolbar)
     }
 
     override val coordinateLayout: CoordinatorLayout

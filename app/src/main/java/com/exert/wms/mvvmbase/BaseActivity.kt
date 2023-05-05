@@ -47,7 +47,6 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        if (showHomeButton > 0) {
         menuInflater.inflate(R.menu.menu_home, menu)
         for (i in 0 until menu!!.size()) {
             if (menu.getItem(i).title == getString(R.string.home)) {
@@ -58,13 +57,11 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
                 menu.getItem(i).isVisible = false
             }
         }
-//        }
-        // return true so that the menu pop up is opened
+
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return super.onOptionsItemSelected(item)
         return when (item.itemId) {
 //            android.R.id.home -> onBackPressed()
             R.id.home_menu -> {

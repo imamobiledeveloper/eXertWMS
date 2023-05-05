@@ -65,30 +65,10 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
             "itemStocks" -> startActivity<ItemStocksActivity>()
             else -> startActivity(Intent(this@HomeActivity, ItemStocksActivity::class.java))
         }
-
-//        startActivity(Intent(this@HomeActivity, ItemStocksActivity::class.java))
     }
-
 
     override fun onBindData(binding: ActivityHomeBinding) {
         binding.viewModel = mViewModel
-//        setSupportActionBar(binding.toolbarLayout.toolbar)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-//            android.R.id.home -> onBackPressed()
-            R.id.home_menu -> {
-                showBriefToastMessage("CLicked on Home button", coordinateLayout)
-                true
-            }
-            R.id.logout_menu -> {
-                showBriefToastMessage("You are Logged out", coordinateLayout)
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onBackPressed() {
