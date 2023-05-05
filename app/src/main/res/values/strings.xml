@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">eXert WMS</string>
+
+    <string name="username">UserName</string>
+    <string name="password">Password</string>
+    <string name="error_username_empty">Please enter User name</string>
+    <string name="error_username_invalid">Please enter valid User name</string>
+    <string name="error_password_empty">Please enter Password</string>
+    <string name="error_password_invalid">Please enter valid Password</string>
+    <string name="login">Login</string>
+    <string name="home">Home</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="logout">Logout</string>
+    <string name="error_login_message">Login failed, Please try again!</string>
+    <string name="item_stocks">Item Stocks</string>
+
+    <string-array name="features_list">
+        <item>Item Stocks</item>
+        <item>Stock Adjustment</item>
+        <item>Stock Reconciliation</item>
+        <item>Transfer Out</item>
+        <item>Transfer In</item>
+        <item>Delivery Receipt</item>
+        <item>Delivery Note</item>
+        <item>Purchase Return</item>
+        <item>Sales Return</item>
+        <item>Transactions</item>
+    </string-array>
+</resources>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".home.HomeActivity">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.exert.wms.home.HomeViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/homeScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--        <include-->
+        <!--            android:id="@+id/toolbarLayout"-->
+        <!--            layout="@layout/toolbar_layout"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/textTV"-->
+        <!--            android:text="@string/app_name"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="30dp"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/toolbarLayout"/>-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/featuresRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="9"
+            tools:listitem="@layout/home_features_list_item_layout" />
+
+        <!--        <ScrollView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/toolbarLayout">-->
+
+        <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent">-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/itemStocksTV"-->
+        <!--                    style="@style/TextViewLabel"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="18dp"-->
+        <!--                    android:text="@string/item_stocks"-->
+        <!--                    android:textColor="@color/blue"-->
+        <!--                    android:textSize="24sp"-->
+        <!--                    android:textStyle="bold"-->
+        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                    app:layout_constraintStart_toStartOf="parent"-->
+        <!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/stockAdjustmentTV"-->
+        <!--                    style="@style/TextViewLabel"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="12dp"-->
+        <!--                    android:text="@string/stock_adjustment"-->
+        <!--                    android:textColor="@color/blue"-->
+        <!--                    android:textSize="24sp"-->
+        <!--                    android:textStyle="bold"-->
+        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                    app:layout_constraintStart_toStartOf="parent"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@+id/itemStocksTV" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/stockReconciliationTV"-->
+        <!--                    style="@style/TextViewLabel"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="12dp"-->
+        <!--                    android:text="@string/stock_reconciliation"-->
+        <!--                    android:textColor="@color/blue"-->
+        <!--                    android:textSize="24sp"-->
+        <!--                    android:textStyle="bold"-->
+        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                    app:layout_constraintStart_toStartOf="parent"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@+id/stockAdjustmentTV" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/transferOutTV"-->
+        <!--                    style="@style/TextViewLabel"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="12dp"-->
+        <!--                    android:text="@string/transfer_out"-->
+        <!--                    android:textColor="@color/blue"-->
+        <!--                    android:textSize="24sp"-->
+        <!--                    android:textStyle="bold"-->
+        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                    app:layout_constraintStart_toStartOf="parent"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@+id/stockReconciliationTV" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/stockAdjustmentTV"-->
+        <!--                    style="@style/TextViewLabel"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="12dp"-->
+        <!--                    android:text="@string/stock_adjustment"-->
+        <!--                    android:textColor="@color/blue"-->
+        <!--                    android:textSize="24sp"-->
+        <!--                    android:textStyle="bold"-->
+        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                    app:layout_constraintStart_toStartOf="parent"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@+id/transferOutTV" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/stockAdjustmentTV"-->
+        <!--                    style="@style/TextViewLabel"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="12dp"-->
+        <!--                    android:text="@string/stock_adjustment"-->
+        <!--                    android:textColor="@color/blue"-->
+        <!--                    android:textSize="24sp"-->
+        <!--                    android:textStyle="bold"-->
+        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                    app:layout_constraintStart_toStartOf="parent"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@+id/itemStocksTV" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/stockAdjustmentTV"-->
+        <!--                    style="@style/TextViewLabel"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="12dp"-->
+        <!--                    android:text="@string/stock_adjustment"-->
+        <!--                    android:textColor="@color/blue"-->
+        <!--                    android:textSize="24sp"-->
+        <!--                    android:textStyle="bold"-->
+        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                    app:layout_constraintStart_toStartOf="parent"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@+id/itemStocksTV" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/stockAdjustmentTV"-->
+        <!--                    style="@style/TextViewLabel"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="12dp"-->
+        <!--                    android:text="@string/stock_adjustment"-->
+        <!--                    android:textColor="@color/blue"-->
+        <!--                    android:textSize="24sp"-->
+        <!--                    android:textStyle="bold"-->
+        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                    app:layout_constraintStart_toStartOf="parent"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@+id/itemStocksTV" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/stockAdjustmentTV"-->
+        <!--                    style="@style/TextViewLabel"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="12dp"-->
+        <!--                    android:text="@string/stock_adjustment"-->
+        <!--                    android:textColor="@color/blue"-->
+        <!--                    android:textSize="24sp"-->
+        <!--                    android:textStyle="bold"-->
+        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                    app:layout_constraintStart_toStartOf="parent"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@+id/itemStocksTV" />-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/stockAdjustmentTV"-->
+        <!--                    style="@style/TextViewLabel"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginTop="12dp"-->
+        <!--                    android:text="@string/stock_adjustment"-->
+        <!--                    android:textColor="@color/blue"-->
+        <!--                    android:textSize="24sp"-->
+        <!--                    android:textStyle="bold"-->
+        <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                    app:layout_constraintStart_toStartOf="parent"-->
+        <!--                    app:layout_constraintTop_toBottomOf="@+id/itemStocksTV" />-->
+
+        <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+        <!--        </ScrollView>-->
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
