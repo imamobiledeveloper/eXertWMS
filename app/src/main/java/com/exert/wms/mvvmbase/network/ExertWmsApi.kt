@@ -5,14 +5,16 @@ import com.exert.wms.login.LoginDto
 import com.exert.wms.login.LoginRequestDto
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface ExertWmsApi {
-    @GET("Login/GetFinancialPeriod")
+    @GET("webapi/")
+    suspend fun getApiAccess(): String
+
+    @GET("webapi/api/Login/GetFinancialPeriod")
     suspend fun getFinancialPeriod(): FinancialPeriodDto
 
-    @POST("Login/LoginAuthentication")
+    @POST("webapi/api/Login/LoginAuthentication")
     suspend fun authenticateUser(
         @Body requestBody: LoginRequestDto
     ): LoginDto

@@ -1,5 +1,6 @@
 package com.exert.wms.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -36,9 +37,9 @@ class LoginViewModel(
     private val _errorPasswordMessage = MutableLiveData<Boolean>()
     val errorPasswordMessage: LiveData<Boolean> = _errorPasswordMessage
 
-    private fun loginUser(userName: String, pwd: String, financialPeriodId: Long) {
-//        userName = "admin123\$"
-//        pwd = "admin123\$"
+    private fun loginUser(userName1: String, pwd1: String, financialPeriodId: Long) {
+        val userName = "admin123\$"
+        val pwd = "admin123\$"
         val requestDto =
             LoginRequestDto(username = userName, password = pwd, periodID = financialPeriodId)
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
@@ -69,7 +70,6 @@ class LoginViewModel(
             coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
                 loginRepo.getFinancialPeriod()
                     .collect { dto ->
-//                    hideProgressIndicator()
                         if (dto != null && dto.CurrentPeriod > 0) {
                             userDefaults.saveFinancialPeriod(dto.CurrentPeriod)
                             loginUser(uName, pwd, dto.CurrentPeriod)

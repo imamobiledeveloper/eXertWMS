@@ -30,8 +30,18 @@ class LoginDataSource(
     }
 
     private suspend fun getFinancialPeriodFromRemote(): FinancialPeriodDto {
-        val response = loginDataSourceRemote.getFinancialPeriod()
-//        loginDataSourceLocal.saveLoginInfo(response)
-        return response
+        return loginDataSourceRemote.getFinancialPeriod()
+    }
+
+    fun getApiAccess(): Flow<String> {
+        return flow {
+            emit(
+                getApiAccessFromRemote()
+            )
+        }
+    }
+
+    private suspend fun getApiAccessFromRemote(): String {
+        return loginDataSourceRemote.getApiAccess()
     }
 }

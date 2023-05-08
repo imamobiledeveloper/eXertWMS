@@ -6,6 +6,6 @@ import org.koin.dsl.module
 val repositoryModule = module(override = true) {
 
     single {
-        LoginRepository(get())
+        LoginRepository(loginDatasource = get())
     }
 }

@@ -12,25 +12,24 @@ android {
     compileSdk 33
 
     defaultConfig {
-//        applicationId "com.exert.wms"
         minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "BASE_API_URL", "\"http://183.82.98.123/webapi/\""
+        buildConfigField "String", "BASE_API_URL", "\"http://183.82.98.123/webapi\""
     }
 
     buildTypes {
         debug {
             debuggable = true
-            buildConfigField "String", "BASE_API_URL", "\"http://183.82.98.123/webapi/\""
+            buildConfigField "String", "BASE_API_URL", "\"http://183.82.98.123/webapi\""
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_API_URL", "\"http://183.82.98.123/webapi/\""
+            buildConfigField "String", "BASE_API_URL", "\"http://183.82.98.123/webapi\""
         }
     }
     compileOptions {

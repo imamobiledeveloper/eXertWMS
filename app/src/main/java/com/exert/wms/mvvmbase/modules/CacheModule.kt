@@ -19,6 +19,6 @@ val cacheModule = module {
     }
 
     single {
-        LoginDataSource(get(), get())
+        LoginDataSource(loginDataSourceRemote = get(), loginDataSourceLocal = get())
     }
 }

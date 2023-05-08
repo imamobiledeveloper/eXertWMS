@@ -13,4 +13,8 @@ class LoginRepository(private val loginDatasource: LoginDataSource) {
         return loginDatasource.getFinancialPeriod()
     }
 
+    fun getApiAccess(): Flow<String> {
+        return loginDatasource.getApiAccess()
+    }
+
 }
