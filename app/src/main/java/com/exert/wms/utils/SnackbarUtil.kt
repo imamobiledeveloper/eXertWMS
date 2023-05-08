@@ -24,14 +24,12 @@ fun Activity.appSnackbar(
             SpannableStringBuilder(message).setColor(this, android.R.color.white),
             duration
         ).apply {
-//            view.findViewById<TextView>(R.id.snackbar_text).typeface =
-//                resources.getFont()
-
             view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
                 .setTextColor(ContextCompat.getColor(this@appSnackbar, R.color.white))
 
             setAction("") { retryCallback?.invoke(view) }
         }.setIcon(it, resources.getColor(android.R.color.white, theme))
+            .setBackgroundTint(bgColor)
 
     }
 

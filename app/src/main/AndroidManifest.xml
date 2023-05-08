@@ -20,16 +20,21 @@
 
         <activity
             android:name=".itemStocks.ItemStocksActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize"
             android:exported="true" />
 
         <activity
             android:name=".home.HomeActivity"
             android:exported="true"
+            android:windowSoftInputMode="adjustPan|adjustResize"
             android:label="@string/title_activity_home" />
 
         <activity
             android:name=".login.LoginActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="screenSize|smallestScreenSize|fontScale|density"
             android:label="@string/login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

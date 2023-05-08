@@ -2,17 +2,15 @@ package com.exert.wms.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.InputType
-import android.text.TextWatcher
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityLoginBinding
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.utils.toEditable
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -43,48 +41,29 @@ class LoginActivity :
         observeViewModel()
 
         binding.loginButton.setOnClickListener {
+            hideKeyBoard()
             mViewModel.getFinancialToken(
-                binding.userNameLayout.editText.text.toString(),
-                binding.passwordLayout.editText.text.toString()
+                binding.usernameEditText.text.toString(),
+                binding.passwordEditText.text.toString()
             )
         }
     }
 
     private fun setTextWatchers() {
-        binding.userNameLayout.editText.inputType = InputType.TYPE_CLASS_TEXT
-        binding.passwordLayout.editText.inputType = InputType.TYPE_NUMBER_VARIATION_PASSWORD
-
-        binding.userNameLayout.editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun afterTextChanged(editable: Editable?) {
-                mViewModel.setUserName(editable.toString())
-            }
-
-        })
-
-        binding.passwordLayout.editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun afterTextChanged(editable: Editable?) {
-                mViewModel.setPassword(editable.toString())
-            }
-
-        })
+        binding.usernameEditText.nextFocusForwardId = binding.passwordEditText.id
+        binding.usernameEditText.doOnTextChanged { text, _, _, _ ->
+            mViewModel.setUserName(text.toString())
+        }
+        binding.passwordEditText.doOnTextChanged { text, _, _, _ ->
+            mViewModel.setPassword(text.toString())
+        }
     }
 
     private fun observeViewModel() {
         mViewModel.loginUserStatus.observe(this, Observer {
             if (it) {
                 showBriefToastMessage("LoggedIn successfully", coordinateLayout)
+                clearFieldsData()
                 startActivity(Intent(this, HomeActivity::class.java))
             } else {
                 showBriefToastMessage(getString(R.string.error_login_message), coordinateLayout)
@@ -97,31 +76,36 @@ class LoginActivity :
         mViewModel.errorUserNameMessage.observe(this, Observer {
             if (it) {
                 enableErrorMessage(
-                    binding.userNameLayout.editTextLayout,
-                    binding.userNameLayout.editText,
+                    binding.usernameEditTextLayout,
+                    binding.usernameEditText,
                     getString(R.string.error_username_empty)
                 )
             } else {
                 disableErrorMessage(
-                    binding.userNameLayout.editTextLayout,
-                    binding.userNameLayout.editText
+                    binding.usernameEditTextLayout,
+                    binding.usernameEditText,
                 )
             }
         })
         mViewModel.errorPasswordMessage.observe(this, Observer {
             if (it) {
                 enableErrorMessage(
-                    binding.passwordLayout.editTextLayout,
-                    binding.passwordLayout.editText,
+                    binding.passwordEditTextLayout,
+                    binding.passwordEditText,
                     getString(R.string.error_password_empty)
                 )
             } else {
                 disableErrorMessage(
-                    binding.passwordLayout.editTextLayout,
-                    binding.passwordLayout.editText
+                    binding.passwordEditTextLayout,
+                    binding.passwordEditText,
                 )
             }
         })
+    }
+
+    private fun clearFieldsData() {
+        binding.usernameEditText.text = resources.getString(R.string.emptyString).toEditable()
+        binding.passwordEditText.text = resources.getString(R.string.emptyString).toEditable()
     }
 
     override fun onBindData(binding: ActivityLoginBinding) {
@@ -138,6 +122,8 @@ class LoginActivity :
             textInputLayout.isErrorEnabled = true
             editTextLayout.isSelected = true
             textInputLayout.error = message
+            editTextLayout.requestFocus()
+            editTextLayout.text?.let { editTextLayout.setSelection(it.length) }
         }
     }
 

@@ -81,18 +81,18 @@ class LoginViewModel(
     }
 
     private fun validateUserDetails(userName: String, pwd: String): Boolean {
-        return if (userName.isNotEmpty() && pwd.isNotEmpty()) {
-            _errorUserNameMessage.postValue(false)
+        return if (userName.isEmpty()) {
+            _errorUserNameMessage.postValue(true)
             _errorPasswordMessage.postValue(false)
-            true
-        } else {
-            if (userName.isEmpty()) {
-                _errorUserNameMessage.postValue(true)
-            } else if (pwd.isEmpty()) {
-                _errorUserNameMessage.postValue(false)
-                _errorPasswordMessage.postValue(true)
-            }
             false
+        } else if (pwd.isEmpty()) {
+            _errorUserNameMessage.postValue(false)
+            _errorPasswordMessage.postValue(true)
+            false
+        } else {
+            _errorUserNameMessage.value = (false)
+            _errorPasswordMessage.value = (false)
+            true
         }
     }
 
@@ -112,11 +112,9 @@ class LoginViewModel(
 
     fun setUserName(uName: String) {
         userName = uName
-        validateUserDetails(userName, password)
     }
 
     fun setPassword(pwd: String) {
         password = pwd
-        validateUserDetails(userName, password)
     }
 }

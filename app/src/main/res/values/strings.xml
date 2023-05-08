@@ -13,6 +13,7 @@
     <string name="logout">Logout</string>
     <string name="error_login_message">Login failed, Please try again!</string>
     <string name="item_stocks">Item Stocks</string>
+    <string name="emptyString" />
 
     <string-array name="features_list">
         <item>Item Stocks</item>

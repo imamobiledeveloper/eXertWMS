@@ -5,9 +5,7 @@
 
     <data>
 
-        <!--        <variable-->
-        <!--            name="inputType"-->
-        <!--            type="String" />-->
+        <import type="android.text.InputType"/>
 
         <variable
             name="labelName"
@@ -51,7 +49,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_rectangle_bg"
                 android:enabled="@{isEnabled}"
-                android:inputType="text"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                tools:text="user name"
+                android:inputType="@{labelName == @string/password ? (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD) : InputType.TYPE_CLASS_TEXT}"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
