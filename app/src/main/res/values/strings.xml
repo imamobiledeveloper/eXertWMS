@@ -12,9 +12,17 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="logout">Logout</string>
     <string name="error_login_message">Login failed, Please try again!</string>
+    <string name="error_period_id_message">Unable to get Period Id</string>
     <string name="error_api_access_message">Unable to access the server, Please try again!</string>
     <string name="item_stocks">Item Stocks</string>
     <string name="emptyString" />
+    <string name="item_part_code">Item Part Code</string>
+    <string name="item_serial_no">Item Serial No</string>
+    <string name="item_name_english">Item Name (English)</string>
+    <string name="item_name_arabic">Item Name (Arabic)</string>
+    <string name="status">Status</string>
+    <string name="stock">Stock</string>
+    <string name="manufacturer">Manufacturer</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

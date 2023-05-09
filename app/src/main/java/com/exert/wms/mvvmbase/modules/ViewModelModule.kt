@@ -22,6 +22,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        ItemStocksViewModel()
+        ItemStocksViewModel(get(),get())
     }
+
 }

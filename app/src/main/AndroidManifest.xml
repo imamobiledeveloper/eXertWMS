@@ -18,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".itemStocks.warehouse.WarehouseStockActivity"
+            android:exported="false" />
+        <activity
+            android:name=".itemStocks.status.ItemStockStatusActivity"
+            android:exported="false" />
+        <activity
             android:name=".splash.SplashActivity"
             android:configChanges="screenSize|smallestScreenSize|fontScale|density"
             android:exported="true"

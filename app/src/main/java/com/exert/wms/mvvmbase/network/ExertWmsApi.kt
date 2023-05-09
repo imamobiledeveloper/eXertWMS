@@ -1,5 +1,7 @@
 package com.exert.wms.mvvmbase.network
 
+import com.exert.wms.itemStocks.api.ItemStocksRequestDto
+import com.exert.wms.itemStocks.api.ItemStocksResponseDto
 import com.exert.wms.login.FinancialPeriodDto
 import com.exert.wms.login.LoginDto
 import com.exert.wms.login.LoginRequestDto
@@ -18,4 +20,9 @@ interface ExertWmsApi {
     suspend fun authenticateUser(
         @Body requestBody: LoginRequestDto
     ): LoginDto
+
+    @POST("webapi/api/Login/LoginAuthentication")
+    suspend fun getOnlineSalesItems(
+        @Body requestBody: ItemStocksRequestDto
+    ): ItemStocksResponseDto
 }

@@ -36,6 +36,7 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
         binding = ActivityItemStocksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.setTitle(title)
         observeViewModel()
 
     }
