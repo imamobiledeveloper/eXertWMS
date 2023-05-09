@@ -38,6 +38,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.setTitle(title)
         setFeaturesList()
         observeViewModel()
     }

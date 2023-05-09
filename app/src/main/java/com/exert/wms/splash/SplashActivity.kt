@@ -32,7 +32,8 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.hide()
+
+        hideToolBar()
         observeViewModel()
     }
 

@@ -3,6 +3,7 @@ package com.exert.wms.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.HomeFeaturesListItemLayoutBinding
 
@@ -36,10 +37,11 @@ class FeaturesListAdapter(
         private val onFeatureTextClick: (String) -> Unit?
     ) : RecyclerView.ViewHolder(holderBinding.root) {
         private val featureTV: TextView = holderBinding.featureNameTV
+        private val featureLayout: ConstraintLayout = holderBinding.featureLayout
 
         fun bind(text: String, position: Int, selectedPosition: Int) {
             featureTV.text = text
-            featureTV.setOnClickListener {
+            featureLayout.setOnClickListener {
 //                mSelectedItem = bindingAdapterPosition
 //                bindingAdapter?.notifyDataSetChanged()
                 onFeatureTextClick(featureTV.text.toString())

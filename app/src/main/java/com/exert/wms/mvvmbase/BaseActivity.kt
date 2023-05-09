@@ -1,19 +1,21 @@
 package com.exert.wms.mvvmbase
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.exert.wms.R
 import com.exert.wms.home.HomeActivity
-import com.exert.wms.mvvmbase.BaseViewModel
-import com.exert.wms.mvvmbase.ExertBaseActivity
+import com.exert.wms.login.LoginActivity
+import com.exert.wms.login.LoginDataSource
+import com.exert.wms.utils.UserDefaults
+import org.koin.android.ext.android.inject
 
 abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBaseActivity() {
 
@@ -32,7 +34,13 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
 
     abstract fun onBindData(binding: VB)
 
+    override val title: Int = R.string.app_name
+
     fun showHomeButtonVariable(): Boolean = showHomeButton == 1
+
+    private val loginDataSource: LoginDataSource by inject()
+
+    private val userDefaults: UserDefaults by inject()
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
@@ -51,25 +59,40 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
         for (i in 0 until menu!!.size()) {
             if (menu.getItem(i).title == getString(R.string.home)) {
                 menu.getItem(i).isVisible = showHomeButton == 1
+                hideBackButton()
             } else if (showHomeButton == 0) {
                 menu.getItem(i).isVisible = showHomeButton != 1
+                hideBackButton()
             } else {
                 menu.getItem(i).isVisible = false
+                showBackButton()
             }
         }
 
         return true
     }
 
+    private fun showBackButton() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun hideBackButton() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-//            android.R.id.home -> onBackPressed()
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+
             R.id.home_menu -> {
                 HomeActivity.relaunch(this)
                 true
             }
             R.id.logout_menu -> {
-                showBriefToastMessage("You are Logged out", coordinateLayout)
+                logOut()
                 true
             }
 
@@ -77,16 +100,35 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
         }
     }
 
+    private fun logOut() {
+        clearCaches()
+        mViewModel.onCleared()
+        launchActivity(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+    }
+
+    private fun launchActivity(intentFlags: Int = 0) {
+        val intent = Intent(this, LoginActivity::class.java)
+        if (intentFlags > 0) {
+            intent.addFlags(intentFlags)
+        }
+        startActivity(intent)
+    }
+
+    private fun clearCaches() {
+        loginDataSource.clearLoginCache()
+        userDefaults.clear()
+    }
+
     fun hideKeyBoard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
-    fun showToolBar(toolbar: View) {
-//        toolbar.show()
+    fun showToolBar() {
+        supportActionBar?.show()
     }
 
-    fun hideToolBar(toolbar: View) {
-//        toolbar.hide()
+    fun hideToolBar() {
+        supportActionBar?.hide()
     }
 }

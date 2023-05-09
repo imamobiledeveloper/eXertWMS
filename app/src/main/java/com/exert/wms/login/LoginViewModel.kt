@@ -38,7 +38,7 @@ class LoginViewModel(
     val errorPasswordMessage: LiveData<Boolean> = _errorPasswordMessage
 
     private fun loginUser(userName1: String, pwd1: String, financialPeriodId: Long) {
-        val userName = "admin123\$"
+        val userName = "administrator"
         val pwd = "admin123\$"
         val requestDto =
             LoginRequestDto(username = userName, password = pwd, periodID = financialPeriodId)
@@ -73,6 +73,13 @@ class LoginViewModel(
                         if (dto != null && dto.CurrentPeriod > 0) {
                             userDefaults.saveFinancialPeriod(dto.CurrentPeriod)
                             loginUser(uName, pwd, dto.CurrentPeriod)
+                        } else {
+                            hideProgressIndicator()
+                            _errorLoginMessage.postValue(
+                                stringProvider.getString(
+                                    R.string.error_period_id_message
+                                )
+                            )
                         }
                     }
 

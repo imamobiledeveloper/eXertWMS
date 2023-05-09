@@ -7,4 +7,7 @@ class LoginDataSourceLocal {
     }
 
     fun getLoginInfo(): LoginDto? = loginDto
+    fun clear() {
+        loginDto = null
+    }
 }

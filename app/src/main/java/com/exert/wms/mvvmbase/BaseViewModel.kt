@@ -33,7 +33,7 @@ abstract class BaseViewModel : ViewModel() {
         _isLoadingData.postValue(true)
     }
 
-    override fun onCleared() {
+    public override fun onCleared() {
         super.onCleared()
         disposable.dispose()
     }

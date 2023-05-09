@@ -44,4 +44,8 @@ class LoginDataSource(
     private suspend fun getApiAccessFromRemote(): String {
         return loginDataSourceRemote.getApiAccess()
     }
+
+    fun clearLoginCache() {
+        loginDataSourceLocal.clear()
+    }
 }
