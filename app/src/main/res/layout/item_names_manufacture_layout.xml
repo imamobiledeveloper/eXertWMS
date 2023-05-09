@@ -1,152 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/itemNameManufactureParent"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.exert.wms.itemStocks.ItemStocksViewModel" />
+
+        <variable
+            name="labelOne"
+            type="String" />
+
+        <variable
+            name="labelTwo"
+            type="String" />
+
+        <variable
+            name="labelThree"
+            type="String" />
+
+        <variable
+            name="labelFour"
+            type="String" />
+
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/itemNameEnglishLayout"
+        android:id="@+id/itemNameManufactureParent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/itemNameEnglishLabel"
-            style="@style/TextViewLabel"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemNameEnglishLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/item_name_english"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/itemNameEnglishEditText"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/edittext_disabled_rectangle_bg"
             android:layout_marginTop="@dimen/margin_12dp"
-            android:enabled="false"
-            android:focusableInTouchMode="true"
-            android:gravity="center_vertical"
-            android:padding="16dp"
-            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishLabel" />
+            app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/itemNameEnglishLabel"
+                style="@style/TextViewLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{labelOne}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/item_name_english" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/itemNameArabicLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishLayout">
+            <EditText
+                android:id="@+id/itemNameEnglishEditText"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="@dimen/margin_12dp"
+                android:background="@drawable/edittext_disabled_rectangle_bg"
+                android:enabled="false"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishLabel" />
 
-        <TextView
-            android:id="@+id/itemNameArabicLabel"
-            style="@style/TextViewLabel"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemNameArabicLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/item_name_english"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/itemNameArabicEditText"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@drawable/edittext_disabled_rectangle_bg"
             android:layout_marginTop="@dimen/margin_12dp"
-            android:enabled="false"
-            android:focusableInTouchMode="true"
-            android:gravity="center_vertical"
-            android:padding="16dp"
-            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemNameArabicLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishLayout">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/itemNameArabicLabel"
+                style="@style/TextViewLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{labelTwo}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/item_name_arabic" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/itemStockLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemNameArabicLayout">
+            <EditText
+                android:id="@+id/itemNameArabicEditText"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="@dimen/margin_12dp"
+                android:background="@drawable/edittext_disabled_rectangle_bg"
+                android:enabled="false"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemNameArabicLabel" />
 
-        <TextView
-            android:id="@+id/itemStockLabel"
-            style="@style/TextViewLabel"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemStockLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/stock"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/itemStockEditText"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
             android:layout_marginTop="@dimen/margin_12dp"
-            android:background="@drawable/edittext_disabled_rectangle_bg"
-            android:enabled="false"
-            android:focusableInTouchMode="true"
-            android:gravity="center_vertical"
-            android:padding="16dp"
-            android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemStockLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/itemNameArabicLayout">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/itemStockLabel"
+                style="@style/TextViewLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{labelThree}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/stock" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/itemManufactureLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemStockLayout">
+            <EditText
+                android:id="@+id/itemStockEditText"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="@dimen/margin_12dp"
+                android:background="@drawable/edittext_disabled_rectangle_bg"
+                android:enabled="false"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemStockLabel" />
 
-        <TextView
-            android:id="@+id/itemManufactureLabel"
-            style="@style/TextViewLabel"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemManufactureLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/manufacturer"
+            android:layout_marginTop="@dimen/margin_12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/itemStockLayout">
 
-        <EditText
-            android:id="@+id/itemManufactureEditText"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/edittext_disabled_rectangle_bg"
-            android:enabled="false"
-            android:focusableInTouchMode="true"
-            android:gravity="center_vertical"
-            android:padding="16dp"
-            android:singleLine="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemManufactureLabel" />
+            <TextView
+                android:id="@+id/itemManufactureLabel"
+                style="@style/TextViewLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{labelFour}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/manufacturer" />
+
+            <EditText
+                android:id="@+id/itemManufactureEditText"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_disabled_rectangle_bg"
+                android:enabled="false"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemManufactureLabel" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

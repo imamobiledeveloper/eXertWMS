@@ -114,26 +114,4 @@ class LoginActivity :
         binding.executePendingBindings()
     }
 
-    private fun enableErrorMessage(
-        textInputLayout: TextInputLayout,
-        editTextLayout: TextInputEditText,
-        message: String
-    ) {
-        if (!textInputLayout.isErrorEnabled) {
-            textInputLayout.isErrorEnabled = true
-            editTextLayout.isSelected = true
-            textInputLayout.error = message
-            editTextLayout.requestFocus()
-            editTextLayout.text?.let { editTextLayout.setSelection(it.length) }
-        }
-    }
-
-    private fun disableErrorMessage(
-        textInputLayout: TextInputLayout,
-        editTextLayout: TextInputEditText
-    ) {
-        textInputLayout.isErrorEnabled = false
-        editTextLayout.isSelected = false
-        textInputLayout.clearFocus()
-    }
 }

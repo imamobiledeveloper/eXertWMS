@@ -31,7 +31,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/itemPartCodeEditTextLayout"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
+            android:minHeight="56dp"
             android:layout_marginTop="8dp"
             app:errorTextAppearance="@style/EdittextError"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,6 +95,7 @@
                 android:id="@+id/itemSerialNoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="56dp"
                 android:background="@drawable/edittext_rectangle_bg"
                 android:drawableStart="@drawable/ic_scanner"
                 android:drawablePadding="8dp"

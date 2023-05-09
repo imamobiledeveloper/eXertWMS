@@ -1,5 +1,6 @@
 package com.exert.wms.mvvmbase
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +16,8 @@ import com.exert.wms.home.HomeActivity
 import com.exert.wms.login.LoginActivity
 import com.exert.wms.login.LoginDataSource
 import com.exert.wms.utils.UserDefaults
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.android.ext.android.inject
 
 abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBaseActivity() {
@@ -106,13 +109,16 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
         launchActivity(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
     }
 
-    private fun launchActivity(intentFlags: Int = 0) {
+    public fun launchActivity(intentFlags: Int = 0) {
         val intent = Intent(this, LoginActivity::class.java)
         if (intentFlags > 0) {
             intent.addFlags(intentFlags)
         }
         startActivity(intent)
     }
+
+    inline fun <reified T: Activity> Context.startActivity() =
+        startActivity(Intent(this, T::class.java))
 
     private fun clearCaches() {
         loginDataSource.clearLoginCache()
@@ -130,5 +136,28 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
 
     fun hideToolBar() {
         supportActionBar?.hide()
+    }
+
+    fun enableErrorMessage(
+        textInputLayout: TextInputLayout,
+        editTextLayout: TextInputEditText,
+        message: String
+    ) {
+        if (!textInputLayout.isErrorEnabled) {
+            textInputLayout.isErrorEnabled = true
+            editTextLayout.isSelected = true
+            textInputLayout.error = message
+            editTextLayout.requestFocus()
+            editTextLayout.text?.let { editTextLayout.setSelection(it.length) }
+        }
+    }
+
+    fun disableErrorMessage(
+        textInputLayout: TextInputLayout,
+        editTextLayout: TextInputEditText
+    ) {
+        textInputLayout.isErrorEnabled = false
+        editTextLayout.isSelected = false
+        textInputLayout.clearFocus()
     }
 }

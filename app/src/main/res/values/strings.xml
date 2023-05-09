@@ -14,7 +14,10 @@
     <string name="error_login_message">Login failed, Please try again!</string>
     <string name="error_period_id_message">Unable to get Period Id</string>
     <string name="error_api_access_message">Unable to access the server, Please try again!</string>
+    <string name="error_get_items_message">Unable to get Items</string>
     <string name="item_stocks">Item Stocks</string>
+    <string name="item_stock_status">Item Stock Status</string>
+    <string name="warehouse_status">Warehouse Stock</string>
     <string name="emptyString" />
     <string name="item_part_code">Item Part Code</string>
     <string name="item_serial_no">Item Serial No</string>
@@ -23,6 +26,12 @@
     <string name="status">Status</string>
     <string name="stock">Stock</string>
     <string name="manufacturer">Manufacturer</string>
+    <string name="item_name">Item Name</string>
+    <string name="part_code">Part Code</string>
+    <string name="total_stock">Total Stock</string>
+    <string name="warehouse_list">Warehouse List</string>
+    <string name="view">VIEW</string>
+    <string name="error_item_partcode_serial_no_empty_message">Please enter Item Part code or Serial number</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

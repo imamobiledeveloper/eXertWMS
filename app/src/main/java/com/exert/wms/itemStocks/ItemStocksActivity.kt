@@ -1,12 +1,12 @@
 package com.exert.wms.itemStocks
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.lifecycle.Observer
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityItemStocksBinding
-import com.exert.wms.home.HomeViewModel
+import com.exert.wms.itemStocks.status.ItemStockStatusActivity
 import com.exert.wms.mvvmbase.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -38,10 +38,38 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
 
         supportActionBar?.setTitle(title)
         observeViewModel()
-
     }
 
     private fun observeViewModel() {
+        binding.statusButton.setOnClickListener {
+            mViewModel.checkItemStock(
+                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString(),
+                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString()
+            )
+        }
+
+        mViewModel.errorItemSelectionMessage.observe(this, Observer {
+            if (it) {
+                disableErrorMessage(
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
+                )
+            } else {
+                enableErrorMessage(
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
+                    getString(R.string.error_item_partcode_serial_no_empty_message)
+                )
+            }
+        })
+
+        mViewModel.itemStockStatus.observe(this, Observer {
+            if (it) {
+                startActivity<ItemStockStatusActivity>()
+            } else {
+                showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
+            }
+        })
 
     }
 
