@@ -10,9 +10,9 @@ import com.exert.wms.R
 import com.exert.wms.databinding.ActivityLoginBinding
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.utils.hide
+import com.exert.wms.utils.show
 import com.exert.wms.utils.toEditable
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
@@ -61,6 +61,14 @@ class LoginActivity :
     }
 
     private fun observeViewModel() {
+        mViewModel.isLoadingData.observe(this, Observer { status ->
+            if (status) {
+                binding.progressBar.show()
+            } else {
+                binding.progressBar.hide()
+            }
+        })
+
         mViewModel.loginUserStatus.observe(this, Observer {
             if (it) {
                 showBriefToastMessage("LoggedIn successfully", coordinateLayout)

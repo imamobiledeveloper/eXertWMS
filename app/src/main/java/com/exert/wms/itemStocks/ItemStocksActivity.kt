@@ -8,6 +8,8 @@ import com.exert.wms.R
 import com.exert.wms.databinding.ActivityItemStocksBinding
 import com.exert.wms.itemStocks.status.ItemStockStatusActivity
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.utils.hide
+import com.exert.wms.utils.show
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksBinding>() {
@@ -47,6 +49,14 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
                 binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString()
             )
         }
+
+        mViewModel.isLoadingData.observe(this, Observer { status ->
+            if(status){
+                binding.progressBar.show()
+            }else{
+                binding.progressBar.hide()
+            }
+        })
 
         mViewModel.errorItemSelectionMessage.observe(this, Observer {
             if (it) {
