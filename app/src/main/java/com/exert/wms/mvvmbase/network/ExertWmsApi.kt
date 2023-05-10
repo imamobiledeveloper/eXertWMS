@@ -2,9 +2,9 @@ package com.exert.wms.mvvmbase.network
 
 import com.exert.wms.itemStocks.api.ItemStocksRequestDto
 import com.exert.wms.itemStocks.api.ItemStocksResponseDto
-import com.exert.wms.login.FinancialPeriodDto
-import com.exert.wms.login.LoginDto
-import com.exert.wms.login.LoginRequestDto
+import com.exert.wms.login.api.FinancialPeriodDto
+import com.exert.wms.login.api.LoginDto
+import com.exert.wms.login.api.LoginRequestDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

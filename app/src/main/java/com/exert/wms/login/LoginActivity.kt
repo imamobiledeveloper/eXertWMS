@@ -71,7 +71,6 @@ class LoginActivity :
 
         mViewModel.loginUserStatus.observe(this, Observer {
             if (it) {
-                showBriefToastMessage("LoggedIn successfully", coordinateLayout)
                 clearFieldsData()
                 startActivity(Intent(this, HomeActivity::class.java))
             } else {

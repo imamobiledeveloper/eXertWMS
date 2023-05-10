@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
-import com.exert.wms.login.LoginRepository
+import com.exert.wms.login.api.LoginRepository
 import com.exert.wms.mvvmbase.BaseViewModel
 import com.exert.wms.utils.StringProvider
 import kotlinx.coroutines.CoroutineDispatcher
@@ -35,9 +35,9 @@ class SplashViewModel(
         showProgressIndicator()
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
             loginRepo.getApiAccess()
-                .collect { dto ->
-                    Log.v("WMS EXERT", "response $dto")
-
+                .collect { response ->
+                    Log.v("WMS EXERT", "response $response")
+                    _apiAccessStatus.postValue(true)
                 }
 
         }

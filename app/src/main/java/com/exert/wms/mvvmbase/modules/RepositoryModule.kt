@@ -1,7 +1,7 @@
 package com.exert.wms.mvvmbase.modules
 
 import com.exert.wms.itemStocks.api.ItemStocksRepository
-import com.exert.wms.login.LoginRepository
+import com.exert.wms.login.api.LoginRepository
 import org.koin.dsl.module
 
 val repositoryModule = module(override = true) {

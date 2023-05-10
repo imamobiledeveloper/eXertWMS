@@ -74,7 +74,6 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
     override fun onBackPressed() {
         hideKeyBoard()
-        super.onBackPressed()
     }
 
     companion object {

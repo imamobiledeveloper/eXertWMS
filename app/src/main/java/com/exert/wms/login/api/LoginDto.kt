@@ -1,4 +1,4 @@
-package com.exert.wms.login
+package com.exert.wms.login.api
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName

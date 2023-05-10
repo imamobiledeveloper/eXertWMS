@@ -1,4 +1,4 @@
-package com.exert.wms.login
+package com.exert.wms.login.api
 
 class LoginDataSourceLocal {
     private var loginDto: LoginDto? = null

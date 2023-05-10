@@ -1,4 +1,4 @@
-package com.exert.wms.login
+package com.exert.wms.login.api
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -7,7 +7,7 @@ class LoginDataSource(
     private val loginDataSourceRemote: LoginDataSourceRemote,
     private val loginDataSourceLocal: LoginDataSourceLocal
 ) {
-    fun authenticateUser(requestDto:LoginRequestDto): Flow<LoginDto> {
+    fun authenticateUser(requestDto: LoginRequestDto): Flow<LoginDto> {
         return flow {
             emit(
                 authenticateUserFromRemote(requestDto)
@@ -15,7 +15,7 @@ class LoginDataSource(
         }
     }
 
-    private suspend fun authenticateUserFromRemote(requestDto:LoginRequestDto): LoginDto {
+    private suspend fun authenticateUserFromRemote(requestDto: LoginRequestDto): LoginDto {
         val response = loginDataSourceRemote.authenticateUser(requestDto)
         loginDataSourceLocal.saveLoginInfo(response)
         return response

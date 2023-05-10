@@ -1,11 +1,11 @@
-package com.exert.wms.login
+package com.exert.wms.login.api
 
 import kotlinx.coroutines.flow.Flow
 
 
 class LoginRepository(private val loginDatasource: LoginDataSource) {
 
-    fun authenticateUser(requestDto:LoginRequestDto): Flow<LoginDto> {
+    fun authenticateUser(requestDto: LoginRequestDto): Flow<LoginDto> {
         return loginDatasource.authenticateUser(requestDto)
     }
 
