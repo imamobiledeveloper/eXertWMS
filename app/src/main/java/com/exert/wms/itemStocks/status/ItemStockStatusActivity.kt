@@ -8,6 +8,7 @@ import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityItemStockStatusBinding
 import com.exert.wms.itemStocks.ItemStocksViewModel
+import com.exert.wms.itemStocks.warehouse.WarehouseStockActivity
 import com.exert.wms.mvvmbase.BaseActivity
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -63,6 +64,6 @@ class ItemStockStatusActivity :
     }
 
     private fun navigateToWarehouse(warehouseName: String) {
-
+        startActivity<WarehouseStockActivity>()
     }
 }

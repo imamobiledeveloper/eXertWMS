@@ -29,9 +29,14 @@
     <string name="item_name">Item Name</string>
     <string name="part_code">Part Code</string>
     <string name="total_stock">Total Stock</string>
+    <string name="warehouse">Warehouse</string>
     <string name="warehouse_list">Warehouse List</string>
+    <string name="serial_nos_list">Item Serial numbers List</string>
     <string name="view">VIEW</string>
     <string name="error_item_partcode_serial_no_empty_message">Please enter Item Part code or Serial number</string>
+    <string name="manufacture_date">Manufacture Date</string>
+    <string name="warranty_period">Warranty Period</string>
+    <string name="serial_no">Serial No</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

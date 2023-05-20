@@ -38,6 +38,9 @@ class ItemStocksViewModel(
     private val _itemStockStatus = MutableLiveData<Boolean>()
     val itemStockStatus: LiveData<Boolean> = _itemStockStatus
 
+    private val _getItemsSerialNosStatus = MutableLiveData<Boolean>()
+    val getItemsSerialNosStatus: LiveData<Boolean> = _getItemsSerialNosStatus
+
     private fun getOnlineSalesItems(itemCode: String) {
         var itemCode = "130000"
         showProgressIndicator()
@@ -91,6 +94,14 @@ class ItemStocksViewModel(
             _errorItemSelectionMessage.postValue(false)
             false
         }
+    }
+
+    fun searchItemWithPartCode(partCode: String) {
+
+    }
+
+    fun searchItemWithSerialNumber(serialNo: String) {
+
     }
 
 }

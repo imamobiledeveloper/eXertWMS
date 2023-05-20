@@ -26,10 +26,6 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
 
     override fun getBindingVariable(): Int = BR.viewModel
 
-    override fun onBindData(binding: ActivityItemStocksBinding) {
-        binding.viewModel = mViewModel
-    }
-
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 
@@ -40,6 +36,20 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
 
         supportActionBar?.setTitle(title)
         observeViewModel()
+        binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.setStartIconOnClickListener {
+            showBriefToastMessage(
+                "Clicked Item Part code",
+                coordinateLayout,
+                getColor(R.color.blue_50)
+            )
+        }
+        binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.setStartIconOnClickListener {
+            showBriefToastMessage(
+                "Clicked Item Serial number",
+                coordinateLayout,
+                getColor(R.color.blue_50)
+            )
+        }
     }
 
     private fun observeViewModel() {
@@ -49,11 +59,16 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
                 binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString()
             )
         }
-
+        binding.itemPartCodeSerialNoLayout.searchItemPartCodeIV.setOnClickListener {
+            mViewModel.searchItemWithPartCode(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString())
+        }
+        binding.itemPartCodeSerialNoLayout.searchItemSerialNoIV.setOnClickListener {
+            mViewModel.searchItemWithSerialNumber(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
+        }
         mViewModel.isLoadingData.observe(this, Observer { status ->
-            if(status){
+            if (status) {
                 binding.progressBar.show()
-            }else{
+            } else {
                 binding.progressBar.hide()
             }
         })
@@ -81,6 +96,10 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
             }
         })
 
+    }
+
+    override fun onBindData(binding: ActivityItemStocksBinding) {
+        binding.viewModel = mViewModel
     }
 
 }

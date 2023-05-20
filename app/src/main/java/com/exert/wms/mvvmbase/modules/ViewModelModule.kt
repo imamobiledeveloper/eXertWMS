@@ -10,7 +10,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 val viewModelModule = module {
 
     viewModel {
-        SplashViewModel(get(), get())
+        SplashViewModel()
     }
 
     viewModel {

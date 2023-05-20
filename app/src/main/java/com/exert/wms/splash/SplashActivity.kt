@@ -34,22 +34,7 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>() {
         setContentView(binding.root)
 
         hideToolBar()
-        observeViewModel()
-    }
-
-    private fun observeViewModel() {
-        mViewModel.apiAccessStatus.observe(this, Observer {
-//            if (it) {
-            launchLoginScreen()
-//            } else {
-//                showBriefToastMessage(getString(R.string.error_login_message), coordinateLayout)
-//            }
-        })
-
-        mViewModel.errorApiAccessMessage.observe(this, Observer { status ->
-//            showBriefToastMessage(status, coordinateLayout)
-            launchLoginScreen()
-        })
+        launchLoginScreen()
     }
 
     private fun launchLoginScreen() {

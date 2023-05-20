@@ -41,7 +41,7 @@ class LoginViewModel(
 
     private fun loginUser(userName1: String, pwd1: String, financialPeriodId: Long) {
         val userName = "administrator"
-        val pwd = "admin123\$"
+        val pwd = "admin1234j#"
         val requestDto =
             LoginRequestDto(username = userName, password = pwd, periodID = financialPeriodId)
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
