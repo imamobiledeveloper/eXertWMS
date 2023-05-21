@@ -18,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name="com.exert.wms.stockAdjustment.item.StockItemAdjustmentActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.exert.wms.stockAdjustment.StockAdjustmentBaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".itemStocks.warehouse.WarehouseStockActivity"
             android:exported="false" />
         <activity

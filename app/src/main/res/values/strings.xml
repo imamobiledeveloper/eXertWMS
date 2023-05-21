@@ -20,10 +20,14 @@
     <string name="warehouse_status">Warehouse Stock</string>
     <string name="emptyString" />
     <string name="item_part_code">Item Part Code</string>
+    <string name="error_item_part_code">Please select Item Part Code</string>
     <string name="item_serial_no">Item Serial No</string>
+    <string name="error_item_serial_no">Please select Item Serial No</string>
     <string name="item_name_english">Item Name (English)</string>
     <string name="item_name_arabic">Item Name (Arabic)</string>
     <string name="status">Status</string>
+    <string name="save">Save</string>
+    <string name="add_item">Add item</string>
     <string name="stock">Stock</string>
     <string name="manufacturer">Manufacturer</string>
     <string name="item_name">Item Name</string>
@@ -37,6 +41,21 @@
     <string name="manufacture_date">Manufacture Date</string>
     <string name="warranty_period">Warranty Period</string>
     <string name="serial_no">Serial No</string>
+    <string name="items_list">Items List</string>
+    <string name="stock_adjustment">Stock Adjustment</string>
+    <string name="item_adjustment">Item Adjustment</string>
+    <string name="select">select</string>
+    <string name="update">Update</string>
+    <string name="adjustment_type">Adjustment type</string>
+    <string name="positive">+ve</string>
+    <string name="negative">-ve</string>
+    <string name="adjustment_quantity">Adjustment Quantity</string>
+    <string name="adjustment_total_cost">Adjustment Total Cost</string>
+    <string name="item_saved_message">Item is saved successfully</string>
+    <string name="cost">Cost</string>
+    <string name="warehouse_empty_message">"Please select the Warehouse from the list"</string>
+    <string name="adjustment_type_empty_message">"Please select Adjustment Type"</string>
+    <string name="invalid_details_message">"Please enter valid details"</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

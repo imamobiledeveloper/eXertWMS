@@ -12,6 +12,7 @@ import com.exert.wms.databinding.ActivityHomeBinding
 import com.exert.wms.databinding.ActivityLoginBinding
 import com.exert.wms.itemStocks.ItemStocksActivity
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.stockAdjustment.StockAdjustmentBaseActivity
 import com.exert.wms.utils.startActivity
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -64,6 +65,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
     private fun navigateToFeature(featureName: String) {
         when (featureName) {
             "itemStocks" -> startActivity<ItemStocksActivity>()
+            "Stock Adjustment" -> startActivity<StockAdjustmentBaseActivity>()
             else -> startActivity(Intent(this@HomeActivity, ItemStocksActivity::class.java))
         }
     }

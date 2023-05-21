@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.exert.wms.R
@@ -117,8 +118,20 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
         startActivity(intent)
     }
 
-    inline fun <reified T: Activity> Context.startActivity() =
-        startActivity(Intent(this, T::class.java))
+//    inline fun <reified T : Activity> Context.startActivity() =
+//        startActivity(Intent(this, T::class.java))
+
+    inline fun <reified T : Activity> Context.createIntent(vararg extras: Pair<String, Any?>) =
+        Intent(this, T::class.java).apply { putExtras(bundleOf(*extras)) }
+
+    inline fun <reified T: Activity> Context.createIntent() =
+        Intent(this, T::class.java)
+
+    inline fun <reified T : Activity> Context.startActivity() =
+        startActivity(createIntent<T>())
+
+    inline fun <reified T : Activity> Context.startActivity(vararg extras: Pair<String, Any?>) =
+        startActivity(createIntent<T>(*extras))
 
     private fun clearCaches() {
         loginDataSource.clearLoginCache()
