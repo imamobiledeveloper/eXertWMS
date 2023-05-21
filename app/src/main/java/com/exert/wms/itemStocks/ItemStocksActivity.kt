@@ -96,6 +96,38 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
             }
         })
 
+        mViewModel.enableStatusButton.observe(this, Observer {
+            binding.statusButton.isEnabled = it
+        })
+
+        mViewModel.errorItemPartCode.observe(this, Observer {
+            if (it) {
+                enableErrorMessage(
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
+                    getString(R.string.error_item_partcode_serial_no_empty_message)
+                )
+            } else {
+                disableErrorMessage(
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
+                )
+            }
+        })
+        mViewModel.errorItemSerialNo.observe(this, Observer {
+            if (it) {
+                enableErrorMessage(
+                    binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout,
+                    binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
+                    getString(R.string.error_item_partcode_serial_no_empty_message)
+                )
+            } else {
+                disableErrorMessage(
+                    binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout,
+                    binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
+                )
+            }
+        })
     }
 
     override fun onBindData(binding: ActivityItemStocksBinding) {

@@ -24,13 +24,23 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp">
 
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/serialNoCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@null"
+                android:translationX="14dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/manufactureDateLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/serialNoCheckBox">
 
                 <TextView
                     android:id="@+id/manufactureDateLabel"

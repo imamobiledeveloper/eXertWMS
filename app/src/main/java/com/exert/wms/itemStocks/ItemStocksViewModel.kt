@@ -41,6 +41,21 @@ class ItemStocksViewModel(
     private val _getItemsSerialNosStatus = MutableLiveData<Boolean>()
     val getItemsSerialNosStatus: LiveData<Boolean> = _getItemsSerialNosStatus
 
+    private val _checkBoxState = MutableLiveData<Boolean>()
+    val checkBoxState: LiveData<Boolean> = _checkBoxState
+
+    private val _enableStatusButton = MutableLiveData<Boolean>().apply { false }
+    val enableStatusButton: LiveData<Boolean> = _enableStatusButton
+
+    private val _errorItemPartCode = MutableLiveData<Boolean>()
+    val errorItemPartCode: LiveData<Boolean> = _errorItemPartCode
+
+    private val _errorItemSerialNo = MutableLiveData<Boolean>()
+    val errorItemSerialNo: LiveData<Boolean> = _errorItemSerialNo
+
+    var itemPartCode: String = ""
+    var itemSerialNo: String = ""
+
     private fun getOnlineSalesItems(itemCode: String) {
         var itemCode = "130000"
         showProgressIndicator()
@@ -87,21 +102,44 @@ class ItemStocksViewModel(
     }
 
     private fun validateUserDetails(itemPartCode: String, itemSerialNo: String): Boolean {
-        return if (itemPartCode.isNotEmpty() || itemSerialNo.isNotEmpty()) {
-            _errorItemSelectionMessage.postValue(true)
-            true
-        } else {
-            _errorItemSelectionMessage.postValue(false)
-            false
-        }
+        return itemPartCode.isNotEmpty() || itemSerialNo.isNotEmpty()
     }
 
     fun searchItemWithPartCode(partCode: String) {
+        itemPartCode = partCode
+        if (itemPartCode.isNotEmpty()) {
+            // api call
+            _errorItemPartCode.postValue(false)
+        } else {
+            _errorItemPartCode.postValue(true)
+        }
+        checkAndEnableStatusButton()
+    }
 
+    private fun  checkAndEnableStatusButton() {
+        if (validateUserDetails(itemPartCode, itemSerialNo)) {
+            _enableStatusButton.postValue(true)
+            _errorItemPartCode.postValue(false)
+            _errorItemSerialNo.postValue(false)
+        } else {
+            _enableStatusButton.postValue(false)
+        }
     }
 
     fun searchItemWithSerialNumber(serialNo: String) {
+        itemSerialNo = serialNo
+        if (itemSerialNo.isNotEmpty()) {
+            // api call
+            _errorItemSerialNo.postValue(false)
+        } else {
+            _errorItemSerialNo.postValue(true)
+        }
+        checkAndEnableStatusButton()
 
+    }
+
+    fun setCheckBoxState(checkBoxState: Boolean) {
+        _checkBoxState.postValue(checkBoxState)
     }
 
 }

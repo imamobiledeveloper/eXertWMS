@@ -28,6 +28,8 @@ class WarehouseStockActivity :
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 
+    val checkBoxState = intent.getBooleanExtra(SHOW_CHECKBOX, false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWarehouseStockBinding.inflate(layoutInflater)
@@ -38,6 +40,7 @@ class WarehouseStockActivity :
     }
 
     private fun observeViewModel() {
+        mViewModel.setCheckBoxState(checkBoxState)
         mViewModel.getItemsSerialNosStatus.observe(this, Observer {
             if (!it) {
                 showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
@@ -51,8 +54,9 @@ class WarehouseStockActivity :
         mViewModel.itemsList.observe(this, Observer { list ->
             binding.serialNumbersListRecyclerView.layoutManager =
                 LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            binding.serialNumbersListRecyclerView.adapter = SerialNumbersListAdapter(list)
+            binding.serialNumbersListRecyclerView.adapter = SerialNumbersListAdapter(list,checkBoxState)
         })
+
     }
 
     override fun onBindData(binding: ActivityWarehouseStockBinding) {
@@ -60,4 +64,7 @@ class WarehouseStockActivity :
         binding.executePendingBindings()
     }
 
+    companion object {
+        private const val SHOW_CHECKBOX: String = "SHOW_CHECKBOX"
+    }
 }
