@@ -1,4 +1,4 @@
-package com.exert.wms.stockAdjustment.item
+package com.exert.wms.stockAdjustment.api
 
 import androidx.annotation.Keep
 
@@ -16,5 +16,11 @@ data class StockItemAdjustmentDto(
     val cost: Double,
     val adjustmentTotalCost: Double,
 ) {
+    companion object
+}
+
+@Keep
+data class
+StockAdjustmentRequestDto( val itemPartCode: String){
     companion object
 }

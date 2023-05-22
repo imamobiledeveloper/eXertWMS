@@ -5,6 +5,8 @@ import com.exert.wms.itemStocks.api.ItemStocksDataSourceRemote
 import com.exert.wms.login.api.LoginDataSource
 import com.exert.wms.login.api.LoginDataSourceLocal
 import com.exert.wms.login.api.LoginDataSourceRemote
+import com.exert.wms.stockAdjustment.api.StockAdjustmentDataSource
+import com.exert.wms.stockAdjustment.api.StockAdjustmentDataSourceRemote
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -32,5 +34,15 @@ val cacheModule = module {
 
     single {
         ItemStocksDataSource(itemStocksDataSourceRemote = get())
+    }
+
+    factory {
+        StockAdjustmentDataSourceRemote(
+            exertWmsApi = get(named("exertApi"))
+        )
+    }
+
+    single {
+        StockAdjustmentDataSource(stockAdjustmentDataSourceRemote = get())
     }
 }
