@@ -1,6 +1,7 @@
 package com.exert.wms.mvvmbase.modules
 
 import com.exert.wms.itemStocks.api.ItemStocksDataSource
+import com.exert.wms.itemStocks.api.ItemStocksDataSourceLocal
 import com.exert.wms.itemStocks.api.ItemStocksDataSourceRemote
 import com.exert.wms.login.api.LoginDataSource
 import com.exert.wms.login.api.LoginDataSourceLocal
@@ -28,17 +29,21 @@ val cacheModule = module {
 
     factory {
         ItemStocksDataSourceRemote(
-            exertWmsApi = get(named("exertApi"))
+            exertWmsApi = get(named("exertTokenApi"))
         )
     }
 
     single {
-        ItemStocksDataSource(itemStocksDataSourceRemote = get())
+        ItemStocksDataSourceLocal()
+    }
+
+    single {
+        ItemStocksDataSource(itemStocksDataSourceRemote = get(), itemStocksDataSourceLocal = get())
     }
 
     factory {
         StockAdjustmentDataSourceRemote(
-            exertWmsApi = get(named("exertApi"))
+            exertWmsApi = get(named("exertTokenApi"))
         )
     }
 

@@ -76,6 +76,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLength="20"
+                        android:text="a"
                         android:padding="16dp"
                         android:singleLine="true" />
 
@@ -122,6 +123,7 @@
                         android:gravity="center_vertical"
                         android:inputType="textPassword"
                         android:maxLength="20"
+                        android:text="a"
                         android:padding="16dp"
                         android:singleLine="true" />
 

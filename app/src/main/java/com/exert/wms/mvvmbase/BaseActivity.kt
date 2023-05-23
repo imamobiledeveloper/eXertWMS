@@ -3,6 +3,7 @@ package com.exert.wms.mvvmbase
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Menu
@@ -12,14 +13,20 @@ import androidx.annotation.LayoutRes
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.exert.wms.LogoutManager
 import com.exert.wms.R
+import com.exert.wms.SessionExpirationDialog
+import com.exert.wms.SessionExpirationObject
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.login.LoginActivity
 import com.exert.wms.login.api.LoginDataSource
 import com.exert.wms.utils.UserDefaults
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import io.reactivex.disposables.Disposable
 import org.koin.android.ext.android.inject
+import java.io.Serializable
+import java.util.concurrent.TimeUnit
 
 abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBaseActivity() {
 
@@ -28,6 +35,10 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
     override val showHomeButton: Int = 0
 
     lateinit var binding: VB
+
+    private var sessionExpirationDialog: Disposable? = null
+
+    private val logoutManager:LogoutManager by inject()
 
     @LayoutRes
     abstract fun getLayoutID(): Int
@@ -76,6 +87,20 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
         return true
     }
 
+    override fun onPause() {
+        super.onPause()
+        sessionExpirationDialog?.dispose()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sessionExpirationDialog =
+            SessionExpirationObject.observable.debounce(1, TimeUnit.MINUTES).subscribe {
+                SessionExpirationDialog.newInstance()
+                    .show(this.supportFragmentManager, SessionExpirationDialog::class.java.name)
+            }
+    }
+
     private fun showBackButton() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -106,6 +131,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
 
     private fun logOut() {
         clearCaches()
+        logoutManager.logout()
         mViewModel.onCleared()
         launchActivity(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
     }
@@ -124,14 +150,36 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
     inline fun <reified T : Activity> Context.createIntent(vararg extras: Pair<String, Any?>) =
         Intent(this, T::class.java).apply { putExtras(bundleOf(*extras)) }
 
-    inline fun <reified T: Activity> Context.createIntent() =
+    inline fun <reified T : Activity> Context.createIntent() =
         Intent(this, T::class.java)
 
     inline fun <reified T : Activity> Context.startActivity() =
         startActivity(createIntent<T>())
 
-    inline fun <reified T : Activity> Context.startActivity(vararg extras: Pair<String, Any?>) =
-        startActivity(createIntent<T>(*extras))
+    inline fun <reified T : Activity> Context.startActivity(options: Bundle) =
+        startActivity(createIntent<T>(options))
+
+    inline fun <reified T : Activity> Context.createIntent(bundle: Bundle) =
+        Intent(this, T::class.java).apply { putExtras(bundle) }
+
+//    inline fun <reified T : Activity> Context.createIntent(vararg extras: Pair<String, Any?>) =
+//        Intent(this, T::class.java).apply { putExtras(bundleOf(*extras)) }
+
+    fun <T : Serializable?> getSerializable(activity: Activity, name: String, clazz: Class<T>): T
+    {
+        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            activity.intent.getSerializableExtra(name, clazz)!!
+        else
+            activity.intent.getSerializableExtra(name) as T
+    }
+
+
+    fun <T : Serializable?> Intent.getSerializable(key: String, m_class: Class<T>): T {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            this.getSerializableExtra(key, m_class)!!
+        else
+            this.getSerializableExtra(key) as T
+    }
 
     private fun clearCaches() {
         loginDataSource.clearLoginCache()
