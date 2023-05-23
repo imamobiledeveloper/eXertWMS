@@ -8,8 +8,11 @@ import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityItemStockStatusBinding
 import com.exert.wms.itemStocks.ItemStocksViewModel
+import com.exert.wms.itemStocks.api.ItemsDto
+import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.itemStocks.warehouse.WarehouseStockActivity
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class ItemStockStatusActivity :
@@ -23,6 +26,7 @@ class ItemStockStatusActivity :
     override val mViewModel by lazy {
         getViewModel<ItemStocksViewModel>()
     }
+    var itemDto: ItemsDto? = null
 
     override fun getBindingVariable(): Int = BR.viewModel
 
@@ -39,6 +43,20 @@ class ItemStockStatusActivity :
     }
 
     private fun observeViewModel() {
+        itemDto = intent.getSerializable(Constants.ITEM_DTO, ItemsDto::class.java)
+        itemDto?.let { dto->
+            binding.itemDto = dto
+            binding.executePendingBindings()
+            mViewModel.setItemDto(dto)
+            if(dto.wStockDetails!=null) {
+                binding.warehouseListRecyclerView.layoutManager =
+                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                binding.warehouseListRecyclerView.adapter = WarehouseListAdapter(dto.wStockDetails) {
+                    navigateToWarehouse(it)
+                }
+            }
+
+        }
         mViewModel.getItemsStatus.observe(this, Observer {
             if (!it) {
                 showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
@@ -49,12 +67,9 @@ class ItemStockStatusActivity :
             showBriefToastMessage(status, coordinateLayout)
         })
 
-        mViewModel.itemsList.observe(this, Observer { list ->
-            binding.warehouseListRecyclerView.layoutManager =
-                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            binding.warehouseListRecyclerView.adapter = WarehouseListAdapter(list) {
-                navigateToWarehouse(it)
-            }
+        mViewModel.itemDto.observe(this, Observer { dto ->
+            binding.itemDto = dto
+            binding.executePendingBindings()
         })
     }
 
@@ -63,7 +78,10 @@ class ItemStockStatusActivity :
         binding.executePendingBindings()
     }
 
-    private fun navigateToWarehouse(warehouseName: String) {
-        startActivity<WarehouseStockActivity>()
+    private fun navigateToWarehouse(warehouse: WarehouseStockDetails) {
+        val bundle = Bundle()
+        bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
+        bundle.putSerializable(Constants.ITEM_WAREHOUSE,warehouse)
+        startActivity<WarehouseStockActivity>(bundle)
     }
 }

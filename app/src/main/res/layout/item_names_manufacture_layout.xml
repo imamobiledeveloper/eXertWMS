@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.exert.wms.itemStocks.ItemStocksViewModel" />
+            name="itemDto"
+            type="com.exert.wms.itemStocks.api.ItemsDto" />
 
         <variable
             name="labelOne"
@@ -54,15 +54,10 @@
 
             <EditText
                 android:id="@+id/itemNameEnglishEditText"
+                style="@style/EditTextDisabledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="@dimen/margin_12dp"
-                android:background="@drawable/edittext_disabled_rectangle_bg"
-                android:enabled="false"
-                android:focusableInTouchMode="true"
-                android:gravity="center_vertical"
-                android:padding="16dp"
-                android:singleLine="true"
+                android:text="@{itemDto.ItemName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishLabel" />
@@ -91,15 +86,10 @@
 
             <EditText
                 android:id="@+id/itemNameArabicEditText"
+                style="@style/EditTextDisabledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="@dimen/margin_12dp"
-                android:background="@drawable/edittext_disabled_rectangle_bg"
-                android:enabled="false"
-                android:focusableInTouchMode="true"
-                android:gravity="center_vertical"
-                android:padding="16dp"
-                android:singleLine="true"
+                android:text="@{labelTwo == (@string/manufacturer) ? itemDto.manufacturer : itemDto.ItemNameAlias}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/itemNameArabicLabel" />
@@ -128,15 +118,10 @@
 
             <EditText
                 android:id="@+id/itemStockEditText"
+                style="@style/EditTextDisabledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="@dimen/margin_12dp"
-                android:background="@drawable/edittext_disabled_rectangle_bg"
-                android:enabled="false"
-                android:focusableInTouchMode="true"
-                android:gravity="center_vertical"
-                android:padding="16dp"
-                android:singleLine="true"
+                android:text="@{labelThree == (@string/part_code) ? itemDto.itemPartCode : itemDto.getStockString()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/itemStockLabel" />
@@ -165,15 +150,10 @@
 
             <EditText
                 android:id="@+id/itemManufactureEditText"
+                style="@style/EditTextDisabledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/edittext_disabled_rectangle_bg"
-                android:enabled="false"
-                android:focusableInTouchMode="true"
-                android:gravity="center_vertical"
-                android:padding="16dp"
-                android:singleLine="true"
+                android:text="@{labelThree == (@string/total_stock) ? itemDto.getStockString() : itemDto.Manufacturer}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/itemManufactureLabel" />

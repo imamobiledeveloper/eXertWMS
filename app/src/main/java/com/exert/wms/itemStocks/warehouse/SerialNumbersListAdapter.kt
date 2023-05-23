@@ -8,9 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.ItemSerialNumbersListItemLayoutBinding
 import com.exert.wms.itemStocks.api.ItemsDto
+import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
 
 class SerialNumbersListAdapter(
-    private val itemsList: List<ItemsDto>,
+    private val itemsList: List<WarehouseSerialItemDetails>,
     private val checkBoxState: Boolean
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -47,14 +48,14 @@ class SerialNumbersListAdapter(
         private val serialNumber: TextView = holderBinding.serialNumberTV
         private val checkBox: CheckBox = holderBinding.serialNoCheckBox
 
-        fun bind(dto: ItemsDto, position: Int, selectedPosition: Int, checkBoxState: Boolean) {
-            manufactureDate.text = "name".random().toString()
-            warrantyPeriod.text = "120"
-            serialNumber.text = "Hyderabad"
+        fun bind(serialItem: WarehouseSerialItemDetails, position: Int, selectedPosition: Int, checkBoxState: Boolean) {
+            manufactureDate.text = serialItem.MFGDate
+            warrantyPeriod.text = serialItem.WarentyDays
+            serialNumber.text = serialItem.SerialNumber
             checkBox.visibility = if (checkBoxState) View.VISIBLE else View.GONE
-            checkBox.isChecked= false // get from dto
+            checkBox.isChecked= serialItem.selected
             checkBox.setOnCheckedChangeListener { compoundButton, checked ->
-//                dto.setSelected(checked)
+                serialItem.selected=checked
             }
         }
     }

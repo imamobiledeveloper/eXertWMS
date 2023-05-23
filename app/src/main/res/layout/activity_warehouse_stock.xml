@@ -9,6 +9,10 @@
             name="viewModel"
             type="com.exert.wms.itemStocks.ItemStocksViewModel" />
 
+        <variable
+            name="itemDto"
+            type="com.exert.wms.itemStocks.api.ItemsDto" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,10 +40,11 @@
                     layout="@layout/item_names_manufacture_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:labelFour="@{@string/warehouse}"
                     app:labelOne="@{@string/item_name}"
-                    app:labelThree="@{@string/part_code}"
                     app:labelTwo="@{@string/manufacturer}"
+                    app:labelThree="@{@string/part_code}"
+                    app:labelFour="@{@string/warehouse}"
+                    app:itemDto="@{itemDto}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

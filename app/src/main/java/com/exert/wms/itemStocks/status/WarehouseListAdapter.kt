@@ -7,10 +7,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.ItemStocksWarehouseListItemLayoutBinding
 import com.exert.wms.itemStocks.api.ItemsDto
+import com.exert.wms.itemStocks.api.WarehouseStockDetails
 
 class WarehouseListAdapter(
-    private val itemsList: List<ItemsDto>,
-    private val onItemTextClick: (String) -> Unit
+    private val itemsList: List<WarehouseStockDetails>,
+    private val onItemTextClick: (WarehouseStockDetails) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -35,21 +36,19 @@ class WarehouseListAdapter(
 
     inner class WarehouseListViewHolder(
         holderBinding: ItemStocksWarehouseListItemLayoutBinding,
-        private val onFeatureTextClick: (String) -> Unit?
+        private val onFeatureTextClick: (WarehouseStockDetails) -> Unit?
     ) : RecyclerView.ViewHolder(holderBinding.root) {
         private val warehouseName: TextView = holderBinding.warehouseNameTV
         private val stockCount: TextView = holderBinding.stockCountTV
         private val location: TextView = holderBinding.warehouseLocationTV
         private val warehouseItemLayout: ConstraintLayout = holderBinding.warehouseItemLayout
 
-        fun bind(dto: ItemsDto, position: Int, selectedPosition: Int) {
-            warehouseName.text = "name".random().toString()
-            stockCount.text = "120"
-            location.text = "Hyderabad"
+        fun bind(warehouse: WarehouseStockDetails, position: Int, selectedPosition: Int) {
+            warehouseName.text = warehouse.WarehouseDescription
+            stockCount.text = warehouse.FinalQuantity
+            location.text = warehouse.LocationName
             warehouseItemLayout.setOnClickListener {
-//                mSelectedItem = bindingAdapterPosition
-//                bindingAdapter?.notifyDataSetChanged()
-                onFeatureTextClick(stockCount.text.toString())
+                onFeatureTextClick(warehouse)
             }
         }
     }

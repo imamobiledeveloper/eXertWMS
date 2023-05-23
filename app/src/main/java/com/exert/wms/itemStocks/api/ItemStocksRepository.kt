@@ -7,4 +7,8 @@ class ItemStocksRepository(private val itemStocksDataSource: ItemStocksDataSourc
     fun getOnlineSalesItems(requestDto: ItemStocksRequestDto): Flow<ItemStocksResponseDto> {
         return itemStocksDataSource.getOnlineSalesItems(requestDto)
     }
+
+    fun getWarehouseSerialNosList(requestDto: WarehouseSerialItemsRequestDto): Flow<ItemStocksResponseDto> {
+        return itemStocksDataSource.getWarehouseSerialNosList(requestDto)
+    }
 }

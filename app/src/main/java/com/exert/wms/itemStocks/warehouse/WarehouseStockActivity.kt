@@ -8,7 +8,10 @@ import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityWarehouseStockBinding
 import com.exert.wms.itemStocks.ItemStocksViewModel
+import com.exert.wms.itemStocks.api.ItemsDto
+import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class WarehouseStockActivity :
@@ -28,7 +31,11 @@ class WarehouseStockActivity :
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 
-    val checkBoxState = intent.getBooleanExtra(SHOW_CHECKBOX, false)
+    val checkBoxState = if(intent!== null && intent.hasExtra(SHOW_CHECKBOX)) intent.getBooleanExtra(SHOW_CHECKBOX, false) else false
+
+    var itemDto: ItemsDto? = null
+
+    var warehouseStockDetails: WarehouseStockDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +47,14 @@ class WarehouseStockActivity :
     }
 
     private fun observeViewModel() {
+        itemDto = intent.getSerializable(Constants.ITEM_DTO, ItemsDto::class.java)
+        warehouseStockDetails = intent.getSerializable(Constants.ITEM_WAREHOUSE, WarehouseStockDetails::class.java)
+        mViewModel.getSerialNumbersList(itemDto, warehouseStockDetails)
+        itemDto?.let { dto ->
+            binding.itemDto = dto
+            binding.executePendingBindings()
+        }
+
         mViewModel.setCheckBoxState(checkBoxState)
         mViewModel.getItemsSerialNosStatus.observe(this, Observer {
             if (!it) {
@@ -51,10 +66,11 @@ class WarehouseStockActivity :
             showBriefToastMessage(status, coordinateLayout)
         })
 
-        mViewModel.itemsList.observe(this, Observer { list ->
+        mViewModel.warehouseSerialIsList.observe(this, Observer { list ->
             binding.serialNumbersListRecyclerView.layoutManager =
                 LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            binding.serialNumbersListRecyclerView.adapter = SerialNumbersListAdapter(list,checkBoxState)
+            binding.serialNumbersListRecyclerView.adapter =
+                SerialNumbersListAdapter(list, checkBoxState)
         })
 
     }

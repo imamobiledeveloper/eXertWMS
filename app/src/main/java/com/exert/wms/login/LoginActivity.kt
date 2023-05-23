@@ -1,5 +1,6 @@
 package com.exert.wms.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -121,4 +122,13 @@ class LoginActivity :
         binding.executePendingBindings()
     }
 
+    companion object{
+        fun relaunch(activity: Activity){
+            val intent= Intent(activity,LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            activity.startActivity(intent)
+            activity.finishAffinity()
+
+        }
+    }
 }

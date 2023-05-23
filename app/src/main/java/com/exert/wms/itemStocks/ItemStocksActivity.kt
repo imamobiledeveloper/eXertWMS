@@ -8,6 +8,7 @@ import com.exert.wms.R
 import com.exert.wms.databinding.ActivityItemStocksBinding
 import com.exert.wms.itemStocks.status.ItemStockStatusActivity
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -54,15 +55,14 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
 
     private fun observeViewModel() {
         binding.statusButton.setOnClickListener {
-            mViewModel.checkItemStock(
-                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString(),
-                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString()
-            )
+            mViewModel.checkItemStock()
         }
         binding.itemPartCodeSerialNoLayout.searchItemPartCodeIV.setOnClickListener {
+            hideKeyBoard()
             mViewModel.searchItemWithPartCode(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString())
         }
         binding.itemPartCodeSerialNoLayout.searchItemSerialNoIV.setOnClickListener {
+            hideKeyBoard()
             mViewModel.searchItemWithSerialNumber(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
         }
         mViewModel.isLoadingData.observe(this, Observer { status ->
@@ -90,7 +90,9 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
 
         mViewModel.itemStockStatus.observe(this, Observer {
             if (it) {
-                startActivity<ItemStockStatusActivity>()
+                val bundle = Bundle()
+                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
+                startActivity<ItemStockStatusActivity>(bundle)
             } else {
                 showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
             }
@@ -128,6 +130,12 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
                 )
             }
         })
+
+        mViewModel.itemDto.observe(this, Observer {dto ->
+            binding.itemDto=dto
+           binding.executePendingBindings()
+        })
+
     }
 
     override fun onBindData(binding: ActivityItemStocksBinding) {
