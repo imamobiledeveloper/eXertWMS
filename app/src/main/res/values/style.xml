@@ -11,6 +11,11 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="TextViewBoldLabel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="toolbarTitle">
         <item name="android:textSize">24sp</item>
         <item name="android:lineSpacingExtra">7sp</item>
@@ -24,6 +29,13 @@
         <item name="android:divider">@color/grey_50</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:paddingStart">@dimen/margin_15dp</item>
+        <item name="android:dropDownListViewStyle">@style/SpinnerDivider</item>
+    </style>
+
+    <style name="SpinnerDivider" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:divider">@color/grey_50</item>
+        <item name="android:paddingStart">@dimen/margin_15dp</item>
     </style>
 
     <style name="ButtonStyle">
@@ -35,9 +47,28 @@
         <item name="android:background">@drawable/button_bg_selector</item>
     </style>
 
+    <style name="TextViewWithDrawableStyle">
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:background">@drawable/rectangle_blue_outline_bg</item>
+    </style>
+
     <style name="EditTextDisabledStyle">
         <item name="android:layout_marginTop">@dimen/margin_12dp</item>
         <item name="android:enabled">false</item>
+        <item name="android:background">@drawable/edittext_disabled_rectangle_bg</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@color/grey_dark</item>
+    </style>
+
+    <style name="EditTextEnabledStyle">
+        <item name="android:layout_marginTop">@dimen/margin_12dp</item>
         <item name="android:background">@drawable/edittext_disabled_rectangle_bg</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>

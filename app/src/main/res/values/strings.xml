@@ -16,6 +16,7 @@
     <string name="error_api_access_message">Unable to access the server, Please try again!</string>
     <string name="error_get_items_message">Unable to get Items</string>
     <string name="error_warehouse_serials_nos_message">Unable to get Items</string>
+    <string name="error_failed_warehouse_serials_nos_message">Failed to get Items</string>
     <string name="item_stocks">Item Stocks</string>
     <string name="item_stock_status">Item Stock Status</string>
     <string name="warehouse_status">Warehouse Stock</string>
@@ -55,11 +56,13 @@
     <string name="item_saved_message">Item is saved successfully</string>
     <string name="cost">Cost</string>
     <string name="warehouse_empty_message">"Please select the Warehouse from the list"</string>
+    <string name="warehouse_list_empty_message">"Warehouse are not available"</string>
     <string name="adjustment_type_empty_message">"Please select Adjustment Type"</string>
     <string name="invalid_details_message">"Please enter valid details"</string>
     <string name="session_expired">Session Expired</string>
     <string name="session_expired_message">Sorry, Your session has been expired. Please login again!!</string>
     <string name="ok">OK</string>
+    <string name="empty_items_list">Items are empty</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

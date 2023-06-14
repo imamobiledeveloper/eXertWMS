@@ -7,7 +7,8 @@ import java.io.Serializable
 
 @Keep
 data class ItemStocksRequestDto(
-    val ItemPartCode: String = ""
+    val ItemPartCode: String = "",
+    val ItemSerialNumber: String = ""
 ) {
     companion object
 }
@@ -15,7 +16,7 @@ data class ItemStocksRequestDto(
 @Keep
 data class ItemStocksResponseDto(
     val success: Boolean,
-    val Items: List<ItemsDto>
+    val Items: List<ItemsDto>? = null
 ) {
     companion object
 }
@@ -43,11 +44,13 @@ data class ItemsDto(
     val WarehouseID: Long = 0,
     val count: Long = 0,
     val SNO: Long = 0,
+    val IsSerialItem:Int = 0,
     val wStockDetails: List<WarehouseStockDetails>?
 ) : Serializable, Parcelable {
     companion object
 
     fun getStockString() = Stock.toString()
+
 }
 
 @Parcelize
@@ -65,7 +68,7 @@ data class WarehouseStockDetails(
     val BranchCode: String? = null,
     val Branch: String? = null,
     val BranchAlias: String? = null,
-    val FinalQuantity: String? = null,
+    val FinalQuantity: Double = 0.0,
     val wSerialItemDetails: List<WarehouseSerialItemDetails>?,
 ) : Parcelable, Serializable {
     companion object

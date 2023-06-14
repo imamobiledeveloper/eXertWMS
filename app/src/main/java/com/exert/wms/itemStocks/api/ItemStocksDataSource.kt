@@ -7,11 +7,11 @@ class ItemStocksDataSource(
     private val itemStocksDataSourceRemote: ItemStocksDataSourceRemote,
     private val itemStocksDataSourceLocal: ItemStocksDataSourceLocal
 ) {
-    fun getOnlineSalesItems(requestDto: ItemStocksRequestDto): Flow<ItemStocksResponseDto> {
+    fun getItemWarehouseList(requestDto: ItemStocksRequestDto): Flow<ItemStocksResponseDto> {
         return flow {
             emit(
                 itemStocksDataSourceLocal.getItemStocksInfo() ?:
-                itemStocksDataSourceRemote.getOnlineSalesItems(requestDto)
+                itemStocksDataSourceRemote.getItemWarehouseList(requestDto)
             )
         }
     }

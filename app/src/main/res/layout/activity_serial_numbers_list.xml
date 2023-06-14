@@ -12,6 +12,7 @@
         <variable
             name="itemDto"
             type="com.exert.wms.itemStocks.api.ItemsDto" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,13 +37,13 @@
 
                 <include
                     android:id="@+id/itemNameManufactureLayout"
-                    layout="@layout/item_names_manufacture_layout"
+                    layout="@layout/item_details_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:labelOne="@{@string/item_name}"
                     app:labelTwo="@{@string/manufacturer}"
                     app:labelThree="@{@string/part_code}"
-                    app:labelFour="@{@string/total_stock}"
+                    app:labelFour="@{@string/warehouse}"
                     app:itemDto="@{itemDto}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/warehouse_list"
+                    android:text="@string/serial_nos_list"
                     android:textColor="@color/blue"
                     android:textSize="22sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -62,14 +63,15 @@
                     app:layout_constraintTop_toBottomOf="@+id/itemNameManufactureLayout" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/warehouseListRecyclerView"
+                    android:id="@+id/serialNumbersListRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/warehouseListLabel"
-                    tools:listitem="@layout/item_stocks_warehouse_list_item_layout" />
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_serial_numbers_list_item_layout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

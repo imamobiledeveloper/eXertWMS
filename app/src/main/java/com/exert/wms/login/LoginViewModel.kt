@@ -40,10 +40,10 @@ class LoginViewModel(
     val errorPasswordMessage: LiveData<Boolean> = _errorPasswordMessage
 
     private fun loginUser(userName1: String, pwd1: String, financialPeriodId: Long) {
-        val userName = "administrator"
-        val pwd = "admin1234#"
+        userName = userName1
+        password = pwd1
         val requestDto =
-            LoginRequestDto(username = userName, password = pwd, periodID = financialPeriodId)
+            LoginRequestDto(username = userName, password = password, periodID = financialPeriodId)
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
             loginRepo.authenticateUser(requestDto)
                 .collect { response ->

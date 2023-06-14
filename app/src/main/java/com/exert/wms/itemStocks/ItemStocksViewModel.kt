@@ -61,20 +61,25 @@ class ItemStocksViewModel(
     var itemSerialNo: String = ""
     var itemsDto: ItemsDto? = null
 
-    private fun getOnlineSalesItems(itemPartCode: String, itemSerialNo: String) {
+    private fun getItemWarehouseList(itemPartCode: String, itemSerialNo: String) {
+//        itemPartCode="18x085NiCd-Hop"
         showProgressIndicator()
-        //{"ItemPartCode":"18x085NiCd-Hop"}
-        val request = ItemStocksRequestDto(ItemPartCode = "18x085NiCd-Hop")
+        val request =
+            ItemStocksRequestDto(ItemPartCode = itemPartCode, ItemSerialNumber = itemSerialNo)
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
-            itemStocksRepo.getOnlineSalesItems(request)
+            itemStocksRepo.getItemWarehouseList(request)
                 .collect { dto ->
-                    Log.v("WMS EXERT", "getOnlineSalesItems response $dto")
+                    Log.v("WMS EXERT", "getItemWarehouseList response $dto")
                     hideProgressIndicator()
-                    if (dto.success && dto.Items.isNotEmpty()) {
-                        itemsDto = dto.Items[0]
-                        _itemDto.postValue(dto.Items[0])
+                    if (dto.success) {
+                        if (dto.Items != null && dto.Items.isNotEmpty()) {
+                            itemsDto = dto.Items[0]
+                            _itemDto.postValue(dto.Items[0])
+                        } else {
+                            _errorGetItemsStatusMessage.postValue(stringProvider.getString(R.string.empty_items_list))
+                        }
                     } else {
-                        _getItemsStatus.postValue(false)
+                        _getItemsStatus.value = (false)
                     }
                 }
 
@@ -111,11 +116,21 @@ class ItemStocksViewModel(
     fun searchItemWithPartCode(partCode: String) {
         itemPartCode = partCode
         if (itemPartCode.isNotEmpty()) {
-            // api call
-            getOnlineSalesItems(itemPartCode, "")
+            getItemWarehouseList(itemPartCode, "")
             _errorItemPartCode.postValue(false)
         } else {
             _errorItemPartCode.postValue(true)
+        }
+        checkAndEnableStatusButton()
+    }
+
+    fun searchItemWithSerialNumber(serialNo: String) {
+        itemSerialNo = serialNo
+        if (itemSerialNo.isNotEmpty()) {
+            getItemWarehouseList("", itemSerialNo)
+            _errorItemSerialNo.postValue(false)
+        } else {
+            _errorItemSerialNo.postValue(true)
         }
         checkAndEnableStatusButton()
     }
@@ -128,19 +143,6 @@ class ItemStocksViewModel(
         } else {
             _enableStatusButton.postValue(false)
         }
-    }
-
-    fun searchItemWithSerialNumber(serialNo: String) {
-        itemSerialNo = serialNo
-        if (itemSerialNo.isNotEmpty()) {
-            // api call
-            getOnlineSalesItems("", itemSerialNo)
-            _errorItemSerialNo.postValue(false)
-        } else {
-            _errorItemSerialNo.postValue(true)
-        }
-        checkAndEnableStatusButton()
-
     }
 
     fun setCheckBoxState(checkBoxState: Boolean) {
@@ -163,10 +165,8 @@ class ItemStocksViewModel(
 
     private fun getWarehouseSerialNosList(itemPartCode: String, warehouseId: Long) {
         showProgressIndicator()
-        //{"ItemPartCode":"18x085NiCd-Hop"}
         val request = WarehouseSerialItemsRequestDto(
             ItemPartCode = "18x085NiCd-Hop",
-//            ItemSerialNumber = "",
             WarehouseID = warehouseId
         )
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
@@ -174,7 +174,54 @@ class ItemStocksViewModel(
                 .collect { dto ->
                     Log.v("WMS EXERT", "getWarehouseSerialNosList response $dto")
                     hideProgressIndicator()
-                    if (dto.success && dto.Items.isNotEmpty()) {
+
+//                    val warehouseList= listOf(WarehouseStockDetails( WarehouseID =  1,
+//                        WarehouseCode= "001",
+//                        WarehouseDescription= "Jeddah Office",
+//                        WarehouseAlias= "مستودع جدة",
+//                        LocationID= 1,
+//                        LocationCode= "001",
+//                        LocationName= "Default Location",
+//                        LocationAlias= null,
+//                        BranchID= 1,
+//                        BranchCode= "JED001",
+//                        Branch= "Jeddah Office",
+//                        BranchAlias="مكتب جدة الرئيسي",
+//                        FinalQuantity= 1000.0000,
+//                        wSerialItemDetails= listOf(WarehouseSerialItemDetails( WarehouseID= 1,
+//                            SerialNumber= "1001",
+//                            MFGDate="12 May 2023",
+//                            WarentyDays= "100"),WarehouseSerialItemDetails( WarehouseID= 1,
+//                            SerialNumber= "1002",
+//                            MFGDate="12 May 2023",
+//                            WarentyDays= "100"),
+//                            WarehouseSerialItemDetails( WarehouseID= 1,
+//                                SerialNumber= "1003",
+//                                MFGDate="12 May 2023",
+//                                WarentyDays= "100"),
+//                            WarehouseSerialItemDetails( WarehouseID= 1,
+//                                SerialNumber= "1004",
+//                                MFGDate="12 May 2023",
+//                                WarentyDays= "100"),
+//                            WarehouseSerialItemDetails( WarehouseID= 1,
+//                                SerialNumber= "1005",
+//                                MFGDate="12 May 2023",
+//                                WarentyDays= "100")
+//                        )
+//                    ))
+////                    val warehouseList = warehouseListValue[0]
+//                    if (warehouseList != null && warehouseList.isNotEmpty() && warehouseList[0].wSerialItemDetails != null) {
+//                            warehouseList[0].wSerialItemDetails?.let {
+//                                _warehouseSerialIsList.postValue(it)
+//                            } ?: _errorGetItemsStatusMessage.postValue(
+//                                stringProvider.getString(
+//                                    R.string.error_warehouse_serials_nos_message
+//                                )
+//                            )
+//
+//                        }
+
+                    if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
                         val warehouseList = dto.Items[0].wStockDetails
                         if (warehouseList != null && warehouseList.isNotEmpty() && warehouseList[0].wSerialItemDetails != null) {
                             warehouseList[0].wSerialItemDetails?.let {
@@ -195,7 +242,7 @@ class ItemStocksViewModel(
                     } else {
                         _errorGetItemsStatusMessage.postValue(
                             stringProvider.getString(
-                                R.string.error_warehouse_serials_nos_message
+                                R.string.error_failed_warehouse_serials_nos_message
                             )
                         )
                     }

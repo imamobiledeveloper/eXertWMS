@@ -5,13 +5,14 @@
     android:id="@+id/serialNumbersItemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_10dp"
     android:background="@drawable/tv_rectangle_bg">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
+        app:cardElevation="1dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
