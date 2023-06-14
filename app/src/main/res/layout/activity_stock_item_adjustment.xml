@@ -9,6 +9,10 @@
             name="viewModel"
             type="com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel" />
 
+        <variable
+            name="itemDto"
+            type="com.exert.wms.itemStocks.api.ItemsDto" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,56 +36,6 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/margin_15dp">
 
-                <TextView
-                    android:id="@+id/warehouseTV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:drawablePadding="@dimen/margin_15dp"
-                    android:text="@string/warehouse"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/warehouseSpinnerLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="@dimen/margin_10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/warehouseTV">
-
-                    <Spinner
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#00FFFFFF"
-                        android:dropDownWidth="match_parent"
-                        android:overlapAnchor="false"
-                        android:popupBackground="@drawable/edittext_rectangle_bg"
-                        android:popupElevation="@dimen/margin_15dp"
-                        android:theme="@style/Spinner" />
-
-                    <TextView
-                        android:id="@+id/warehouseSpinnerTV"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/edittext_rectangle_bg"
-                        android:drawablePadding="@dimen/margin_10dp"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical"
-                        android:paddingStart="@dimen/margin_10dp"
-                        android:paddingEnd="@dimen/margin_10dp"
-                        android:singleLine="true"
-                        android:text="@string/select"
-                        android:textAlignment="gravity"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        app:drawableEndCompat="@drawable/ic_arrow_down" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <include
                     android:id="@+id/itemPartCodeSerialNoLayout"
                     layout="@layout/item_part_code_serial_no_layout"
@@ -89,7 +43,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/warehouseSpinnerLayout" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <include
                     android:id="@+id/itemNameManufactureLayout"
@@ -100,6 +54,7 @@
                     app:labelOne="@{@string/item_name_english}"
                     app:labelThree="@{@string/stock}"
                     app:labelTwo="@{@string/item_name_arabic}"
+                    app:itemDto="@{itemDto}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/itemPartCodeSerialNoLayout" />

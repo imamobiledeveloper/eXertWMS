@@ -1,16 +1,17 @@
-package com.exert.wms.itemStocks.status
+package com.exert.wms.itemStocks.warehouse
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.ItemStocksWarehouseListItemLayoutBinding
-import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
 
 class WarehouseListAdapter(
     private val itemsList: List<WarehouseStockDetails>,
+    private val isSerialItem: Int,
     private val onItemTextClick: (WarehouseStockDetails) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -41,13 +42,15 @@ class WarehouseListAdapter(
         private val warehouseName: TextView = holderBinding.warehouseNameTV
         private val stockCount: TextView = holderBinding.stockCountTV
         private val location: TextView = holderBinding.warehouseLocationTV
+        private val viewTextView: TextView = holderBinding.viewWarehouseTV
         private val warehouseItemLayout: ConstraintLayout = holderBinding.warehouseItemLayout
 
         fun bind(warehouse: WarehouseStockDetails, position: Int, selectedPosition: Int) {
             warehouseName.text = warehouse.WarehouseDescription
-            stockCount.text = warehouse.FinalQuantity
+            stockCount.text = warehouse.FinalQuantity.toString()
             location.text = warehouse.LocationName
-            warehouseItemLayout.setOnClickListener {
+            viewTextView.visibility= if(isSerialItem == 1) View.VISIBLE else View.GONE
+            viewTextView.setOnClickListener {
                 onFeatureTextClick(warehouse)
             }
         }

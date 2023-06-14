@@ -8,6 +8,7 @@ import com.exert.wms.login.api.LoginDto
 import com.exert.wms.login.api.LoginRequestDto
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRequestDto
 import com.exert.wms.stockAdjustment.api.StockItemAdjustmentDto
+import com.exert.wms.stockAdjustment.api.WarehouseListDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -34,8 +35,11 @@ interface ExertWmsApi {
         @Body requestBody: WarehouseSerialItemsRequestDto
     ): ItemStocksResponseDto
 
-    @POST("webapi/api/Login/LoginAuthentication")
+    @POST("webapi/api/StockAdjustment/SaveStockAdjustment")
     suspend fun getStockAdjustmentItems(
         @Body requestBody: StockAdjustmentRequestDto
     ): StockItemAdjustmentDto
+
+    @GET("webapi/api/Warehouse/GetWarehouse")
+    suspend fun getWarehouseList(): WarehouseListDto
 }

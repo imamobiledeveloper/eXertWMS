@@ -13,4 +13,12 @@ class  StockAdjustmentDataSource(
             )
         }
     }
+
+    fun getWarehouseList(): Flow<WarehouseListDto> {
+        return flow {
+            emit(
+                stockAdjustmentDataSourceRemote.getWarehouseList()
+            )
+        }
+    }
 }

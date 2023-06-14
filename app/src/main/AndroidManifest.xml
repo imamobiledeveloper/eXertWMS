@@ -24,10 +24,10 @@
             android:name="com.exert.wms.stockAdjustment.StockAdjustmentBaseActivity"
             android:exported="false" />
         <activity
-            android:name=".itemStocks.warehouse.WarehouseStockActivity"
+            android:name=".itemStocks.serialNumbers.SerialNumbersListActivity"
             android:exported="false" />
         <activity
-            android:name=".itemStocks.status.ItemStockStatusActivity"
+            android:name=".itemStocks.warehouse.WarehouseListActivity"
             android:exported="false" />
         <activity
             android:name=".splash.SplashActivity"

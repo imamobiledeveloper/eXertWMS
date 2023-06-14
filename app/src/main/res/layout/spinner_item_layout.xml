@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/textName"
+    android:layout_marginTop="@dimen/margin_5dp"
+    android:layout_marginEnd="@dimen/margin_5dp"
+    android:ellipsize="end"
+    android:padding="8dp"
+    android:singleLine="true"
+    android:textColor="@color/black"
+    android:textAlignment="inherit"
+    tools:text="Warehouse name"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:textSize="14sp" />

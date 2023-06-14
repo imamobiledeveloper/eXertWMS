@@ -11,9 +11,11 @@ import androidx.lifecycle.Observer
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityStockItemAdjustmentBinding
-import com.exert.wms.itemStocks.warehouse.WarehouseStockActivity
+import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListActivity
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
+import com.exert.wms.stockAdjustment.api.WarehouseDto
+import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -35,6 +37,8 @@ class StockItemAdjustmentActivity :
 
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
+
+    var warehouseDto: WarehouseDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,23 +62,28 @@ class StockItemAdjustmentActivity :
             )
         }
         binding.adjustmentQuantityEditTextLayout.setEndIconOnClickListener {
-//            showBriefToastMessage(
-//                "Clicked Adjustment quantity",
-//                coordinateLayout,
-//                getColor(R.color.blue_50)
+//            mViewModel.checkItemDetailsEntered(
+////                binding.warehouseSpinnerTV.text.toString(),
+//                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString(),
+//                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString(),
 //            )
-            mViewModel.checkItemDetailsEntered(
-                binding.warehouseSpinnerTV.text.toString(),
-                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString(),
-                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString(),
-            )
+//            val intent = Intent(this, SerialNumbersListActivity::class.java)
+//            intent.putExtra(SHOW_CHECKBOX, true)
+//            startForResult.launch(intent)
+
+            val bundle = Bundle()
+            bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
+            bundle.putSerializable(Constants.ITEM_WAREHOUSE, warehouseDto)
+            startActivity<SerialNumbersListActivity>(bundle)
         }
     }
 
     private fun observeViewModel() {
+        warehouseDto = intent.getSerializableExtra(Constants.WAREHOUSE) as WarehouseDto?
+        mViewModel.setSelectedWarehouseDto(warehouseDto)
         binding.saveButton.setOnClickListener {
             mViewModel.saveItemStock(
-                binding.warehouseSpinnerTV.text.toString(),
+//                binding.warehouseSpinnerTV.text.toString(),
                 binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString(),
                 binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString(),
             )
@@ -136,9 +145,13 @@ class StockItemAdjustmentActivity :
 
         mViewModel.navigateToSerialNo.observe(this, Observer {
             if (it) {
-                val intent = Intent(this, WarehouseStockActivity::class.java)
-                intent.putExtra(SHOW_CHECKBOX, true)
-                startForResult.launch(intent)
+//                val intent = Intent(this, SerialNumbersListActivity::class.java)
+//                intent.putExtra(SHOW_CHECKBOX, true)
+//                startForResult.launch(intent)
+                val bundle = Bundle()
+                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
+                bundle.putSerializable(Constants.ITEM_WAREHOUSE, warehouseDto)
+                startActivity<SerialNumbersListActivity>(bundle)
             } else {
                 showBriefToastMessage(getString(R.string.invalid_details_message), coordinateLayout)
             }
@@ -174,6 +187,10 @@ class StockItemAdjustmentActivity :
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
                 )
             }
+        })
+        mViewModel.itemDto.observe(this, Observer { dto ->
+            binding.itemDto = dto
+            binding.executePendingBindings()
         })
 
     }

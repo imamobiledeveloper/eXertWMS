@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="itemDto"
+            type="com.exert.wms.itemStocks.api.ItemsDto" />
+
+        <variable
+            name="labelOne"
+            type="String" />
+
+        <variable
+            name="labelTwo"
+            type="String" />
+
+        <variable
+            name="labelThree"
+            type="String" />
+
+        <variable
+            name="labelFour"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemNameManufactureParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/itemNameEnglishLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="20dp"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/itemNameEnglishLabel"
+                style="@style/TextViewLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{labelOne}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/item_name_english" />
+
+            <View
+                android:layout_width="@dimen/margin_10dp"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/itemNameEnglishEditText"
+                style="@style/TextViewBoldLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="sample item name sample item name"
+                android:text="@{itemDto.ItemName}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishLabel" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/itemNameArabicLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:orientation="horizontal"
+            android:background="@color/grey_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishLayout">
+
+            <TextView
+                android:id="@+id/itemNameArabicLabel"
+                style="@style/TextViewLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{labelTwo}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/item_name_arabic" />
+
+            <View
+                android:layout_width="@dimen/margin_10dp"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/itemNameArabicEditText"
+                style="@style/TextViewBoldLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="sample item name arabic"
+                android:text="@{labelTwo == (@string/manufacturer) ? itemDto.manufacturer : itemDto.ItemNameAlias}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemNameArabicLabel" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/itemStockLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/margin_10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemNameArabicLayout">
+
+            <TextView
+                android:id="@+id/itemStockLabel"
+                style="@style/TextViewLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{labelThree}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/stock" />
+
+            <View
+                android:layout_width="@dimen/margin_10dp"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/itemStockEditText"
+                style="@style/TextViewBoldLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="1000.00"
+                android:text="@{labelThree == (@string/part_code) ? itemDto.itemPartCode : itemDto.getStockString()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemStockLabel" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/itemManufactureLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:minHeight="40dp"
+            android:gravity="center_vertical"
+            android:background="@color/grey_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemStockLayout">
+
+            <TextView
+                android:id="@+id/itemManufactureLabel"
+                style="@style/TextViewLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{labelFour}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/manufacturer" />
+
+            <View
+                android:layout_width="@dimen/margin_10dp"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/itemManufactureEditText"
+                style="@style/TextViewBoldLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="Item manufacturer"
+                android:text="@{labelFour == (@string/total_stock) ? itemDto.getStockString() : itemDto.Manufacturer}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemManufactureLabel" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/dividerView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemManufactureLayout"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

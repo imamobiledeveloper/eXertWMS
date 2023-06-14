@@ -1,4 +1,4 @@
-package com.exert.wms.itemStocks.warehouse
+package com.exert.wms.itemStocks.serialNumbers
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,6 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.ItemSerialNumbersListItemLayoutBinding
-import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
 
 class SerialNumbersListAdapter(

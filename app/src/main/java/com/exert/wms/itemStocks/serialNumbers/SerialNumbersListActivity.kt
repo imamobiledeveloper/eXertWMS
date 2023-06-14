@@ -1,4 +1,4 @@
-package com.exert.wms.itemStocks.warehouse
+package com.exert.wms.itemStocks.serialNumbers
 
 import android.os.Bundle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.exert.wms.BR
 import com.exert.wms.R
-import com.exert.wms.databinding.ActivityWarehouseStockBinding
+import com.exert.wms.databinding.ActivitySerialNumbersListBinding
 import com.exert.wms.itemStocks.ItemStocksViewModel
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
@@ -14,11 +14,11 @@ import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class WarehouseStockActivity :
-    BaseActivity<ItemStocksViewModel, ActivityWarehouseStockBinding>() {
+class SerialNumbersListActivity :
+    BaseActivity<ItemStocksViewModel, ActivitySerialNumbersListBinding>() {
 
     override val title = R.string.warehouse_status
-    override fun getLayoutID(): Int = R.layout.activity_warehouse_stock
+    override fun getLayoutID(): Int = R.layout.activity_serial_numbers_list
 
     override val showHomeButton: Int = 1
 
@@ -31,7 +31,11 @@ class WarehouseStockActivity :
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 
-    val checkBoxState = if(intent!== null && intent.hasExtra(SHOW_CHECKBOX)) intent.getBooleanExtra(SHOW_CHECKBOX, false) else false
+    val checkBoxState =
+        if (intent !== null && intent.hasExtra(SHOW_CHECKBOX)) intent.getBooleanExtra(
+            SHOW_CHECKBOX,
+            false
+        ) else false
 
     var itemDto: ItemsDto? = null
 
@@ -39,7 +43,7 @@ class WarehouseStockActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityWarehouseStockBinding.inflate(layoutInflater)
+        binding = ActivitySerialNumbersListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.setTitle(title)
@@ -48,11 +52,15 @@ class WarehouseStockActivity :
 
     private fun observeViewModel() {
         itemDto = intent.getSerializable(Constants.ITEM_DTO, ItemsDto::class.java)
-        warehouseStockDetails = intent.getSerializable(Constants.ITEM_WAREHOUSE, WarehouseStockDetails::class.java)
+        warehouseStockDetails =
+            intent.getSerializable(Constants.ITEM_WAREHOUSE, WarehouseStockDetails::class.java)
         mViewModel.getSerialNumbersList(itemDto, warehouseStockDetails)
         itemDto?.let { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
+        }
+        warehouseStockDetails?.let {
+            binding.itemNameManufactureLayout.itemManufactureEditText.text = it.WarehouseDescription
         }
 
         mViewModel.setCheckBoxState(checkBoxState)
@@ -75,7 +83,7 @@ class WarehouseStockActivity :
 
     }
 
-    override fun onBindData(binding: ActivityWarehouseStockBinding) {
+    override fun onBindData(binding: ActivitySerialNumbersListBinding) {
         binding.viewModel = mViewModel
         binding.executePendingBindings()
     }
