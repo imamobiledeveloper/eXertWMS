@@ -44,7 +44,7 @@ data class ItemsDto(
     val WarehouseID: Long = 0,
     val count: Long = 0,
     val SNO: Long = 0,
-    val IsSerialItem:Int = 0,
+    val IsSerialItem: Int = 0,
     val wStockDetails: List<WarehouseStockDetails>?
 ) : Serializable, Parcelable {
     companion object
@@ -89,8 +89,8 @@ data class WarehouseSerialItemDetails(
 
 @Keep
 data class WarehouseSerialItemsRequestDto(
-    val ItemPartCode: String,
-//    val ItemSerialNumber: String,
+    val ItemPartCode: String = "",
+    val ItemSerialNumber: String = "",
     val WarehouseID: Long,
 ) {
     companion object

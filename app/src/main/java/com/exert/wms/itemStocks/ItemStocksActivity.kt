@@ -92,6 +92,14 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
             if (it) {
                 val bundle = Bundle()
                 bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
+                bundle.putString(
+                    Constants.ITEM_PART_CODE,
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString()
+                )
+                bundle.putString(
+                    Constants.ITEM_SERIAL_NO,
+                    binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString()
+                )
                 startActivity<WarehouseListActivity>(bundle)
             } else {
                 showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
@@ -104,7 +112,7 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
 
         mViewModel.errorGetItemsStatusMessage.observe(this, Observer { status ->
             showBriefToastMessage(status, coordinateLayout)
-            binding.statusButton.isEnabled=false
+            binding.statusButton.isEnabled = false
         })
 
         mViewModel.errorItemPartCode.observe(this, Observer {
@@ -136,10 +144,19 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
             }
         })
 
-        mViewModel.itemDto.observe(this, Observer {dto ->
-            binding.itemDto=dto
-           binding.executePendingBindings()
+        mViewModel.itemDto.observe(this, Observer { dto ->
+            binding.itemDto = dto
+            binding.executePendingBindings()
             binding.itemNameManufactureLayout.itemStockEditText.isEnabled = dto.IsSerialItem == 1
+        })
+
+        mViewModel.errorFieldMessage.observe(this, Observer { msg ->
+            if (msg.isNotEmpty()) {
+                showBriefToastMessage(
+                    msg,
+                    coordinateLayout
+                )
+            }
         })
 
     }

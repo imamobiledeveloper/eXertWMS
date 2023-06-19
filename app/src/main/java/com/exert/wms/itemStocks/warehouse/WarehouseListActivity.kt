@@ -27,6 +27,8 @@ class WarehouseListActivity :
         getViewModel<ItemStocksViewModel>()
     }
     var itemDto: ItemsDto? = null
+    var itemPartCode: String? = ""
+    var itemSerialNo: String? = ""
 
     override fun getBindingVariable(): Int = BR.viewModel
 
@@ -44,6 +46,9 @@ class WarehouseListActivity :
 
     private fun observeViewModel() {
         itemDto = intent.getSerializable(Constants.ITEM_DTO, ItemsDto::class.java)
+        itemPartCode = intent.getStringExtra(Constants.ITEM_PART_CODE)
+        itemSerialNo = intent.getStringExtra(Constants.ITEM_SERIAL_NO)
+
         itemDto?.let { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
@@ -52,7 +57,7 @@ class WarehouseListActivity :
                 binding.warehouseListRecyclerView.layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                 binding.warehouseListRecyclerView.adapter =
-                    WarehouseListAdapter(dto.wStockDetails,dto.IsSerialItem) {
+                    WarehouseListAdapter(dto.wStockDetails, dto.IsSerialItem) {
                         navigateToWarehouse(it)
                     }
             }
@@ -82,7 +87,9 @@ class WarehouseListActivity :
     private fun navigateToWarehouse(warehouse: WarehouseStockDetails) {
         val bundle = Bundle()
         bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
-        bundle.putSerializable(Constants.ITEM_WAREHOUSE, warehouse)
+        bundle.putSerializable(Constants.WAREHOUSE_STOCK_DETAILS, warehouse)
+        bundle.putString(Constants.ITEM_PART_CODE,itemPartCode)
+        bundle.putString(Constants.ITEM_SERIAL_NO,itemSerialNo)
         startActivity<SerialNumbersListActivity>(bundle)
     }
 }

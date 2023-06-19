@@ -31,12 +31,6 @@ class SerialNumbersListActivity :
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 
-    val checkBoxState =
-        if (intent !== null && intent.hasExtra(SHOW_CHECKBOX)) intent.getBooleanExtra(
-            SHOW_CHECKBOX,
-            false
-        ) else false
-
     var itemDto: ItemsDto? = null
 
     var warehouseStockDetails: WarehouseStockDetails? = null
@@ -52,9 +46,14 @@ class SerialNumbersListActivity :
 
     private fun observeViewModel() {
         itemDto = intent.getSerializable(Constants.ITEM_DTO, ItemsDto::class.java)
+        val itemPartCode = intent.getStringExtra(Constants.ITEM_PART_CODE)
+        val itemSerialNo = intent.getStringExtra(Constants.ITEM_SERIAL_NO)
+        mViewModel.setItemPartCodeAndSerialNo(itemPartCode,itemSerialNo)
+
         warehouseStockDetails =
-            intent.getSerializable(Constants.ITEM_WAREHOUSE, WarehouseStockDetails::class.java)
+            intent.getSerializable(Constants.WAREHOUSE_STOCK_DETAILS, WarehouseStockDetails::class.java)
         mViewModel.getSerialNumbersList(itemDto, warehouseStockDetails)
+
         itemDto?.let { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
@@ -62,8 +61,6 @@ class SerialNumbersListActivity :
         warehouseStockDetails?.let {
             binding.itemNameManufactureLayout.itemManufactureEditText.text = it.WarehouseDescription
         }
-
-        mViewModel.setCheckBoxState(checkBoxState)
         mViewModel.getItemsSerialNosStatus.observe(this, Observer {
             if (!it) {
                 showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
@@ -75,10 +72,12 @@ class SerialNumbersListActivity :
         })
 
         mViewModel.warehouseSerialIsList.observe(this, Observer { list ->
-            binding.serialNumbersListRecyclerView.layoutManager =
-                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            binding.serialNumbersListRecyclerView.adapter =
-                SerialNumbersListAdapter(list, checkBoxState)
+            if(list!=null) {
+                binding.serialNumbersListRecyclerView.layoutManager =
+                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                binding.serialNumbersListRecyclerView.adapter =
+                    SerialNumbersListAdapter(list, false)//checkBoxState)
+            }
         })
 
     }
@@ -88,7 +87,4 @@ class SerialNumbersListActivity :
         binding.executePendingBindings()
     }
 
-    companion object {
-        private const val SHOW_CHECKBOX: String = "SHOW_CHECKBOX"
-    }
 }

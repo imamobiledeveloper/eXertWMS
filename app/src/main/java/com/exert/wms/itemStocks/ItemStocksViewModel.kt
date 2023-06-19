@@ -27,8 +27,8 @@ class ItemStocksViewModel(
     private val _itemDto = MutableLiveData<ItemsDto>()
     val itemDto: LiveData<ItemsDto> = _itemDto
 
-    private val _warehouseSerialIsList = MutableLiveData<List<WarehouseSerialItemDetails>>()
-    val warehouseSerialIsList: LiveData<List<WarehouseSerialItemDetails>> = _warehouseSerialIsList
+    private val _warehouseSerialIsList = MutableLiveData<List<WarehouseSerialItemDetails>?>()
+    val warehouseSerialIsList: LiveData<List<WarehouseSerialItemDetails>?> = _warehouseSerialIsList
 
     private val _getItemsStatus = MutableLiveData<Boolean>()
     val getItemsStatus: LiveData<Boolean> = _getItemsStatus
@@ -56,6 +56,9 @@ class ItemStocksViewModel(
 
     private val _errorItemSerialNo = MutableLiveData<Boolean>()
     val errorItemSerialNo: LiveData<Boolean> = _errorItemSerialNo
+
+    private val _errorFieldMessage = MutableLiveData<String>()
+    val errorFieldMessage: LiveData<String> = _errorFieldMessage
 
     var itemPartCode: String = ""
     var itemSerialNo: String = ""
@@ -156,70 +159,29 @@ class ItemStocksViewModel(
 
     fun getSerialNumbersList(itemsDto: ItemsDto?, warehouseStockDetails: WarehouseStockDetails?) {
         if (itemsDto != null && warehouseStockDetails != null) {
-            if (itemsDto.ItemPartCode != null && warehouseStockDetails.WarehouseID > 0) {
-                getWarehouseSerialNosList(itemsDto.ItemPartCode, warehouseStockDetails.WarehouseID)
+            if(warehouseStockDetails.wSerialItemDetails!=null && warehouseStockDetails.wSerialItemDetails.isNotEmpty()){
+                _warehouseSerialIsList.postValue(warehouseStockDetails.wSerialItemDetails)
+            }else if ((itemsDto.ItemPartCode != null || itemsDto.ItemSerialNumber != null) && warehouseStockDetails.WarehouseID > 0) {
+                getWarehouseSerialNosList(itemsDto.ItemPartCode!!, itemsDto.ItemSerialNumber!!,warehouseStockDetails.WarehouseID)
+            }else{
+                _errorFieldMessage.postValue(stringProvider.getString(R.string.invalid_details_message))
             }
 
         }
     }
 
-    private fun getWarehouseSerialNosList(itemPartCode: String, warehouseId: Long) {
+    private fun getWarehouseSerialNosList(itemPartCode: String, itemSerialNo: String,warehouseId: Long) {
         showProgressIndicator()
         val request = WarehouseSerialItemsRequestDto(
-            ItemPartCode = "18x085NiCd-Hop",
-            WarehouseID = warehouseId
+            ItemPartCode = itemPartCode,
+            WarehouseID = warehouseId,
+            ItemSerialNumber = itemSerialNo
         )
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
             itemStocksRepo.getWarehouseSerialNosList(request)
                 .collect { dto ->
                     Log.v("WMS EXERT", "getWarehouseSerialNosList response $dto")
                     hideProgressIndicator()
-
-//                    val warehouseList= listOf(WarehouseStockDetails( WarehouseID =  1,
-//                        WarehouseCode= "001",
-//                        WarehouseDescription= "Jeddah Office",
-//                        WarehouseAlias= "مستودع جدة",
-//                        LocationID= 1,
-//                        LocationCode= "001",
-//                        LocationName= "Default Location",
-//                        LocationAlias= null,
-//                        BranchID= 1,
-//                        BranchCode= "JED001",
-//                        Branch= "Jeddah Office",
-//                        BranchAlias="مكتب جدة الرئيسي",
-//                        FinalQuantity= 1000.0000,
-//                        wSerialItemDetails= listOf(WarehouseSerialItemDetails( WarehouseID= 1,
-//                            SerialNumber= "1001",
-//                            MFGDate="12 May 2023",
-//                            WarentyDays= "100"),WarehouseSerialItemDetails( WarehouseID= 1,
-//                            SerialNumber= "1002",
-//                            MFGDate="12 May 2023",
-//                            WarentyDays= "100"),
-//                            WarehouseSerialItemDetails( WarehouseID= 1,
-//                                SerialNumber= "1003",
-//                                MFGDate="12 May 2023",
-//                                WarentyDays= "100"),
-//                            WarehouseSerialItemDetails( WarehouseID= 1,
-//                                SerialNumber= "1004",
-//                                MFGDate="12 May 2023",
-//                                WarentyDays= "100"),
-//                            WarehouseSerialItemDetails( WarehouseID= 1,
-//                                SerialNumber= "1005",
-//                                MFGDate="12 May 2023",
-//                                WarentyDays= "100")
-//                        )
-//                    ))
-////                    val warehouseList = warehouseListValue[0]
-//                    if (warehouseList != null && warehouseList.isNotEmpty() && warehouseList[0].wSerialItemDetails != null) {
-//                            warehouseList[0].wSerialItemDetails?.let {
-//                                _warehouseSerialIsList.postValue(it)
-//                            } ?: _errorGetItemsStatusMessage.postValue(
-//                                stringProvider.getString(
-//                                    R.string.error_warehouse_serials_nos_message
-//                                )
-//                            )
-//
-//                        }
 
                     if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
                         val warehouseList = dto.Items[0].wStockDetails
@@ -249,5 +211,14 @@ class ItemStocksViewModel(
                 }
         }
 
+    }
+
+    fun setItemPartCodeAndSerialNo(partCode: String?, serialNo: String?) {
+        if (partCode != null) {
+            itemPartCode=partCode
+        }
+        if (serialNo != null) {
+            itemSerialNo=serialNo
+        }
     }
 }
