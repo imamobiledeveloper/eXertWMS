@@ -77,8 +77,10 @@
                     android:dropDownWidth="match_parent"
                     android:overlapAnchor="false"
                     android:popupBackground="@drawable/edittext_rectangle_bg"
-                    android:popupElevation="@dimen/margin_15dp"
-                    android:theme="@style/Spinner" />
+                    android:popupElevation="15dp"
+                    android:theme="@style/Spinner"
+                    app:layout_constraintBottom_toBottomOf="@+id/warehouseSpinnerTV"
+                    app:layout_constraintTop_toTopOf="@+id/warehouseSpinnerTV"/>
 
                 <TextView
                     android:id="@+id/warehouseSpinnerTV"
@@ -93,6 +95,9 @@
                     android:textAlignment="gravity"
                     android:textColor="@color/black"
                     android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:drawableEndCompat="@drawable/ic_arrow_down" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

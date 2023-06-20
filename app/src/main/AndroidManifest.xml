@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name="com.exert.wms.stockAdjustment.item.StockQuantityAdjustmentActivity"
+            android:exported="false" />
+        <activity
             android:name="com.exert.wms.stockAdjustment.item.StockItemAdjustmentActivity"
             android:exported="false" />
         <activity
@@ -44,11 +47,11 @@
         <activity
             android:name=".itemStocks.ItemStocksActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan|adjustResize"/>
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".home.HomeActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan|adjustResize"/>
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name=".login.LoginActivity"
             android:configChanges="screenSize|smallestScreenSize|fontScale|density"

@@ -1,7 +1,6 @@
 package com.exert.wms.stockAdjustment.item
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.widget.RadioButton
 import androidx.activity.result.ActivityResult
@@ -11,7 +10,6 @@ import androidx.lifecycle.Observer
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityStockItemAdjustmentBinding
-import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListActivity
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
 import com.exert.wms.stockAdjustment.api.WarehouseDto
@@ -62,28 +60,19 @@ class StockItemAdjustmentActivity :
             )
         }
         binding.adjustmentQuantityEditTextLayout.setEndIconOnClickListener {
-//            mViewModel.checkItemDetailsEntered(
-////                binding.warehouseSpinnerTV.text.toString(),
-//                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString(),
-//                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString(),
-//            )
-//            val intent = Intent(this, SerialNumbersListActivity::class.java)
-//            intent.putExtra(SHOW_CHECKBOX, true)
-//            startForResult.launch(intent)
-
-            val bundle = Bundle()
-            bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
-            bundle.putSerializable(Constants.ITEM_WAREHOUSE, warehouseDto)
-            startActivity<SerialNumbersListActivity>(bundle)
+            mViewModel.checkItemDetailsEntered(
+                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString(),
+                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString(),
+            )
         }
     }
 
     private fun observeViewModel() {
-        warehouseDto = intent.getSerializableExtra(Constants.WAREHOUSE) as WarehouseDto?
+        warehouseDto = intent.getSerializable(Constants.WAREHOUSE, WarehouseDto::class.java)
         mViewModel.setSelectedWarehouseDto(warehouseDto)
+
         binding.saveButton.setOnClickListener {
             mViewModel.saveItemStock(
-//                binding.warehouseSpinnerTV.text.toString(),
                 binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString(),
                 binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString(),
             )
@@ -145,19 +134,20 @@ class StockItemAdjustmentActivity :
 
         mViewModel.navigateToSerialNo.observe(this, Observer {
             if (it) {
-//                val intent = Intent(this, SerialNumbersListActivity::class.java)
-//                intent.putExtra(SHOW_CHECKBOX, true)
-//                startForResult.launch(intent)
                 val bundle = Bundle()
                 bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
-                bundle.putSerializable(Constants.ITEM_WAREHOUSE, warehouseDto)
-                startActivity<SerialNumbersListActivity>(bundle)
+                bundle.putSerializable(
+                    Constants.WAREHOUSE_STOCK_DETAILS,
+                    mViewModel.getWarehouseStockDetails()
+                )
+                bundle.putString(Constants.ADJUSTMENT_TYPE, mViewModel.getAdjustmentType())
+                startActivity<StockQuantityAdjustmentActivity>(bundle)
             } else {
                 showBriefToastMessage(getString(R.string.invalid_details_message), coordinateLayout)
             }
         })
         mViewModel.enableSaveButton.observe(this, Observer {
-            binding.saveButton.isEnabled=it
+            binding.saveButton.isEnabled = it
         })
 
         mViewModel.errorItemPartCode.observe(this, Observer {
@@ -191,6 +181,23 @@ class StockItemAdjustmentActivity :
         mViewModel.itemDto.observe(this, Observer { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
+        })
+        mViewModel.isItemSerialized.observe(this, Observer { isItSerialized ->
+            binding.adjustmentQuantityEditText.isEnabled = !isItSerialized
+        })
+        mViewModel.errorAdjustmentType.observe(this, Observer {
+            if (it) {
+                enableErrorMessage(
+                    binding.adjustmentQuantityEditTextLayout,
+                    binding.adjustmentQuantityEditText,
+                    getString(R.string.adjustment_type_empty_message), false
+                )
+            } else {
+                disableErrorMessage(
+                    binding.adjustmentQuantityEditTextLayout,
+                    binding.adjustmentQuantityEditText,
+                )
+            }
         })
 
     }

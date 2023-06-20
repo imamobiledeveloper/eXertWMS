@@ -202,13 +202,16 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
     fun enableErrorMessage(
         textInputLayout: TextInputLayout,
         editTextLayout: TextInputEditText,
-        message: String
+        message: String,
+        requestFocus:Boolean=true
     ) {
         if (!textInputLayout.isErrorEnabled) {
             textInputLayout.isErrorEnabled = true
             editTextLayout.isSelected = true
             textInputLayout.error = message
-            editTextLayout.requestFocus()
+            if(requestFocus) {
+                editTextLayout.requestFocus()
+            }
             editTextLayout.text?.let { editTextLayout.setSelection(it.length) }
         }
     }

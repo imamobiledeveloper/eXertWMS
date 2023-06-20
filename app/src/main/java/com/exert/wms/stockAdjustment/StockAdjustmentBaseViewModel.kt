@@ -5,9 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
-import com.exert.wms.itemStocks.api.ItemStocksRepository
-import com.exert.wms.itemStocks.api.ItemStocksRequestDto
-import com.exert.wms.itemStocks.api.ItemsDto
+import com.exert.wms.itemStocks.api.*
 import com.exert.wms.mvvmbase.BaseViewModel
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRepository
 import com.exert.wms.stockAdjustment.api.StockItemAdjustmentDto
@@ -57,6 +55,9 @@ class StockAdjustmentBaseViewModel(
     private val _errorItemPartCode = MutableLiveData<Boolean>()
     val errorItemPartCode: LiveData<Boolean> = _errorItemPartCode
 
+    private val _errorAdjustmentType = MutableLiveData<Boolean>()
+    val errorAdjustmentType: LiveData<Boolean> = _errorAdjustmentType
+
     private val _errorItemSerialNo = MutableLiveData<Boolean>()
     val errorItemSerialNo: LiveData<Boolean> = _errorItemSerialNo
 
@@ -66,14 +67,26 @@ class StockAdjustmentBaseViewModel(
     private val _warehouseList = MutableLiveData<List<WarehouseDto>>()
     val warehouseList: LiveData<List<WarehouseDto>> = _warehouseList
 
+    private val _warehouseStringList = MutableLiveData<List<String>>()
+    val warehouseStringList: LiveData<List<String>> = _warehouseStringList
+
     private val _itemDto = MutableLiveData<ItemsDto>()
     val itemDto: LiveData<ItemsDto> = _itemDto
+
+    private val _warehouseSerialNosList = MutableLiveData<List<WarehouseSerialItemDetails>?>()
+    val warehouseSerialNosList: LiveData<List<WarehouseSerialItemDetails>?> =
+        _warehouseSerialNosList
+
+    private val _isItemSerialized = MutableLiveData<Boolean>()
+    val isItemSerialized: LiveData<Boolean> = _isItemSerialized
 
     var itemPartCode: String = ""
     var itemSerialNo: String = ""
     var selectedWarehouse: String = ""
+    var warehouseDto: WarehouseDto? = null
     var stockItemsList = mutableListOf<StockItemAdjustmentDto>()
 
+    var showCheckBoxes: Boolean = false
     var adjustmentTypeValue: String = ""
     var itemsDto: ItemsDto? = null
     var warehousesList: List<WarehouseDto>? = null
@@ -128,41 +141,48 @@ class StockAdjustmentBaseViewModel(
             _errorFieldMessage.postValue(stringProvider.getString(R.string.warehouse_empty_message))
             false
         } else if (adjustmentType.isEmpty()) {
-            _errorFieldMessage.postValue(stringProvider.getString(R.string.adjustment_type_empty_message))
+            _errorAdjustmentType.postValue(true)
             false
-        } else if (itemPartCode.isNotEmpty()) {
+        } else if (itemPartCode.isEmpty() && itemSerialNo.isEmpty()) {
             _errorItemPartCode.postValue(true)
             false
-        } else if (itemSerialNo.isNotEmpty()) {
-            _errorItemSerialNo.postValue(true)
-            true
         } else {
             _errorItemSelectionMessage.postValue(true)
-            false
+            true
         }
     }
 
     fun setAdjustmentType(adjustment: String) {
         adjustmentTypeValue = adjustment
+        _errorAdjustmentType.postValue(false)
     }
+
+    fun getAdjustmentType() = adjustmentTypeValue
 
     fun checkItemDetailsEntered(itemPartCode: String, itemSerialNo: String) {
         if (validateUserDetails(itemPartCode, itemSerialNo, adjustmentTypeValue)) {
             _navigateToSerialNo.postValue(true)
-        } else {
-            _navigateToSerialNo.postValue(false)
         }
     }
 
     fun searchItemWithPartCode(partCode: String) {
         itemPartCode = partCode
-        if (itemPartCode.isNotEmpty()) {
-            getItemWarehouseList(itemPartCode, "")
+        if (itemPartCode.isNotEmpty() && warehouseDto != null) {
+            getWarehouseSerialNosList(itemPartCode, "", warehouseDto!!.WarehouseID)
             _errorItemPartCode.postValue(false)
         } else {
             _errorItemPartCode.postValue(true)
         }
-        checkAndEnableStatusButton()
+    }
+
+    fun searchItemWithSerialNumber(serialNo: String) {
+        itemSerialNo = serialNo
+        if (itemSerialNo.isNotEmpty() && warehouseDto != null) {
+            getWarehouseSerialNosList("", itemSerialNo, warehouseDto!!.WarehouseID)
+            _errorItemSerialNo.postValue(false)
+        } else {
+            _errorItemSerialNo.postValue(true)
+        }
     }
 
     private fun validateItemPartCodeAndSerialNoDetails(
@@ -182,21 +202,8 @@ class StockAdjustmentBaseViewModel(
         }
     }
 
-    fun searchItemWithSerialNumber(serialNo: String) {
-        itemSerialNo = serialNo
-        if (itemSerialNo.isNotEmpty()) {
-            getItemWarehouseList("", itemSerialNo)
-            _errorItemSerialNo.postValue(false)
-        } else {
-            _errorItemSerialNo.postValue(true)
-        }
-        checkAndEnableStatusButton()
-
-    }
-
-    fun checkWarehouse(warehouseName: String) {
-        if (warehouseName.isNotEmpty() && warehouseName != stringProvider.getString(R.string.select)) {
-            setSelectedWarehouseName(warehouseName)
+    fun checkWarehouse() {
+        if (selectedWarehouse.isNotEmpty() && selectedWarehouse != stringProvider.getString(R.string.select)) {
             _errorWarehouse.postValue(true)
         } else {
             _errorWarehouse.postValue(false)
@@ -213,6 +220,8 @@ class StockAdjustmentBaseViewModel(
                     if (dto.success && dto.Warehouses.isNotEmpty()) {
                         warehousesList = dto.Warehouses
                         _warehouseList.postValue(dto.Warehouses)
+                        val stringList: List<String> = dto.Warehouses.map { it.Warehouse }
+                        _warehouseStringList.postValue(stringList)
                     } else {
                         _errorFieldMessage.postValue(stringProvider.getString(R.string.warehouse_list_empty_message))
                     }
@@ -226,16 +235,67 @@ class StockAdjustmentBaseViewModel(
         }
     }
 
-    fun setSelectedWarehouseName(warehouseName: String) {
+    private fun setSelectedWarehouseName(warehouseName: String) {
         selectedWarehouse = warehouseName
     }
 
     fun setSelectedWarehouseDto(warehouse: WarehouseDto?) {
         warehouse?.let {
+            warehouseDto = it
             selectedWarehouse = it.Warehouse
         }
     }
 
+    private fun getWarehouseSerialNosList(
+        itemPartCode: String,
+        itemSerialNo: String,
+        warehouseId: Long
+    ) {
+        showProgressIndicator()
+        val request = WarehouseSerialItemsRequestDto(
+            ItemPartCode = itemPartCode,
+            WarehouseID = warehouseId,
+            ItemSerialNumber = itemSerialNo
+        )
+        coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
+            itemStocksRepo.getWarehouseSerialNosList(request)
+                .collect { dto ->
+                    Log.v("WMS EXERT", "Stock Adjustment: getWarehouseSerialNosList response $dto")
+                    hideProgressIndicator()
+
+                    if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
+                        itemsDto = dto.Items[0]
+                        _itemDto.postValue(dto.Items[0])
+                        _isItemSerialized.postValue(dto.Items[0].IsSerialItem == 1)
+
+                        val warehouseList = dto.Items[0].wStockDetails
+                        if (warehouseList != null && warehouseList.isNotEmpty() && warehouseList[0].wSerialItemDetails != null) {
+                            warehouseList[0].wSerialItemDetails?.let {
+                                _warehouseSerialNosList.postValue(it)
+                            } ?: _errorGetItemsStatusMessage.postValue(
+                                stringProvider.getString(
+                                    R.string.error_warehouse_serials_nos_message
+                                )
+                            )
+
+                        } else {
+                            _errorGetItemsStatusMessage.postValue(
+                                stringProvider.getString(
+                                    R.string.error_warehouse_serials_nos_message
+                                )
+                            )
+                        }
+                    } else {
+                        _errorGetItemsStatusMessage.postValue(
+                            stringProvider.getString(
+                                R.string.error_failed_warehouse_serials_nos_message
+                            )
+                        )
+                    }
+                }
+        }
+
+    }
 
     private fun getItemWarehouseList(itemPartCode: String, itemSerialNo: String) {
 //        itemPartCode="18x085NiCd-Hop"
@@ -263,4 +323,60 @@ class StockAdjustmentBaseViewModel(
     }
 
     fun getItemDto(): ItemsDto? = itemsDto
+
+    fun selectedWarehouse(warehouseName: String) {
+        if (warehouseName != stringProvider.getString(R.string.select)) {
+            selectedWarehouse = warehouseName
+        }
+    }
+
+    fun getSelectedWarehouseIndex(): Int {
+        return _warehouseStringList.value?.indexOf(selectedWarehouse) ?: 0
+    }
+
+    fun getWarehouseStockDetails(): WarehouseStockDetails? {
+        return itemsDto?.wStockDetails?.find { it.WarehouseID == getWarehouseObject()?.WarehouseID }
+    }
+
+    private fun setCheckBoxState(checkBoxState: Boolean) {
+        showCheckBoxes = checkBoxState
+    }
+
+    fun getCheckBoxStateValue() = showCheckBoxes
+
+    fun setWarehouseAndItemDetails(
+        itemsDto: ItemsDto?,
+        warehouseStockDetails: WarehouseStockDetails?,
+        adjustmentType: String
+    ) {
+        if (adjustmentType.isNotEmpty()) {
+            setAdjustmentType(adjustmentType)
+            if (adjustmentType == stringProvider.getString(R.string.positive)) {// positive adjustment
+                setCheckBoxState(false)
+            } else {//negative type-get serial numbers list
+                setCheckBoxState(true)
+                getSerialNumbersList(itemsDto, warehouseStockDetails)
+            }
+        }
+    }
+
+    private fun getSerialNumbersList(
+        itemsDto: ItemsDto?,
+        warehouseStockDetails: WarehouseStockDetails?
+    ) {
+        if (itemsDto != null && warehouseStockDetails != null) {
+            if (warehouseStockDetails.wSerialItemDetails != null && warehouseStockDetails.wSerialItemDetails.isNotEmpty()) {
+                _warehouseSerialNosList.postValue(warehouseStockDetails.wSerialItemDetails)
+            } else if ((itemsDto.ItemPartCode != null || itemsDto.ItemSerialNumber != null) && warehouseStockDetails.WarehouseID > 0) {
+                getWarehouseSerialNosList(
+                    itemsDto.ItemPartCode!!,
+                    itemsDto.ItemSerialNumber!!,
+                    warehouseStockDetails.WarehouseID
+                )
+            } else {
+                _errorFieldMessage.postValue(stringProvider.getString(R.string.invalid_details_message))
+            }
+
+        }
+    }
 }
