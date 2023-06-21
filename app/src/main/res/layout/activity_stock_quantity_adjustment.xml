@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
             name="viewModel"
             type="com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel" />
@@ -20,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/itemStocksScrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -40,27 +42,56 @@
                     layout="@layout/item_details_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:labelOne="@{@string/item_name}"
-                    app:labelTwo="@{@string/manufacturer}"
-                    app:labelThree="@{@string/part_code}"
-                    app:labelFour="@{@string/warehouse}"
                     app:itemDto="@{itemDto}"
+                    app:labelFour="@{@string/warehouse}"
+                    app:labelOne="@{@string/item_name}"
+                    app:labelThree="@{@string/part_code}"
+                    app:labelTwo="@{@string/manufacturer}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/warehouseListLabel"
-                    style="@style/TextViewLabel"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/itemListLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/serial_nos_list"
-                    android:textColor="@color/blue"
-                    android:textSize="22sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/itemNameManufactureLayout" />
+                    app:layout_constraintTop_toBottomOf="@+id/itemNameManufactureLayout">
+
+                    <TextView
+                        android:id="@+id/addButton"
+                        style="@style/TextViewWithDrawableStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:drawablePadding="@dimen/margin_10dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/add"
+                        android:visibility="@{viewModel.showAddItemButton == true ? View.VISIBLE : View.INVISIBLE}"
+                        android:textColor="@color/blue"
+                        android:textSize="22sp"
+                        app:drawableStartCompat="@drawable/ic_add_item"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/warehouseListLabel"
+                        style="@style/TextViewLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/serial_nos_list"
+                        android:textColor="@color/blue"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/addButton"
+                        app:layout_constraintEnd_toStartOf="@+id/addButton"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/serialNumbersListRecyclerView"
@@ -69,13 +100,13 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/warehouseListLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/itemListLayout"
                     tools:itemCount="3"
                     tools:listitem="@layout/item_serial_numbers_list_item_layout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <Button
             android:id="@+id/saveButton"

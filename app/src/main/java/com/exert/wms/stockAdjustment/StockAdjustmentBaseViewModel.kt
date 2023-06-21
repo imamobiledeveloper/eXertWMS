@@ -81,8 +81,10 @@ class StockAdjustmentBaseViewModel(
     val isItemSerialized: LiveData<Boolean> = _isItemSerialized
 
     private val _checkedSerialItemsList = MutableLiveData<ArrayList<WarehouseSerialItemDetails>>()
-    val checkedSerialItemsList: LiveData<ArrayList<WarehouseSerialItemDetails>> =
-        _checkedSerialItemsList
+    val checkedSerialItemsList: LiveData<ArrayList<WarehouseSerialItemDetails>> = _checkedSerialItemsList
+
+    private val _showAddItemButton = MutableLiveData<Boolean>()
+    val showAddItemButton: LiveData<Boolean> = _showAddItemButton
 
     var itemPartCode: String = ""
     var itemSerialNo: String = ""
@@ -360,8 +362,10 @@ class StockAdjustmentBaseViewModel(
             setAdjustmentType(adjustmentType)
             if (adjustmentType == stringProvider.getString(R.string.positive)) {// positive adjustment
                 setCheckBoxState(false)
+                _showAddItemButton.postValue(true)
             } else {//negative type-get serial numbers list
                 setCheckBoxState(true)
+                _showAddItemButton.postValue(false)
                 getSerialNumbersList(itemsDto, warehouseStockDetails)
             }
         }

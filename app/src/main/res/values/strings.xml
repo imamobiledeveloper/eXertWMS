@@ -29,7 +29,7 @@
     <string name="item_name_arabic">Item Name (Arabic)</string>
     <string name="status">Status</string>
     <string name="save">Save</string>
-    <string name="add_item">Add item</string>
+    <string name="add_item">Add Item</string>
     <string name="stock">Stock</string>
     <string name="manufacturer">Manufacturer</string>
     <string name="item_name">Item Name</string>
@@ -48,6 +48,7 @@
     <string name="item_adjustment">Item Adjustment</string>
     <string name="quantity_adjustment">Quantity Adjustment</string>
     <string name="select_warehouse">Select Warehouse</string>
+    <string name="select_warranty_period">Select Warranty Period</string>
     <string name="update">Update</string>
     <string name="adjustment_type">Adjustment type</string>
     <string name="positive">+ve</string>
@@ -66,6 +67,9 @@
     <string name="empty_items_list">Items are empty</string>
     <string name="item_details">Item Details</string>
     <string name="check_serial_items_empty_message">Please select Items to save</string>
+    <string name="add">Add</string>
+    <string name="dd_mm_yyyy">DD/MM/YYYY</string>
+    <string name="add_serial_no">Add Serial No</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>
