@@ -10,6 +10,7 @@ object Constants {
     const val ITEM_PART_CODE: String = "ITEM_PART_CODE"
     const val ITEM_SERIAL_NO: String = "ITEM_SERIAL_NO"
     const val WAREHOUSE_STOCK_DETAILS: String = "WAREHOUSE_STOCK_DETAILS"
+    const val CHECKED_SERIAL_ITEMS: String = "CHECKED_SERIAL_ITEMS"
     const val READ_TIMEOUT: Long = 60
     const val CONNECTION_TIMEOUT: Long = 60
 }

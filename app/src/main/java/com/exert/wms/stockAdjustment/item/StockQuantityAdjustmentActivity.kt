@@ -1,5 +1,7 @@
 package com.exert.wms.stockAdjustment.item
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
@@ -8,6 +10,7 @@ import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityStockQuantityAdjustmentBinding
 import com.exert.wms.itemStocks.api.ItemsDto
+import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListAdapter
 import com.exert.wms.mvvmbase.BaseActivity
@@ -35,7 +38,8 @@ class StockQuantityAdjustmentActivity :
 
     var itemDto: ItemsDto? = null
     var adjustmentType: String = ""
-    var warehouseStockDetails: WarehouseStockDetails? = null
+    private var warehouseStockDetails: WarehouseStockDetails? = null
+    private val checkedItems: ArrayList<WarehouseSerialItemDetails> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +68,10 @@ class StockQuantityAdjustmentActivity :
             binding.itemNameManufactureLayout.itemManufactureEditText.text = it.WarehouseDescription
         }
 
+        binding.saveButton.setOnClickListener {
+            mViewModel.getSelectedItems()
+        }
+
         mViewModel.errorGetItemsStatusMessage.observe(this, Observer { status ->
             showBriefToastMessage(status, coordinateLayout)
         })
@@ -73,8 +81,33 @@ class StockQuantityAdjustmentActivity :
                 binding.serialNumbersListRecyclerView.layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                 binding.serialNumbersListRecyclerView.adapter =
-                    SerialNumbersListAdapter(list, mViewModel.getCheckBoxStateValue())
+                    SerialNumbersListAdapter(
+                        list,
+                        mViewModel.getCheckBoxStateValue(),
+                        object : OnItemCheckListener {
+                            override fun onItemCheck(item: WarehouseSerialItemDetails) {
+                                checkedItems.add(item)
+                                mViewModel.setCheckedItems(checkedItems)
+                            }
+
+                            override fun onItemUncheck(item: WarehouseSerialItemDetails) {
+                                checkedItems.remove(item)
+                                mViewModel.setCheckedItems(checkedItems)
+                            }
+
+                        })
             }
+        })
+
+        mViewModel.enableSaveButton.observe(this, Observer {
+            binding.saveButton.isEnabled = it
+        })
+
+        mViewModel.checkedSerialItemsList.observe(this, Observer { list ->
+            val data = Intent()
+            data.putParcelableArrayListExtra(Constants.CHECKED_SERIAL_ITEMS, list)
+            setResult(Activity.RESULT_OK, data);
+            finish()
         })
 
     }

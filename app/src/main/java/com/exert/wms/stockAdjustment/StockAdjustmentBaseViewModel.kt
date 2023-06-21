@@ -80,6 +80,10 @@ class StockAdjustmentBaseViewModel(
     private val _isItemSerialized = MutableLiveData<Boolean>()
     val isItemSerialized: LiveData<Boolean> = _isItemSerialized
 
+    private val _checkedSerialItemsList = MutableLiveData<ArrayList<WarehouseSerialItemDetails>>()
+    val checkedSerialItemsList: LiveData<ArrayList<WarehouseSerialItemDetails>> =
+        _checkedSerialItemsList
+
     var itemPartCode: String = ""
     var itemSerialNo: String = ""
     var selectedWarehouse: String = ""
@@ -90,6 +94,7 @@ class StockAdjustmentBaseViewModel(
     var adjustmentTypeValue: String = ""
     var itemsDto: ItemsDto? = null
     var warehousesList: List<WarehouseDto>? = null
+    private var userCheckedItems: ArrayList<WarehouseSerialItemDetails> = ArrayList()
 
     init {
         getWarehouseList()
@@ -203,7 +208,7 @@ class StockAdjustmentBaseViewModel(
     }
 
     fun checkWarehouse() {
-        if (selectedWarehouse.isNotEmpty() && selectedWarehouse != stringProvider.getString(R.string.select)) {
+        if (selectedWarehouse.isNotEmpty() && selectedWarehouse != stringProvider.getString(R.string.select_warehouse)) {
             _errorWarehouse.postValue(true)
         } else {
             _errorWarehouse.postValue(false)
@@ -220,7 +225,9 @@ class StockAdjustmentBaseViewModel(
                     if (dto.success && dto.Warehouses.isNotEmpty()) {
                         warehousesList = dto.Warehouses
                         _warehouseList.postValue(dto.Warehouses)
-                        val stringList: List<String> = dto.Warehouses.map { it.Warehouse }
+                        val stringList = dto.Warehouses.map { it.Warehouse }.toMutableList()
+                        stringList.add(0, stringProvider.getString(R.string.select_warehouse))
+
                         _warehouseStringList.postValue(stringList)
                     } else {
                         _errorFieldMessage.postValue(stringProvider.getString(R.string.warehouse_list_empty_message))
@@ -325,7 +332,7 @@ class StockAdjustmentBaseViewModel(
     fun getItemDto(): ItemsDto? = itemsDto
 
     fun selectedWarehouse(warehouseName: String) {
-        if (warehouseName != stringProvider.getString(R.string.select)) {
+        if (warehouseName != stringProvider.getString(R.string.select_warehouse)) {
             selectedWarehouse = warehouseName
         }
     }
@@ -377,6 +384,23 @@ class StockAdjustmentBaseViewModel(
                 _errorFieldMessage.postValue(stringProvider.getString(R.string.invalid_details_message))
             }
 
+        }
+    }
+
+    fun getSelectedItems() {
+        if (userCheckedItems.isNotEmpty()) {
+            _checkedSerialItemsList.postValue(userCheckedItems)
+        } else {
+            _errorFieldMessage.postValue(stringProvider.getString(R.string.check_serial_items_empty_message))
+        }
+    }
+
+    fun setCheckedItems(checkedItems: ArrayList<WarehouseSerialItemDetails>) {
+        userCheckedItems = checkedItems
+        if (userCheckedItems.isNotEmpty()) {
+            _enableSaveButton.postValue(true)
+        } else {
+            _enableSaveButton.postValue(false)
         }
     }
 }

@@ -47,7 +47,7 @@
     <string name="stock_adjustment">Stock Adjustment</string>
     <string name="item_adjustment">Item Adjustment</string>
     <string name="quantity_adjustment">Quantity Adjustment</string>
-    <string name="select">select</string>
+    <string name="select_warehouse">Select Warehouse</string>
     <string name="update">Update</string>
     <string name="adjustment_type">Adjustment type</string>
     <string name="positive">+ve</string>
@@ -64,6 +64,8 @@
     <string name="session_expired_message">Sorry, Your session has been expired. Please login again!!</string>
     <string name="ok">OK</string>
     <string name="empty_items_list">Items are empty</string>
+    <string name="item_details">Item Details</string>
+    <string name="check_serial_items_empty_message">Please select Items to save</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

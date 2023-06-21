@@ -82,7 +82,7 @@ data class WarehouseSerialItemDetails(
     val MFGDate: String? = null,
     val WarentyDays: String? = null,
     var selected: Boolean = false,
-) : Parcelable {
+) : Parcelable , Serializable {
 
     companion object
 }

@@ -8,12 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.ItemSerialNumbersListItemLayoutBinding
 import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
+import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 
 class SerialNumbersListAdapter(
     private val itemsList: List<WarehouseSerialItemDetails>,
-    private val checkBoxState: Boolean
-) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val checkBoxState: Boolean,
+    private val onItemCheckListener: OnItemCheckListener,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mSelectedItem = -1
 
@@ -35,7 +36,8 @@ class SerialNumbersListAdapter(
             itemsList[position],
             position,
             mSelectedItem,
-            checkBoxState
+            checkBoxState,
+            onItemCheckListener
         )
     }
 
@@ -47,14 +49,25 @@ class SerialNumbersListAdapter(
         private val serialNumber: TextView = holderBinding.serialNumberTV
         private val checkBox: CheckBox = holderBinding.serialNoCheckBox
 
-        fun bind(serialItem: WarehouseSerialItemDetails, position: Int, selectedPosition: Int, checkBoxState: Boolean) {
+        fun bind(
+            serialItem: WarehouseSerialItemDetails,
+            position: Int,
+            selectedPosition: Int,
+            checkBoxState: Boolean,
+            onItemCheckListener: OnItemCheckListener
+        ) {
             manufactureDate.text = serialItem.MFGDate
             warrantyPeriod.text = serialItem.WarentyDays
             serialNumber.text = serialItem.SerialNumber
             checkBox.visibility = if (checkBoxState) View.VISIBLE else View.GONE
-            checkBox.isChecked= serialItem.selected
-            checkBox.setOnCheckedChangeListener { compoundButton, checked ->
-                serialItem.selected=checked
+            checkBox.isChecked = serialItem.selected
+            checkBox.setOnCheckedChangeListener { _, checked ->
+                serialItem.selected = checked
+                if(checked){
+                    onItemCheckListener.onItemCheck(serialItem)
+                }else{
+                    onItemCheckListener.onItemUncheck(serialItem)
+                }
             }
         }
     }

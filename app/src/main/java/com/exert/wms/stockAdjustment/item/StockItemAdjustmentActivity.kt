@@ -1,6 +1,7 @@
 package com.exert.wms.stockAdjustment.item
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.RadioButton
 import androidx.activity.result.ActivityResult
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityStockItemAdjustmentBinding
+import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
 import com.exert.wms.stockAdjustment.api.WarehouseDto
@@ -141,7 +143,10 @@ class StockItemAdjustmentActivity :
                     mViewModel.getWarehouseStockDetails()
                 )
                 bundle.putString(Constants.ADJUSTMENT_TYPE, mViewModel.getAdjustmentType())
-                startActivity<StockQuantityAdjustmentActivity>(bundle)
+                val intent = Intent(this, StockQuantityAdjustmentActivity::class.java)
+                intent.putExtras(bundle)
+                startForResult.launch(intent)
+
             } else {
                 showBriefToastMessage(getString(R.string.invalid_details_message), coordinateLayout)
             }
@@ -178,13 +183,16 @@ class StockItemAdjustmentActivity :
                 )
             }
         })
+
         mViewModel.itemDto.observe(this, Observer { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
         })
+
         mViewModel.isItemSerialized.observe(this, Observer { isItSerialized ->
             binding.adjustmentQuantityEditText.isEnabled = !isItSerialized
         })
+
         mViewModel.errorAdjustmentType.observe(this, Observer {
             if (it) {
                 enableErrorMessage(
@@ -206,8 +214,10 @@ class StockItemAdjustmentActivity :
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
-                // Handle the Intent
-                //do stuff here
+                intent?.let {
+                    val data=it.extras
+                    val list=data?.getParcelableArrayList<WarehouseSerialItemDetails>(Constants.CHECKED_SERIAL_ITEMS)
+                }
             }
         }
 
@@ -215,6 +225,10 @@ class StockItemAdjustmentActivity :
         binding.viewModel = mViewModel
     }
 
+    override fun onBackPressed() {
+        setResult(Activity.RESULT_CANCELED, null)
+        super.onBackPressed()
+    }
     companion object {
         private const val SHOW_CHECKBOX: String = "SHOW_CHECKBOX"
         private const val SERIAL_NO_ACTIVITY_REQUEST_CODE: Int = 1

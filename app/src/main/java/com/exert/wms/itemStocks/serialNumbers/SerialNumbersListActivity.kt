@@ -9,8 +9,10 @@ import com.exert.wms.R
 import com.exert.wms.databinding.ActivitySerialNumbersListBinding
 import com.exert.wms.itemStocks.ItemStocksViewModel
 import com.exert.wms.itemStocks.api.ItemsDto
+import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -76,7 +78,11 @@ class SerialNumbersListActivity :
                 binding.serialNumbersListRecyclerView.layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                 binding.serialNumbersListRecyclerView.adapter =
-                    SerialNumbersListAdapter(list, false)//checkBoxState)
+                    SerialNumbersListAdapter(list, false,object :OnItemCheckListener{
+                        override fun onItemCheck(item: WarehouseSerialItemDetails) {}
+                        override fun onItemUncheck(item: WarehouseSerialItemDetails) {}
+
+                    })
             }
         })
 

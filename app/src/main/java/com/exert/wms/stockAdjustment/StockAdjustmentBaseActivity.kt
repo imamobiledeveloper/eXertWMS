@@ -99,7 +99,7 @@ class StockAdjustmentBaseActivity :
 
     }
 
-    private fun setWarehouseList(stringList: List<String>) {//list: List<WarehouseDto>
+    private fun setWarehouseList(stringList: List<String>) {
         val adapter = SpinnerCustomAdapter(
             this,
             stringList.toTypedArray(),

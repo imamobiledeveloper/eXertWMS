@@ -32,16 +32,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/itemDetailsLabel"
+            style="@style/TextViewLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/item_details"
+            android:textColor="@color/blue"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <LinearLayout
             android:id="@+id/itemNameEnglishLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="20dp"
-            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginTop="@dimen/margin_15dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/itemDetailsLabel">
 
             <TextView
                 android:id="@+id/itemNameEnglishLabel"
@@ -81,7 +94,6 @@
             android:gravity="center_vertical"
             android:layout_marginTop="@dimen/margin_10dp"
             android:orientation="horizontal"
-            android:background="@color/grey_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishLayout">
@@ -164,7 +176,6 @@
             android:layout_marginTop="@dimen/margin_10dp"
             android:minHeight="40dp"
             android:gravity="center_vertical"
-            android:background="@color/grey_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemStockLayout">
