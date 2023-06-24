@@ -39,21 +39,35 @@ class AddStockItemDialogFragment(listener: OnItemAddListener) :
     }
 
     override fun onBindData(binding: FragmentAddStockItemDialogLayoutBinding) {
-
         val cal = Calendar.getInstance()
+        var year = cal.get(Calendar.YEAR)
+        var month = cal.get(Calendar.MONTH)
+        var day = cal.get(Calendar.DAY_OF_MONTH)
+
         val dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
                 binding.manufactureDateEditText.text =
-                    "$dayOfMonth /$monthOfYear /$year".toEditable()
+                    "${dayOfMonth} /$monthOfYear /$year".toEditable()
+                mViewModel.setSelectedDate(year, monthOfYear, dayOfMonth)
             }
+        val mDay = cal.get(Calendar.DATE)
+        cal.set(Calendar.DAY_OF_MONTH, mDay - 1)
+
         binding.manufactureDateEditText.setOnClickListener {
+            if (mViewModel.getSelectedYear() > 0 && mViewModel.getSelectedMonth() > 0 && mViewModel.getSelectedDayOfMonth() > 0) {
+                year = mViewModel.getSelectedYear()
+                month = mViewModel.getSelectedMonth()
+                day = mViewModel.getSelectedDayOfMonth()
+            }
             val datePicker = DatePickerDialog(
                 requireContext(), dateSetListener,
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)
+                year,
+                month,
+                day
             )
-            datePicker.datePicker.maxDate = System.currentTimeMillis();
+
+            datePicker.datePicker.maxDate = cal.timeInMillis
+
             datePicker.show()
         }
 

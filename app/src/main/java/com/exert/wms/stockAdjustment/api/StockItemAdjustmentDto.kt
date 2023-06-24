@@ -53,7 +53,7 @@ data class SerialItemsDto(
 @Keep
 data class
 StockAdjustmentRequestDto(
-    val StockAdjustmentID: Long,
+    val StockAdjustmentID: Long=0,
     val ItemsDetails: List<StockItemsDetailsDto>
 ) {
     companion object

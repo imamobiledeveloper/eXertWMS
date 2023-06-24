@@ -17,6 +17,9 @@ class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseVi
 
     private var warrantyPeriod: String = ""
     private var warrantyPeriodList: List<String>? = null
+    private var selectedYear: Int=0
+    private var selectedMonth: Int=0
+    private var selectedDay: Int=0
 
     private fun validateNewItemDetails(
         manufacture: String,
@@ -69,4 +72,13 @@ class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseVi
         warrantyPeriodList = yearsList
     }
 
+    fun setSelectedDate(year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        selectedYear=year
+        selectedMonth=monthOfYear
+        selectedDay=dayOfMonth
+    }
+
+    fun getSelectedYear()=selectedYear
+    fun getSelectedMonth()=selectedMonth
+    fun getSelectedDayOfMonth()=selectedDay
 }

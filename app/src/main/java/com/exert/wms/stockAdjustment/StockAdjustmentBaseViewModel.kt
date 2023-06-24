@@ -112,7 +112,31 @@ class StockAdjustmentBaseViewModel(
     }
 
     fun saveItems() {
+        getItemList().takeIf { it.isNotEmpty() }?.let { list ->
+            updatedItems(list)
+        }
+    }
 
+    private fun updatedItems(stockList: ArrayList<StockItemsDetailsDto>) {
+        showProgressIndicator()
+        coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
+            val requestDto =
+                StockAdjustmentRequestDto(StockAdjustmentID = 0, ItemsDetails = stockList)
+            stockAdjustmentRepo.saveStockAdjustmentItems(requestDto)
+                .collect { dto ->
+                    Log.v("WMS EXERT", "saveStockAdjustmentItems response $dto")
+                    hideProgressIndicator()
+//                    if (dto.success && dto.Warehouses.isNotEmpty()) {
+//                        warehousesList = dto.Warehouses
+//                        val stringList = dto.Warehouses.map { it.Warehouse }.toMutableList()
+//                        stringList.add(0, stringProvider.getString(R.string.select_warehouse))
+//
+//                        _warehouseStringList.postValue(stringList)
+//                    } else {
+//                        _errorFieldMessage.postValue(stringProvider.getString(R.string.warehouse_list_empty_message))
+//                    }
+                }
+        }
     }
 
     fun saveItemStock(itemPartCode: String, itemSerialNo: String) {
@@ -210,23 +234,6 @@ class StockAdjustmentBaseViewModel(
         }
     }
 
-    private fun validateItemPartCodeAndSerialNoDetails(
-        itemPartCode: String,
-        itemSerialNo: String
-    ): Boolean {
-        return itemPartCode.isNotEmpty() || itemSerialNo.isNotEmpty()
-    }
-
-    private fun checkAndEnableStatusButton() {
-        if (validateUserDetails(itemPartCode, itemSerialNo, adjustmentTypeValue)) {
-            _enableSaveButton.postValue(true)
-            _errorItemPartCode.postValue(false)
-            _errorItemSerialNo.postValue(false)
-        } else {
-            _enableSaveButton.postValue(false)
-        }
-    }
-
     fun checkWarehouse() {
         if (selectedWarehouse.isNotEmpty() && selectedWarehouse != stringProvider.getString(R.string.select_warehouse)) {
             _errorWarehouse.postValue(true)
@@ -259,10 +266,6 @@ class StockAdjustmentBaseViewModel(
         return warehousesList?.filter { it.Warehouse == selectedWarehouse }.run {
             this?.get(0)
         }
-    }
-
-    private fun setSelectedWarehouseName(warehouseName: String) {
-        selectedWarehouse = warehouseName
     }
 
     private fun getItemId() = run {
