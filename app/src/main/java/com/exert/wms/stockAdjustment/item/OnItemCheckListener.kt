@@ -6,3 +6,7 @@ interface OnItemCheckListener {
     fun onItemCheck(item: SerialItemsDto)
     fun onItemUncheck(item: SerialItemsDto)
 }
+
+interface OnItemAddListener {
+    fun onAddItem(item: SerialItemsDto)
+}

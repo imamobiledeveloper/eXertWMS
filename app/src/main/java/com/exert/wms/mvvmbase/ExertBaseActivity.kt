@@ -16,7 +16,7 @@ abstract class ExertBaseActivity : BaseAppCompatActivity() {
         bgColor: Int= getColor(R.color.red)
     ) {
         coordinatorLayout?.let { layout ->
-            appSnackbar(layout, message, LENGTH_LONG, bgColor = bgColor)?.setDuration(6000)?.show()
+            appSnackbar(layout, message, LENGTH_LONG, bgColor = bgColor)?.setDuration(4000)?.show()
         }
     }
 

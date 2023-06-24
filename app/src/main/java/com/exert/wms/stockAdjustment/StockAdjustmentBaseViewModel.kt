@@ -62,9 +62,6 @@ class StockAdjustmentBaseViewModel(
     private val _errorWarehouse = MutableLiveData<Boolean>()
     val errorWarehouse: LiveData<Boolean> = _errorWarehouse
 
-    private val _warehouseList = MutableLiveData<List<WarehouseDto>>()
-    val warehouseList: LiveData<List<WarehouseDto>> = _warehouseList
-
     private val _warehouseStringList = MutableLiveData<List<String>>()
     val warehouseStringList: LiveData<List<String>> = _warehouseStringList
 
@@ -100,7 +97,7 @@ class StockAdjustmentBaseViewModel(
     var stockItemsList: ArrayList<StockItemsDetailsDto> = ArrayList()
 
     var showCheckBoxes: Boolean = false
-    var adjustmentQuantity: Double = 0.0
+    private var adjustmentQuantity: Double = 0.0
     var cost: Double = 0.0
     var adjustmentTypeValue: String = ""
     var itemsDto: ItemsDto? = null
@@ -109,7 +106,6 @@ class StockAdjustmentBaseViewModel(
 
     private var userCheckedItems: ArrayList<SerialItemsDto> = ArrayList()
     private var userSelectedSerialItemsList: ArrayList<SerialItemsDto> = ArrayList()
-    private var userStockItemsList: ArrayList<StockItemsDetailsDto> = ArrayList()
 
     init {
         getWarehouseList()
@@ -164,6 +160,9 @@ class StockAdjustmentBaseViewModel(
             false
         } else if (itemPartCode.isEmpty() && itemSerialNo.isEmpty()) {
             _errorItemPartCode.postValue(true)
+            false
+        } else if (itemsDto == null) {
+            _errorFieldMessage.postValue(stringProvider.getString(R.string.invalid_details_message))
             false
         } else {
             _errorItemSelectionMessage.postValue(true)
@@ -245,7 +244,6 @@ class StockAdjustmentBaseViewModel(
                     hideProgressIndicator()
                     if (dto.success && dto.Warehouses.isNotEmpty()) {
                         warehousesList = dto.Warehouses
-                        _warehouseList.postValue(dto.Warehouses)
                         val stringList = dto.Warehouses.map { it.Warehouse }.toMutableList()
                         stringList.add(0, stringProvider.getString(R.string.select_warehouse))
 
@@ -342,31 +340,6 @@ class StockAdjustmentBaseViewModel(
 
     }
 
-    private fun getItemWarehouseList(itemPartCode: String, itemSerialNo: String) {
-//        itemPartCode="18x085NiCd-Hop"
-        showProgressIndicator()
-        val request =
-            ItemStocksRequestDto(ItemPartCode = itemPartCode, ItemSerialNumber = itemSerialNo)
-        coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
-            itemStocksRepo.getItemWarehouseList(request)
-                .collect { dto ->
-                    Log.v("WMS EXERT", "getItemWarehouseList response $dto")
-                    hideProgressIndicator()
-                    if (dto.success) {
-                        if (dto.Items != null && dto.Items.isNotEmpty()) {
-                            itemsDto = dto.Items[0]
-                            _itemDto.postValue(dto.Items[0])
-                        } else {
-                            _errorGetItemsStatusMessage.postValue(stringProvider.getString(R.string.empty_items_list))
-                        }
-                    } else {
-                        _getItemsStatus.value = (false)
-                    }
-                }
-
-        }
-    }
-
     fun getItemDto(): ItemsDto? = itemsDto
 
     fun selectedWarehouse(warehouseName: String) {
@@ -407,10 +380,10 @@ class StockAdjustmentBaseViewModel(
             setAdjustmentType(adjustmentType)
             if (adjustmentType == stringProvider.getString(R.string.positive)) {// positive adjustment
                 setCheckBoxState(false)
-                _showAddItemButton.postValue(true)
+                _showAddItemButton.value = true
             } else {//negative type-get serial numbers list
                 setCheckBoxState(true)
-                _showAddItemButton.postValue(false)
+                _showAddItemButton.value = false
                 getSerialNumbersList(itemsDto, warehouseStockDetails)
             }
         }
@@ -447,9 +420,30 @@ class StockAdjustmentBaseViewModel(
     fun setCheckedItems(checkedItems: ArrayList<SerialItemsDto>) {
         userCheckedItems = checkedItems
         if (userCheckedItems.isNotEmpty()) {
+            if (getAdjustmentType() == stringProvider.getString(R.string.positive)) {
+                setConvertedWarehouseSerialNoList()
+            }
             _enableSaveButton.postValue(true)
         } else {
             _enableSaveButton.postValue(false)
+        }
+    }
+
+    private fun setConvertedWarehouseSerialNoList() {
+        val newList: List<WarehouseSerialItemDetails>? =
+            userCheckedItems.takeIf { it.isNotEmpty() }?.let { list ->
+                list.map { dto ->
+                    WarehouseSerialItemDetails(
+                        SerialNumber = dto.SerialNumber,
+                        MFGDate = dto.ManufactureDate,
+                        WarentyDays = dto.WarrantyPeriod,
+                        selected = true
+                    )
+                }
+            }
+
+        newList?.let {
+            _warehouseSerialNosList.postValue(it)
         }
     }
 

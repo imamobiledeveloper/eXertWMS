@@ -109,11 +109,7 @@ class StockAdjustmentBaseActivity :
                 )
             }
         })
-        mViewModel.warehouseList.observe(this, Observer {
-//            if (it.isNotEmpty()) {
-//                setWarehouseList(it)
-//            }
-        })
+
         mViewModel.warehouseStringList.observe(this, Observer {
             if (it.isNotEmpty()) {
                 setWarehouseList(it)

@@ -1,12 +1,9 @@
 package com.exert.wms.stockAdjustment.item
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
+import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,10 +17,7 @@ import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
 import com.exert.wms.stockAdjustment.api.SerialItemsDto
 import com.exert.wms.utils.Constants
-import com.exert.wms.utils.toEditable
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import java.util.*
 
 class StockQuantityAdjustmentActivity :
     BaseActivity<StockAdjustmentBaseViewModel, ActivityStockQuantityAdjustmentBinding>() {
@@ -80,7 +74,7 @@ class StockQuantityAdjustmentActivity :
         }
 
         binding.addButton.setOnClickListener {
-            showDialog()
+            showBottomSheetDialog()
         }
 
         mViewModel.errorGetItemsStatusMessage.observe(this, Observer { status ->
@@ -110,6 +104,10 @@ class StockQuantityAdjustmentActivity :
             }
         })
 
+        mViewModel.showAddItemButton.observe(this, Observer {
+            binding.addButton.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        })
+
         mViewModel.enableSaveButton.observe(this, Observer {
             binding.saveButton.isEnabled = it
         })
@@ -123,39 +121,17 @@ class StockQuantityAdjustmentActivity :
 
     }
 
-    private fun showDialog() {
-        val dialog = BottomSheetDialog(this)
-        dialog.setContentView(R.layout.dialog_add_stock_item_layout)
-
-        val addButton = dialog.findViewById<Button>(R.id.addStockItemButton)
-        val manufactureDateET = dialog.findViewById<EditText>(R.id.manufactureDateEditText)
-        val closeButton = dialog.findViewById<ImageView>(R.id.closeButton)
-
-        dialog.setCancelable(false)
-
-
-        val cal = Calendar.getInstance()
-
-        val dateSetListener =
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                manufactureDateET?.text = "$dayOfMonth /$monthOfYear /$year".toEditable()
+    private fun showBottomSheetDialog() {
+        val dialog = AddStockItemDialogFragment(object : OnItemAddListener {
+            override fun onAddItem(item: SerialItemsDto) {
+                if (item?.ManufactureDate != null) {
+                    checkedItems.add(item)
+                    mViewModel.setCheckedItems(checkedItems)
+                }
             }
-        closeButton?.setOnClickListener {
-            dialog.dismiss()
-        }
-        manufactureDateET?.setOnClickListener {
-            val datePicker = DatePickerDialog(
-                this@StockQuantityAdjustmentActivity, dateSetListener,
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)
-            )
-            datePicker.datePicker.maxDate = System.currentTimeMillis();
-            datePicker.show()
-        }
 
-        dialog.show()
-
+        })
+        dialog.show(this.supportFragmentManager, "AddStockItemDialogFragment")
     }
 
     override fun onBindData(binding: ActivityStockQuantityAdjustmentBinding) {

@@ -5,6 +5,7 @@ import com.exert.wms.itemStocks.ItemStocksViewModel
 import com.exert.wms.login.LoginViewModel
 import com.exert.wms.splash.SplashViewModel
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
+import com.exert.wms.stockAdjustment.item.AddStockItemViewModel
 import org.koin.dsl.module
 import org.koin.androidx.viewmodel.dsl.viewModel
 
@@ -30,4 +31,7 @@ val viewModelModule = module {
         StockAdjustmentBaseViewModel(get(),get(),get())
     }
 
+    viewModel {
+        AddStockItemViewModel(get())
+    }
 }
