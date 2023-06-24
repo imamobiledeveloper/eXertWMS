@@ -36,7 +36,7 @@ interface ExertWmsApi {
     ): ItemStocksResponseDto
 
     @POST("webapi/api/StockAdjustment/SaveStockAdjustment")
-    suspend fun getStockAdjustmentItems(
+    suspend fun saveStockAdjustmentItems(
         @Body requestBody: StockAdjustmentRequestDto
     ): StockItemAdjustmentDto
 

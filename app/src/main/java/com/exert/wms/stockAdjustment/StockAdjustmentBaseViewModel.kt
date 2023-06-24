@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
 import com.exert.wms.itemStocks.api.*
 import com.exert.wms.mvvmbase.BaseViewModel
-import com.exert.wms.stockAdjustment.api.StockAdjustmentRepository
-import com.exert.wms.stockAdjustment.api.StockItemAdjustmentDto
-import com.exert.wms.stockAdjustment.api.WarehouseDto
+import com.exert.wms.stockAdjustment.api.*
 import com.exert.wms.utils.StringProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -28,8 +26,8 @@ class StockAdjustmentBaseViewModel(
     private val _enableSaveButton = MutableLiveData<Boolean>().apply { false }
     val enableSaveButton: LiveData<Boolean> = _enableSaveButton
 
-    private val _itemsList = MutableLiveData<List<String>>()
-    val itemsList: LiveData<List<String>> = _itemsList
+    private val _itemsList = MutableLiveData<List<StockItemsDetailsDto>?>()
+    val itemsList: MutableLiveData<List<StockItemsDetailsDto>?> = _itemsList
 
     private val _enableUpdateButton = MutableLiveData<Boolean>().apply { false }
     val enableUpdateButton: LiveData<Boolean> = _enableUpdateButton
@@ -80,23 +78,38 @@ class StockAdjustmentBaseViewModel(
     private val _isItemSerialized = MutableLiveData<Boolean>()
     val isItemSerialized: LiveData<Boolean> = _isItemSerialized
 
-    private val _checkedSerialItemsList = MutableLiveData<ArrayList<WarehouseSerialItemDetails>>()
-    val checkedSerialItemsList: LiveData<ArrayList<WarehouseSerialItemDetails>> = _checkedSerialItemsList
+    private val _checkedSerialItemsList = MutableLiveData<ArrayList<SerialItemsDto>>()
+    val checkedSerialItemsList: LiveData<ArrayList<SerialItemsDto>> = _checkedSerialItemsList
 
     private val _showAddItemButton = MutableLiveData<Boolean>()
     val showAddItemButton: LiveData<Boolean> = _showAddItemButton
 
-    var itemPartCode: String = ""
+    private val _adjustmentQuantityString = MutableLiveData<String>().apply { postValue("0") }
+    val adjustmentQuantityString: LiveData<String> = _adjustmentQuantityString
+
+    private val _adjustmentTotalCostString = MutableLiveData<String>().apply { postValue("0") }
+    val adjustmentTotalCostString: LiveData<String> = _adjustmentTotalCostString
+
+    private val _costString = MutableLiveData<String>()
+    val costString: LiveData<String> = _costString
+
+    private var itemPartCode: String = ""
     var itemSerialNo: String = ""
-    var selectedWarehouse: String = ""
-    var warehouseDto: WarehouseDto? = null
-    var stockItemsList = mutableListOf<StockItemAdjustmentDto>()
+    private var selectedWarehouse: String = ""
+    private var warehouseDto: WarehouseDto? = null
+    var stockItemsList: ArrayList<StockItemsDetailsDto> = ArrayList()
 
     var showCheckBoxes: Boolean = false
+    var adjustmentQuantity: Double = 0.0
+    var cost: Double = 0.0
     var adjustmentTypeValue: String = ""
     var itemsDto: ItemsDto? = null
     var warehousesList: List<WarehouseDto>? = null
-    private var userCheckedItems: ArrayList<WarehouseSerialItemDetails> = ArrayList()
+    var stockItemsDetailsDto: StockItemsDetailsDto? = null
+
+    private var userCheckedItems: ArrayList<SerialItemsDto> = ArrayList()
+    private var userSelectedSerialItemsList: ArrayList<SerialItemsDto> = ArrayList()
+    private var userStockItemsList: ArrayList<StockItemsDetailsDto> = ArrayList()
 
     init {
         getWarehouseList()
@@ -108,22 +121,15 @@ class StockAdjustmentBaseViewModel(
 
     fun saveItemStock(itemPartCode: String, itemSerialNo: String) {
         if (validateUserDetails(itemPartCode, itemSerialNo, adjustmentTypeValue)) {
-            val item = StockItemAdjustmentDto(
-                selectedWarehouse,
-                itemPartCode,
-                itemSerialNo,
-                "",
-                "",
-                "",
-                0,
-                adjustmentTypeValue,
-                0,
-                0.0,
-                0.0
+            stockItemsDetailsDto = StockItemsDetailsDto(
+                WarehouseID = getWarehouseId(),
+                ItemID = getItemId(),
+                ItemCode = getItemCode(),
+                AdjustmentType = getAdjustmentTypeIntValue(),
+                AdjustmentQty = adjustmentQuantity,
+                SerialItems = userSelectedSerialItemsList
             )
-            addItemToList(item)
             _saveItemStatus.postValue(true)
-            checkAndEnableUpdateButton()
         }
     }
 
@@ -135,9 +141,15 @@ class StockAdjustmentBaseViewModel(
         }
     }
 
-    private fun addItemToList(item: StockItemAdjustmentDto) {
+    private fun addItemToList(item: StockItemsDetailsDto) {
         stockItemsList.add(item)
     }
+
+    private fun getItemList() = stockItemsList
+
+    private fun getItemListSize() = getItemList().takeIf { it.isNotEmpty() }?.let { list ->
+        list.size
+    } ?: 0
 
     private fun validateUserDetails(
         itemPartCode: String,
@@ -161,7 +173,14 @@ class StockAdjustmentBaseViewModel(
 
     fun setAdjustmentType(adjustment: String) {
         adjustmentTypeValue = adjustment
+        reSetQuantityAndTotalCost()
         _errorAdjustmentType.postValue(false)
+    }
+
+    private fun reSetQuantityAndTotalCost() {
+        _adjustmentQuantityString.value = ""
+        _adjustmentTotalCostString.value = ""
+        _enableSaveButton.postValue(false)
     }
 
     fun getAdjustmentType() = adjustmentTypeValue
@@ -248,6 +267,21 @@ class StockAdjustmentBaseViewModel(
         selectedWarehouse = warehouseName
     }
 
+    private fun getItemId() = run {
+        itemsDto?.let { it.ItemID } ?: 0
+    }
+
+    private fun getItemCode() = run {
+        itemsDto?.let { it.ItemCode } ?: ""
+    }
+
+    private fun getWarehouseId() = run {
+        warehouseDto?.let { it.WarehouseID } ?: 0
+    }
+
+    fun getAdjustmentTypeIntValue() =
+        if (adjustmentTypeValue == stringProvider.getString(R.string.positive)) 0 else 1
+
     fun setSelectedWarehouseDto(warehouse: WarehouseDto?) {
         warehouse?.let {
             warehouseDto = it
@@ -275,6 +309,8 @@ class StockAdjustmentBaseViewModel(
                     if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
                         itemsDto = dto.Items[0]
                         _itemDto.postValue(dto.Items[0])
+                        cost = dto.Items[0].SalesPrice
+                        _costString.postValue(dto.Items[0].SalesPrice.toString())
                         _isItemSerialized.postValue(dto.Items[0].IsSerialItem == 1)
 
                         val warehouseList = dto.Items[0].wStockDetails
@@ -337,6 +373,12 @@ class StockAdjustmentBaseViewModel(
         if (warehouseName != stringProvider.getString(R.string.select_warehouse)) {
             selectedWarehouse = warehouseName
         }
+        resetItemsList()
+    }
+
+    private fun resetItemsList() {
+        stockItemsList.clear()
+        _itemsList.postValue(null)
     }
 
     fun getSelectedWarehouseIndex(): Int {
@@ -350,6 +392,9 @@ class StockAdjustmentBaseViewModel(
     private fun setCheckBoxState(checkBoxState: Boolean) {
         showCheckBoxes = checkBoxState
     }
+
+    private fun getAdjustmentQuantity() =
+        userSelectedSerialItemsList.size
 
     fun getCheckBoxStateValue() = showCheckBoxes
 
@@ -399,12 +444,39 @@ class StockAdjustmentBaseViewModel(
         }
     }
 
-    fun setCheckedItems(checkedItems: ArrayList<WarehouseSerialItemDetails>) {
+    fun setCheckedItems(checkedItems: ArrayList<SerialItemsDto>) {
         userCheckedItems = checkedItems
         if (userCheckedItems.isNotEmpty()) {
             _enableSaveButton.postValue(true)
         } else {
             _enableSaveButton.postValue(false)
+        }
+    }
+
+    fun setSelectedSerialItemsList(serialItemsList: ArrayList<SerialItemsDto>?) {
+        if (serialItemsList != null && serialItemsList.isNotEmpty()) {
+            userSelectedSerialItemsList = serialItemsList
+            adjustmentQuantity = getAdjustmentQuantity().toDouble()
+            _adjustmentQuantityString.postValue(getAdjustmentQuantity().toString())
+            _adjustmentTotalCostString.postValue(getAdjustmentTotalCostInString())
+            _enableSaveButton.postValue(true)
+        }
+    }
+
+    private fun getAdjustmentTotalCostInString(): String {
+        return (cost * userSelectedSerialItemsList.size).toString()
+    }
+
+    fun getSavedItemDto() = stockItemsDetailsDto
+    fun setStockItemDetails(item: StockItemsDetailsDto?) {
+        item?.let { dto ->
+            val itemDto = dto.copy(ItemSeqNumber = (getItemListSize() + 1))
+            addItemToList(itemDto)
+
+            getItemList().takeIf { it.isNotEmpty() }?.let { list ->
+                _itemsList.postValue(list)
+            }
+            checkAndEnableUpdateButton()
         }
     }
 }

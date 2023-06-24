@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.ItemSerialNumbersListItemLayoutBinding
 import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
+import com.exert.wms.stockAdjustment.api.SerialItemsDto
 import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 
 class SerialNumbersListAdapter(
@@ -63,12 +64,17 @@ class SerialNumbersListAdapter(
             checkBox.isChecked = serialItem.selected
             checkBox.setOnCheckedChangeListener { _, checked ->
                 serialItem.selected = checked
+                val serialItemsDto=getSerialItemsDto(serialItem)
                 if(checked){
-                    onItemCheckListener.onItemCheck(serialItem)
+                    onItemCheckListener.onItemCheck(serialItemsDto)
                 }else{
-                    onItemCheckListener.onItemUncheck(serialItem)
+                    onItemCheckListener.onItemUncheck(serialItemsDto)
                 }
             }
         }
+    }
+
+    private fun getSerialItemsDto(item: WarehouseSerialItemDetails): SerialItemsDto {
+        return SerialItemsDto(SerialNumber=item.SerialNumber,ManufactureDate=item.MFGDate, WarrantyPeriod = item.WarentyDays)
     }
 }

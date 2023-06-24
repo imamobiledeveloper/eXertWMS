@@ -8,7 +8,7 @@ class StockAdjustmentRepository(private val stockAdjustmentDataSource: StockAdju
         return stockAdjustmentDataSource.getWarehouseList()
     }
 
-    fun getStockAdjustmentItems(requestDto: StockAdjustmentRequestDto): Flow<StockItemAdjustmentDto> {
-        return stockAdjustmentDataSource.getStockAdjustmentItems(requestDto)
+    fun saveStockAdjustmentItems(requestDto: StockAdjustmentRequestDto): Flow<StockItemAdjustmentDto> {
+        return stockAdjustmentDataSource.saveStockAdjustmentItems(requestDto)
     }
 }

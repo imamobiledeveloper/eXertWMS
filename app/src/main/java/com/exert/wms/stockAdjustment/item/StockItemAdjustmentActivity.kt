@@ -11,13 +11,14 @@ import androidx.lifecycle.Observer
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityStockItemAdjustmentBinding
-import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
+import com.exert.wms.stockAdjustment.api.SerialItemsDto
 import com.exert.wms.stockAdjustment.api.WarehouseDto
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
+import com.exert.wms.utils.toEditable
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class StockItemAdjustmentActivity :
@@ -127,7 +128,15 @@ class StockItemAdjustmentActivity :
 
         mViewModel.saveItemStatus.observe(this, Observer {
             if (it) {
-                showBriefToastMessage(getString(R.string.item_saved_message), coordinateLayout)
+                showBriefToastMessage(
+                    getString(R.string.item_saved_message), coordinateLayout,
+                    getColor(R.color.blue_50)
+                )
+
+                val intent = Intent().apply {
+                    putExtra(Constants.STOCK_ITEMS_DETAILS_DTO, mViewModel.getSavedItemDto())
+                }
+                setResult(Activity.RESULT_OK, intent)
                 finish()
             } else {
                 showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
@@ -193,6 +202,18 @@ class StockItemAdjustmentActivity :
             binding.adjustmentQuantityEditText.isEnabled = !isItSerialized
         })
 
+        mViewModel.adjustmentQuantityString.observe(this, Observer { value ->
+            binding.adjustmentQuantityEditText.text = value.toEditable()
+        })
+
+        mViewModel.adjustmentTotalCostString.observe(this, Observer { value ->
+            binding.adjustmentTotalCostEditText.text = value.toEditable()
+        })
+
+        mViewModel.costString.observe(this, Observer { value ->
+            binding.costEditText.text = value.toEditable()
+        })
+
         mViewModel.errorAdjustmentType.observe(this, Observer {
             if (it) {
                 enableErrorMessage(
@@ -215,8 +236,10 @@ class StockItemAdjustmentActivity :
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
                 intent?.let {
-                    val data=it.extras
-                    val list=data?.getParcelableArrayList<WarehouseSerialItemDetails>(Constants.CHECKED_SERIAL_ITEMS)
+                    val data = it.extras
+                    val serialItemsList =
+                        data?.getParcelableArrayList<SerialItemsDto>(Constants.CHECKED_SERIAL_ITEMS)
+                    mViewModel.setSelectedSerialItemsList(serialItemsList)
                 }
             }
         }
@@ -229,6 +252,7 @@ class StockItemAdjustmentActivity :
         setResult(Activity.RESULT_CANCELED, null)
         super.onBackPressed()
     }
+
     companion object {
         private const val SHOW_CHECKBOX: String = "SHOW_CHECKBOX"
         private const val SERIAL_NO_ACTIVITY_REQUEST_CODE: Int = 1

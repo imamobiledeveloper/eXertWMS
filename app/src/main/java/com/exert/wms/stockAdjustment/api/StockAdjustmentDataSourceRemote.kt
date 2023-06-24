@@ -4,8 +4,8 @@ import com.exert.wms.mvvmbase.network.ExertWmsApi
 
 class StockAdjustmentDataSourceRemote(private val exertWmsApi: ExertWmsApi) {
 
-    suspend fun getStockAdjustmentItems(requestDto: StockAdjustmentRequestDto): StockItemAdjustmentDto {
-        return exertWmsApi.getStockAdjustmentItems(requestDto)
+    suspend fun saveStockAdjustmentItems(requestDto: StockAdjustmentRequestDto): StockItemAdjustmentDto {
+        return exertWmsApi.saveStockAdjustmentItems(requestDto)
     }
 
     suspend fun getWarehouseList(): WarehouseListDto {

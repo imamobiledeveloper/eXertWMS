@@ -22,9 +22,40 @@ data class StockItemAdjustmentDto(
     companion object
 }
 
+@Parcelize
+@Keep
+data class StockItemsDetailsDto(
+    val ItemSeqNumber: Int = 0,
+    val WarehouseID: Long = 0,
+    val ItemID: Long=0,
+    val ItemCode: String,
+    val AdjustmentType: Int,
+    val AdjustmentQty: Double,
+    val SerialItems: List<SerialItemsDto>,
+) : Parcelable {
+    companion object
+
+    fun getItemIDString() = ItemID.toString()
+    fun getAdjustmentQtyString() = AdjustmentQty.toString()
+}
+
+@Parcelize
+@Keep
+data class SerialItemsDto(
+    val SerialNumber: String? = "",
+    val ManufactureDate: String? = "",
+    val WarrantyPeriod: String? = "",
+    val Quantity: Long = 0,
+) : Serializable, Parcelable {
+    companion object
+}
+
 @Keep
 data class
-StockAdjustmentRequestDto(val itemPartCode: String) {
+StockAdjustmentRequestDto(
+    val StockAdjustmentID: Long,
+    val ItemsDetails: List<StockItemsDetailsDto>
+) {
     companion object
 }
 
@@ -35,14 +66,16 @@ data class WarehouseListDto(
 ) {
     companion object
 }
+
 @Parcelize
 @Keep
 data class WarehouseDto(
     val WarehouseID: Long,
     val Warehouse: String,
-) : Serializable,Parcelable {
+) : Serializable, Parcelable {
     override fun toString(): String {
         return this.Warehouse
     }
+
     companion object
 }

@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.flow
 class  StockAdjustmentDataSource(
     private val stockAdjustmentDataSourceRemote: StockAdjustmentDataSourceRemote
 ) {
-    fun getStockAdjustmentItems(requestDto: StockAdjustmentRequestDto): Flow<StockItemAdjustmentDto> {
+    fun saveStockAdjustmentItems(requestDto: StockAdjustmentRequestDto): Flow<StockItemAdjustmentDto> {
         return flow {
             emit(
-                stockAdjustmentDataSourceRemote.getStockAdjustmentItems(requestDto)
+                stockAdjustmentDataSourceRemote.saveStockAdjustmentItems(requestDto)
             )
         }
     }

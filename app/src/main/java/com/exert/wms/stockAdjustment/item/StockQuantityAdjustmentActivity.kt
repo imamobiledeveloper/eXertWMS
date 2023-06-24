@@ -14,11 +14,11 @@ import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityStockQuantityAdjustmentBinding
 import com.exert.wms.itemStocks.api.ItemsDto
-import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListAdapter
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
+import com.exert.wms.stockAdjustment.api.SerialItemsDto
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.toEditable
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -46,7 +46,7 @@ class StockQuantityAdjustmentActivity :
     var itemDto: ItemsDto? = null
     var adjustmentType: String = ""
     private var warehouseStockDetails: WarehouseStockDetails? = null
-    private val checkedItems: ArrayList<WarehouseSerialItemDetails> = ArrayList()
+    private val checkedItems: ArrayList<SerialItemsDto> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,12 +96,12 @@ class StockQuantityAdjustmentActivity :
                         list,
                         mViewModel.getCheckBoxStateValue(),
                         object : OnItemCheckListener {
-                            override fun onItemCheck(item: WarehouseSerialItemDetails) {
+                            override fun onItemCheck(item: SerialItemsDto) {
                                 checkedItems.add(item)
                                 mViewModel.setCheckedItems(checkedItems)
                             }
 
-                            override fun onItemUncheck(item: WarehouseSerialItemDetails) {
+                            override fun onItemUncheck(item: SerialItemsDto) {
                                 checkedItems.remove(item)
                                 mViewModel.setCheckedItems(checkedItems)
                             }
@@ -117,7 +117,7 @@ class StockQuantityAdjustmentActivity :
         mViewModel.checkedSerialItemsList.observe(this, Observer { list ->
             val data = Intent()
             data.putParcelableArrayListExtra(Constants.CHECKED_SERIAL_ITEMS, list)
-            setResult(Activity.RESULT_OK, data);
+            setResult(Activity.RESULT_OK, data)
             finish()
         })
 

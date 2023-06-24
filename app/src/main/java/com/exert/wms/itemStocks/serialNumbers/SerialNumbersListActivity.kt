@@ -9,9 +9,9 @@ import com.exert.wms.R
 import com.exert.wms.databinding.ActivitySerialNumbersListBinding
 import com.exert.wms.itemStocks.ItemStocksViewModel
 import com.exert.wms.itemStocks.api.ItemsDto
-import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.stockAdjustment.api.SerialItemsDto
 import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -50,10 +50,13 @@ class SerialNumbersListActivity :
         itemDto = intent.getSerializable(Constants.ITEM_DTO, ItemsDto::class.java)
         val itemPartCode = intent.getStringExtra(Constants.ITEM_PART_CODE)
         val itemSerialNo = intent.getStringExtra(Constants.ITEM_SERIAL_NO)
-        mViewModel.setItemPartCodeAndSerialNo(itemPartCode,itemSerialNo)
+        mViewModel.setItemPartCodeAndSerialNo(itemPartCode, itemSerialNo)
 
         warehouseStockDetails =
-            intent.getSerializable(Constants.WAREHOUSE_STOCK_DETAILS, WarehouseStockDetails::class.java)
+            intent.getSerializable(
+                Constants.WAREHOUSE_STOCK_DETAILS,
+                WarehouseStockDetails::class.java
+            )
         mViewModel.getSerialNumbersList(itemDto, warehouseStockDetails)
 
         itemDto?.let { dto ->
@@ -74,13 +77,13 @@ class SerialNumbersListActivity :
         })
 
         mViewModel.warehouseSerialIsList.observe(this, Observer { list ->
-            if(list!=null) {
+            if (list != null) {
                 binding.serialNumbersListRecyclerView.layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                 binding.serialNumbersListRecyclerView.adapter =
-                    SerialNumbersListAdapter(list, false,object :OnItemCheckListener{
-                        override fun onItemCheck(item: WarehouseSerialItemDetails) {}
-                        override fun onItemUncheck(item: WarehouseSerialItemDetails) {}
+                    SerialNumbersListAdapter(list, false, object : OnItemCheckListener {
+                        override fun onItemCheck(item: SerialItemsDto) {}
+                        override fun onItemUncheck(item: SerialItemsDto) {}
 
                     })
             }
