@@ -57,7 +57,7 @@
     <string name="adjustment_total_cost">Adjustment Total Cost</string>
     <string name="item_saved_message">Item is saved successfully</string>
     <string name="cost">Cost</string>
-    <string name="warehouse_empty_message">"Please select the Warehouse from the list"</string>
+    <string name="warehouse_empty_message">"Please select Warehouse from the list"</string>
     <string name="warehouse_list_empty_message">"Warehouse are not available"</string>
     <string name="adjustment_type_empty_message">"Please select Adjustment Type to get list"</string>
     <string name="invalid_details_message">"Please enter valid details"</string>

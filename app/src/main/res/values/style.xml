@@ -79,4 +79,17 @@
         <item name="android:padding">16dp</item>
         <item name="android:textColor">@color/grey_dark</item>
     </style>
+
+    <style name="RecyclerViewListItemTextViewStyle">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">@dimen/margin_8dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_10dp</item>
+        <item name="android:layout_marginBottom">@dimen/margin_10dp</item>
+        <item name="android:layout_marginStart">@dimen/margin_15dp</item>
+        <item name="android:layout_marginEnd">@dimen/margin_15dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <dimen name="margin_8dp">8dp</dimen>
 </resources>

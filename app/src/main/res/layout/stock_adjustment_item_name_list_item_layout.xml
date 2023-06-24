@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_10dp"
-    android:background="@drawable/edittext_rectangle_bg"
-    android:layout_marginBottom="@dimen/margin_10dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/itemCountTV"
-        android:layout_width="wrap_content"
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="itemDto"
+            type="com.exert.wms.stockAdjustment.api.StockItemsDetailsDto" />
+
+        <variable
+            name="whiteBg"
+            type="Boolean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stockItemListItemLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/blue"
-        android:textSize="16sp"
-        android:layout_margin="@dimen/margin_10dp"
-        android:gravity="center_vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="100" />
+        android:paddingBottom="@dimen/margin_10dp"
+        android:background="@{whiteBg ? @color/white : @color/grey_50}">
 
-    <TextView
-        android:id="@+id/itemNameTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_margin="@dimen/margin_10dp"
-        android:gravity="center_vertical"
-        app:layout_constraintEnd_toStartOf="@+id/itemCountTV"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Item 1" />
+        <TextView
+            android:id="@+id/itemCountTV"
+            style="@style/RecyclerViewListItemTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{itemDto.getAdjustmentQtyString()}"
+            android:textColor="@{itemDto.adjustmentType == 0 ? @color/green : @color/red}"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="100" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/itemNameTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/RecyclerViewListItemTextViewStyle"
+            android:text="@{itemDto.getItemIDString()}"
+            app:layout_constraintEnd_toStartOf="@+id/itemCountTV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Item 1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
