@@ -49,6 +49,13 @@ class LoginActivity :
                 binding.passwordEditText.text.toString()
             )
         }
+
+        binding.rememberPasswordCheckBox.setOnCheckedChangeListener { _, checked ->
+            mViewModel.saveRememberMeStatus(checked)
+        }
+        binding.rememberForgotPwdLayout.setOnClickListener {
+            startActivity<ForgotPasswordActivity>()
+        }
     }
 
     private fun setTextWatchers() {
@@ -72,7 +79,9 @@ class LoginActivity :
 
         mViewModel.loginUserStatus.observe(this, Observer {
             if (it) {
-                clearFieldsData()
+                if (!mViewModel.getRememberMeCheckBoxStatus()) {
+                    clearFieldsData()
+                }
                 startActivity(Intent(this, HomeActivity::class.java))
             } else {
                 showBriefToastMessage(getString(R.string.error_login_message), coordinateLayout)
@@ -110,6 +119,12 @@ class LoginActivity :
                 )
             }
         })
+        mViewModel.savedUserName.observe(this, Observer {
+            binding.usernameEditText.text=it.toEditable()
+        })
+        mViewModel.savedUserPassword.observe(this, Observer {
+            binding.passwordEditText.text=it.toEditable()
+        })
     }
 
     private fun clearFieldsData() {
@@ -122,9 +137,9 @@ class LoginActivity :
         binding.executePendingBindings()
     }
 
-    companion object{
-        fun relaunch(activity: Activity){
-            val intent= Intent(activity,LoginActivity::class.java)
+    companion object {
+        fun relaunch(activity: Activity) {
+            val intent = Intent(activity, LoginActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             activity.startActivity(intent)
             activity.finishAffinity()

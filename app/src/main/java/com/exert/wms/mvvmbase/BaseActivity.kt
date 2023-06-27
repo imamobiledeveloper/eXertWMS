@@ -183,7 +183,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
 
     private fun clearCaches() {
         loginDataSource.clearLoginCache()
-        userDefaults.clear()
+//        userDefaults.clear()
     }
 
     fun hideKeyBoard() {

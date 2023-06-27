@@ -5,9 +5,12 @@ import android.content.SharedPreferences
 
 class UserDefaults(context: Context) {
     companion object {
-        private const val KEY_USER_ID = "USERID"
-        private const val KEY_USER_TOKEN = "USERTOKEN"
+        private const val KEY_USER_ID = "USER_ID"
+        private const val KEY_USER_TOKEN = "USER_TOKEN"
+        private const val KEY_USER_NAME = "KEY_USER_NAME"
+        private const val KEY_USER_PASSWORD = "KEY_USER_PASSWORD"
         private const val KEY_FINANCIAL_PERIOD = "KEY_FINANCIAL_PERIOD"
+        private const val KEY_LOGIN_REMEMBER_ME = "KEY_LOGIN_REMEMBER_ME"
     }
 
     private val preferences =
@@ -26,6 +29,18 @@ class UserDefaults(context: Context) {
     internal fun saveFinancialPeriod(periodId: Long) =
         preferencesEditor.putLong(KEY_FINANCIAL_PERIOD, periodId).commit()
 
+    internal fun saveUserName(uname: String) =
+        preferencesEditor.putString(KEY_USER_NAME, uname).commit()
+
+    internal fun saveUserPassword(pwd: String) =
+        preferencesEditor.putString(KEY_USER_PASSWORD, pwd).commit()
+
+    internal fun saveRememberMeStatus(status: Boolean) =
+        preferencesEditor.putBoolean(KEY_LOGIN_REMEMBER_ME, status).commit()
+    internal fun getUserName() = preferences.getString(KEY_USER_NAME, "") ?: ""
+
+    internal fun getUserPassword() = preferences.getString(KEY_USER_PASSWORD, "") ?: ""
+    internal fun getRememberMeStatus() = preferences.getBoolean(KEY_LOGIN_REMEMBER_ME, false)
 
     internal fun getUserToken() = preferences.getString(KEY_USER_TOKEN, "") ?: ""
 

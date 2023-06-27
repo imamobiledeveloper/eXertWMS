@@ -13,7 +13,7 @@ class HomeViewModel(
     val loggedOut: LiveData<Boolean> = _loggedOut
 
     fun logoutUser() {
-        userDefaults.clear()
+//        userDefaults.clear()
         _loggedOut.postValue(true)
     }
 

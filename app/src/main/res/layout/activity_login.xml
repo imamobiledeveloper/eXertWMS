@@ -62,6 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:padding="0dp"
+                    android:hint="@string/enter_username"
                     app:errorTextAppearance="@style/EdittextError"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -73,15 +74,14 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_rectangle_bg"
                         android:focusableInTouchMode="true"
-                        android:gravity="center_vertical"
+                        android:gravity="start|center_vertical"
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLength="20"
-                        android:text="administrator"
                         android:padding="16dp"
-                        android:singleLine="true" />
+                        android:text="@{viewModel.savedUserName}"
+                        android:singleLine="true"/>
 
-                    <requestFocus />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -111,7 +111,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:padding="0dp"
+                    android:hint="@string/enter_password"
+                    app:passwordToggleEnabled="true"
                     app:errorTextAppearance="@style/EdittextError"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -125,25 +126,65 @@
                         android:gravity="center_vertical"
                         android:inputType="textPassword"
                         android:maxLength="20"
-                        android:text="admin1234#"
                         android:padding="16dp"
+                        android:text="@{viewModel.savedUserPassword}"
                         android:singleLine="true" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rememberForgotPwdLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/passwordLayout">
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/rememberPasswordCheckBox"
+                    style="@style/TextViewLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_5dp"
+                    android:gravity="start|center_vertical"
+                    android:checked="@{viewModel.rememberMeStatus}"
+                    android:paddingEnd="@dimen/margin_5dp"
+                    android:text="@string/remember_me"
+                    app:layout_constraintEnd_toStartOf="@+id/forgotPasswordTV"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/forgotPasswordTV"
+                    style="@style/TextViewLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_5dp"
+                    android:focusableInTouchMode="true"
+                    android:gravity="end|center_vertical"
+                    android:paddingEnd="@dimen/margin_5dp"
+                    android:text="@string/forgot_your_password"
+                    app:layout_constraintBottom_toBottomOf="@+id/rememberPasswordCheckBox"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/rememberPasswordCheckBox"
+                    app:layout_constraintTop_toTopOf="@+id/rememberPasswordCheckBox" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <Button
                 android:id="@+id/loginButton"
-                android:layout_width="wrap_content"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                style="@style/ButtonStyle"
                 android:enabled="true"
                 android:text="@string/login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/rememberForgotPwdLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -162,12 +203,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/blue_light"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/blue_50"
+            android:indeterminateTintMode="src_atop"
             android:minWidth="40dp"
             android:minHeight="40dp"
             android:visibility="gone"
-            android:indeterminate="true"
-            android:indeterminateTintMode="src_atop"
-            android:indeterminateTint="@color/blue_50"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

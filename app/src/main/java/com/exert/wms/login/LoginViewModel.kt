@@ -22,6 +22,7 @@ class LoginViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BaseViewModel() {
 
+    private var rememberMe: Boolean = false
     private var userName: String = ""
     private var password: String = ""
 
@@ -38,6 +39,39 @@ class LoginViewModel(
 
     private val _errorPasswordMessage = MutableLiveData<Boolean>()
     val errorPasswordMessage: LiveData<Boolean> = _errorPasswordMessage
+
+    private val _rememberMeStatus = MutableLiveData<Boolean>()
+    val rememberMeStatus: LiveData<Boolean> = _rememberMeStatus
+
+    private val _errorUsernameEmailMessage = MutableLiveData<String>()
+    val errorUsernameEmailMessage: LiveData<String> = _errorUsernameEmailMessage
+
+    private val _errorNewPasswordMessage = MutableLiveData<String>()
+    val errorNewPasswordMessage: LiveData<String> = _errorNewPasswordMessage
+
+    private val _errorConfirmPasswordMessage = MutableLiveData<String>()
+    val errorConfirmPasswordMessage: LiveData<String> = _errorConfirmPasswordMessage
+
+    private val _savedUserName = MutableLiveData<String>()
+    val savedUserName: LiveData<String> = _savedUserName
+
+    private val _savedUserPassword = MutableLiveData<String>()
+    val savedUserPassword: LiveData<String> = _savedUserPassword
+
+    init {
+        rememberMe = getRememberMeCheckBoxStatus()
+        _rememberMeStatus.postValue(rememberMe)
+        if (rememberMe) {
+            userName = getUserName()
+            password = getUserPassword()
+        }
+        _savedUserName.value = (userName)
+        _savedUserPassword.value = (password)
+    }
+
+    private fun getUserName() = userDefaults.getUserName()
+    private fun getUserPassword() = userDefaults.getUserPassword()
+    fun getRememberMeCheckBoxStatus() = userDefaults.getRememberMeStatus()
 
     private fun loginUser(userName1: String, pwd1: String, financialPeriodId: Long) {
         userName = userName1
@@ -67,8 +101,10 @@ class LoginViewModel(
     fun getFinancialToken(uName: String, pwd: String) {
         userName = uName
         password = pwd
+
         if (validateUserDetails(uName, pwd)) {
             showProgressIndicator()
+            checkRememberMeStatusAndSaveDetails()
             coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
                 loginRepo.getFinancialPeriod()
                     .collect { dto ->
@@ -86,6 +122,14 @@ class LoginViewModel(
                     }
 
             }
+        }
+    }
+
+    private fun checkRememberMeStatusAndSaveDetails() {
+        userDefaults.saveRememberMeStatus(rememberMe)
+        if (rememberMe) {
+            userDefaults.saveUserName(uname = userName)
+            userDefaults.saveUserPassword(pwd = password)
         }
     }
 
@@ -125,5 +169,28 @@ class LoginViewModel(
 
     fun setPassword(pwd: String) {
         password = pwd
+    }
+
+    fun saveRememberMeStatus(checked: Boolean) {
+        rememberMe = checked
+    }
+
+    fun resetPassword(newPwd: String, confirmPwd: String) {
+        if (newPwd.isEmpty()) {
+            _errorNewPasswordMessage.postValue(stringProvider.getString(R.string.error_new_password_empty))
+        } else if (confirmPwd.isEmpty()) {
+            _errorNewPasswordMessage.postValue("")
+            _errorConfirmPasswordMessage.postValue(stringProvider.getString(R.string.error_confirm_password_empty))
+        } else if (newPwd != confirmPwd) {
+            _errorConfirmPasswordMessage.postValue(stringProvider.getString(R.string.error_new_confirm_password_not_equal))
+        }
+    }
+
+    fun checkEmailOrUsername(username: String) {
+        if (username.isEmpty()) {
+            _errorUsernameEmailMessage.postValue(stringProvider.getString(R.string.error_email_or_username_empty))
+        } else {
+            _errorUsernameEmailMessage.postValue("")
+        }
     }
 }
