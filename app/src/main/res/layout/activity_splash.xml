@@ -14,18 +14,15 @@
         android:id="@+id/splashScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blue_50">
+        android:background="@drawable/splash_bg">
 
-        <TextView
+        <ImageView
             android:id="@+id/appNameTV"
             style="@style/TextViewLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            android:textSize="36sp"
-            android:textStyle="bold|italic"
+           android:src="@drawable/logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -76,11 +76,11 @@
     <string name="error_warranty_empty_message">Please select Warranty Period from list</string>
     <string name="error_serial_number_empty_message">Please enter valid Serial Number</string>
     <string name="remember_me">Remember Me</string>
-    <string name="forgot_your_password">Forgot Your Password ?</string>
+    <string name="forgot_your_password">Forgot Your Password?</string>
     <string name="forgot_password">FORGOT PASSWORD</string>
     <string name="forgot_password_question">FORGOT PASSWORD?</string>
     <string name="forgot_password_message">Don\'t worry! It occurs. Please enter the email address or Username linked with your account.</string>
-    <string name="remember_password">Remember Password ? Login</string>
+    <string name="remember_password">Remember Password? Login</string>
     <string name="enter_username_or_email">Enter Username or Email</string>
     <string name="create_new_password">CREATE NEW PASSWORD</string>
     <string name="your_new_password_must_be_unique_from_those_previously_used">Your new password must be unique from those previously used.</string>
@@ -91,6 +91,7 @@
     <string name="error_confirm_password_empty">Please enter Confirm Password</string>
     <string name="error_new_confirm_password_not_equal">New Password and Confirm Password should be same</string>
     <string name="error_email_or_username_empty">Please enter Username or Email</string>
+    <string name="log_in">LOG IN</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

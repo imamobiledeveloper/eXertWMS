@@ -1,6 +1,5 @@
 package com.exert.wms.login
 
-import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -129,12 +128,11 @@ class ForgotPasswordActivity :
                 finish()
             }
         }
-        ss.setSpan(clickableSpan, 20, 25, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(clickableSpan, 19, 24, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         binding.rememberMePasswordTV.apply {
             text = ss
             movementMethod = LinkMovementMethod.getInstance()
-            highlightColor = Color.BLUE
         }
     }
 }
