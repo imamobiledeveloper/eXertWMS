@@ -12,6 +12,12 @@ class HomeViewModel(
     private val _loggedOut = MutableLiveData<Boolean>()
     val loggedOut: LiveData<Boolean> = _loggedOut
 
+    private val _userName = MutableLiveData<String>()
+    val userName: LiveData<String> = _userName
+
+    init {
+        _userName.postValue(userDefaults.getUserName())
+    }
     fun logoutUser() {
 //        userDefaults.clear()
         _loggedOut.postValue(true)

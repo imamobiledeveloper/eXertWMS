@@ -3,23 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/featureLayout"
-    android:background="@drawable/tv_rectangle_bg"
     android:layout_marginTop="@dimen/margin_12dp"
-    android:layout_marginStart="@dimen/margin_12dp"
-    android:layout_marginEnd="@dimen/margin_12dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/featureNameTV"
-        style="@style/TextViewLabel"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/featureIV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_10dp"
-        android:text="@string/app_name"
-        android:textColor="@color/blue"
-        android:textSize="16sp"
+        app:srcCompat="@drawable/ic_item_stocks"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/featureNameTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:layout_margin="@dimen/margin_8dp"
+        android:textColor="@color/grey_dark"
+        android:text="@string/item_stocks"
+        app:layout_constraintTop_toBottomOf="@+id/featureIV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

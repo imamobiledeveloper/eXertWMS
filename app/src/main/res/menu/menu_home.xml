@@ -3,15 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/home_menu"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/ic_home_1"
         android:title="@string/home"
         android:visible="false"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/logout_menu"
-        android:title="@string/logout"
-        android:visible="false"
+        android:id="@+id/notifications_menu"
+        android:title="@string/notifications"
+        android:icon="@drawable/ic_notification"
+        android:visible="true"
         app:showAsAction="always" />
 
 </menu>

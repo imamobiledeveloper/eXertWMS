@@ -74,10 +74,10 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
         for (i in 0 until menu!!.size()) {
             if (menu.getItem(i).title == getString(R.string.home)) {
                 menu.getItem(i).isVisible = showHomeButton == 1
-                hideBackButton()
+//                hideBackButton()
             } else if (showHomeButton == 0) {
                 menu.getItem(i).isVisible = showHomeButton != 1
-                hideBackButton()
+//                hideBackButton()
             } else {
                 menu.getItem(i).isVisible = false
                 showBackButton()
@@ -120,7 +120,8 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
                 HomeActivity.relaunch(this)
                 true
             }
-            R.id.logout_menu -> {
+
+            R.id.notifications_menu -> {
                 logOut()
                 true
             }

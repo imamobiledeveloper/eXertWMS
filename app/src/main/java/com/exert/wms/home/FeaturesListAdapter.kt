@@ -3,13 +3,14 @@ package com.exert.wms.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.HomeFeaturesListItemLayoutBinding
 
 class FeaturesListAdapter(
-    private val featuresList: List<String>,
-    private val onFeatureTextClick: (String) -> Unit
+    private val featuresList: List<FeatureDto>,
+    private val onFeatureTextClick: (FeatureDto) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -34,17 +35,19 @@ class FeaturesListAdapter(
 
     inner class FeaturesViewHolder(
         holderBinding: HomeFeaturesListItemLayoutBinding,
-        private val onFeatureTextClick: (String) -> Unit?
+        private val onFeatureTextClick: (FeatureDto) -> Unit?
     ) : RecyclerView.ViewHolder(holderBinding.root) {
-        private val featureTV: TextView = holderBinding.featureNameTV
+        private val featureText: TextView = holderBinding.featureNameTV
+        private val featureImage: AppCompatImageView = holderBinding.featureIV
         private val featureLayout: ConstraintLayout = holderBinding.featureLayout
 
-        fun bind(text: String, position: Int, selectedPosition: Int) {
-            featureTV.text = text
+        fun bind(dto: FeatureDto, position: Int, selectedPosition: Int) {
+            featureText.text = dto.name
+            featureImage.setImageResource(dto.drawableId)
             featureLayout.setOnClickListener {
 //                mSelectedItem = bindingAdapterPosition
 //                bindingAdapter?.notifyDataSetChanged()
-                onFeatureTextClick(featureTV.text.toString())
+                onFeatureTextClick(dto)
             }
         }
     }

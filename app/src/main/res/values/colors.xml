@@ -9,7 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="red">#FF1E1E</color>
-    <color name="blue">#04558B</color>
+    <color name="blue_dark">#04558B</color>
+    <color name="blue">#1392CF</color>
     <color name="blue_50">#BF3454E3</color>
     <color name="blue_light">#C1C7FB</color>
     <color name="grey_light1">#D5D5D5</color>

@@ -4,16 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityHomeBinding
-import com.exert.wms.databinding.ActivityLoginBinding
 import com.exert.wms.itemStocks.ItemStocksActivity
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseActivity
-import com.exert.wms.utils.startActivity
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @Suppress("DEPRECATION")
@@ -22,6 +22,8 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
     override val title = R.string.home
 
     override val showHomeButton: Int = 0
+    lateinit var drawerLayout: DrawerLayout
+    lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
     override fun getLayoutID(): Int = R.layout.activity_home
 
@@ -40,16 +42,25 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         setContentView(binding.root)
 
         supportActionBar?.setTitle(title)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        drawerLayout = binding.myDrawerLayout
+        actionBarDrawerToggle =
+            ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close)
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle)
+        actionBarDrawerToggle.syncState()
+
         setFeaturesList()
+
         observeViewModel()
     }
 
     private fun setFeaturesList() {
-        val featuresList = resources.getStringArray(R.array.features_list).toList()
-        binding.featuresRecyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.featuresRecyclerView.adapter = FeaturesListAdapter(featuresList) {
-            navigateToFeature(it)
+        val featuresList= FeaturesListDto().getFeaturesList()
+        binding.homeDashboardLayout.featuresRecyclerView.layoutManager= GridLayoutManager(this,3)
+        binding.homeDashboardLayout.featuresRecyclerView.adapter = FeaturesListAdapter(featuresList) {
+            navigateToFeature(it.name)
         }
     }
 
@@ -63,9 +74,10 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
     }
 
     private fun navigateToFeature(featureName: String) {
+        val featuresList = resources.getStringArray(R.array.features_list)
         when (featureName) {
-            "itemStocks" -> startActivity<ItemStocksActivity>()
-            "Stock Adjustment" -> startActivity<StockAdjustmentBaseActivity>()
+            featuresList[0] -> startActivity<ItemStocksActivity>()
+            featuresList[1]  -> startActivity<StockAdjustmentBaseActivity>()
             else -> startActivity(Intent(this@HomeActivity, ItemStocksActivity::class.java))
         }
     }
@@ -76,6 +88,12 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
     override fun onBackPressed() {
         hideKeyBoard()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            true
+        } else super.onOptionsItemSelected(item)
     }
 
     companion object {
