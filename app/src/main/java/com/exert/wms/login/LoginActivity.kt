@@ -125,6 +125,9 @@ class LoginActivity :
         mViewModel.savedUserPassword.observe(this, Observer {
             binding.passwordEditText.text=it.toEditable()
         })
+        mViewModel.rememberMeStatus.observe(this, Observer {
+            binding.rememberPasswordCheckBox.isChecked=it
+        })
     }
 
     private fun clearFieldsData() {
