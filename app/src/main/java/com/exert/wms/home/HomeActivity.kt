@@ -13,7 +13,7 @@ import com.exert.wms.R
 import com.exert.wms.databinding.ActivityHomeBinding
 import com.exert.wms.itemStocks.ItemStocksFragment
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.stockAdjustment.StockAdjustmentBaseActivity
+import com.exert.wms.stockAdjustment.StockAdjustmentBaseFragment
 import com.google.android.material.navigation.NavigationView
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -95,7 +95,9 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
                         .replace(R.id.homeFragmentContainerView, ItemStocksFragment()).commit()
                 }
                 R.id.nav_stock_adjustment -> {
-                    startActivity<StockAdjustmentBaseActivity>()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.homeFragmentContainerView, StockAdjustmentBaseFragment())
+                        .commit()
                 }
                 R.id.nav_stock_reconciliation -> {
 

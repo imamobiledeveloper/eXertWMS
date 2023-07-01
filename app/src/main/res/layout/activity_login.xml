@@ -144,6 +144,7 @@
                         android:gravity="center_vertical"
                         android:inputType="textPassword"
                         android:textColor="@color/white"
+                        android:imeOptions="actionDone"
                         android:textCursorDrawable="@drawable/white_cursor"
                         android:maxLength="25"
                         android:padding="16dp"

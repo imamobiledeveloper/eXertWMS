@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -11,42 +14,40 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.exert.wms.BR
 import com.exert.wms.R
-import com.exert.wms.databinding.ActivityStockAdjustmentBaseBinding
-import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.databinding.FragmentStockAdjustmentBaseBinding
+import com.exert.wms.mvvmbase.MVVMFragment
 import com.exert.wms.stockAdjustment.api.StockItemsDetailsDto
 import com.exert.wms.stockAdjustment.item.StockItemAdjustmentActivity
 import com.exert.wms.utils.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class StockAdjustmentBaseActivity :
-    BaseActivity<StockAdjustmentBaseViewModel, ActivityStockAdjustmentBaseBinding>() {
+class StockAdjustmentBaseFragment : MVVMFragment<StockAdjustmentBaseViewModel, FragmentStockAdjustmentBaseBinding>() {
 
     override val title = R.string.stock_adjustment
-
-    override val showHomeButton: Int = 1
-
-    override fun getLayoutID(): Int = R.layout.activity_stock_adjustment_base
 
     override val mViewModel by lazy {
         getViewModel<StockAdjustmentBaseViewModel>()
     }
 
-    override fun getBindingVariable(): Int = BR.viewModel
-
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityStockAdjustmentBaseBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        supportActionBar?.setTitle(title)
-        observeViewModel()
+    override fun getFragmentBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentStockAdjustmentBaseBinding {
+        return FragmentStockAdjustmentBaseBinding.inflate(inflater, container, false)
     }
 
+    override fun onBindData(binding: FragmentStockAdjustmentBaseBinding) {
+        binding.viewModel = mViewModel
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
+    }
     private fun observeViewModel() {
         binding.warehouseSpinner.selected { parent, position ->
             binding.warehouseSpinnerTV.text = parent?.getItemAtPosition(position).toString()
@@ -62,7 +63,7 @@ class StockAdjustmentBaseActivity :
         binding.updateButton.setOnClickListener {
             mViewModel.saveItems()
         }
-        mViewModel.isLoadingData.observe(this, Observer { status ->
+        mViewModel.isLoadingData.observe(viewLifecycleOwner, Observer { status ->
             if (status) {
                 binding.progressBar.show()
             } else {
@@ -70,18 +71,18 @@ class StockAdjustmentBaseActivity :
             }
         })
 
-        mViewModel.enableUpdateButton.observe(this, Observer {
+        mViewModel.enableUpdateButton.observe(viewLifecycleOwner, Observer {
             binding.updateButton.isEnabled = it
         })
-        mViewModel.itemsList.observe(this, Observer { list ->
-            if (list != null && list.isNotEmpty()) {
+        mViewModel.itemsList.observe(viewLifecycleOwner, Observer { list ->
+            if (list!=null && list.isNotEmpty()) {
                 binding.itemsListRecyclerView.layoutManager =
-                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 binding.itemsListRecyclerView.apply {
                     adapter = StockAdjustmentItemsListAdapter(list) {
                         navigateToItemAdjustment(it)
                     }
-                    val dividerDrawable = ContextCompat.getDrawable(context, R.drawable.divider)
+                    val dividerDrawable= ContextCompat.getDrawable(context, R.drawable.divider)
                     dividerDrawable?.let {
                         val dividerItemDecoration: RecyclerView.ItemDecoration =
                             DividerItemDecorator(it)
@@ -94,12 +95,12 @@ class StockAdjustmentBaseActivity :
                 binding.itemsListRecyclerView.hide()
             }
         })
-        mViewModel.errorWarehouse.observe(this, Observer {
+        mViewModel.errorWarehouse.observe(viewLifecycleOwner, Observer {
             if (it) {
                 val bundle = Bundle()
                 bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
                 bundle.putSerializable(Constants.WAREHOUSE, mViewModel.getWarehouseObject())
-                val intent = Intent(this, StockItemAdjustmentActivity::class.java)
+                val intent = Intent(requireContext(), StockItemAdjustmentActivity::class.java)
                 intent.putExtras(bundle)
                 startForResult.launch(intent)
             } else {
@@ -110,7 +111,7 @@ class StockAdjustmentBaseActivity :
             }
         })
 
-        mViewModel.warehouseStringList.observe(this, Observer {
+        mViewModel.warehouseStringList.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 setWarehouseList(it)
             }
@@ -138,19 +139,14 @@ class StockAdjustmentBaseActivity :
 
     private fun setWarehouseList(stringList: List<String>) {
         val adapter = SpinnerCustomAdapter(
-            this,
+            requireContext(),
             stringList.toTypedArray(),
             android.R.layout.simple_spinner_item
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_layout)
         binding.warehouseSpinner.adapter = adapter
     }
-
-    override fun onBindData(binding: ActivityStockAdjustmentBaseBinding) {
-        binding.viewModel = mViewModel
-    }
-
     private fun navigateToItemAdjustment(itemName: String) {
-        startActivity<StockItemAdjustmentActivity>()
+        activity?.startActivity<StockItemAdjustmentActivity>()
     }
 }

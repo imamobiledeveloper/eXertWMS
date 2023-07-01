@@ -11,6 +11,7 @@ import com.exert.wms.R
 import com.exert.wms.databinding.ActivityLoginBinding
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.utils.DoneOnEditorActionListener
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
 import com.exert.wms.utils.toEditable
@@ -56,6 +57,7 @@ class LoginActivity :
         binding.rememberForgotPwdLayout.setOnClickListener {
             startActivity<ForgotPasswordActivity>()
         }
+        binding.passwordEditText.setOnEditorActionListener(DoneOnEditorActionListener() )
     }
 
     private fun setTextWatchers() {
