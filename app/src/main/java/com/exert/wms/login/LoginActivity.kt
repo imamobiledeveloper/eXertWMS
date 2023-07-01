@@ -61,10 +61,10 @@ class LoginActivity :
     private fun setTextWatchers() {
         binding.usernameEditText.nextFocusForwardId = binding.passwordEditText.id
         binding.usernameEditText.doOnTextChanged { text, _, _, _ ->
-            mViewModel.setUserName(text.toString())
+            mViewModel.setUserName(text.toString().trim())
         }
         binding.passwordEditText.doOnTextChanged { text, _, _, _ ->
-            mViewModel.setPassword(text.toString())
+            mViewModel.setPassword(text.toString().trim())
         }
     }
 

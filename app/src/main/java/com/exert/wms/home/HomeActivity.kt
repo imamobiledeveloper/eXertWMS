@@ -1,19 +1,20 @@
 package com.exert.wms.home
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.fragment.NavHostFragment
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityHomeBinding
-import com.exert.wms.itemStocks.ItemStocksActivity
+import com.exert.wms.itemStocks.ItemStocksFragment
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseActivity
+import com.google.android.material.navigation.NavigationView
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 @Suppress("DEPRECATION")
@@ -23,7 +24,13 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
     override val showHomeButton: Int = 0
     lateinit var drawerLayout: DrawerLayout
+    var navViewListener: NavigationView.OnNavigationItemSelectedListener? = null
+
     lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+
+    val navController by lazy {
+        (supportFragmentManager.findFragmentById(R.id.homeFragmentContainerView) as NavHostFragment).navController
+    }
 
     override fun getLayoutID(): Int = R.layout.activity_home
 
@@ -44,6 +51,32 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         supportActionBar?.setTitle(title)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        setUpNavigationDrawer()
+        observeViewModel()
+        setFirstItemNavigationView(R.id.homeScreen)
+    }
+
+    override fun setTitle(title: CharSequence?) {
+        supportActionBar?.title = title
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navHost = getNavHostFragment()
+        return if (navHost.childFragmentManager.backStackEntryCount < 1) {
+            finish()
+            false
+        } else {
+            super.onBackPressed()
+            false
+        }
+//        return super.onSupportNavigateUp()
+    }
+
+    private fun getNavHostFragment(): NavHostFragment {
+        return supportFragmentManager.findFragmentById(R.id.homeFragmentContainerView) as NavHostFragment
+    }
+
+    private fun setUpNavigationDrawer() {
         drawerLayout = binding.myDrawerLayout
         actionBarDrawerToggle =
             ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close)
@@ -51,18 +84,67 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
-//        setFeaturesList()
+        navViewListener = NavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.homeFragmentContainerView, HomeFragment()).commit()
+                }
+                R.id.nav_item_stocks -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.homeFragmentContainerView, ItemStocksFragment()).commit()
+                }
+                R.id.nav_stock_adjustment -> {
+                    startActivity<StockAdjustmentBaseActivity>()
+                }
+                R.id.nav_stock_reconciliation -> {
 
-        observeViewModel()
+                }
+                R.id.nav_transfer_out -> {
 
-        HomeNavigationFragment()
+                }
+                R.id.nav_transfer_in -> {
+
+                }
+                R.id.nav_delivery_receipt -> {
+
+                }
+                R.id.nav_delivery_note -> {
+
+                }
+                R.id.nav_purchase_return -> {
+
+                }
+                R.id.nav_sales_return -> {
+
+                }
+                R.id.nav_transactions -> {
+
+                }
+                R.id.nav_logout -> {
+
+                }
+            }
+
+            item.isChecked = true
+            setTitle(item.title)
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+
+        }
+        binding.navigationView.setNavigationItemSelectedListener(navViewListener)
     }
 
-    private fun setFeaturesList() {
-        val featuresList= FeaturesListDto().getFeaturesList()
-        binding.homeDashboardLayout.featuresRecyclerView.layoutManager= GridLayoutManager(this,3)
-        binding.homeDashboardLayout.featuresRecyclerView.adapter = FeaturesListAdapter(featuresList) {
-            navigateToFeature(it.name)
+    private fun setFirstItemNavigationView(screenResourceId: Int) {
+        binding.navigationView.setCheckedItem(screenResourceId)
+        binding.navigationView.menu.performIdentifierAction(screenResourceId, 0)
+    }
+
+    fun getNavigationView() = binding.navigationView
+
+    fun setSelectedItem(id: Int) {
+        navViewListener?.let {
+            it.onNavigationItemSelected(binding.navigationView.menu.getItem(1))
         }
     }
 
@@ -75,20 +157,14 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         }
     }
 
-    private fun navigateToFeature(featureName: String) {
-        val featuresList = resources.getStringArray(R.array.features_list)
-        when (featureName) {
-            featuresList[0] -> startActivity<ItemStocksActivity>()
-            featuresList[1]  -> startActivity<StockAdjustmentBaseActivity>()
-            else -> startActivity(Intent(this@HomeActivity, ItemStocksActivity::class.java))
-        }
-    }
-
     override fun onBindData(binding: ActivityHomeBinding) {
         binding.viewModel = mViewModel
     }
 
     override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
         hideKeyBoard()
     }
 
@@ -100,10 +176,10 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
     companion object {
         fun relaunch(activity: Activity) {
-            val intent = Intent(activity, HomeActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            activity.startActivity(intent)
-            activity.finishAffinity()
+//            val intent = Intent(activity, HomeActivity::class.java)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//            activity.startActivity(intent)
+//            activity.finishAffinity()
         }
     }
 }

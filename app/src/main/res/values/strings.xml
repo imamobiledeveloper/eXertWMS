@@ -97,7 +97,15 @@
     <string name="nav_close">Close</string>
     <string name="notifications">Notifications</string>
     <string name="hello">Hello,</string>
-    <string name="user_name">%s !</string>
+    <string name="user_name">%s!</string>
+    <string name="stock_reconciliation">Stock Reconciliation</string>
+    <string name="transfer_out">Transfer Out</string>
+    <string name="transfer_in">Transfer In</string>
+    <string name="delivery_receipt">Delivery Receipt</string>
+    <string name="delivery_note">Delivery Note</string>
+    <string name="purchase_return">Purchase Return</string>
+    <string name="sales_return">Sales Return</string>
+    <string name="transactions">Transactions</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

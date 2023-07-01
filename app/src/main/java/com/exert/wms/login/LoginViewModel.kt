@@ -62,11 +62,9 @@ class LoginViewModel(
         rememberMe = getRememberMeCheckBoxStatus()
         _rememberMeStatus.postValue(rememberMe)
         if (rememberMe) {
-            userName = getUserName()
-            password = getUserPassword()
+            _savedUserName.value = (getUserName())
+            _savedUserPassword.value = (getUserPassword())
         }
-        _savedUserName.value = (userName)
-        _savedUserPassword.value = (password)
     }
 
     private fun getUserName() = userDefaults.getUserName()
@@ -126,9 +124,9 @@ class LoginViewModel(
     }
 
     private fun checkRememberMeStatusAndSaveDetails() {
+        userDefaults.saveUserName(uname = userName)
         userDefaults.saveRememberMeStatus(rememberMe)
         if (rememberMe) {
-            userDefaults.saveUserName(uname = userName)
             userDefaults.saveUserPassword(pwd = password)
         }
     }
@@ -164,11 +162,11 @@ class LoginViewModel(
     }
 
     fun setUserName(uName: String) {
-        userName = uName
+        userName = uName.trim()
     }
 
     fun setPassword(pwd: String) {
-        password = pwd
+        password = pwd.trim()
     }
 
     fun saveRememberMeStatus(checked: Boolean) {

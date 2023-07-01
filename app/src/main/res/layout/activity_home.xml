@@ -25,23 +25,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/homeFragmentContainerView"
+                android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <include
-                    android:id="@+id/homeDashboardLayout"
-                    layout="@layout/home_dashboard_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:viewModel="@{viewModel}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="0dp"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/home_nav_graph"/>
 
             <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navigationView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"

@@ -4,8 +4,45 @@
     tools:ignore="HardcodedText">
 
     <item
-        android:id="@+id/nav_settings"
-        android:title="Settings" />
+        android:id="@+id/nav_home"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/nav_item_stocks"
+        android:title="@string/item_stocks" />
+
+    <item
+        android:id="@+id/nav_stock_adjustment"
+        android:title="@string/stock_adjustment" />
+
+    <item
+        android:id="@+id/nav_stock_reconciliation"
+        android:title="@string/stock_reconciliation" />
+
+    <item
+        android:id="@+id/nav_transfer_out"
+        android:title="@string/transfer_out" />
+
+    <item
+        android:id="@+id/nav_transfer_in"
+        android:title="@string/transfer_in" />
+
+    <item
+        android:id="@+id/nav_delivery_receipt"
+        android:title="@string/delivery_receipt" />
+
+    <item
+        android:id="@+id/nav_delivery_note"
+        android:title="@string/delivery_note" />
+    <item
+        android:id="@+id/nav_purchase_return"
+        android:title="@string/purchase_return" />
+    <item
+        android:id="@+id/nav_sales_return"
+        android:title="@string/sales_return" />
+    <item
+        android:id="@+id/nav_transactions"
+        android:title="@string/transactions" />
 
     <item
         android:id="@+id/nav_logout"

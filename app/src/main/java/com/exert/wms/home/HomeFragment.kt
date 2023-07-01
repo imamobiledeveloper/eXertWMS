@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.exert.wms.R
 import com.exert.wms.databinding.FragmentHomeBinding
 import com.exert.wms.mvvmbase.MVVMFragment
+import com.google.android.material.navigation.NavigationView
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class HomeFragment : MVVMFragment<HomeViewModel, FragmentHomeBinding>() {
+
+    var navigationView: NavigationView? = null
 
     override val mViewModel by lazy {
         getViewModel<HomeViewModel>()
@@ -27,10 +31,14 @@ class HomeFragment : MVVMFragment<HomeViewModel, FragmentHomeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setFeaturesList()
         observeViewModel()
+
+        navigationView = (activity as HomeActivity).getNavigationView()
     }
 
     private fun observeViewModel() {
-
+        mViewModel.userName.observe(viewLifecycleOwner) { name ->
+            binding.userNameTV.text = getString(R.string.user_name, name)
+        }
     }
 
     override fun onBindData(binding: FragmentHomeBinding) {
@@ -48,11 +56,13 @@ class HomeFragment : MVVMFragment<HomeViewModel, FragmentHomeBinding>() {
     private fun navigateToFeature(featureName: String) {
         val featuresList = resources.getStringArray(R.array.features_list)
         when (featureName) {
+            featuresList[0] -> (activity as HomeActivity).setSelectedItem(R.id.itemStocksScreen)
+            else -> findNavController().navigate(HomeFragmentDirections.actionHomeToItemStocks())
+
 //            featuresList[0] -> startActivity<ItemStocksActivity>()
 //            featuresList[1]  -> startActivity<StockAdjustmentBaseActivity>()
 //            else -> startActivity(Intent(this@HomeActivity, ItemStocksActivity::class.java))
         }
     }
-
 
 }
