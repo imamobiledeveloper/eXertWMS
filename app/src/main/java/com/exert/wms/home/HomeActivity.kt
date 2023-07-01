@@ -51,9 +51,11 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
-        setFeaturesList()
+//        setFeaturesList()
 
         observeViewModel()
+
+        HomeNavigationFragment()
     }
 
     private fun setFeaturesList() {
