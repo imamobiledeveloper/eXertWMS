@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.databinding.ViewDataBinding
@@ -106,4 +107,8 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
         else this.getSerializableExtra(key) as T
     }
 
+    fun setTextViewText(textView: TextView, text: String, visible: Int) {
+        textView.text = text
+        textView.visibility = visible
+    }
 }

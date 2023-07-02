@@ -22,7 +22,7 @@
             android:id="@+id/itemStocksScrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="16dp"
+            android:layout_marginBottom="16dp"
             android:fillViewport="true"
             app:layout_constraintBottom_toTopOf="@+id/statusButton"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,6 +47,7 @@
                     layout="@layout/item_names_manufacture_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     app:labelOne="@{@string/item_name_english}"
                     app:labelTwo="@{@string/item_name_arabic}"
                     app:labelThree="@{@string/stock}"
@@ -60,11 +61,12 @@
 
         </ScrollView>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/statusButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/ButtonStyle"
+            android:layout_margin="16dp"
             android:enabled="false"
             android:text="@string/status"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -24,8 +24,10 @@
     <string name="warehouse_status">Warehouse Stock</string>
     <string name="emptyString" />
     <string name="item_part_code">Item Part Code</string>
+    <string name="item_part_code_hint">Enter Item Part Code</string>
     <string name="error_item_part_code">Please select Item Part Code</string>
     <string name="item_serial_no">Item Serial No</string>
+    <string name="item_serial_no_hint">enter Item Serial No</string>
     <string name="error_item_serial_no">Please select Item Serial No</string>
     <string name="item_name_english">Item Name (English)</string>
     <string name="item_name_arabic">Item Name (Arabic)</string>
@@ -42,6 +44,8 @@
     <string name="serial_nos_list">Item Serial Numbers List</string>
     <string name="view">VIEW</string>
     <string name="error_item_partcode_serial_no_empty_message">Please enter Item Part code or Serial number</string>
+    <string name="error_item_serial_no_message">Please enter Item Serial number or scan barcode</string>
+    <string name="error_item_part_code_message">Please enter Item Part code or scan barcode</string>
     <string name="manufacture_date">Manufacture Date</string>
     <string name="warranty_period">Warranty Period</string>
     <string name="serial_no">Serial No</string>

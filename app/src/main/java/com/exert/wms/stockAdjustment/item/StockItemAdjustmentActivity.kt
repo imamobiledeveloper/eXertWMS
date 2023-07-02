@@ -3,6 +3,7 @@ package com.exert.wms.stockAdjustment.item
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.RadioButton
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -48,19 +49,11 @@ class StockItemAdjustmentActivity :
 
         supportActionBar?.setTitle(title)
         observeViewModel()
-        binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.setStartIconOnClickListener {
-            showBriefToastMessage(
-                "Clicked Item Part code",
-                coordinateLayout,
-                getColor(R.color.blue_50)
-            )
+        binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.setEndIconOnClickListener {
+            mViewModel.searchItemWithPartCode(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString())
         }
-        binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.setStartIconOnClickListener {
-            showBriefToastMessage(
-                "Clicked Item Serial number",
-                coordinateLayout,
-                getColor(R.color.blue_50)
-            )
+        binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.setEndIconOnClickListener {
+            mViewModel.searchItemWithSerialNumber(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
         }
         binding.adjustmentQuantityEditTextLayout.setEndIconOnClickListener {
             mViewModel.checkItemDetailsEntered(
@@ -68,6 +61,55 @@ class StockItemAdjustmentActivity :
                 binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString(),
             )
         }
+        binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.onFocusChangeListener =
+            View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    setTextViewText(
+                        binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV,
+                        "",
+                        View.GONE
+                    )
+                } else {
+                    if (binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.isNullOrEmpty()) {
+                        setTextViewText(
+                            binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV,
+                            getString(R.string.item_part_code_hint),
+                            View.VISIBLE
+                        )
+                    } else {
+                        setTextViewText(
+                            binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV,
+                            "",
+                            View.GONE
+                        )
+                    }
+                }
+            }
+
+        binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.onFocusChangeListener =
+            View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    setTextViewText(
+                        binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV,
+                        "",
+                        View.GONE
+                    )
+                } else {
+                    if (binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.isNullOrEmpty()) {
+                        setTextViewText(
+                            binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV,
+                            getString(R.string.item_serial_no_hint),
+                            View.VISIBLE
+                        )
+                    } else {
+                        setTextViewText(
+                            binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV,
+                            "",
+                            View.GONE
+                        )
+                    }
+                }
+            }
     }
 
     private fun observeViewModel() {
@@ -80,11 +122,19 @@ class StockItemAdjustmentActivity :
                 binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString(),
             )
         }
-        binding.itemPartCodeSerialNoLayout.searchItemPartCodeIV.setOnClickListener {
-            mViewModel.searchItemWithPartCode(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString())
+        binding.itemPartCodeSerialNoLayout.scanItemPartCodeIV.setOnClickListener {
+            showBriefToastMessage(
+                "Clicked Item Part code",
+                coordinateLayout,
+                getColor(R.color.blue_50)
+            )
         }
-        binding.itemPartCodeSerialNoLayout.searchItemSerialNoIV.setOnClickListener {
-            mViewModel.searchItemWithSerialNumber(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
+        binding.itemPartCodeSerialNoLayout.scanItemSerialNoIV.setOnClickListener {
+            showBriefToastMessage(
+                "Clicked Item Serial number",
+                coordinateLayout,
+                getColor(R.color.blue_50)
+            )
         }
         binding.radioButtonParent.setOnCheckedChangeListener { radioGroup, checkedId ->
             val radioButton = radioGroup.findViewById<RadioButton>(checkedId)

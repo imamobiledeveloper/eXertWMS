@@ -37,19 +37,13 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
 
         supportActionBar?.setTitle(title)
         observeViewModel()
-        binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.setStartIconOnClickListener {
-            showBriefToastMessage(
-                "Clicked Item Part code",
-                coordinateLayout,
-                getColor(R.color.blue_50)
-            )
+        binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.setEndIconOnClickListener {
+            hideKeyBoard()
+            mViewModel.searchItemWithPartCode(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString())
         }
-        binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.setStartIconOnClickListener {
-            showBriefToastMessage(
-                "Clicked Item Serial number",
-                coordinateLayout,
-                getColor(R.color.blue_50)
-            )
+        binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.setEndIconOnClickListener {
+            hideKeyBoard()
+            mViewModel.searchItemWithSerialNumber(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
         }
     }
 
@@ -57,13 +51,19 @@ class ItemStocksActivity : BaseActivity<ItemStocksViewModel, ActivityItemStocksB
         binding.statusButton.setOnClickListener {
             mViewModel.checkItemStock()
         }
-        binding.itemPartCodeSerialNoLayout.searchItemPartCodeIV.setOnClickListener {
-            hideKeyBoard()
-            mViewModel.searchItemWithPartCode(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString())
+        binding.itemPartCodeSerialNoLayout.scanItemPartCodeIV.setOnClickListener {
+            showBriefToastMessage(
+                "Clicked Item Part code",
+                coordinateLayout,
+                getColor(R.color.blue_50)
+            )
         }
-        binding.itemPartCodeSerialNoLayout.searchItemSerialNoIV.setOnClickListener {
-            hideKeyBoard()
-            mViewModel.searchItemWithSerialNumber(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
+        binding.itemPartCodeSerialNoLayout.scanItemSerialNoIV.setOnClickListener {
+            showBriefToastMessage(
+                "Clicked Item Serial number",
+                coordinateLayout,
+                getColor(R.color.blue_50)
+            )
         }
         mViewModel.isLoadingData.observe(this, Observer { status ->
             if (status) {

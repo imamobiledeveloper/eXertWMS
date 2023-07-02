@@ -20,6 +20,7 @@
 
     <color name="green">#3EB92F</color>
     <color name="green_light">#98C400</color>
+    <color name="green_dark">#283300</color>
     <color name="grey">#9A9A9A</color>
     <color name="grey_light">#EFEFEF</color>
     <color name="grey_very_light">#F3F3F3</color>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.exert.wms.R
 import com.exert.wms.databinding.FragmentItemStocksBinding
@@ -37,33 +38,83 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
 
-        binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.setStartIconOnClickListener {
+        binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.setEndIconOnClickListener {
+            hideKeyBoard()
+            mViewModel.searchItemWithPartCode(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString())
+        }
+        binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.setEndIconOnClickListener {
+            hideKeyBoard()
+            mViewModel.searchItemWithSerialNumber(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
+        }
+
+        binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.onFocusChangeListener =
+            View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    setTextViewText(binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV, "", View.GONE)
+                } else {
+                    if (binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.isNullOrEmpty()) {
+                        setTextViewText(
+                            binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV,
+                            getString(R.string.item_part_code_hint),
+                            View.VISIBLE
+                        )
+                    } else {
+                        setTextViewText(binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV, "", View.GONE)
+                    }
+                }
+            }
+
+        binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.onFocusChangeListener =
+            View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    setTextViewText(binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV, "", View.GONE)
+                } else {
+                    if (binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.isNullOrEmpty()) {
+                        setTextViewText(
+                            binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV,
+                            getString(R.string.item_serial_no_hint),
+                            View.VISIBLE
+                        )
+                    } else {
+                        setTextViewText(binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV, "", View.GONE)
+                    }
+                }
+            }
+    }
+
+    private fun observeViewModel() {
+        val sdk = android.os.Build.VERSION.SDK_INT;
+        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            binding.itemNameManufactureLayout.itemStockEditText.setBackgroundDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.edittext_disabled_rectangle_bg
+                )
+            );
+        } else {
+            binding.itemNameManufactureLayout.itemStockEditText.background =
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.edittext_disabled_rectangle_bg
+                )
+        }
+
+        binding.statusButton.setOnClickListener {
+            mViewModel.checkItemStock()
+        }
+        binding.itemPartCodeSerialNoLayout.scanItemPartCodeIV.setOnClickListener {
             showBriefToastMessage(
                 "Clicked Item Part code",
                 coordinateLayout,
                 requireActivity().getColor(R.color.blue_50)
             )
         }
-        binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.setStartIconOnClickListener {
+        binding.itemPartCodeSerialNoLayout.scanItemSerialNoIV.setOnClickListener {
             showBriefToastMessage(
                 "Clicked Item Serial number",
                 coordinateLayout,
                 requireActivity().getColor(R.color.blue_50)
             )
-        }
-    }
-
-    private fun observeViewModel() {
-        binding.statusButton.setOnClickListener {
-            mViewModel.checkItemStock()
-        }
-        binding.itemPartCodeSerialNoLayout.searchItemPartCodeIV.setOnClickListener {
-            hideKeyBoard()
-            mViewModel.searchItemWithPartCode(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString())
-        }
-        binding.itemPartCodeSerialNoLayout.searchItemSerialNoIV.setOnClickListener {
-            hideKeyBoard()
-            mViewModel.searchItemWithSerialNumber(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
         }
         mViewModel.isLoadingData.observe(viewLifecycleOwner, Observer { status ->
             if (status) {
@@ -120,7 +171,7 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
                 enableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
-                    getString(R.string.error_item_partcode_serial_no_empty_message)
+                    getString(R.string.error_item_part_code_message)
                 )
             } else {
                 disableErrorMessage(
@@ -134,7 +185,7 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
                 enableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout,
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
-                    getString(R.string.error_item_partcode_serial_no_empty_message)
+                    getString(R.string.error_item_serial_no_message)
                 )
             } else {
                 disableErrorMessage(

@@ -94,11 +94,6 @@ class LoginActivity :
         }
     }
 
-    private fun setTextViewText(textView: TextView, text: String, visible: Int) {
-        textView.text = text
-        textView.visibility = visible
-    }
-
     private fun setTextWatchers() {
         binding.usernameEditText.nextFocusForwardId = binding.passwordEditText.id
         binding.usernameEditText.doOnTextChanged { text, _, _, _ ->

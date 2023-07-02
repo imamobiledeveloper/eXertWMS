@@ -11,6 +11,12 @@
         <item name="android:textColor">@color/grey_dark</item>
     </style>
 
+    <style name="TextViewHintLabel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:textColor">@color/grey_light1</item>
+    </style>
+
     <style name="TextInputLayout_White">
         <item name="android:padding">0dp</item>
         <item name="android:textColorHint">@color/grey</item>

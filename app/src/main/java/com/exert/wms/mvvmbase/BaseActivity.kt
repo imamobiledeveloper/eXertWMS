@@ -9,6 +9,7 @@ import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -38,7 +39,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
 
     private var sessionExpirationDialog: Disposable? = null
 
-    private val logoutManager:LogoutManager by inject()
+    private val logoutManager: LogoutManager by inject()
 
     @LayoutRes
     abstract fun getLayoutID(): Int
@@ -166,9 +167,8 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
 //    inline fun <reified T : Activity> Context.createIntent(vararg extras: Pair<String, Any?>) =
 //        Intent(this, T::class.java).apply { putExtras(bundleOf(*extras)) }
 
-    fun <T : Serializable?> getSerializable(activity: Activity, name: String, clazz: Class<T>): T
-    {
-        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+    fun <T : Serializable?> getSerializable(activity: Activity, name: String, clazz: Class<T>): T {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             activity.intent.getSerializableExtra(name, clazz)!!
         else
             activity.intent.getSerializableExtra(name) as T
@@ -204,13 +204,13 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
         textInputLayout: TextInputLayout,
         editTextLayout: TextInputEditText,
         message: String,
-        requestFocus:Boolean=true
+        requestFocus: Boolean = true
     ) {
         if (!textInputLayout.isErrorEnabled) {
             textInputLayout.isErrorEnabled = true
             editTextLayout.isSelected = true
             textInputLayout.error = message
-            if(requestFocus) {
+            if (requestFocus) {
                 editTextLayout.requestFocus()
             }
             editTextLayout.text?.let { editTextLayout.setSelection(it.length) }
@@ -224,5 +224,10 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
         textInputLayout.isErrorEnabled = false
         editTextLayout.isSelected = false
         textInputLayout.clearFocus()
+    }
+
+    fun setTextViewText(textView: TextView, text: String, visible: Int) {
+        textView.text = text
+        textView.visibility = visible
     }
 }
