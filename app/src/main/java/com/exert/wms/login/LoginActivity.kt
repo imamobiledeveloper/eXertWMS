@@ -3,6 +3,9 @@ package com.exert.wms.login
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.View.OnFocusChangeListener
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
@@ -57,7 +60,43 @@ class LoginActivity :
         binding.rememberForgotPwdLayout.setOnClickListener {
             startActivity<ForgotPasswordActivity>()
         }
-        binding.passwordEditText.setOnEditorActionListener(DoneOnEditorActionListener() )
+        binding.passwordEditText.setOnEditorActionListener(DoneOnEditorActionListener())
+
+        binding.usernameEditText.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                setTextViewText(binding.usernameHintTV, "", View.GONE)
+            } else {
+                if (binding.usernameEditText.text.isNullOrEmpty()) {
+                    setTextViewText(
+                        binding.usernameHintTV,
+                        getString(R.string.enter_password),
+                        View.VISIBLE
+                    )
+                } else {
+                    setTextViewText(binding.usernameHintTV, "", View.GONE)
+                }
+            }
+        }
+        binding.passwordEditText.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                setTextViewText(binding.passwordHintTV, "", View.GONE)
+            } else {
+                if (binding.passwordEditText.text.isNullOrEmpty()) {
+                    setTextViewText(
+                        binding.passwordHintTV,
+                        getString(R.string.enter_password),
+                        View.VISIBLE
+                    )
+                } else {
+                    setTextViewText(binding.passwordHintTV, "", View.GONE)
+                }
+            }
+        }
+    }
+
+    private fun setTextViewText(textView: TextView, text: String, visible: Int) {
+        textView.text = text
+        textView.visibility = visible
     }
 
     private fun setTextWatchers() {
@@ -122,13 +161,15 @@ class LoginActivity :
             }
         })
         mViewModel.savedUserName.observe(this, Observer {
-            binding.usernameEditText.text=it.toEditable()
+            binding.usernameEditText.text = it.toEditable()
+            setTextViewText(binding.usernameHintTV, "", View.VISIBLE)
         })
         mViewModel.savedUserPassword.observe(this, Observer {
-            binding.passwordEditText.text=it.toEditable()
+            binding.passwordEditText.text = it.toEditable()
+            setTextViewText(binding.passwordHintTV, "", View.VISIBLE)
         })
         mViewModel.rememberMeStatus.observe(this, Observer {
-            binding.rememberPasswordCheckBox.isChecked=it
+            binding.rememberPasswordCheckBox.isChecked = it
         })
     }
 
