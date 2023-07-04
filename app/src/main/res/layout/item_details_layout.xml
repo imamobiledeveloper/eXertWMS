@@ -34,13 +34,11 @@
 
         <TextView
             android:id="@+id/itemDetailsLabel"
-            style="@style/TextViewLabel"
+            style="@style/TextViewHeaderBlueLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/item_details"
-            android:textColor="@color/blue"
-            android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,8 +47,8 @@
             android:id="@+id/itemNameEnglishLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="20dp"
             android:layout_marginTop="@dimen/margin_15dp"
+            android:minHeight="20dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,31 +56,35 @@
 
             <TextView
                 android:id="@+id/itemNameEnglishLabel"
-                style="@style/TextViewLabel"
+                style="@style/TextViewGreyLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:text="@{labelOne}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/item_name_english" />
 
-            <View
-                android:layout_width="@dimen/margin_10dp"
-                android:layout_height="20dp" />
+            <TextView
+                style="@style/TextViewGreyLabel"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="0.15"
+                android:gravity="center"
+                android:text="@string/semicolon" />
 
             <TextView
                 android:id="@+id/itemNameEnglishEditText"
-                style="@style/TextViewBoldLabel"
+                style="@style/TextViewBold14Label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="sample item name sample item name"
+                android:layout_weight="1.15"
                 android:text="@{itemDto.ItemName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishLabel"
+                tools:text="sample item name sample item name" />
 
         </LinearLayout>
 
@@ -90,9 +92,8 @@
             android:id="@+id/itemNameArabicLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="40dp"
+            android:layout_marginTop="@dimen/margin_8dp"
             android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/margin_10dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,31 +101,36 @@
 
             <TextView
                 android:id="@+id/itemNameArabicLabel"
-                style="@style/TextViewLabel"
+                style="@style/TextViewGreyLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:text="@{labelTwo}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/item_name_arabic" />
 
-            <View
-                android:layout_width="@dimen/margin_10dp"
-                android:layout_height="20dp" />
+            <TextView
+                style="@style/TextViewGreyLabel"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="0.15"
+                android:gravity="center"
+                android:text="@string/semicolon" />
 
             <TextView
                 android:id="@+id/itemNameArabicEditText"
-                style="@style/TextViewBoldLabel"
+                style="@style/TextViewBold14Label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="sample item name arabic"
+                android:layout_weight="1.15"
+                android:padding="@dimen/margin_5dp"
                 android:text="@{labelTwo == (@string/manufacturer) ? itemDto.manufacturer : itemDto.ItemNameAlias}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/itemNameArabicLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/itemNameArabicLabel"
+                tools:text="sample item name arabic" />
 
         </LinearLayout>
 
@@ -132,40 +138,44 @@
             android:id="@+id/itemStockLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="40dp"
+            android:layout_marginTop="@dimen/margin_8dp"
             android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/margin_10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemNameArabicLayout">
 
             <TextView
                 android:id="@+id/itemStockLabel"
-                style="@style/TextViewLabel"
+                style="@style/TextViewGreyLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:text="@{labelThree}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/stock" />
 
-            <View
-                android:layout_width="@dimen/margin_10dp"
-                android:layout_height="20dp" />
+            <TextView
+                style="@style/TextViewGreyLabel"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="0.15"
+                android:gravity="center"
+                android:text="@string/semicolon" />
 
             <TextView
                 android:id="@+id/itemStockEditText"
-                style="@style/TextViewBoldLabel"
+                style="@style/TextViewBold14Label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="1000.00"
+                android:layout_weight="1.15"
+                android:padding="@dimen/margin_5dp"
                 android:text="@{labelThree == (@string/part_code) ? itemDto.itemPartCode : itemDto.getStockString()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/itemStockLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/itemStockLabel"
+                tools:text="1000.00" />
 
         </LinearLayout>
 
@@ -173,8 +183,7 @@
             android:id="@+id/itemManufactureLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10dp"
-            android:minHeight="40dp"
+            android:layout_marginTop="@dimen/margin_8dp"
             android:gravity="center_vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -182,31 +191,36 @@
 
             <TextView
                 android:id="@+id/itemManufactureLabel"
-                style="@style/TextViewLabel"
+                style="@style/TextViewGreyLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.7"
                 android:text="@{labelFour}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/manufacturer" />
 
-            <View
-                android:layout_width="@dimen/margin_10dp"
-                android:layout_height="20dp" />
+            <TextView
+                style="@style/TextViewGreyLabel"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="0.15"
+                android:gravity="center"
+                android:text="@string/semicolon" />
 
             <TextView
                 android:id="@+id/itemManufactureEditText"
-                style="@style/TextViewBoldLabel"
+                style="@style/TextViewBold14Label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="Item manufacturer"
+                android:layout_weight="1.15"
+                android:padding="@dimen/margin_5dp"
                 android:text="@{labelFour == (@string/total_stock) ? itemDto.getStockString() : itemDto.Manufacturer}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/itemManufactureLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/itemManufactureLabel"
+                tools:text="Item manufacturer" />
 
         </LinearLayout>
 
@@ -214,11 +228,11 @@
             android:id="@+id/dividerView"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/grey"
             android:layout_marginTop="15dp"
+            android:background="@color/grey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemManufactureLayout"/>
+            app:layout_constraintTop_toBottomOf="@+id/itemManufactureLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

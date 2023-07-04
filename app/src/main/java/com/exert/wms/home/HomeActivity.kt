@@ -22,7 +22,10 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
     override val title = R.string.home
 
-    override val showHomeButton: Int = 0
+    private var showNavigationButton: Int = 0
+
+    override val showHomeButton: Int = showNavigationButton
+
     lateinit var drawerLayout: DrawerLayout
     var navViewListener: NavigationView.OnNavigationItemSelectedListener? = null
 
@@ -87,14 +90,17 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         navViewListener = NavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
+                    showNavigationButton=0
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.homeFragmentContainerView, HomeFragment()).commit()
                 }
                 R.id.nav_item_stocks -> {
+                    showNavigationButton=1
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.homeFragmentContainerView, ItemStocksFragment()).commit()
                 }
                 R.id.nav_stock_adjustment -> {
+                    showNavigationButton=1
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.homeFragmentContainerView, StockAdjustmentBaseFragment())
                         .commit()
@@ -124,7 +130,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
                 }
                 R.id.nav_logout -> {
-
+                    logOut()
                 }
             }
 
@@ -146,7 +152,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
     fun setSelectedItem(id: Int) {
         navViewListener?.let {
-            it.onNavigationItemSelected(binding.navigationView.menu.getItem(1))
+            it.onNavigationItemSelected(binding.navigationView.menu.getItem(id))
         }
     }
 

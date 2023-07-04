@@ -36,14 +36,14 @@
             android:id="@+id/itemNameEnglishLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_12dp"
+            android:layout_marginTop="@dimen/margin_15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/itemNameEnglishLabel"
-                style="@style/TextViewLabel"
+                style="@style/TextViewBold14Label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{labelOne}"
@@ -56,7 +56,7 @@
                 android:id="@+id/itemNameEnglishEditText"
                 style="@style/EditTextDisabledStyle"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="50dp"
                 android:text="@{itemDto.ItemName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,14 +68,14 @@
             android:id="@+id/itemNameArabicLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_12dp"
+            android:layout_marginTop="@dimen/margin_15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishLayout">
 
             <TextView
                 android:id="@+id/itemNameArabicLabel"
-                style="@style/TextViewLabel"
+                style="@style/TextViewBold14Label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{labelTwo}"
@@ -88,7 +88,7 @@
                 android:id="@+id/itemNameArabicEditText"
                 style="@style/EditTextDisabledStyle"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="50dp"
                 android:text="@{labelTwo == (@string/manufacturer) ? itemDto.manufacturer : itemDto.ItemNameAlias}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,14 +100,14 @@
             android:id="@+id/itemStockLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_12dp"
+            android:layout_marginTop="@dimen/margin_15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemNameArabicLayout">
 
             <TextView
                 android:id="@+id/itemStockLabel"
-                style="@style/TextViewLabel"
+                style="@style/TextViewBold14Label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{labelThree}"
@@ -120,7 +120,7 @@
                 android:id="@+id/itemStockEditText"
                 style="@style/EditTextEnabledStyle"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="50dp"
                 android:text="@{labelThree == (@string/part_code) ? itemDto.itemPartCode : itemDto.getStockString()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -132,14 +132,14 @@
             android:id="@+id/itemManufactureLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_12dp"
+            android:layout_marginTop="@dimen/margin_15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemStockLayout">
 
             <TextView
                 android:id="@+id/itemManufactureLabel"
-                style="@style/TextViewLabel"
+                style="@style/TextViewBold14Label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{labelFour}"
@@ -152,7 +152,7 @@
                 android:id="@+id/itemManufactureEditText"
                 style="@style/EditTextDisabledStyle"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="50dp"
                 android:text="@{labelThree == (@string/total_stock) ? itemDto.getStockString() : itemDto.Manufacturer}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

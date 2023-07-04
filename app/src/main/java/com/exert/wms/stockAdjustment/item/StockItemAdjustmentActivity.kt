@@ -219,12 +219,16 @@ class StockItemAdjustmentActivity :
                 enableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
-                    getString(R.string.error_item_partcode_serial_no_empty_message)
+                    getString(R.string.error_item_part_code_message)
                 )
             } else {
                 disableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
+                )
+                disableErrorMessage(
+                    binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout,
+                    binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
                 )
             }
         })
@@ -233,12 +237,16 @@ class StockItemAdjustmentActivity :
                 enableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout,
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
-                    getString(R.string.error_item_partcode_serial_no_empty_message)
+                    getString(R.string.error_item_serial_no_message)
                 )
             } else {
                 disableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout,
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
+                )
+                disableErrorMessage(
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
                 )
             }
         })

@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -23,6 +21,7 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
 
     protected abstract val mViewModel: VM
 
+    open val showHomeButton: Int = 0
     abstract fun getFragmentBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
     private val logoutManager: LogoutManager by inject()
@@ -32,6 +31,8 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
     lateinit var binding: VB
 
     abstract fun onBindData(binding: VB)
+
+    fun showHomeButtonVariable(): Boolean = showHomeButton == 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -43,6 +44,50 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
         super.onCreateView(inflater, container, savedInstanceState)
         return binding.root
     }
+//
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        // The usage of an interface lets you inject your own implementation
+//        val menuHost: MenuHost = requireActivity()
+//
+//        // Add menu items without using the Fragment Menu APIs
+//        // Note how we can tie the MenuProvider to the viewLifecycleOwner
+//        // and an optional Lifecycle.State (here, RESUMED) to indicate when
+//        // the menu should be visible
+//        menuHost.addMenuProvider(object : MenuProvider {
+//            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+//                // Add menu items here
+//                menuInflater.inflate(R.menu.menu_home, menu)
+//
+//                for (i in 0 until menu!!.size()) {
+//                    if (menu.getItem(i).title == getString(R.string.home)) {
+//                        menu.getItem(i).isVisible = showHomeButton == 1
+////                hideBackButton()
+//                    } else if (showHomeButton == 0) {
+//                        menu.getItem(i).isVisible = showHomeButton != 1
+////                hideBackButton()
+//                    } else {
+//                        menu.getItem(i).isVisible = false
+////                        showBackButton()
+//                    }
+//                }
+//            }
+//
+//            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+//                // Handle the menu selection
+//                return when (menuItem.itemId) {
+//                    R.id.home_menu -> {
+//                        // clearCompletedTasks()
+//                        true
+//                    }
+//                    R.id.notifications_menu -> {
+//                        // loadTasks(true)
+//                        true
+//                    }
+//                    else -> false
+//                }
+//            }
+//        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+//    }
 
     fun enableErrorMessage(
         textInputLayout: TextInputLayout,
@@ -111,4 +156,25 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
         textView.text = text
         textView.visibility = visible
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu_home, menu)
+//        for (i in 0 until menu!!.size()) {
+//            if (menu.getItem(i).title == getString(R.string.home)) {
+//                menu.getItem(i).isVisible = showHomeButton == 1
+////                hideBackButton()
+//            } else if (showHomeButton == 0) {
+//                menu.getItem(i).isVisible = showHomeButton != 1
+////                hideBackButton()
+//            } else {
+//                menu.getItem(i).isVisible = false
+//                showBackButton()
+//            }
+//        }
+//
+//        return true
+//    }
 }

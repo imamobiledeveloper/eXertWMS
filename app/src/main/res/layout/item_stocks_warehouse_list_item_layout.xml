@@ -5,16 +5,13 @@
     android:id="@+id/warehouseItemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_10dp"
-    android:background="@drawable/tv_rectangle_bg">
+    android:layout_marginTop="10dp">
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="1dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
+        android:background="@drawable/recyclerview_list_item_rectangle_white_bg"
+        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,103 +20,132 @@
             android:id="@+id/warehouseLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/warehouseNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/warehouseNameTV"
-                    style="@style/TextViewLabel"
+                    style="@style/TextViewBold14Label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
                     app:layout_constraintEnd_toStartOf="@+id/viewWarehouseTV"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Warehouse Name" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/viewWarehouseTV"
                     style="@style/TextViewLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="50dp"
                     android:gravity="center_vertical"
-                    android:padding="@dimen/margin_10dp"
-                    android:text="@string/view"
-                    android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:minWidth="30dp"
+                    android:padding="@dimen/margin_3dp"
                     app:layout_constraintBottom_toBottomOf="@+id/warehouseNameTV"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_view" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/warehouseStockLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginStart="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/warehouseNameLayout">
 
                 <TextView
                     android:id="@+id/stockTV"
-                    style="@style/TextViewLabel"
+                    style="@style/TextViewGreyDark12Label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
                     android:gravity="center_vertical"
-                    android:text="@string/stock"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toStartOf="@+id/stockCountTV"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:text="@string/stock" />
+
+                <TextView
+                    style="@style/TextViewGreyDark12Label"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="0.15"
+                    android:gravity="center"
+                    android:text="@string/semicolon" />
 
                 <TextView
                     android:id="@+id/stockCountTV"
-                    style="@style/TextViewLabel"
-                    android:layout_width="wrap_content"
+                    style="@style/TextViewGreyDark12Label"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:minWidth="50dp"
+                    android:layout_weight="1.45"
                     android:gravity="center_vertical"
-                    android:padding="@dimen/margin_10dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
+                    android:padding="@dimen/margin_5dp"
                     app:layout_constraintBottom_toBottomOf="@+id/stockTV"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="100" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/warehouseLocationTV"
-                style="@style/TextViewLabel"
+            <LinearLayout
+                android:id="@+id/warehouseLocationLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10dp"
-                android:drawablePadding="5dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                app:drawableLeftCompat="@drawable/ic_location"
+                android:layout_marginStart="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/warehouseStockLayout"
-                tools:text="address1, lane1, street1" />
+                app:layout_constraintTop_toBottomOf="@+id/warehouseStockLayout">
 
+                <TextView
+                    android:id="@+id/LocationTV"
+                    style="@style/TextViewGreyDark12Label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:gravity="center_vertical"
+                    android:text="@string/location" />
+
+                <TextView
+                    style="@style/TextViewGreyDark12Label"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="0.15"
+                    android:gravity="center"
+                    android:text="@string/semicolon" />
+
+                <TextView
+                    android:id="@+id/warehouseLocationTV"
+                    style="@style/TextViewGreyDark12Label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.45"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/margin_5dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/stockTV"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="address1, lane1, street1" />
+
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

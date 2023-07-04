@@ -18,14 +18,12 @@
 
             <TextView
                 android:id="@+id/addItemTitleTV"
-                style="@style/TextViewLabel"
+                style="@style/TextViewHeaderBlueLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10dp"
-                android:layout_marginEnd="5dp"
                 android:gravity="center_vertical"
                 android:text="@string/add_item"
-                android:textColor="@color/blue"
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,25 +38,34 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_close" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/itemDetailsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/margin_20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/addStockItemButton"
+                app:layout_constraintTop_toBottomOf="@+id/addItemTitleTV">
+
             <TextView
                 android:id="@+id/manufactureDateTV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                style="@style/TextViewBold14Label"
+                android:layout_marginTop="25dp"
                 android:layout_marginEnd="5dp"
                 android:gravity="center_vertical"
                 android:text="@string/manufacture_date"
-                android:textColor="@color/black"
-                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addItemTitleTV" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/manufactureDateEditText"
                 style="@style/EditTextEnabledStyle"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="50dp"
                 android:drawableEnd="@drawable/ic_calendar"
                 android:editable="false"
                 android:hint="@string/dd_mm_yyyy"
@@ -68,14 +75,13 @@
 
             <TextView
                 android:id="@+id/warrantyPeriodTV"
+                style="@style/TextViewBold14Label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="5dp"
                 android:gravity="center_vertical"
                 android:text="@string/warranty_period"
-                android:textColor="@color/black"
-                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/manufactureDateEditText" />
@@ -83,7 +89,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/warrantyPeriodSpinnerLayout"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="@dimen/margin_10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -93,10 +99,9 @@
                     android:id="@+id/warrantyPeriodSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#00FFFFFF"
                     android:dropDownWidth="match_parent"
                     android:overlapAnchor="false"
-                    android:popupBackground="@drawable/edittext_rectangle_bg"
+                    android:popupBackground="@drawable/edittext_rectangle_white_bg"
                     android:popupElevation="15dp"
                     android:theme="@style/Spinner"
                     app:layout_constraintBottom_toBottomOf="@+id/warrantyPeriodSpinnerTV"
@@ -104,17 +109,16 @@
 
                 <TextView
                     android:id="@+id/warrantyPeriodSpinnerTV"
+                    style="@style/TextViewLabel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/edittext_rectangle_bg"
+                    android:background="@drawable/edittext_rectangle_white_bg"
                     android:drawablePadding="@dimen/margin_10dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:singleLine="true"
                     android:text="@string/select_warranty_period"
                     android:textAlignment="gravity"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
                     app:drawableEndCompat="@drawable/ic_arrow_down"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -133,7 +137,7 @@
 
                 <TextView
                     android:id="@+id/serialNoLabel"
-                    style="@style/TextViewLabel"
+                    style="@style/TextViewBold14Label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/serial_no"
@@ -156,6 +160,8 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/addStockItemButton"
                 style="@style/ButtonStyle"
@@ -166,7 +172,7 @@
                 android:clickable="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/serialNoLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/itemDetailsLayout" />
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:id="@+id/coordinateLayout"

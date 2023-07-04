@@ -180,7 +180,11 @@ class LoginViewModel(
             _errorNewPasswordMessage.postValue("")
             _errorConfirmPasswordMessage.postValue(stringProvider.getString(R.string.error_confirm_password_empty))
         } else if (newPwd != confirmPwd) {
+            _errorNewPasswordMessage.postValue("")
             _errorConfirmPasswordMessage.postValue(stringProvider.getString(R.string.error_new_confirm_password_not_equal))
+        }else{
+            _errorNewPasswordMessage.postValue("")
+            _errorConfirmPasswordMessage.postValue("")
         }
     }
 

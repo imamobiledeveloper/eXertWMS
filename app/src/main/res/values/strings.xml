@@ -85,7 +85,7 @@
     <string name="forgot_password_question">FORGOT PASSWORD?</string>
     <string name="forgot_password_message">Don\'t worry! It occurs. Please enter the email address or Username linked with your account.</string>
     <string name="remember_password">Remember Password? Login</string>
-    <string name="enter_username_or_email">Enter Username or Email</string>
+    <string name="enter_username_or_email">Enter Username or Email Id</string>
     <string name="create_new_password">CREATE NEW PASSWORD</string>
     <string name="your_new_password_must_be_unique_from_those_previously_used">Your new password must be unique from those previously used.</string>
     <string name="reset_password">RESET PASSWORD</string>
@@ -94,7 +94,7 @@
     <string name="error_new_password_empty">Please enter New Password</string>
     <string name="error_confirm_password_empty">Please enter Confirm Password</string>
     <string name="error_new_confirm_password_not_equal">New Password and Confirm Password should be same</string>
-    <string name="error_email_or_username_empty">Please enter Username or Email</string>
+    <string name="error_email_or_username_empty">Please enter Username or Email Id</string>
     <string name="log_in">LOG IN</string>
 
     <string name="nav_open">Open</string>
@@ -110,6 +110,8 @@
     <string name="purchase_return">Purchase Return</string>
     <string name="sales_return">Sales Return</string>
     <string name="transactions">Transactions</string>
+    <string name="semicolon">:</string>
+    <string name="location">Location</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

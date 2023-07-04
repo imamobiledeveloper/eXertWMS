@@ -4,33 +4,76 @@
     <style name="EdittextError">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/red</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="TextViewLabel">
         <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+    <style name="TextViewBold14Label">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+    <style name="TextViewBold12Label">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+    <style name="TextViewGreyLabel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+    <style name="TextViewGreyDarkLabel">
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/grey_dark</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="TextViewGreyDark12Label">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/grey_dark</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="TextViewHeaderLabel">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">@color/grey_dark</item>
+    </style>
+    <style name="TextViewHeaderBlueLabel">
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">@color/blue_dark</item>
     </style>
 
     <style name="TextViewHintLabel">
-        <item name="android:textSize">16sp</item>
-        <item name="android:minHeight">56dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textColor">@color/grey_light1</item>
     </style>
 
     <style name="TextInputLayout_White">
         <item name="android:padding">0dp</item>
+        <item name="fontFamily">@font/roboto_regular</item>
         <item name="android:textColorHint">@color/grey</item>
         <item name="android:background">@drawable/edittext_rectangle_without_stroke_bg</item>
     </style>
 
     <style name="TextViewLabel_White">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="TextViewBoldLabel">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/roboto_medium</item>
     </style>
 
     <style name="toolbarTitle">
@@ -38,6 +81,7 @@
         <item name="android:lineSpacingExtra">7sp</item>
         <item name="android:textFontWeight" tools:targetApi="p">500</item>
         <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="Spinner">
@@ -45,9 +89,12 @@
         <item name="android:textSize">14sp</item>
         <item name="android:divider">@color/grey_50</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:paddingStart">@dimen/margin_5dp</item>
-        <item name="android:paddingEnd">@dimen/margin_5dp</item>
+        <item name="android:paddingStart">@dimen/margin_8dp</item>
+        <item name="android:paddingEnd">@dimen/margin_8dp</item>
+        <item name="android:paddingTop">@dimen/margin_8dp</item>
+        <item name="android:paddingBottom">@dimen/margin_8dp</item>
         <item name="android:dropDownListViewStyle">@style/SpinnerDivider</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="SpinnerDivider" parent="Theme.MaterialComponents.Light.DarkActionBar">
@@ -58,13 +105,14 @@
 
     <style name="ButtonStyle">
         <item name="android:minWidth">120dp</item>
-        <item name="android:minHeight">56dp</item>
+        <item name="android:minHeight">50dp</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:clickable">true</item>
+        <item name="android:clickable">true</item>z
         <item name="android:layout_marginTop">@dimen/margin_15dp</item>
         <item name="android:layout_marginBottom">@dimen/margin_15dp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/button_green_bg_selector</item>
+        <item name="fontFamily">@font/roboto_medium</item>
     </style>
 
     <style name="TextViewWithDrawableStyle">
@@ -73,40 +121,51 @@
         <item name="android:clickable">true</item>
         <item name="android:textColor">@color/blue</item>
         <item name="android:background">@drawable/rectangle_blue_outline_bg</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="EditTextDisabledStyle">
-        <item name="android:layout_marginTop">@dimen/margin_12dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_8dp</item>
         <item name="android:enabled">false</item>
         <item name="android:background">@drawable/edittext_disabled_rectangle_bg</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">14dp</item>
         <item name="android:textColor">@color/grey_dark</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="EditTextEnabledStyle">
-        <item name="android:layout_marginTop">@dimen/margin_12dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_8dp</item>
         <item name="android:background">@drawable/edittext_rectangle_bg</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">14dp</item>
         <item name="android:textColor">@color/grey_dark</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="RecyclerViewListItemTextViewStyle">
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:padding">@dimen/margin_8dp</item>
-        <item name="android:layout_marginTop">@dimen/margin_10dp</item>
-        <item name="android:layout_marginBottom">@dimen/margin_10dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_8dp</item>
+        <item name="android:layout_marginBottom">@dimen/margin_8dp</item>
         <item name="android:layout_marginStart">@dimen/margin_15dp</item>
         <item name="android:layout_marginEnd">@dimen/margin_15dp</item>
         <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="TextViewHint">
+        <item name="android:textSize">12sp</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/grey_light1</item>
     </style>
 
     <dimen name="margin_8dp">8dp</dimen>

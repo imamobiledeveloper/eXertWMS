@@ -16,7 +16,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/loginScreen"
+        android:id="@+id/stockItemAdjustmentScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -24,7 +24,7 @@
             android:id="@+id/itemStocksScrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="16dp"
+            android:layout_marginBottom="16dp"
             android:fillViewport="true"
             app:layout_constraintBottom_toTopOf="@+id/saveButton"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,194 +43,196 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <include
                     android:id="@+id/itemNameManufactureLayout"
                     layout="@layout/item_names_manufacture_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:itemDto="@{itemDto}"
                     app:labelFour="@{@string/manufacturer}"
                     app:labelOne="@{@string/item_name_english}"
                     app:labelThree="@{@string/stock}"
                     app:labelTwo="@{@string/item_name_arabic}"
-                    app:itemDto="@{itemDto}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/itemPartCodeSerialNoLayout" />
 
-                <TextView
-                    android:id="@+id/adjustmentTypeTV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:drawablePadding="@dimen/margin_15dp"
-                    android:text="@string/adjustment_type"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/itemNameManufactureLayout" />
-
-                <RadioGroup
-                    android:id="@+id/radioButtonParent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/adjustmentTypeTV">
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/positiveRadioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_10dp"
-                        android:checked="false"
-                        android:padding="8dp"
-                        android:text="@string/positive"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/negativeRadioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_10dp"
-                        android:checked="false"
-                        android:padding="8dp"
-                        android:text="@string/negative"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                </RadioGroup>
-
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/adjustmentQuantityLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_12dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/radioButtonParent">
+                    app:layout_constraintTop_toBottomOf="@+id/itemNameManufactureLayout">
 
                     <TextView
-                        android:id="@+id/adjustmentQuantityLabel"
-                        style="@style/TextViewLabel"
+                        android:id="@+id/adjustmentTypeTV"
+                        style="@style/TextViewBold14Label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/adjustment_quantity"
+                        android:drawablePadding="@dimen/margin_15dp"
+                        android:text="@string/adjustment_type"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/adjustmentQuantityEditTextLayout"
-                        android:layout_width="0dp"
+                    <RadioGroup
+                        android:id="@+id/radioButtonParent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="12dp"
-                        android:minHeight="56dp"
-                        app:endIconCheckable="true"
-                        app:endIconDrawable="@drawable/ic_arrow_right"
-                        app:endIconMode="custom"
-                        app:endIconTint="@color/blue"
-                        app:errorTextAppearance="@style/EdittextError"
+                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/adjustmentQuantityLabel"
-                        app:startIconTint="@color/blue_50">
+                        app:layout_constraintTop_toBottomOf="@+id/adjustmentTypeTV">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/adjustmentQuantityEditText"
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/positiveRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_10dp"
+                            android:button="@drawable/radio_button_state_bg"
+                            android:checked="false"
+                            android:padding="8dp"
+                            android:text="@string/positive"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/negativeRadioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_10dp"
+                            android:button="@drawable/radio_button_state_bg"
+                            android:checked="false"
+                            android:padding="8dp"
+                            android:text="@string/negative"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                    </RadioGroup>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/adjustmentQuantityLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_15dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/radioButtonParent">
+
+                        <TextView
+                            android:id="@+id/adjustmentQuantityLabel"
+                            style="@style/TextViewBold14Label"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/edittext_rectangle_bg"
-                            android:drawablePadding="8dp"
-                            android:ellipsize="end"
+                            android:text="@string/adjustment_quantity"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/adjustmentQuantityEditTextLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            android:minHeight="50dp"
+                            app:endIconCheckable="true"
+                            app:endIconDrawable="@drawable/ic_arrow_right"
+                            app:boxBackgroundMode="none"
+                            app:endIconMode="custom"
+                            app:endIconTint="@color/blue_dark"
+                            app:errorTextAppearance="@style/EdittextError"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/adjustmentQuantityLabel">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/adjustmentQuantityEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                style="@style/EditTextEnabledStyle"
+                                android:drawablePadding="8dp"
+                                android:ellipsize="end"
+                                android:gravity="center_vertical"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:maxLength="20"
+                                android:singleLine="true"
+                                android:text="@{viewModel.adjustmentQuantityString}"
+                                tools:text="123456789012345678901234567890" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/costLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_15dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/adjustmentQuantityLayout">
+
+                        <TextView
+                            android:id="@+id/costLabel"
+                            style="@style/TextViewBold14Label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/cost"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <EditText
+                            android:id="@+id/costEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            style="@style/EditTextDisabledStyle"
                             android:gravity="center_vertical"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:maxLength="20"
-                            android:padding="16dp"
                             android:singleLine="true"
-                            android:text="@{viewModel.adjustmentQuantityString}"
-                            tools:text="123456789012345678901234567890" />
+                            android:text="@{viewModel.costString}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/costLabel" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/costLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_12dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/adjustmentQuantityLayout">
-
-                    <TextView
-                        android:id="@+id/costLabel"
-                        style="@style/TextViewLabel"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/adjustmentTotalCostLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/cost"
+                        android:layout_marginTop="@dimen/margin_15dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/costLayout">
 
-                    <EditText
-                        android:id="@+id/costEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="@dimen/margin_12dp"
-                        android:background="@drawable/edittext_disabled_rectangle_bg"
-                        android:enabled="false"
-                        android:focusableInTouchMode="true"
-                        android:gravity="center_vertical"
-                        android:text="@{viewModel.costString}"
-                        android:padding="16dp"
-                        android:singleLine="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/costLabel" />
+                        <TextView
+                            android:id="@+id/adjustmentTotalCostLabel"
+                            style="@style/TextViewBold14Label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/adjustment_total_cost"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <EditText
+                            android:id="@+id/adjustmentTotalCostEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            style="@style/EditTextDisabledStyle"
+                            android:gravity="center_vertical"
+                            android:text="@{viewModel.adjustmentTotalCostString}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/adjustmentTotalCostLabel" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/adjustmentTotalCostLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_12dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/costLayout">
-
-                    <TextView
-                        android:id="@+id/adjustmentTotalCostLabel"
-                        style="@style/TextViewLabel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/adjustment_total_cost"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <EditText
-                        android:id="@+id/adjustmentTotalCostEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="@dimen/margin_12dp"
-                        android:background="@drawable/edittext_disabled_rectangle_bg"
-                        android:enabled="false"
-                        android:text="@{viewModel.adjustmentTotalCostString}"
-                        android:gravity="center_vertical"
-                        android:padding="16dp"
-                        android:singleLine="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/adjustmentTotalCostLabel" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -238,11 +240,12 @@
 
         </ScrollView>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/saveButton"
             style="@style/ButtonStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:enabled="false"
             android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"

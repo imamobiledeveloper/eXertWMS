@@ -5,16 +5,14 @@
     android:id="@+id/serialNumbersItemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_10dp"
-    android:background="@drawable/tv_rectangle_bg">
+    android:layout_marginTop="10dp">
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="1dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
+        android:background="@drawable/recyclerview_list_item_rectangle_white_bg"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,136 +21,171 @@
             android:id="@+id/serialNumbersLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/serialNoCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@null"
-                android:translationX="14dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/manufactureDateLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/serialNoCheckBox">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/manufactureDateLabel"
-                    style="@style/TextViewLabel"
-                    android:layout_width="match_parent"
+                    style="@style/TextViewGreyDarkLabel"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
                     android:gravity="center_vertical"
                     android:text="@string/manufacture_date"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
                     app:layout_constraintEnd_toStartOf="@+id/manufactureDateTV"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/manufactureDateTV"
-                    style="@style/TextViewLabel"
-                    android:layout_width="wrap_content"
+                    style="@style/TextViewGreyDarkLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="0.15"
+                    android:gravity="center"
+                    android:text="@string/semicolon" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:minWidth="50dp"
-                    android:padding="@dimen/margin_10dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/manufactureDateLabel"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="05 Jan,2023" />
+                    android:layout_weight="1.1">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/manufactureDateTV"
+                        style="@style/TextViewGreyDarkLabel"
+                        android:layout_width="0dp"
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        app:layout_constraintEnd_toStartOf="@+id/serialNoCheckBox"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="05 Jan,2023" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/serialNoCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/checkbox_state_bg"
+                        android:text="@null"
+                        android:gravity="center_vertical"
+                        android:minHeight="0dp"
+                        android:translationX="18dp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="visible" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/warrantyPeriodLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="@dimen/margin_5dp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/manufactureDateLayout">
 
                 <TextView
                     android:id="@+id/warrantyPeriodLabel"
-                    style="@style/TextViewLabel"
-                    android:layout_width="match_parent"
+                    style="@style/TextViewGreyDarkLabel"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
                     android:gravity="center_vertical"
                     android:text="@string/warranty_period"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
                     app:layout_constraintEnd_toStartOf="@+id/warrantyPeriodTV"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    style="@style/TextViewGreyDarkLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="0.15"
+                    android:gravity="center"
+                    android:text="@string/semicolon" />
+
+                <TextView
                     android:id="@+id/warrantyPeriodTV"
-                    style="@style/TextViewLabel"
-                    android:layout_width="wrap_content"
+                    style="@style/TextViewGreyDarkLabel"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1.1"
+                    android:padding="@dimen/margin_5dp"
                     android:gravity="center_vertical"
-                    android:minWidth="50dp"
-                    android:padding="@dimen/margin_10dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/warrantyPeriodLabel"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="1 year" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/serialNumberLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="@dimen/margin_5dp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/warrantyPeriodLayout">
 
                 <TextView
                     android:id="@+id/serialNumberLabel"
-                    style="@style/TextViewLabel"
-                    android:layout_width="match_parent"
+                    style="@style/TextViewGreyDarkLabel"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
                     android:gravity="center_vertical"
                     android:text="@string/serial_no"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
                     app:layout_constraintEnd_toStartOf="@+id/serialNumberTV"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    style="@style/TextViewGreyDarkLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="0.15"
+                    android:gravity="center"
+                    android:text="@string/semicolon" />
+
+                <TextView
                     android:id="@+id/serialNumberTV"
-                    style="@style/TextViewLabel"
-                    android:layout_width="wrap_content"
+                    style="@style/TextViewGreyDarkLabel"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1.1"
+                    android:padding="@dimen/margin_5dp"
                     android:gravity="center_vertical"
-                    android:minWidth="50dp"
-                    android:padding="@dimen/margin_10dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/serialNumberLabel"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="AFD145HCWGDSSJD" />
+                    tools:text="AFD145HCWGDSSJD AFD 14 5H CW GDS SJD AFD145 HCWG DSSJD" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

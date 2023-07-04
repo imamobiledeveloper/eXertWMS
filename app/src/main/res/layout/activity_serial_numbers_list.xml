@@ -51,13 +51,11 @@
 
                 <TextView
                     android:id="@+id/warehouseListLabel"
-                    style="@style/TextViewLabel"
+                    style="@style/TextViewHeaderBlueLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:text="@string/serial_nos_list"
-                    android:textColor="@color/blue"
-                    android:textSize="22sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/itemNameManufactureLayout" />
@@ -66,7 +64,7 @@
                     android:id="@+id/serialNumbersListRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/warehouseListLabel"

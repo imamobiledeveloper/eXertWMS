@@ -56,8 +56,8 @@ class HomeFragment : MVVMFragment<HomeViewModel, FragmentHomeBinding>() {
     private fun navigateToFeature(featureName: String) {
         val featuresList = resources.getStringArray(R.array.features_list)
         when (featureName) {
-            featuresList[0] -> (activity as HomeActivity).setSelectedItem(R.id.itemStocksScreen)
-            featuresList[1] -> (activity as HomeActivity).setSelectedItem(R.id.stockAdjustmentBaseScreen)
+            featuresList[0] -> (activity as HomeActivity).setSelectedItem(1)
+            featuresList[1] -> (activity as HomeActivity).setSelectedItem(2)
             else -> findNavController().navigate(HomeFragmentDirections.actionHomeToItemStocks())
 
 //            featuresList[0] -> startActivity<ItemStocksActivity>()

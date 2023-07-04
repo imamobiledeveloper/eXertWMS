@@ -12,7 +12,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/stockAdjustmentBaseScreen"
+        android:id="@+id/stockAdjustmentBaseScreen1"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

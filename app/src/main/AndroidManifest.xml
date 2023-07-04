@@ -37,6 +37,7 @@
             android:name=".splash.SplashActivity"
             android:configChanges="screenSize|smallestScreenSize|fontScale|density"
             android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -57,12 +58,14 @@
             android:name=".login.LoginActivity"
             android:configChanges="screenSize|smallestScreenSize|fontScale|density"
             android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".login.ForgotPasswordActivity"
             android:configChanges="screenSize|smallestScreenSize|fontScale|density"
             android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
     </application>

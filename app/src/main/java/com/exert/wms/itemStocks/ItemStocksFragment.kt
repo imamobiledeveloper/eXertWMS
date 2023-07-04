@@ -20,6 +20,8 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
 
     override val title = R.string.item_stocks
 
+    override val showHomeButton: Int = 1
+
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 
@@ -178,6 +180,10 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
                 )
+                disableErrorMessage(
+                    binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout,
+                    binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
+                )
             }
         })
         mViewModel.errorItemSerialNo.observe(viewLifecycleOwner, Observer {
@@ -191,6 +197,10 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
                 disableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout,
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
+                )
+                disableErrorMessage(
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
+                    binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
                 )
             }
         })

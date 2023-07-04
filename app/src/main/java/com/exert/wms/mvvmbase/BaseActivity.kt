@@ -131,7 +131,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
         }
     }
 
-    private fun logOut() {
+    fun logOut() {
         clearCaches()
         logoutManager.logout()
         mViewModel.onCleared()
