@@ -112,6 +112,7 @@
     <string name="transactions">Transactions</string>
     <string name="semicolon">:</string>
     <string name="location">Location</string>
+    <string name="settings">Settings</string>
     <string name="empty" />
 
     <string-array name="features_list">

@@ -1,9 +1,12 @@
 package com.exert.wms.home
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
@@ -12,10 +15,16 @@ import androidx.navigation.fragment.NavHostFragment
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityHomeBinding
+import com.exert.wms.deliveryNote.DeliveryNoteBaseFragment
+import com.exert.wms.deliveryReceipt.DeliveryReceiptBaseFragment
 import com.exert.wms.itemStocks.ItemStocksFragment
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.purchaseReturn.PurchaseReturnBaseFragment
+import com.exert.wms.salesReturn.SalesReturnBaseFragment
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseFragment
 import com.exert.wms.stockReconciliation.StockReconciliationBaseFragment
+import com.exert.wms.transferIn.TransferInBaseFragment
+import com.exert.wms.transferOut.TransferOutBaseFragment
 import com.google.android.material.navigation.NavigationView
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -78,7 +87,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         }
     }
 
-    private fun getNavHostFragment(): NavHostFragment {
+    fun getNavHostFragment(): NavHostFragment {
         return supportFragmentManager.findFragmentById(R.id.homeFragmentContainerView) as NavHostFragment
     }
 
@@ -91,6 +100,11 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         actionBarDrawerToggle.syncState()
 
       val menu: Menu = binding.navigationView.menu
+        val headerLayout: View = binding.navigationView.getHeaderView(0)
+        val logoutTV: TextView = headerLayout.findViewById(R.id.logoutTextView)
+        logoutTV.setOnClickListener {
+            logOut()
+        }
 
         navViewListener = NavigationView.OnNavigationItemSelectedListener { item ->
             selectedItem?.isChecked = false
@@ -120,42 +134,40 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
                 R.id.nav_transfer_out -> {
                     showNavigationButton=1
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.homeFragmentContainerView, StockReconciliationBaseFragment())
+                        .replace(R.id.homeFragmentContainerView, TransferOutBaseFragment())
                         .commit()
                 }
                 R.id.nav_transfer_in -> {
                     showNavigationButton=1
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.homeFragmentContainerView, StockReconciliationBaseFragment())
+                        .replace(R.id.homeFragmentContainerView, TransferInBaseFragment())
                         .commit()
                 }
                 R.id.nav_delivery_receipt -> {
                     showNavigationButton=1
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.homeFragmentContainerView, StockReconciliationBaseFragment())
+                        .replace(R.id.homeFragmentContainerView, DeliveryReceiptBaseFragment())
                         .commit()
                 }
                 R.id.nav_delivery_note -> {
                     showNavigationButton=1
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.homeFragmentContainerView, StockReconciliationBaseFragment())
+                        .replace(R.id.homeFragmentContainerView, DeliveryNoteBaseFragment())
                         .commit()
                 }
                 R.id.nav_purchase_return -> {
                     showNavigationButton=1
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.homeFragmentContainerView, StockReconciliationBaseFragment())
+                        .replace(R.id.homeFragmentContainerView, PurchaseReturnBaseFragment())
                         .commit()
                 }
                 R.id.nav_sales_return -> {
                     showNavigationButton=1
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.homeFragmentContainerView, StockReconciliationBaseFragment())
+                        .replace(R.id.homeFragmentContainerView, SalesReturnBaseFragment())
                         .commit()
                 }
-                R.id.nav_logout -> {
-                    logOut()
-                }
+
                 else -> {
                     showNavigationButton=1
                     supportFragmentManager.beginTransaction()
@@ -216,10 +228,10 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
     companion object {
         fun relaunch(activity: Activity) {
-//            val intent = Intent(activity, HomeActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//            activity.startActivity(intent)
-//            activity.finishAffinity()
+            val intent = Intent(activity, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            activity.startActivity(intent)
+            activity.finishAffinity()
         }
     }
 }

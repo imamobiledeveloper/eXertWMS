@@ -126,15 +126,7 @@ class StockAdjustmentBaseViewModel(
                 .collect { dto ->
                     Log.v("WMS EXERT", "saveStockAdjustmentItems response $dto")
                     hideProgressIndicator()
-//                    if (dto.success && dto.Warehouses.isNotEmpty()) {
-//                        warehousesList = dto.Warehouses
-//                        val stringList = dto.Warehouses.map { it.Warehouse }.toMutableList()
-//                        stringList.add(0, stringProvider.getString(R.string.select_warehouse))
-//
-//                        _warehouseStringList.postValue(stringList)
-//                    } else {
-//                        _errorFieldMessage.postValue(stringProvider.getString(R.string.warehouse_list_empty_message))
-//                    }
+
                 }
         }
     }

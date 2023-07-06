@@ -123,6 +123,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
 
             R.id.home_menu -> {
                 HomeActivity.relaunch(this)
+//                finish()
                 true
             }
 
