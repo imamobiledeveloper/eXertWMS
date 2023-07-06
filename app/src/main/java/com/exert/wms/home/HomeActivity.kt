@@ -2,6 +2,7 @@ package com.exert.wms.home
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -37,6 +38,8 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
     }
 
     override fun getLayoutID(): Int = R.layout.activity_home
+
+    var selectedItem: MenuItem? = null
 
     override val mViewModel by lazy {
         getViewModel<HomeViewModel>()
@@ -87,7 +90,10 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
+      val menu: Menu = binding.navigationView.menu
+
         navViewListener = NavigationView.OnNavigationItemSelectedListener { item ->
+            selectedItem?.isChecked = false
             when (item.itemId) {
                 R.id.nav_home -> {
                     showNavigationButton=0
@@ -157,14 +163,16 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
                         .commit()
                 }
             }
-
             item.isChecked = true
             setTitle(item.title)
+            selectedItem = item
             drawerLayout.closeDrawer(GravityCompat.START)
             true
 
         }
         binding.navigationView.setNavigationItemSelectedListener(navViewListener)
+        selectedItem = menu.getItem(0)
+        selectedItem?.isChecked=true
     }
 
     private fun setFirstItemNavigationView(screenResourceId: Int) {
