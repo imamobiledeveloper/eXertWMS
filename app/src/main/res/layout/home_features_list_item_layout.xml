@@ -17,12 +17,11 @@
 
     <TextView
         android:id="@+id/featureNameTV"
+        style="@style/TextViewLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="14sp"
         android:layout_margin="@dimen/margin_8dp"
-        android:textColor="@color/grey_dark"
         android:text="@string/item_stocks"
         app:layout_constraintTop_toBottomOf="@+id/featureIV"
         app:layout_constraintEnd_toEndOf="parent"

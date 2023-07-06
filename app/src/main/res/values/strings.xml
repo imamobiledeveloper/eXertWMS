@@ -112,6 +112,7 @@
     <string name="transactions">Transactions</string>
     <string name="semicolon">:</string>
     <string name="location">Location</string>
+    <string name="empty" />
 
     <string-array name="features_list">
         <item>Item Stocks</item>

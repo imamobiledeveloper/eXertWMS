@@ -19,7 +19,6 @@ class FeaturesListDto {
         list.add(FeatureDto("Delivery Note", R.drawable.ic_delivery_note))
         list.add(FeatureDto("Purchase Return", R.drawable.ic_purchase_return))
         list.add(FeatureDto("Sales Return", R.drawable.ic_sales_return))
-        list.add(FeatureDto("Transactions", R.drawable.ic_transactions))
         return list.toList()
     }
 }

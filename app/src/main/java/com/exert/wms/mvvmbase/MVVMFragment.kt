@@ -12,6 +12,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.databinding.ViewDataBinding
 import com.exert.wms.LogoutManager
+import com.exert.wms.R
+import com.exert.wms.utils.toEditable
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.android.ext.android.inject
@@ -177,4 +179,8 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
 //
 //        return true
 //    }
+
+    fun clearTextInputEditText(editText: TextInputEditText) {
+        editText.text=getString(R.string.empty).toEditable()
+    }
 }

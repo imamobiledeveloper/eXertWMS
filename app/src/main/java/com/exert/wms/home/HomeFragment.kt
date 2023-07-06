@@ -58,11 +58,10 @@ class HomeFragment : MVVMFragment<HomeViewModel, FragmentHomeBinding>() {
         when (featureName) {
             featuresList[0] -> (activity as HomeActivity).setSelectedItem(1)
             featuresList[1] -> (activity as HomeActivity).setSelectedItem(2)
-            else -> findNavController().navigate(HomeFragmentDirections.actionHomeToItemStocks())
+            else -> (activity as HomeActivity).setSelectedItem(3)
+            //findNavController().navigate(HomeFragmentDirections.actionHomeToStockReconciliation())
+//            else -> findNavController().navigate(HomeFragmentDirections.actionHomeToItemStocks())
 
-//            featuresList[0] -> startActivity<ItemStocksActivity>()
-//            featuresList[1]  -> startActivity<StockAdjustmentBaseActivity>()
-//            else -> startActivity(Intent(this@HomeActivity, ItemStocksActivity::class.java))
         }
     }
 

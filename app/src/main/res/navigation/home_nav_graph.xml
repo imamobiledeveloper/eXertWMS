@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_home_to_item_stocks"
             app:destination="@+id/nav_item_stocks" />
+        <action
+            android:id="@+id/action_home_to_stock_reconciliation"
+            app:destination="@+id/nav_stock_reconciliation" />
     </fragment>
 
     <fragment
@@ -23,4 +26,9 @@
         android:id="@+id/nav_stock_adjustment"
         android:name="com.exert.wms.stockAdjustment.StockAdjustmentBaseFragment"
         tools:layout="@layout/fragment_stock_adjustment_base" />
+
+    <fragment
+        android:id="@+id/nav_stock_reconciliation"
+        android:name="com.exert.wms.stockReconciliation.StockReconciliationFragment"
+        tools:layout="@layout/fragment_stock_reconciliation" />
 </navigation>

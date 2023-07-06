@@ -14,6 +14,7 @@ import com.exert.wms.databinding.ActivityHomeBinding
 import com.exert.wms.itemStocks.ItemStocksFragment
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseFragment
+import com.exert.wms.stockReconciliation.StockReconciliationFragment
 import com.google.android.material.navigation.NavigationView
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -106,31 +107,55 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
                         .commit()
                 }
                 R.id.nav_stock_reconciliation -> {
-
+                    showNavigationButton=1
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.homeFragmentContainerView, StockReconciliationFragment())
+                        .commit()
                 }
                 R.id.nav_transfer_out -> {
-
+                    showNavigationButton=1
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.homeFragmentContainerView, StockReconciliationFragment())
+                        .commit()
                 }
                 R.id.nav_transfer_in -> {
-
+                    showNavigationButton=1
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.homeFragmentContainerView, StockReconciliationFragment())
+                        .commit()
                 }
                 R.id.nav_delivery_receipt -> {
-
+                    showNavigationButton=1
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.homeFragmentContainerView, StockReconciliationFragment())
+                        .commit()
                 }
                 R.id.nav_delivery_note -> {
-
+                    showNavigationButton=1
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.homeFragmentContainerView, StockReconciliationFragment())
+                        .commit()
                 }
                 R.id.nav_purchase_return -> {
-
+                    showNavigationButton=1
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.homeFragmentContainerView, StockReconciliationFragment())
+                        .commit()
                 }
                 R.id.nav_sales_return -> {
-
-                }
-                R.id.nav_transactions -> {
-
+                    showNavigationButton=1
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.homeFragmentContainerView, StockReconciliationFragment())
+                        .commit()
                 }
                 R.id.nav_logout -> {
                     logOut()
+                }
+                else -> {
+                    showNavigationButton=1
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.homeFragmentContainerView, HomeFragment())
+                        .commit()
                 }
             }
 

@@ -14,6 +14,7 @@ import com.exert.wms.mvvmbase.MVVMFragment
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
+import com.exert.wms.utils.toEditable
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksBinding>() {
@@ -42,17 +43,23 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
 
         binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.setEndIconOnClickListener {
             hideKeyBoard()
+            clearTextInputEditText(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText)
             mViewModel.searchItemWithPartCode(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString())
         }
         binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.setEndIconOnClickListener {
             hideKeyBoard()
+            clearTextInputEditText(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText)
             mViewModel.searchItemWithSerialNumber(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
         }
 
         binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.onFocusChangeListener =
             View.OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
-                    setTextViewText(binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV, "", View.GONE)
+                    setTextViewText(
+                        binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV,
+                        "",
+                        View.GONE
+                    )
                 } else {
                     if (binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.isNullOrEmpty()) {
                         setTextViewText(
@@ -61,7 +68,11 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
                             View.VISIBLE
                         )
                     } else {
-                        setTextViewText(binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV, "", View.GONE)
+                        setTextViewText(
+                            binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV,
+                            "",
+                            View.GONE
+                        )
                     }
                 }
             }
@@ -69,7 +80,11 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
         binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.onFocusChangeListener =
             View.OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
-                    setTextViewText(binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV, "", View.GONE)
+                    setTextViewText(
+                        binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV,
+                        "",
+                        View.GONE
+                    )
                 } else {
                     if (binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.isNullOrEmpty()) {
                         setTextViewText(
@@ -78,7 +93,11 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
                             View.VISIBLE
                         )
                     } else {
-                        setTextViewText(binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV, "", View.GONE)
+                        setTextViewText(
+                            binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV,
+                            "",
+                            View.GONE
+                        )
                     }
                 }
             }
@@ -166,6 +185,7 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
         mViewModel.errorGetItemsStatusMessage.observe(viewLifecycleOwner, Observer { status ->
             showBriefToastMessage(status, coordinateLayout)
             binding.statusButton.isEnabled = false
+            clearFields()
         })
 
         mViewModel.errorItemPartCode.observe(viewLifecycleOwner, Observer {
@@ -219,6 +239,17 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
                 )
             }
         })
+    }
+
+    private fun clearFields() {
+        binding.itemNameManufactureLayout.itemNameEnglishEditText.text =
+            getString(R.string.empty).toEditable()
+        binding.itemNameManufactureLayout.itemNameArabicEditText.text =
+            getString(R.string.empty).toEditable()
+        binding.itemNameManufactureLayout.itemStockEditText.text =
+            getString(R.string.empty).toEditable()
+        binding.itemNameManufactureLayout.itemManufactureEditText.text =
+            getString(R.string.empty).toEditable()
     }
 
     override fun onBindData(binding: FragmentItemStocksBinding) {
