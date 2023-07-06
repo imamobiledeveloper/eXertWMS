@@ -20,6 +20,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            android:id="@+id/itemPartCodeSerialNoLayout"
+            layout="@layout/item_part_code_serial_no_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ScrollView
             android:id="@+id/itemStocksScrollView"
             android:layout_width="match_parent"
@@ -29,21 +38,12 @@
             app:layout_constraintBottom_toTopOf="@+id/saveButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/itemPartCodeSerialNoLayout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/margin_15dp">
-
-                <include
-                    android:id="@+id/itemPartCodeSerialNoLayout"
-                    layout="@layout/item_part_code_serial_no_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <include
                     android:id="@+id/itemNameManufactureLayout"
@@ -59,7 +59,7 @@
                     app:labelTwo="@{@string/item_name_arabic}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/itemPartCodeSerialNoLayout" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -157,6 +157,7 @@
                                 style="@style/EditTextEnabledStyle"
                                 android:drawablePadding="8dp"
                                 android:ellipsize="end"
+                                android:enabled="false"
                                 android:gravity="center_vertical"
                                 android:imeOptions="actionNext"
                                 android:inputType="text"

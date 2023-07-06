@@ -6,8 +6,11 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.annotation.LayoutRes
@@ -22,6 +25,7 @@ import com.exert.wms.home.HomeActivity
 import com.exert.wms.login.LoginActivity
 import com.exert.wms.login.api.LoginDataSource
 import com.exert.wms.utils.UserDefaults
+import com.exert.wms.utils.toEditable
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import io.reactivex.disposables.Disposable
@@ -214,20 +218,55 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
                 editTextLayout.requestFocus()
             }
             editTextLayout.text?.let { editTextLayout.setSelection(it.length) }
+            editTextLayout.isSelected= true
         }
     }
 
     fun disableErrorMessage(
-        textInputLayout: TextInputLayout,
-        editTextLayout: TextInputEditText
+        textInputLayout: TextInputLayout, editTextLayout: TextInputEditText
+    ) {
+        textInputLayout.isErrorEnabled = false
+        textInputLayout.clearFocus()
+        editTextLayout.isSelected= false
+    }
+
+    fun disableErrorMessageWhileEditing(
+        textInputLayout: TextInputLayout, editTextLayout: TextInputEditText
     ) {
         textInputLayout.isErrorEnabled = false
         editTextLayout.isSelected = false
-        textInputLayout.clearFocus()
+        editTextLayout.isFocusable= true
     }
-
     fun setTextViewText(textView: TextView, text: String, visible: Int) {
         textView.text = text
         textView.visibility = visible
+    }
+
+    fun setTextViewVisibility(textView: TextView,visible: Int) {
+        textView.visibility = visible
+    }
+
+    fun clearTextInputEditText(editText: TextInputEditText, hintTV: TextView) {
+        editText.text=getString(R.string.empty).toEditable()
+        hintTV.visibility= View.VISIBLE
+    }
+
+    fun getEditTextText(editText: TextInputEditText): Editable? =editText.text
+
+    fun edittextTextWatcher(textInputLayout: TextInputLayout, editText: TextInputEditText)=object :
+        TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            val isTextEmpty= getEditTextText(editText)?.trim()?.isNotEmpty()
+            if(isTextEmpty == true) {
+                disableErrorMessageWhileEditing(textInputLayout,editText
+                )
+            }
+        }
     }
 }

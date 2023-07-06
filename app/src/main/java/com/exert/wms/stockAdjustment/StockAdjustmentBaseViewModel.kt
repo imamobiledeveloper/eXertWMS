@@ -81,10 +81,10 @@ class StockAdjustmentBaseViewModel(
     private val _showAddItemButton = MutableLiveData<Boolean>()
     val showAddItemButton: LiveData<Boolean> = _showAddItemButton
 
-    private val _adjustmentQuantityString = MutableLiveData<String>().apply { postValue("0") }
+    private val _adjustmentQuantityString = MutableLiveData<String>().apply { postValue("") }
     val adjustmentQuantityString: LiveData<String> = _adjustmentQuantityString
 
-    private val _adjustmentTotalCostString = MutableLiveData<String>().apply { postValue("0") }
+    private val _adjustmentTotalCostString = MutableLiveData<String>().apply { postValue("") }
     val adjustmentTotalCostString: LiveData<String> = _adjustmentTotalCostString
 
     private val _costString = MutableLiveData<String>()
@@ -214,8 +214,11 @@ class StockAdjustmentBaseViewModel(
         }
     }
 
-    fun searchItemWithPartCode(partCode: String) {
+    fun setItemPartCodeValue(partCode: String) {
         itemPartCode = partCode
+    }
+
+    fun searchItemWithPartCode() {
         if (itemPartCode.isNotEmpty() && warehouseDto != null) {
             getWarehouseSerialNosList(itemPartCode, "", warehouseDto!!.WarehouseID)
             _errorItemPartCode.postValue(false)
@@ -224,8 +227,11 @@ class StockAdjustmentBaseViewModel(
         }
     }
 
-    fun searchItemWithSerialNumber(serialNo: String) {
+    fun setItemSerialNumberValue(serialNo: String) {
         itemSerialNo = serialNo
+    }
+
+    fun searchItemWithSerialNumber() {
         if (itemSerialNo.isNotEmpty() && warehouseDto != null) {
             getWarehouseSerialNosList("", itemSerialNo, warehouseDto!!.WarehouseID)
             _errorItemSerialNo.postValue(false)

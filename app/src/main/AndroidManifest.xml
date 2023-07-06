@@ -24,9 +24,7 @@
         <activity
             android:name="com.exert.wms.stockAdjustment.item.StockItemAdjustmentActivity"
             android:exported="false" />
-        <activity
-            android:name="com.exert.wms.stockAdjustment.StockAdjustmentBaseActivity"
-            android:exported="false" />
+
         <activity
             android:name=".itemStocks.serialNumbers.SerialNumbersListActivity"
             android:exported="false" />

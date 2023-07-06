@@ -41,10 +41,14 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeViewModel()
+
         addTextWatcherListeners()
         addFocusChangeListeners()
+        observeViewModel()
+        setItemPartCodeAndSerialNoCLickListeners()
+    }
 
+    private fun setItemPartCodeAndSerialNoCLickListeners() {
         binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.setEndIconOnClickListener {
             clearOtherField(
                 binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
