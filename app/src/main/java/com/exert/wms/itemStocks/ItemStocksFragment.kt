@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
 import com.exert.wms.utils.toEditable
+import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksBinding>() {
@@ -40,67 +42,91 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
+        addTextWatcherListeners()
+        addFocusChangeListeners()
 
         binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.setEndIconOnClickListener {
-            hideKeyBoard()
-            clearTextInputEditText(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText)
-            mViewModel.searchItemWithPartCode(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString())
+            clearOtherField(
+                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
+                binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV
+            )
+            mViewModel.setItemSerialNumberValue(getString(R.string.empty))
+            mViewModel.setItemPartCodeValue(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString())
+            mViewModel.searchItemWithPartCode()
         }
         binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.setEndIconOnClickListener {
-            hideKeyBoard()
-            clearTextInputEditText(binding.itemPartCodeSerialNoLayout.itemPartCodeEditText)
-            mViewModel.searchItemWithSerialNumber(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
+            clearOtherField(
+                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
+                binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV
+            )
+            mViewModel.setItemPartCodeValue(getString(R.string.empty))
+            mViewModel.setItemSerialNumberValue(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
+            mViewModel.searchItemWithSerialNumber()
         }
+    }
 
-        binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout.onFocusChangeListener =
+    private fun clearOtherField(
+        clearEditText: TextInputEditText,
+        clearHintTV: TextView
+    ) {
+        hideKeyBoard()
+        clearFields()
+        clearTextInputEditText(clearEditText, clearHintTV)
+    }
+
+    private fun addFocusChangeListeners() {
+        binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.onFocusChangeListener =
             View.OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
-                    setTextViewText(
+                    setTextViewVisibility(
                         binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV,
-                        "",
                         View.GONE
                     )
                 } else {
-                    if (binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.isNullOrEmpty()) {
-                        setTextViewText(
-                            binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV,
-                            getString(R.string.item_part_code_hint),
+                    val value =
+                        binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.isNullOrEmpty()
+                    setTextViewVisibility(
+                        binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV,
+                        if (value) {
                             View.VISIBLE
-                        )
-                    } else {
-                        setTextViewText(
-                            binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV,
-                            "",
-                            View.GONE
-                        )
-                    }
+                        } else View.GONE
+                    )
                 }
             }
 
-        binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout.onFocusChangeListener =
+        binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.onFocusChangeListener =
             View.OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
-                    setTextViewText(
+                    setTextViewVisibility(
                         binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV,
-                        "",
                         View.GONE
                     )
                 } else {
-                    if (binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.isNullOrEmpty()) {
-                        setTextViewText(
-                            binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV,
-                            getString(R.string.item_serial_no_hint),
+                    val value =
+                        binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.isNullOrEmpty()
+                    setTextViewVisibility(
+                        binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV,
+                        if (value) {
                             View.VISIBLE
-                        )
-                    } else {
-                        setTextViewText(
-                            binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV,
-                            "",
-                            View.GONE
-                        )
-                    }
+                        } else View.GONE
+                    )
                 }
             }
+    }
+
+    private fun addTextWatcherListeners() {
+        binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.addTextChangedListener(
+            edittextTextWatcher(
+                binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
+                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText
+            )
+        )
+        binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.addTextChangedListener(
+            edittextTextWatcher(
+                binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout,
+                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText
+            )
+        )
     }
 
     private fun observeViewModel() {

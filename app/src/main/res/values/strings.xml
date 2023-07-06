@@ -27,7 +27,7 @@
     <string name="item_part_code_hint">Enter Item Part Code</string>
     <string name="error_item_part_code">Please select Item Part Code</string>
     <string name="item_serial_no">Item Serial No</string>
-    <string name="item_serial_no_hint">enter Item Serial No</string>
+    <string name="item_serial_no_hint">Enter Item Serial No</string>
     <string name="error_item_serial_no">Please select Item Serial No</string>
     <string name="item_name_english">Item Name (English)</string>
     <string name="item_name_arabic">Item Name (Arabic)</string>

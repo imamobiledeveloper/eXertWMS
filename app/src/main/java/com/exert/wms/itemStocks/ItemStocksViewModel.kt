@@ -116,24 +116,30 @@ class ItemStocksViewModel(
         return itemPartCode.isNotEmpty() || itemSerialNo.isNotEmpty()
     }
 
-    fun searchItemWithPartCode(partCode: String) {
+    fun setItemPartCodeValue(partCode: String) {
         itemPartCode = partCode
+    }
+
+    fun searchItemWithPartCode() {
         if (itemPartCode.isNotEmpty()) {
             getItemWarehouseList(itemPartCode, "")
             _errorItemPartCode.postValue(false)
         } else {
-            _errorItemPartCode.postValue(true)
+            _errorItemPartCode.value = (true)
         }
         checkAndEnableStatusButton()
     }
 
-    fun searchItemWithSerialNumber(serialNo: String) {
+    fun setItemSerialNumberValue(serialNo: String) {
         itemSerialNo = serialNo
+    }
+
+    fun searchItemWithSerialNumber() {
         if (itemSerialNo.isNotEmpty()) {
             getItemWarehouseList("", itemSerialNo)
             _errorItemSerialNo.postValue(false)
         } else {
-            _errorItemSerialNo.postValue(true)
+            _errorItemSerialNo.value = (true)
         }
         checkAndEnableStatusButton()
     }
@@ -159,18 +165,26 @@ class ItemStocksViewModel(
 
     fun getSerialNumbersList(itemsDto: ItemsDto?, warehouseStockDetails: WarehouseStockDetails?) {
         if (itemsDto != null && warehouseStockDetails != null) {
-            if(warehouseStockDetails.wSerialItemDetails!=null && warehouseStockDetails.wSerialItemDetails.isNotEmpty()){
+            if (warehouseStockDetails.wSerialItemDetails != null && warehouseStockDetails.wSerialItemDetails.isNotEmpty()) {
                 _warehouseSerialIsList.postValue(warehouseStockDetails.wSerialItemDetails)
-            }else if ((itemsDto.ItemPartCode != null || itemsDto.ItemSerialNumber != null) && warehouseStockDetails.WarehouseID > 0) {
-                getWarehouseSerialNosList(itemsDto.ItemPartCode!!, itemsDto.ItemSerialNumber!!,warehouseStockDetails.WarehouseID)
-            }else{
+            } else if ((itemsDto.ItemPartCode != null || itemsDto.ItemSerialNumber != null) && warehouseStockDetails.WarehouseID > 0) {
+                getWarehouseSerialNosList(
+                    itemsDto.ItemPartCode!!,
+                    itemsDto.ItemSerialNumber!!,
+                    warehouseStockDetails.WarehouseID
+                )
+            } else {
                 _errorFieldMessage.postValue(stringProvider.getString(R.string.invalid_details_message))
             }
 
         }
     }
 
-    private fun getWarehouseSerialNosList(itemPartCode: String, itemSerialNo: String,warehouseId: Long) {
+    private fun getWarehouseSerialNosList(
+        itemPartCode: String,
+        itemSerialNo: String,
+        warehouseId: Long
+    ) {
         showProgressIndicator()
         val request = WarehouseSerialItemsRequestDto(
             ItemPartCode = itemPartCode,
@@ -215,10 +229,10 @@ class ItemStocksViewModel(
 
     fun setItemPartCodeAndSerialNo(partCode: String?, serialNo: String?) {
         if (partCode != null) {
-            itemPartCode=partCode
+            itemPartCode = partCode
         }
         if (serialNo != null) {
-            itemSerialNo=serialNo
+            itemSerialNo = serialNo
         }
     }
 }

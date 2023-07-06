@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
@@ -105,6 +107,7 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
                 editTextLayout.requestFocus()
             }
             editTextLayout.text?.let { editTextLayout.setSelection(it.length) }
+            editTextLayout.isSelected= true
         }
     }
 
@@ -112,8 +115,16 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
         textInputLayout: TextInputLayout, editTextLayout: TextInputEditText
     ) {
         textInputLayout.isErrorEnabled = false
-        editTextLayout.isSelected = false
         textInputLayout.clearFocus()
+        editTextLayout.isSelected= false
+    }
+
+    fun disableErrorMessageWhileEditing(
+        textInputLayout: TextInputLayout, editTextLayout: TextInputEditText
+    ) {
+        textInputLayout.isErrorEnabled = false
+        editTextLayout.isSelected = false
+        editTextLayout.isFocusable= true
     }
 
     fun hideKeyBoard() {
@@ -159,6 +170,9 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
         textView.visibility = visible
     }
 
+    fun setTextViewVisibility(textView: TextView,visible: Int) {
+        textView.visibility = visible
+    }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -180,7 +194,48 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
 //        return true
 //    }
 
-    fun clearTextInputEditText(editText: TextInputEditText) {
+    fun clearTextInputEditText(editText: TextInputEditText, hintTV: TextView) {
         editText.text=getString(R.string.empty).toEditable()
+        hintTV.visibility= View.VISIBLE
     }
+
+    fun getEditTextText(editText: TextInputEditText): Editable? =editText.text
+
+    fun edittextTextWatcher(textInputLayout: TextInputLayout, editText: TextInputEditText)=object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            val isTextEmpty= getEditTextText(editText)?.trim()?.isNotEmpty()
+            if(isTextEmpty == true) {
+                disableErrorMessageWhileEditing(textInputLayout,editText
+                )
+            }
+        }
+    }
+    fun edittextFocusChangeListener(hintTextView: TextView, editText: TextInputEditText,errorMessage: String)=
+        View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                setTextViewVisibility(
+                    hintTextView,
+                    View.GONE
+                )
+            } else {
+                if (getEditTextText(editText)?.trim().isNullOrEmpty()) {
+                    setTextViewVisibility(
+                        hintTextView,
+                        View.VISIBLE
+                    )
+                } else {
+                    setTextViewVisibility(
+                        hintTextView,
+                        View.GONE
+                    )
+                }
+            }
+
+        }
 }

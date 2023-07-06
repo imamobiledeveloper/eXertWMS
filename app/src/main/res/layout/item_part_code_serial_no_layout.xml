@@ -20,19 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/itemPartCodeHintTV"
-            style="@style/TextViewHintLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:text="@string/item_part_code_hint"
-            app:layout_constraintStart_toEndOf="@+id/scanItemPartCodeIV"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scanItemPartCodeIV"
             android:layout_width="wrap_content"
@@ -50,7 +37,7 @@
             android:layout_marginStart="12dp"
             android:minHeight="56dp"
             app:endIconMode="custom"
-            app:boxBackgroundMode="none"
+            app:boxBackgroundMode="outline"
             app:errorTextAppearance="@style/EdittextError"
             app:layout_constraintStart_toEndOf="@+id/scanItemPartCodeIV"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,20 +49,33 @@
                 android:id="@+id/itemPartCodeEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_rectangle_white_bg"
+                android:background="@drawable/edittext_state_selector_bg"
                 android:drawablePadding="8dp"
+                android:textCursorDrawable="@drawable/blue_cursor"
                 android:ellipsize="end"
                 android:textSize="16sp"
                 android:gravity="center_vertical"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLength="20"
-                android:text="18x085NiCd-Hop"
                 android:padding="14dp"
                 android:singleLine="true"
-                tools:text="123456789012345678901234567890" />
+                tools:text="18x085NiCd-Hop" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/itemPartCodeHintTV"
+            style="@style/TextViewHintLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:text="@string/item_part_code_hint"
+            app:layout_constraintStart_toEndOf="@+id/scanItemPartCodeIV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -90,19 +90,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemPartCodeLayout">
-
-        <TextView
-            android:id="@+id/itemSerialNoHintTV"
-            style="@style/TextViewHintLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="12dp"
-            android:text="@string/item_serial_no_hint"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/scanItemSerialNoIV"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/scanItemSerialNoIV"
@@ -119,7 +106,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            app:boxBackgroundMode="none"
+            app:boxBackgroundMode="outline"
             android:minHeight="56dp"
             app:errorTextAppearance="@style/EdittextError"
             app:layout_constraintEnd_toEndOf="parent"
@@ -133,9 +120,10 @@
                 android:id="@+id/itemSerialNoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_rectangle_white_bg"
+                android:background="@drawable/edittext_state_selector_bg"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
+                android:textCursorDrawable="@drawable/blue_cursor"
                 android:inputType="text"
                 android:maxLength="20"
                 android:padding="14dp"
@@ -143,6 +131,19 @@
                 tools:text="nbmdsfkjbdsf" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/itemSerialNoHintTV"
+            style="@style/TextViewHintLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="12dp"
+            android:text="@string/item_serial_no_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/scanItemSerialNoIV"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

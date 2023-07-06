@@ -138,7 +138,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
         launchActivity(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
     }
 
-    public fun launchActivity(intentFlags: Int = 0) {
+    private fun launchActivity(intentFlags: Int = 0) {
         val intent = Intent(this, LoginActivity::class.java)
         if (intentFlags > 0) {
             intent.addFlags(intentFlags)

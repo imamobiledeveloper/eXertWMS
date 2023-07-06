@@ -73,7 +73,6 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
             super.onBackPressed()
             false
         }
-//        return super.onSupportNavigateUp()
     }
 
     private fun getNavHostFragment(): NavHostFragment {
