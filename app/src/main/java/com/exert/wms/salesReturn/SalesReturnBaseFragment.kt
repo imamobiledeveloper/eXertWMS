@@ -1,28 +1,29 @@
-package com.exert.wms.stockReconciliation
+package com.exert.wms.salesReturn
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.exert.wms.R
-import com.exert.wms.databinding.FragmentStockReconciliationBinding
+import com.exert.wms.databinding.FragmentSalesReturnBaseBinding
 import com.exert.wms.mvvmbase.MVVMFragment
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class StockReconciliationFragment :
-    MVVMFragment<StockReconciliationBaseViewModel, FragmentStockReconciliationBinding>() {
 
-    override val title = R.string.stock_reconciliation
+class SalesReturnBaseFragment :
+    MVVMFragment<SalesReturnBaseViewModel, FragmentSalesReturnBaseBinding>() {
+
+    override val title = R.string.sales_return
 
     override val mViewModel by lazy {
-        getViewModel<StockReconciliationBaseViewModel>()
+        getViewModel<SalesReturnBaseViewModel>()
     }
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentStockReconciliationBinding {
-        return FragmentStockReconciliationBinding.inflate(inflater, container, false)
+    ): FragmentSalesReturnBaseBinding {
+        return FragmentSalesReturnBaseBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,7 +31,7 @@ class StockReconciliationFragment :
         observeViewModel()
     }
 
-    override fun onBindData(binding: FragmentStockReconciliationBinding) {
+    override fun onBindData(binding: FragmentSalesReturnBaseBinding) {
 
     }
 

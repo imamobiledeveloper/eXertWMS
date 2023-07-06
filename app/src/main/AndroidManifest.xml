@@ -44,10 +44,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".itemStocks.ItemStocksActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan|adjustResize" />
+
         <activity
             android:name=".home.HomeActivity"
             android:exported="false"

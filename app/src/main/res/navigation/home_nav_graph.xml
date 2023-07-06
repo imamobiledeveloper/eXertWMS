@@ -29,6 +29,6 @@
 
     <fragment
         android:id="@+id/nav_stock_reconciliation"
-        android:name="com.exert.wms.stockReconciliation.StockReconciliationFragment"
+        android:name="com.exert.wms.stockReconciliation.StockReconciliationBaseFragment"
         tools:layout="@layout/fragment_stock_reconciliation" />
 </navigation>
