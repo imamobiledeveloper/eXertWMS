@@ -118,7 +118,7 @@
 
             <EditText
                 android:id="@+id/itemStockEditText"
-                style="@style/EditTextEnabledStyle"
+                style="@style/EditTextDisabledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="@{labelThree == (@string/part_code) ? itemDto.itemPartCode : itemDto.getStockString()}"

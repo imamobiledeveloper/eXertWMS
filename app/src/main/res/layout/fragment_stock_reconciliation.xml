@@ -33,6 +33,22 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
+                    android:id="@+id/addItemsTV"
+                    style="@style/TextViewWithDrawableStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/add_item"
+                    android:layout_marginEnd="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:drawablePadding="@dimen/margin_8dp"
+                    android:background="@drawable/button_green_bg_selector"
+                    android:textColor="@color/white"
+                    app:drawableStartCompat="@drawable/ic_add_circle_white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
                     android:id="@+id/warehouseTV"
                     style="@style/TextViewBold14Label"
                     android:layout_width="0dp"
@@ -42,7 +58,8 @@
                     android:gravity="center_vertical"
                     android:text="@string/warehouse"
                     android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/addItemsTV"
+                    app:layout_constraintEnd_toStartOf="@+id/addItemsTV"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

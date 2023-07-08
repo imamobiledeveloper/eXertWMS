@@ -21,7 +21,7 @@ val repositoryModule = module(override = true) {
     single {
         WarehouseRepository(get())
     }
-//    single {
-//        StockReconciliationRepository(get())
-//    }
+    single {
+        StockReconciliationRepository(get())
+    }
 }
