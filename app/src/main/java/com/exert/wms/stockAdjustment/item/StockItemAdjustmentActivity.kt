@@ -12,15 +12,15 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import com.exert.wms.BR
 import com.exert.wms.R
+import com.exert.wms.SerialItemsDto
 import com.exert.wms.databinding.ActivityStockItemAdjustmentBinding
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
-import com.exert.wms.stockAdjustment.api.SerialItemsDto
-import com.exert.wms.stockAdjustment.api.WarehouseDto
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
 import com.exert.wms.utils.toEditable
+import com.exert.wms.warehouse.WarehouseDto
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -334,7 +334,10 @@ class StockItemAdjustmentActivity :
                 intent?.let {
                     val data = it.extras
                     val serialItemsList =
-                        data?.getParcelableArrayList<SerialItemsDto>(Constants.CHECKED_SERIAL_ITEMS)
+                        data?.getParcelableArrayList(
+                            Constants.CHECKED_SERIAL_ITEMS,
+                            SerialItemsDto::class.java
+                        )
                     mViewModel.setSelectedSerialItemsList(serialItemsList)
                 }
             }
@@ -353,8 +356,8 @@ class StockItemAdjustmentActivity :
             getString(R.string.empty).toEditable()
         binding.costEditText.text =
             getString(R.string.empty).toEditable()
-        binding.positiveRadioButton.isChecked= false
-        binding.negativeRadioButton.isChecked= false
+        binding.positiveRadioButton.isChecked = false
+        binding.negativeRadioButton.isChecked = false
     }
 
     override fun onBindData(binding: ActivityStockItemAdjustmentBinding) {
@@ -364,10 +367,5 @@ class StockItemAdjustmentActivity :
     override fun onBackPressed() {
         setResult(Activity.RESULT_CANCELED, null)
         super.onBackPressed()
-    }
-
-    companion object {
-        private const val SHOW_CHECKBOX: String = "SHOW_CHECKBOX"
-        private const val SERIAL_NO_ACTIVITY_REQUEST_CODE: Int = 1
     }
 }

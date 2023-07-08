@@ -1,6 +1,6 @@
 package com.exert.wms.stockAdjustment.item
 
-import com.exert.wms.stockAdjustment.api.SerialItemsDto
+import com.exert.wms.SerialItemsDto
 
 interface OnItemCheckListener {
     fun onItemCheck(item: SerialItemsDto)

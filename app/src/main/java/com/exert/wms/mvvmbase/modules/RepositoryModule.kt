@@ -3,6 +3,8 @@ package com.exert.wms.mvvmbase.modules
 import com.exert.wms.itemStocks.api.ItemStocksRepository
 import com.exert.wms.login.api.LoginRepository
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRepository
+import com.exert.wms.stockReconciliation.api.StockReconciliationRepository
+import com.exert.wms.warehouse.WarehouseRepository
 import org.koin.dsl.module
 
 val repositoryModule = module(override = true) {
@@ -16,4 +18,10 @@ val repositoryModule = module(override = true) {
     single {
         StockAdjustmentRepository(stockAdjustmentDataSource = get())
     }
+    single {
+        WarehouseRepository(get())
+    }
+//    single {
+//        StockReconciliationRepository(get())
+//    }
 }

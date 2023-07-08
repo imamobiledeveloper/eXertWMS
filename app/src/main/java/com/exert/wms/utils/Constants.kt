@@ -5,6 +5,7 @@ object Constants {
     const val SHOW_CHECKBOX: String="SHOW_CHECKBOX"
     const val ADJUSTMENT_TYPE: String="ADJUSTMENT_TYPE"
     const val WAREHOUSE: String="WAREHOUSE"
+    const val ITEM_ID: String = "ITEM_ID"
     const val ITEM_DTO: String = "ITEM_DTO"
     const val ITEM_WAREHOUSE: String = "ITEM_WAREHOUSE"
     const val ITEM_PART_CODE: String = "ITEM_PART_CODE"

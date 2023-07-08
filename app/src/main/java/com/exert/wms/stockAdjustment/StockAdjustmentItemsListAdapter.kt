@@ -3,7 +3,6 @@ package com.exert.wms.stockAdjustment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.StockAdjustmentItemNameListItemLayoutBinding
 import com.exert.wms.stockAdjustment.api.StockItemsDetailsDto
@@ -40,8 +39,12 @@ class StockAdjustmentItemsListAdapter(
         private val itemName: TextView = holderBinding.itemNameTV
 
         fun bind(item: StockItemsDetailsDto, position: Int, selectedPosition: Int) {
-           holderBinding.whiteBg = position % 2 == 0
-            holderBinding.itemDto=item
+            holderBinding.whiteBg = position % 2 == 0
+//            holderBinding.itemDto = item
+            holderBinding.setGreen = item.AdjustmentType == 0
+
+            holderBinding.itemCountTV.text =item.getAdjustmentQtyString()
+            holderBinding.itemNameTV.text =item.getItemIDString()
             holderBinding.executePendingBindings()
 
             itemName.setOnClickListener {

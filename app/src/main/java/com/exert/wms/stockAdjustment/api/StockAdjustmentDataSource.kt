@@ -1,5 +1,6 @@
 package com.exert.wms.stockAdjustment.api
 
+import com.exert.wms.warehouse.WarehouseListDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -14,11 +15,11 @@ class  StockAdjustmentDataSource(
         }
     }
 
-    fun getWarehouseList(): Flow<WarehouseListDto> {
-        return flow {
-            emit(
-                stockAdjustmentDataSourceRemote.getWarehouseList()
-            )
-        }
-    }
+//    fun getWarehouseList(): Flow<WarehouseListDto> {
+//        return flow {
+//            emit(
+//                stockAdjustmentDataSourceRemote.getWarehouseList()
+//            )
+//        }
+//    }
 }

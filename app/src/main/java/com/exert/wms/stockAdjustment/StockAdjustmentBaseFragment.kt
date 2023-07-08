@@ -22,7 +22,8 @@ import com.exert.wms.stockAdjustment.item.StockItemAdjustmentActivity
 import com.exert.wms.utils.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class StockAdjustmentBaseFragment : MVVMFragment<StockAdjustmentBaseViewModel, FragmentStockAdjustmentBaseBinding>() {
+class StockAdjustmentBaseFragment :
+    MVVMFragment<StockAdjustmentBaseViewModel, FragmentStockAdjustmentBaseBinding>() {
 
     override val title = R.string.stock_adjustment
 
@@ -48,6 +49,7 @@ class StockAdjustmentBaseFragment : MVVMFragment<StockAdjustmentBaseViewModel, F
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
     }
+
     private fun observeViewModel() {
         binding.warehouseSpinner.selected { parent, position ->
             binding.warehouseSpinnerTV.text = parent?.getItemAtPosition(position).toString()
@@ -75,14 +77,14 @@ class StockAdjustmentBaseFragment : MVVMFragment<StockAdjustmentBaseViewModel, F
             binding.updateButton.isEnabled = it
         })
         mViewModel.itemsList.observe(viewLifecycleOwner, Observer { list ->
-            if (list!=null && list.isNotEmpty()) {
+            if (list != null && list.isNotEmpty()) {
                 binding.itemsListRecyclerView.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 binding.itemsListRecyclerView.apply {
                     adapter = StockAdjustmentItemsListAdapter(list) {
-                        navigateToItemAdjustment(it)
+//                        navigateToItemAdjustment(it)
                     }
-                    val dividerDrawable= ContextCompat.getDrawable(context, R.drawable.divider)
+                    val dividerDrawable = ContextCompat.getDrawable(context, R.drawable.divider)
                     dividerDrawable?.let {
                         val dividerItemDecoration: RecyclerView.ItemDecoration =
                             DividerItemDecorator(it)
@@ -146,6 +148,7 @@ class StockAdjustmentBaseFragment : MVVMFragment<StockAdjustmentBaseViewModel, F
         adapter.setDropDownViewResource(R.layout.spinner_item_layout)
         binding.warehouseSpinner.adapter = adapter
     }
+
     private fun navigateToItemAdjustment(itemName: String) {
         activity?.startActivity<StockItemAdjustmentActivity>()
     }

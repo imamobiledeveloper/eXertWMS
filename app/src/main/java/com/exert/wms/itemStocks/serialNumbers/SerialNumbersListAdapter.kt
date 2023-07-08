@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.exert.wms.SerialItemsDto
 import com.exert.wms.databinding.ItemSerialNumbersListItemLayoutBinding
 import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
-import com.exert.wms.stockAdjustment.api.SerialItemsDto
 import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 
 class SerialNumbersListAdapter(

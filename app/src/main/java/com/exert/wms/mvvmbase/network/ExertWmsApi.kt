@@ -8,7 +8,9 @@ import com.exert.wms.login.api.LoginDto
 import com.exert.wms.login.api.LoginRequestDto
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRequestDto
 import com.exert.wms.stockAdjustment.api.StockItemAdjustmentDto
-import com.exert.wms.stockAdjustment.api.WarehouseListDto
+import com.exert.wms.stockReconciliation.api.StockItemReconciliationDto
+import com.exert.wms.stockReconciliation.api.StockReconciliationRequestDto
+import com.exert.wms.warehouse.WarehouseListDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -42,4 +44,10 @@ interface ExertWmsApi {
 
     @GET("webapi/api/Warehouse/GetWarehouse")
     suspend fun getWarehouseList(): WarehouseListDto
+
+    @POST("webapi/api/StockAdjustment/SaveStockAdjustment")
+    suspend fun saveStockReconciliationItems(
+        @Body requestBody: StockReconciliationRequestDto
+    ): StockItemReconciliationDto
+
 }

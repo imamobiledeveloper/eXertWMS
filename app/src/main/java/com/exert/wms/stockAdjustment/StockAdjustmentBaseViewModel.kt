@@ -5,10 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
+import com.exert.wms.SerialItemsDto
 import com.exert.wms.itemStocks.api.*
 import com.exert.wms.mvvmbase.BaseViewModel
-import com.exert.wms.stockAdjustment.api.*
+import com.exert.wms.stockAdjustment.api.StockAdjustmentRepository
+import com.exert.wms.stockAdjustment.api.StockAdjustmentRequestDto
+import com.exert.wms.stockAdjustment.api.StockItemsDetailsDto
 import com.exert.wms.utils.StringProvider
+import com.exert.wms.warehouse.WarehouseDto
+import com.exert.wms.warehouse.WarehouseRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,6 +22,7 @@ import kotlinx.coroutines.launch
 class StockAdjustmentBaseViewModel(
     private val stringProvider: StringProvider,
     private val itemStocksRepo: ItemStocksRepository,
+    private val warehouseRepo: WarehouseRepository,
     private val stockAdjustmentRepo: StockAdjustmentRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BaseViewModel() {
@@ -31,9 +37,6 @@ class StockAdjustmentBaseViewModel(
 
     private val _enableUpdateButton = MutableLiveData<Boolean>().apply { false }
     val enableUpdateButton: LiveData<Boolean> = _enableUpdateButton
-
-    private val _getItemsStatus = MutableLiveData<Boolean>()
-    val getItemsStatus: LiveData<Boolean> = _getItemsStatus
 
     private val _errorGetItemsStatusMessage = MutableLiveData<String>()
     val errorGetItemsStatusMessage: LiveData<String> = _errorGetItemsStatusMessage
@@ -243,7 +246,7 @@ class StockAdjustmentBaseViewModel(
     private fun getWarehouseList() {
         showProgressIndicator()
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
-            stockAdjustmentRepo.getWarehouseList()
+            warehouseRepo.getWarehouseList()
                 .collect { dto ->
                     Log.v("WMS EXERT", "getWarehouseList response $dto")
                     hideProgressIndicator()
@@ -278,7 +281,7 @@ class StockAdjustmentBaseViewModel(
         warehouseDto?.let { it.WarehouseID } ?: 0
     }
 
-    fun getAdjustmentTypeIntValue() =
+    private fun getAdjustmentTypeIntValue() =
         if (adjustmentTypeValue == stringProvider.getString(R.string.positive)) 0 else 1
 
     fun setSelectedWarehouseDto(warehouse: WarehouseDto?) {

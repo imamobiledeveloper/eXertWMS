@@ -6,12 +6,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.exert.wms.BR
 import com.exert.wms.R
+import com.exert.wms.SerialItemsDto
 import com.exert.wms.databinding.ActivitySerialNumbersListBinding
 import com.exert.wms.itemStocks.ItemStocksViewModel
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.stockAdjustment.api.SerialItemsDto
 import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel

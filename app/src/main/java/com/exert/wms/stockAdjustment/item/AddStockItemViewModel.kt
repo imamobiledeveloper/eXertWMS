@@ -3,8 +3,8 @@ package com.exert.wms.stockAdjustment.item
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.exert.wms.R
+import com.exert.wms.SerialItemsDto
 import com.exert.wms.mvvmbase.BaseViewModel
-import com.exert.wms.stockAdjustment.api.SerialItemsDto
 import com.exert.wms.utils.StringProvider
 
 class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseViewModel() {

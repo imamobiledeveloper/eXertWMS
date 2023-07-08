@@ -2,6 +2,7 @@ package com.exert.wms.stockAdjustment.api
 
 import android.os.Parcelable
 import androidx.annotation.Keep
+import com.exert.wms.SerialItemsDto
 import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
@@ -38,17 +39,17 @@ data class StockItemsDetailsDto(
     fun getItemIDString() = ItemID.toString()
     fun getAdjustmentQtyString() = AdjustmentQty.toString()
 }
-
-@Parcelize
-@Keep
-data class SerialItemsDto(
-    val SerialNumber: String? = "",
-    val ManufactureDate: String? = "",
-    val WarrantyPeriod: String? = "",
-    val Quantity: Long = 0,
-) : Serializable, Parcelable {
-    companion object
-}
+//
+//@Parcelize
+//@Keep
+//data class SerialItemsDto(
+//    val SerialNumber: String? = "",
+//    val ManufactureDate: String? = "",
+//    val WarrantyPeriod: String? = "",
+//    val Quantity: Long = 0,
+//) : Serializable, Parcelable {
+//    companion object
+//}
 
 @Keep
 data class
@@ -59,23 +60,23 @@ StockAdjustmentRequestDto(
     companion object
 }
 
-@Keep
-data class WarehouseListDto(
-    val success: Boolean,
-    val Warehouses: List<WarehouseDto>,
-) {
-    companion object
-}
-
-@Parcelize
-@Keep
-data class WarehouseDto(
-    val WarehouseID: Long,
-    val Warehouse: String,
-) : Serializable, Parcelable {
-    override fun toString(): String {
-        return this.Warehouse
-    }
-
-    companion object
-}
+//@Keep
+//data class WarehouseListDto(
+//    val success: Boolean,
+//    val Warehouses: List<WarehouseDto>,
+//) {
+//    companion object
+//}
+//
+//@Parcelize
+//@Keep
+//data class WarehouseDto(
+//    val WarehouseID: Long,
+//    val Warehouse: String,
+//) : Serializable, Parcelable {
+//    override fun toString(): String {
+//        return this.Warehouse
+//    }
+//
+//    companion object
+//}
