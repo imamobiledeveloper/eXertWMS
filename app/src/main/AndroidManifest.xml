@@ -17,14 +17,15 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name="com.exert.wms.stockReconciliation.item.StockQuantityReconciliationActivity"
+            android:exported="false" />
         <activity
             android:name="com.exert.wms.stockAdjustment.item.StockQuantityAdjustmentActivity"
             android:exported="false" />
         <activity
             android:name="com.exert.wms.stockAdjustment.item.StockItemAdjustmentActivity"
             android:exported="false" />
-
         <activity
             android:name=".itemStocks.serialNumbers.SerialNumbersListActivity"
             android:exported="false" />
@@ -35,8 +36,8 @@
             android:name=".splash.SplashActivity"
             android:configChanges="screenSize|smallestScreenSize|fontScale|density"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,7 +45,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".home.HomeActivity"
             android:exported="false"
@@ -53,21 +53,19 @@
             android:name=".login.LoginActivity"
             android:configChanges="screenSize|smallestScreenSize|fontScale|density"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".login.ForgotPasswordActivity"
             android:configChanges="screenSize|smallestScreenSize|fontScale|density"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name="com.exert.wms.stockReconciliation.item.StockItemReconciliationActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>

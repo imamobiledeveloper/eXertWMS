@@ -160,7 +160,7 @@
                                 android:enabled="false"
                                 android:gravity="center_vertical"
                                 android:imeOptions="actionNext"
-                                android:inputType="text"
+                                android:inputType="numberDecimal"
                                 android:maxLength="20"
                                 android:singleLine="true"
                                 android:text="@{viewModel.adjustmentQuantityString}"

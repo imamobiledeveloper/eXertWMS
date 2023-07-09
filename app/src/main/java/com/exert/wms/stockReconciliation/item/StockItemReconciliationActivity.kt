@@ -156,7 +156,6 @@ class StockItemReconciliationActivity :
         warehouseDto = intent.getSerializable(Constants.WAREHOUSE, WarehouseDto::class.java)
         mViewModel.setSelectedWarehouseDto(warehouseDto)
 
-        binding.itemNameManufactureLayout.itemStockEditText.isEnabled=true
         binding.saveButton.setOnClickListener {
             mViewModel.saveItemStock(
                 binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString(),
@@ -239,8 +238,8 @@ class StockItemReconciliationActivity :
                     Constants.WAREHOUSE_STOCK_DETAILS,
                     mViewModel.getWarehouseStockDetails()
                 )
-//                bundle.putString(Constants.ADJUSTMENT_TYPE, mViewModel.getAdjustmentType())
-                val intent = Intent(this, StockQuantityAdjustmentActivity::class.java)
+                bundle.putString(Constants.ITEM_QUANTITY, binding.quantityEditText.text.toString().trim())
+                val intent = Intent(this, StockQuantityReconciliationActivity::class.java)
                 intent.putExtras(bundle)
                 startForResult.launch(intent)
 
@@ -288,6 +287,20 @@ class StockItemReconciliationActivity :
                 )
             }
         })
+        mViewModel.errorQuantity.observe(this, Observer {
+            if (it) {
+                enableErrorMessage(
+                    binding.quantityEditTextLayout,
+                    binding.quantityEditText,
+                    getString(R.string.error_quantity_message)
+                )
+            } else {
+                disableErrorMessage(
+                    binding.quantityEditTextLayout,
+                    binding.quantityEditText,
+                )
+            }
+        })
 
         mViewModel.itemDto.observe(this, Observer { dto ->
             binding.itemDto = dto
@@ -295,7 +308,7 @@ class StockItemReconciliationActivity :
         })
 
         mViewModel.isItemSerialized.observe(this, Observer { isItSerialized ->
-            binding.quantityEditText.isEnabled = !isItSerialized
+//            binding.quantityEditText.isEnabled = !isItSerialized
         })
 
         mViewModel.quantityString.observe(this, Observer { value ->
