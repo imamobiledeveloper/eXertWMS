@@ -13,6 +13,14 @@ data class SerialItemsDto(
     val ManufactureDate: String? = "",
     val WarrantyPeriod: String? = "",
     val Quantity: Long = 0,
-) : Serializable, Parcelable {
+) : Parcelable {
+    companion object
+}
+
+@Parcelize
+@Keep
+data class SerialItemsDtoList(
+    val serialItemsDto: List<SerialItemsDto>?
+) : Parcelable {
     companion object
 }

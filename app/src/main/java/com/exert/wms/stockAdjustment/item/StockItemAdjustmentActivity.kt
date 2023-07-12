@@ -2,6 +2,7 @@ package com.exert.wms.stockAdjustment.item
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
@@ -12,7 +13,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import com.exert.wms.BR
 import com.exert.wms.R
-import com.exert.wms.SerialItemsDto
+import com.exert.wms.SerialItemsDtoList
 import com.exert.wms.databinding.ActivityStockItemAdjustmentBinding
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
@@ -332,12 +333,15 @@ class StockItemAdjustmentActivity :
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
                 intent?.let {
-                    val data = it.extras
-                    val serialItemsList =
-                        data?.getParcelableArrayList(
+                    val serialItemsList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        it.getParcelableExtra(
                             Constants.CHECKED_SERIAL_ITEMS,
-                            SerialItemsDto::class.java
+                            SerialItemsDtoList::class.java
                         )
+                    } else {
+                        it.getParcelableExtra(Constants.CHECKED_SERIAL_ITEMS)
+                    }
+
                     mViewModel.setSelectedSerialItemsList(serialItemsList)
                 }
             }
@@ -356,8 +360,26 @@ class StockItemAdjustmentActivity :
             getString(R.string.empty).toEditable()
         binding.costEditText.text =
             getString(R.string.empty).toEditable()
-        binding.positiveRadioButton.isChecked = false
-        binding.negativeRadioButton.isChecked = false
+
+//        if (binding.radioButtonParent.checkedRadioButtonId != -1) {
+//            binding.radioButtonParent.clearCheck()
+//        }
+
+//        val childCount = binding.radioButtonParent.childCount
+//
+//        for (i in 0 until childCount) {
+//            val view = binding.radioButtonParent.getChildAt(i)
+//            if (view is RadioButton) {
+//                view.isChecked = false
+//            }
+//        }
+
+//        if(binding.positiveRadioButton.isChecked) {
+//            binding.positiveRadioButton.isChecked = false
+//        }
+//        if(binding.negativeRadioButton.isChecked) {
+//            binding.negativeRadioButton.isChecked = false
+//        }
     }
 
     override fun onBindData(binding: ActivityStockItemAdjustmentBinding) {

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
+import com.exert.wms.SerialItemsDtoList
 import com.exert.wms.itemStocks.api.*
 import com.exert.wms.mvvmbase.BaseViewModel
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRepository
@@ -78,8 +79,8 @@ class StockAdjustmentBaseViewModel(
     private val _isItemSerialized = MutableLiveData<Boolean>()
     val isItemSerialized: LiveData<Boolean> = _isItemSerialized
 
-    private val _checkedSerialItemsList = MutableLiveData<ArrayList<SerialItemsDto>>()
-    val checkedSerialItemsList: LiveData<ArrayList<SerialItemsDto>> = _checkedSerialItemsList
+    private val _checkedSerialItemsList = MutableLiveData<SerialItemsDtoList>()
+    val checkedSerialItemsList: LiveData<SerialItemsDtoList> = _checkedSerialItemsList
 
     private val _showAddItemButton = MutableLiveData<Boolean>()
     val showAddItemButton: LiveData<Boolean> = _showAddItemButton
@@ -415,7 +416,8 @@ class StockAdjustmentBaseViewModel(
 
     fun getSelectedItems() {
         if (userCheckedItems.isNotEmpty()) {
-            _checkedSerialItemsList.postValue(userCheckedItems)
+           val dto= SerialItemsDtoList(userCheckedItems)
+            _checkedSerialItemsList.postValue(dto)
         } else {
             _errorFieldMessage.postValue(stringProvider.getString(R.string.check_serial_items_empty_message))
         }
@@ -451,13 +453,16 @@ class StockAdjustmentBaseViewModel(
         }
     }
 
-    fun setSelectedSerialItemsList(serialItemsList: ArrayList<SerialItemsDto>?) {
-        if (serialItemsList != null && serialItemsList.isNotEmpty()) {
-            userSelectedSerialItemsList = serialItemsList
-            adjustmentQuantity = getAdjustmentQuantity().toDouble()
-            _adjustmentQuantityString.postValue(getAdjustmentQuantity().toString())
-            _adjustmentTotalCostString.postValue(getAdjustmentTotalCostInString())
-            _enableSaveButton.postValue(true)
+    fun setSelectedSerialItemsList(dto: SerialItemsDtoList?) {
+        dto?.takeIf { it.serialItemsDto!= null }?.let { serialItemsList ->
+            if (serialItemsList.serialItemsDto?.isNotEmpty() == true) {
+                userSelectedSerialItemsList =
+                    serialItemsList.serialItemsDto as ArrayList<SerialItemsDto>
+                adjustmentQuantity = getAdjustmentQuantity().toDouble()
+                _adjustmentQuantityString.postValue(getAdjustmentQuantity().toString())
+                _adjustmentTotalCostString.postValue(getAdjustmentTotalCostInString())
+                _enableSaveButton.postValue(true)
+            }
         }
     }
 

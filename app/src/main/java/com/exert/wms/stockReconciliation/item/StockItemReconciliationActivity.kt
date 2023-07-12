@@ -2,6 +2,7 @@ package com.exert.wms.stockReconciliation.item
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -11,10 +12,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import com.exert.wms.BR
 import com.exert.wms.R
-import com.exert.wms.SerialItemsDto
+import com.exert.wms.SerialItemsDtoList
 import com.exert.wms.databinding.ActivityStockItemReconciliationBinding
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.stockAdjustment.item.StockQuantityAdjustmentActivity
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
@@ -322,13 +322,23 @@ class StockItemReconciliationActivity :
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
                 intent?.let {
-                    val data = it.extras
-                    val serialItemsList =
-                        data?.getParcelableArrayList(
-                            Constants.CHECKED_SERIAL_ITEMS,
-                            SerialItemsDto::class.java
+//                    val data = it.extras
+
+                    val item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        it.getParcelableExtra(
+                            Constants.RECONCILIATION_CHECKED_SERIAL_ITEMS,
+                            SerialItemsDtoList::class.java
                         )
-                    mViewModel.setSelectedSerialItemsList(serialItemsList)
+                    } else {
+                        it.getParcelableExtra(Constants.RECONCILIATION_CHECKED_SERIAL_ITEMS)
+                    }
+
+//                    val serialItemsList =
+//                        data?.getParcelable(
+//                            Constants.RECONCILIATION_CHECKED_SERIAL_ITEMS,
+//                            SerialItemsDtoList::class.java
+//                        )
+                    mViewModel.setSelectedSerialItemsList(item)
                 }
             }
         }

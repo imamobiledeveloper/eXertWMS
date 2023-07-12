@@ -134,7 +134,7 @@ class StockQuantityReconciliationActivity :
 
         mViewModel.checkedSerialItemsList.observe(this, Observer { list ->
             val data = Intent()
-            data.putParcelableArrayListExtra(Constants.CHECKED_SERIAL_ITEMS, list)
+            data.putExtra(Constants.RECONCILIATION_CHECKED_SERIAL_ITEMS, list)
             setResult(Activity.RESULT_OK, data)
             finish()
         })

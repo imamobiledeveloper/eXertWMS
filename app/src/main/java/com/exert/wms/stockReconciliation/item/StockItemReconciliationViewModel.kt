@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
+import com.exert.wms.SerialItemsDtoList
 import com.exert.wms.itemStocks.api.*
 import com.exert.wms.mvvmbase.BaseViewModel
 import com.exert.wms.stockReconciliation.api.ReconciliationItemsDetailsDto
@@ -83,8 +84,8 @@ class StockItemReconciliationViewModel(
     private val _showAddItemButton = MutableLiveData<Boolean>()
     val showAddItemButton: LiveData<Boolean> = _showAddItemButton
 
-    private val _checkedSerialItemsList = MutableLiveData<ArrayList<SerialItemsDto>>()
-    val checkedSerialItemsList: LiveData<ArrayList<SerialItemsDto>> = _checkedSerialItemsList
+    private val _checkedSerialItemsList = MutableLiveData<SerialItemsDtoList>()
+    val checkedSerialItemsList: LiveData<SerialItemsDtoList> = _checkedSerialItemsList
 
     private val _showDialogToAddItem = MutableLiveData<Boolean>()
     val showDialogToAddItem: LiveData<Boolean> = _showDialogToAddItem
@@ -283,13 +284,16 @@ class StockItemReconciliationViewModel(
         }
     }
 
-    fun setSelectedSerialItemsList(serialItemsList: ArrayList<SerialItemsDto>?) {
-        if (serialItemsList != null && serialItemsList.isNotEmpty()) {
-            userSelectedSerialItemsList = serialItemsList
-            quantity = getQuantity().toDouble()
-            _quantityString.postValue(getQuantity().toString())
-            _enableSaveButton.postValue(true)
+    fun setSelectedSerialItemsList(dto: SerialItemsDtoList?) {
+        dto?.takeIf { it.serialItemsDto!= null }?.let{ serialItemsList->
+            if (serialItemsList.serialItemsDto?.isNotEmpty() == true) {
+                userSelectedSerialItemsList = serialItemsList.serialItemsDto as ArrayList<SerialItemsDto>
+                quantity = getQuantity().toDouble()
+                _quantityString.postValue(getQuantity().toString())
+                _enableSaveButton.postValue(true)
+            }
         }
+
     }
 
     private fun getQuantity() =
@@ -364,7 +368,8 @@ class StockItemReconciliationViewModel(
 
     fun getSelectedItems() {
         if (userCheckedItems.isNotEmpty()) {
-            _checkedSerialItemsList.postValue(userCheckedItems)
+            val dto= SerialItemsDtoList(userCheckedItems)
+            _checkedSerialItemsList.postValue(dto)
         } else {
             _errorFieldMessage.postValue(stringProvider.getString(R.string.check_serial_items_empty_message))
         }
