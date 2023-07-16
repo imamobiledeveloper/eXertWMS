@@ -58,6 +58,8 @@ class HomeFragment : MVVMFragment<HomeViewModel, FragmentHomeBinding>() {
         when (featureName) {
             featuresList[0] -> (activity as HomeActivity).setSelectedItem(1)
             featuresList[1] -> (activity as HomeActivity).setSelectedItem(2)
+            featuresList[2] -> (activity as HomeActivity).setSelectedItem(3)
+            featuresList[3] -> (activity as HomeActivity).setSelectedItem(4)
             else -> (activity as HomeActivity).setSelectedItem(3)
             //findNavController().navigate(HomeFragmentDirections.actionHomeToStockReconciliation())
 //            else -> findNavController().navigate(HomeFragmentDirections.actionHomeToItemStocks())
