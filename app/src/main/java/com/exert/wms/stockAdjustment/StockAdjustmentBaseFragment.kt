@@ -101,6 +101,7 @@ class StockAdjustmentBaseFragment :
             if (it) {
                 val bundle = Bundle()
                 bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
+                bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedWarehouseId())
                 bundle.putSerializable(Constants.WAREHOUSE, mViewModel.getWarehouseObject())
                 val intent = Intent(requireContext(), StockItemAdjustmentActivity::class.java)
                 intent.putExtras(bundle)
@@ -116,6 +117,14 @@ class StockAdjustmentBaseFragment :
         mViewModel.warehouseStringList.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 setWarehouseList(it)
+            }
+        })
+        mViewModel.errorFieldMessage.observe(viewLifecycleOwner, Observer { msg ->
+            if (msg.isNotEmpty()) {
+                showBriefToastMessage(
+                    msg,
+                    coordinateLayout
+                )
             }
         })
 

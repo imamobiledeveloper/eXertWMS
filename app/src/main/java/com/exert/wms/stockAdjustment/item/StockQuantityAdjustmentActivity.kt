@@ -2,6 +2,7 @@ package com.exert.wms.stockAdjustment.item
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -10,17 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
+import com.exert.wms.SerialItemsDtoList
 import com.exert.wms.databinding.ActivityStockQuantityAdjustmentBinding
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListAdapter
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
 import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class StockQuantityAdjustmentActivity :
-    BaseActivity<StockAdjustmentBaseViewModel, ActivityStockQuantityAdjustmentBinding>() {
+    BaseActivity<StockItemAdjustmentViewModel, ActivityStockQuantityAdjustmentBinding>() {
 
     override val title = R.string.quantity_adjustment
 
@@ -29,7 +30,7 @@ class StockQuantityAdjustmentActivity :
     override fun getLayoutID(): Int = R.layout.activity_stock_quantity_adjustment
 
     override val mViewModel by lazy {
-        getViewModel<StockAdjustmentBaseViewModel>()
+        getViewModel<StockItemAdjustmentViewModel>()
     }
 
     override fun getBindingVariable(): Int = BR.viewModel
@@ -38,6 +39,7 @@ class StockQuantityAdjustmentActivity :
         get() = binding.coordinateLayout
 
     var itemDto: ItemsDto? = null
+    var serialItemsList: SerialItemsDtoList? = null
     var adjustmentType: String = ""
     private var warehouseStockDetails: WarehouseStockDetails? = null
     private val checkedItems: ArrayList<SerialItemsDto> = ArrayList()
@@ -54,12 +56,25 @@ class StockQuantityAdjustmentActivity :
     private fun observeViewModel() {
         adjustmentType = intent.getStringExtra(Constants.ADJUSTMENT_TYPE).toString()
         itemDto = intent.getSerializable(Constants.ITEM_DTO, ItemsDto::class.java)
+        serialItemsList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(
+                Constants.USER_SELECTED_WAREHOUSE_LIST,
+                SerialItemsDtoList::class.java
+            )
+        } else {
+            intent.getParcelableExtra(Constants.USER_SELECTED_WAREHOUSE_LIST)
+        }
         warehouseStockDetails =
             intent.getSerializable(
                 Constants.WAREHOUSE_STOCK_DETAILS,
                 WarehouseStockDetails::class.java
             )
-        mViewModel.setWarehouseAndItemDetails(itemDto, warehouseStockDetails, adjustmentType)
+        mViewModel.setWarehouseAndItemDetails(
+            itemDto,
+            warehouseStockDetails,
+            adjustmentType,
+            serialItemsList
+        )
 
         itemDto?.let { dto ->
             binding.itemDto = dto
@@ -70,7 +85,7 @@ class StockQuantityAdjustmentActivity :
         }
 
         binding.saveButton.setOnClickListener {
-            mViewModel.getSelectedItems()
+            itemDto?.ItemID?.let { it1 -> mViewModel.getSelectedItems(it1) }
         }
 
         binding.addButton.setOnClickListener {
@@ -98,6 +113,7 @@ class StockQuantityAdjustmentActivity :
                             override fun onItemUncheck(item: SerialItemsDto) {
                                 checkedItems.remove(item)
                                 mViewModel.setCheckedItems(checkedItems)
+                                mViewModel.checkAndEnableSaveButton()
                             }
 
                         })
@@ -119,6 +135,19 @@ class StockQuantityAdjustmentActivity :
             finish()
         })
 
+        mViewModel.errorFieldMessage.observe(this, Observer { msg ->
+            if (msg.isNotEmpty()) {
+                showBriefToastMessage(
+                    msg,
+                    coordinateLayout
+                )
+            }
+        })
+    }
+
+    override fun onBackPressed() {
+        mViewModel.alreadySelected = false
+        super.onBackPressed()
     }
 
     private fun showBottomSheetDialog() {

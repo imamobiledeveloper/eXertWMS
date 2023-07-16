@@ -16,17 +16,13 @@ import com.exert.wms.R
 import com.exert.wms.SerialItemsDtoList
 import com.exert.wms.databinding.ActivityStockItemAdjustmentBinding
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
-import com.exert.wms.utils.Constants
-import com.exert.wms.utils.hide
-import com.exert.wms.utils.show
-import com.exert.wms.utils.toEditable
+import com.exert.wms.utils.*
 import com.exert.wms.warehouse.WarehouseDto
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class StockItemAdjustmentActivity :
-    BaseActivity<StockAdjustmentBaseViewModel, ActivityStockItemAdjustmentBinding>() {
+    BaseActivity<StockItemAdjustmentViewModel, ActivityStockItemAdjustmentBinding>() {
 
     override val title = R.string.item_adjustment
 
@@ -35,7 +31,7 @@ class StockItemAdjustmentActivity :
     override fun getLayoutID(): Int = R.layout.activity_stock_item_adjustment
 
     override val mViewModel by lazy {
-        getViewModel<StockAdjustmentBaseViewModel>()
+        getViewModel<StockItemAdjustmentViewModel>()
     }
 
     override fun getBindingVariable(): Int = BR.viewModel
@@ -44,6 +40,7 @@ class StockItemAdjustmentActivity :
         get() = binding.coordinateLayout
 
     var warehouseDto: WarehouseDto? = null
+    var warehouseId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +91,7 @@ class StockItemAdjustmentActivity :
         hideKeyBoard()
         clearFields()
         clearTextInputEditText(clearEditText, clearHintTV)
+        mViewModel.clearPreviousSearchedListItems()
     }
 
     private fun addFocusChangeListeners() {
@@ -152,8 +150,9 @@ class StockItemAdjustmentActivity :
     }
 
     private fun observeViewModel() {
+        warehouseId = intent.getLongExtra(Constants.ITEM_WAREHOUSE_ID, 0)
         warehouseDto = intent.getSerializable(Constants.WAREHOUSE, WarehouseDto::class.java)
-        mViewModel.setSelectedWarehouseDto(warehouseDto)
+        mViewModel.setSelectedWarehouseDto(warehouseId,warehouseDto)
 
         binding.saveButton.setOnClickListener {
             mViewModel.saveItemStock(
@@ -221,7 +220,6 @@ class StockItemAdjustmentActivity :
                     getString(R.string.item_saved_message), coordinateLayout,
                     getColor(R.color.blue_50)
                 )
-
                 val intent = Intent().apply {
                     putExtra(Constants.STOCK_ITEMS_DETAILS_DTO, mViewModel.getSavedItemDto())
                 }
@@ -236,6 +234,7 @@ class StockItemAdjustmentActivity :
             if (it) {
                 val bundle = Bundle()
                 bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
+                bundle.putParcelable(Constants.USER_SELECTED_WAREHOUSE_LIST, mViewModel.getUserSelectedSerialItemsList())
                 bundle.putSerializable(
                     Constants.WAREHOUSE_STOCK_DETAILS,
                     mViewModel.getWarehouseStockDetails()
@@ -360,6 +359,7 @@ class StockItemAdjustmentActivity :
             getString(R.string.empty).toEditable()
         binding.costEditText.text =
             getString(R.string.empty).toEditable()
+        binding.saveButton.isEnabled=false
 
 //        if (binding.radioButtonParent.checkedRadioButtonId != -1) {
 //            binding.radioButtonParent.clearCheck()

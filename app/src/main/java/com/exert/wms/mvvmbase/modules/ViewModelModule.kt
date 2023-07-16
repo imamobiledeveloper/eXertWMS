@@ -10,6 +10,7 @@ import com.exert.wms.salesReturn.SalesReturnBaseViewModel
 import com.exert.wms.splash.SplashViewModel
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
 import com.exert.wms.stockAdjustment.item.AddStockItemViewModel
+import com.exert.wms.stockAdjustment.item.StockItemAdjustmentViewModel
 import com.exert.wms.stockReconciliation.StockReconciliationBaseViewModel
 import com.exert.wms.stockReconciliation.item.StockItemReconciliationViewModel
 import com.exert.wms.transferIn.TransferInBaseViewModel
@@ -37,6 +38,10 @@ val viewModelModule = module {
 
     viewModel {
         StockAdjustmentBaseViewModel(get(), get(), get(), get())
+    }
+
+    viewModel {
+        StockItemAdjustmentViewModel( get(), get(), get())
     }
 
     viewModel {

@@ -20,7 +20,8 @@ data class SerialItemsDto(
 @Parcelize
 @Keep
 data class SerialItemsDtoList(
-    val serialItemsDto: List<SerialItemsDto>?
+    val serialItemsDto: List<SerialItemsDto>?,
+    val itemId:Long? =null
 ) : Parcelable {
     companion object
 }
