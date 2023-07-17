@@ -19,6 +19,7 @@
     <color name="grey_dark1">#535354</color>
 
     <color name="green">#3EB92F</color>
+    <color name="green_msg">#208A13</color>
     <color name="green_light">#98C400</color>
     <color name="green_dark">#283300</color>
     <color name="grey">#9A9A9A</color>

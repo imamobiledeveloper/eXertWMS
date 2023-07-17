@@ -128,9 +128,14 @@ class StockAdjustmentBaseViewModel(
             val requestDto =
                 StockAdjustmentRequestDto(StockAdjustmentID = 0, ItemsDetails = stockList)
             stockAdjustmentRepo.saveStockAdjustmentItems(requestDto)
-                .collect { dto ->
-                    Log.v("WMS EXERT", "saveStockAdjustmentItems response $dto")
+                .collect { response ->
+                    Log.v("WMS EXERT", "saveStockAdjustmentItems response $response")
                     hideProgressIndicator()
+                    if(response.Success){
+                        _saveItemStatus.postValue(true)
+                    }else{
+                        _errorFieldMessage.postValue(stringProvider.getString(R.string.error_save_stock_adjustment_items))
+                    }
                 }
         }
     }

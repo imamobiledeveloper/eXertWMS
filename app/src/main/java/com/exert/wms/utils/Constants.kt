@@ -2,9 +2,12 @@ package com.exert.wms.utils
 
 object Constants {
 
-    const val SHOW_CHECKBOX: String="SHOW_CHECKBOX"
-    const val ADJUSTMENT_TYPE: String="ADJUSTMENT_TYPE"
-    const val WAREHOUSE: String="WAREHOUSE"
+    const val MANUFACTURE_DATE_FORMAT: String="dd/MM/yyyy"
+    const val MANUFACTURE_DATE_API_FORMAT: String="dd MMM yyyy"
+    const val MONTH: String = "MMM"
+    const val SHOW_CHECKBOX: String = "SHOW_CHECKBOX"
+    const val ADJUSTMENT_TYPE: String = "ADJUSTMENT_TYPE"
+    const val WAREHOUSE: String = "WAREHOUSE"
     const val ITEM_ID: String = "ITEM_ID"
     const val ITEM_DTO: String = "ITEM_DTO"
     const val ITEM_WAREHOUSE_ID: String = "ITEM_WAREHOUSE_ID"
@@ -15,7 +18,7 @@ object Constants {
     const val CHECKED_SERIAL_ITEMS: String = "CHECKED_SERIAL_ITEMS"
     const val RECONCILIATION_CHECKED_SERIAL_ITEMS: String = "RECONCILIATION_CHECKED_SERIAL_ITEMS"
     const val STOCK_ITEMS_DETAILS_DTO: String = "STOCK_ITEMS_DETAILS_DTO"
-    const val ITEM_QUANTITY: String="ITEM_QUANTITY"
+    const val ITEM_QUANTITY: String = "ITEM_QUANTITY"
     const val READ_TIMEOUT: Long = 60
     const val CONNECTION_TIMEOUT: Long = 60
 }

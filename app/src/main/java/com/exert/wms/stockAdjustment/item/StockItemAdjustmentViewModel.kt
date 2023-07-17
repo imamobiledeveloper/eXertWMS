@@ -441,7 +441,7 @@ class StockItemAdjustmentViewModel(
                     WarehouseSerialItemDetails(
                         SerialNumber = dto.SerialNumber,
                         MFGDate = dto.ManufactureDate,
-                        WarentyDays = dto.WarrantyPeriod,
+                        WarentyDays = getWarrantyNumber(dto.WarrantyPeriod),
                         selected = true
                     )
                 }
@@ -450,6 +450,15 @@ class StockItemAdjustmentViewModel(
         newList?.let {
             _warehouseSerialNosList.postValue(it)
         }
+    }
+
+    private fun getWarrantyNumber(warrantyPeriod: String?): String? {
+        warrantyPeriod?.let {str ->
+            if(str.contains("Year") || str.contains("Years")){
+                return str.filter { it.isDigit() }
+            }
+        }
+        return warrantyPeriod
     }
 
     fun checkAddedItemsCount() {

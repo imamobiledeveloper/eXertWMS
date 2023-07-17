@@ -58,7 +58,7 @@ class SerialNumbersListAdapter(
             onItemCheckListener: OnItemCheckListener
         ) {
             manufactureDate.text = serialItem.MFGDate
-            warrantyPeriod.text = serialItem.WarentyDays
+            warrantyPeriod.text = getWarrantyPeriodInString(serialItem.WarentyDays)
             serialNumber.text = serialItem.SerialNumber
             checkBox.visibility = if (checkBoxState) View.VISIBLE else View.GONE
             checkBox.isChecked = serialItem.selected
@@ -74,7 +74,24 @@ class SerialNumbersListAdapter(
         }
     }
 
+    private fun getWarrantyPeriodInString(warentyDays: String?): CharSequence {
+        return if(warentyDays == "1"){
+            "$warentyDays Year"
+        }else{
+            "$warentyDays Years"
+        }
+    }
+
     private fun getSerialItemsDto(item: WarehouseSerialItemDetails): SerialItemsDto {
-        return SerialItemsDto(SerialNumber=item.SerialNumber,ManufactureDate=item.MFGDate, WarrantyPeriod = item.WarentyDays)
+        return SerialItemsDto(SerialNumber=item.SerialNumber,ManufactureDate=item.MFGDate, WarrantyPeriod = getWarrantyNumber(item.WarentyDays))
+    }
+
+    private fun getWarrantyNumber(warrantyPeriod: String?): String? {
+        warrantyPeriod?.let {str ->
+            if(str.contains("Year") || str.contains("Years")){
+                return str.filter { it.isDigit() }
+            }
+        }
+        return warrantyPeriod
     }
 }

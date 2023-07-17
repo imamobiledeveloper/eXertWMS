@@ -5,7 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
 import com.exert.wms.mvvmbase.BaseViewModel
+import com.exert.wms.utils.Constants
 import com.exert.wms.utils.StringProvider
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseViewModel() {
 
@@ -17,9 +21,10 @@ class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseVi
 
     private var warrantyPeriod: String = ""
     private var warrantyPeriodList: List<String>? = null
-    private var selectedYear: Int=0
-    private var selectedMonth: Int=0
-    private var selectedDay: Int=0
+    private var selectedYear: Int = 0
+    private var selectedMonth: Int = 0
+    private var selectedMonthString: String = ""
+    private var selectedDay: Int = 0
 
     private fun validateNewItemDetails(
         manufacture: String,
@@ -48,12 +53,34 @@ class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseVi
         if (validateNewItemDetails(manufacture, warranty, serialNum)) {
             val item = SerialItemsDto(
                 SerialNumber = serialNum,
-                ManufactureDate = manufacture,
-                WarrantyPeriod = warranty,
+                ManufactureDate = getFormattedDateFromDate(manufacture),
+                WarrantyPeriod = getWarrantyNumber(warranty),
                 0
             )
             _serialItem.postValue(item)
         }
+    }
+
+    private fun getFormattedDateFromDate(manufacture: String): String? {
+        val input = SimpleDateFormat(Constants.MANUFACTURE_DATE_FORMAT)
+        val output = SimpleDateFormat(Constants.MANUFACTURE_DATE_API_FORMAT)
+        try {
+            val getAbbreviate = input.parse(manufacture)    // parse input
+            return output.format(getAbbreviate)    // format output
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+        return null
+    }
+
+    private fun getWarrantyNumber(warrantyPeriod: String?): String? {
+        warrantyPeriod?.let { str ->
+            if (str.contains("Year") || str.contains("Years")) {
+                return str.filter { it.isDigit() }
+            }
+        }
+        return warrantyPeriod
     }
 
     fun setWarrantyPeriod(warranty: String) {
@@ -73,12 +100,31 @@ class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseVi
     }
 
     fun setSelectedDate(year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        selectedYear=year
-        selectedMonth=monthOfYear
-        selectedDay=dayOfMonth
+        selectedYear = year
+        selectedMonth = monthOfYear
+        selectedDay = dayOfMonth
+        selectedMonthString = getSelectedMonthInString(year, monthOfYear + 1, dayOfMonth)
     }
 
-    fun getSelectedYear()=selectedYear
-    fun getSelectedMonth()=selectedMonth
-    fun getSelectedDayOfMonth()=selectedDay
+    private fun getSelectedMonthInString(year: Int, monthOfYear: Int, dayOfMonth: Int): String {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, monthOfYear)
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+        val monthFormat =
+            SimpleDateFormat(Constants.MONTH) // Use "MMM" for abbreviated month (e.g., Jan)
+        return monthFormat.format(calendar.time)
+    }
+
+    fun getSelectedYear() = selectedYear
+    fun getSelectedMonth() = selectedMonth
+    fun getSelectedDayOfMonth() = selectedDay
+    fun getMonthIn2Digits(monthOfYear: Int): String {
+        val month = monthOfYear + 1
+        if (month < 10) {
+            return String.format("%02d", month)
+        }
+        return month.toString()
+    }
 }

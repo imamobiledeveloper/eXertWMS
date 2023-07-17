@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.R
 import com.exert.wms.databinding.FragmentStockAdjustmentBaseBinding
+import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.MVVMFragment
 import com.exert.wms.stockAdjustment.api.StockItemsDetailsDto
 import com.exert.wms.stockAdjustment.item.StockItemAdjustmentActivity
@@ -65,13 +68,13 @@ class StockAdjustmentBaseFragment :
         binding.updateButton.setOnClickListener {
             mViewModel.saveItems()
         }
-        mViewModel.isLoadingData.observe(viewLifecycleOwner, Observer { status ->
+        mViewModel.isLoadingData.observe(viewLifecycleOwner) { status ->
             if (status) {
                 binding.progressBar.show()
             } else {
                 binding.progressBar.hide()
             }
-        })
+        }
 
         mViewModel.enableUpdateButton.observe(viewLifecycleOwner, Observer {
             binding.updateButton.isEnabled = it
@@ -97,7 +100,7 @@ class StockAdjustmentBaseFragment :
                 binding.itemsListRecyclerView.hide()
             }
         })
-        mViewModel.errorWarehouse.observe(viewLifecycleOwner, Observer {
+        mViewModel.errorWarehouse.observe(viewLifecycleOwner) {
             if (it) {
                 val bundle = Bundle()
                 bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
@@ -112,21 +115,34 @@ class StockAdjustmentBaseFragment :
                     coordinateLayout
                 )
             }
-        })
+        }
 
-        mViewModel.warehouseStringList.observe(viewLifecycleOwner, Observer {
+        mViewModel.warehouseStringList.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 setWarehouseList(it)
             }
-        })
-        mViewModel.errorFieldMessage.observe(viewLifecycleOwner, Observer { msg ->
+        }
+
+        mViewModel.saveItemStatus.observe(viewLifecycleOwner) {
+            if (it) {
+                showBriefToastMessage(
+                    getString(R.string.sucess_save_stock_adjusment),
+                    coordinateLayout,
+                    bgColor = requireActivity().getColor(R.color.green_msg)
+                )
+                Handler(Looper.getMainLooper()).postDelayed({
+                    (activity as HomeActivity).setSelectedItem(0)
+                }, 2000)
+            }
+        }
+        mViewModel.errorFieldMessage.observe(viewLifecycleOwner) { msg ->
             if (msg.isNotEmpty()) {
                 showBriefToastMessage(
                     msg,
                     coordinateLayout
                 )
             }
-        })
+        }
 
     }
 

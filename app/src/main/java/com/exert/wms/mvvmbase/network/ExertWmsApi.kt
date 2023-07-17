@@ -6,8 +6,8 @@ import com.exert.wms.itemStocks.api.WarehouseSerialItemsRequestDto
 import com.exert.wms.login.api.FinancialPeriodDto
 import com.exert.wms.login.api.LoginDto
 import com.exert.wms.login.api.LoginRequestDto
+import com.exert.wms.stockAdjustment.api.SaveStockItemAdjustmentResponse
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRequestDto
-import com.exert.wms.stockAdjustment.api.StockItemAdjustmentDto
 import com.exert.wms.stockReconciliation.api.StockItemReconciliationDto
 import com.exert.wms.stockReconciliation.api.StockReconciliationRequestDto
 import com.exert.wms.warehouse.WarehouseListDto
@@ -40,7 +40,7 @@ interface ExertWmsApi {
     @POST("webapi/api/StockAdjustment/SaveStockAdjustment")
     suspend fun saveStockAdjustmentItems(
         @Body requestBody: StockAdjustmentRequestDto
-    ): StockItemAdjustmentDto
+    ): SaveStockItemAdjustmentResponse
 
     @GET("webapi/api/Warehouse/GetWarehouse")
     suspend fun getWarehouseList(): WarehouseListDto

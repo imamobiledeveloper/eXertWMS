@@ -45,10 +45,10 @@ class AddStockItemDialogFragment(listener: OnItemAddListener) :
         var day = cal.get(Calendar.DAY_OF_MONTH)
 
         val dateSetListener =
-            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, yearOfDate, monthOfYear, dayOfMonth ->
                 binding.manufactureDateEditText.text =
-                    "${dayOfMonth} /$monthOfYear /$year".toEditable()
-                mViewModel.setSelectedDate(year, monthOfYear, dayOfMonth)
+                    "$dayOfMonth/${mViewModel.getMonthIn2Digits(monthOfYear)}/${yearOfDate}".toEditable()
+                mViewModel.setSelectedDate(yearOfDate, monthOfYear, dayOfMonth)
             }
         val mDay = cal.get(Calendar.DATE)
         cal.set(Calendar.DAY_OF_MONTH, mDay - 1)
