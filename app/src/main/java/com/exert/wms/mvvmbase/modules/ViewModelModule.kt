@@ -37,7 +37,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        StockAdjustmentBaseViewModel(get(), get(), get(), get())
+        StockAdjustmentBaseViewModel(get(), get(), get())
     }
 
     viewModel {
