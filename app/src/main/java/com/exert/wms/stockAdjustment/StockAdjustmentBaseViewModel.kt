@@ -79,6 +79,7 @@ class StockAdjustmentBaseViewModel(
                     Log.v("WMS EXERT", "saveStockAdjustmentItems response $response")
                     hideProgressIndicator()
                     if (response.Success) {
+                        _enableUpdateButton.postValue(false)
                         _saveItemStatus.postValue(true)
                     } else {
                         _errorFieldMessage.postValue(stringProvider.getString(R.string.error_save_stock_adjustment_items))
@@ -156,6 +157,7 @@ class StockAdjustmentBaseViewModel(
     private fun resetItemsList() {
         stockItemsList.clear()
         _itemsList.postValue(null)
+        _enableUpdateButton.postValue(false)
     }
 
     fun getSelectedWarehouseIndex(): Int {

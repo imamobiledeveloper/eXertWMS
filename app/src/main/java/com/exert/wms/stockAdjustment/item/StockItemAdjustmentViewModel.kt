@@ -9,8 +9,6 @@ import com.exert.wms.SerialItemsDto
 import com.exert.wms.SerialItemsDtoList
 import com.exert.wms.itemStocks.api.*
 import com.exert.wms.mvvmbase.BaseViewModel
-import com.exert.wms.stockAdjustment.api.StockAdjustmentRepository
-import com.exert.wms.stockAdjustment.api.StockAdjustmentRequestDto
 import com.exert.wms.stockAdjustment.api.StockItemsDetailsDto
 import com.exert.wms.utils.StringProvider
 import com.exert.wms.warehouse.WarehouseDto
@@ -18,12 +16,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 
 class StockItemAdjustmentViewModel(
     private val stringProvider: StringProvider,
     private val itemStocksRepo: ItemStocksRepository,
-    private val stockAdjustmentRepo: StockAdjustmentRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BaseViewModel() {
     private var coroutineJob: Job? = null
@@ -31,17 +27,8 @@ class StockItemAdjustmentViewModel(
     private val _enableSaveButton = MutableLiveData<Boolean>().apply { false }
     val enableSaveButton: LiveData<Boolean> = _enableSaveButton
 
-//    private val _itemsList = MutableLiveData<List<StockItemsDetailsDto>?>()
-//    val itemsList: MutableLiveData<List<StockItemsDetailsDto>?> = _itemsList
-
     private val _itemDto = MutableLiveData<ItemsDto>()
     val itemDto: LiveData<ItemsDto> = _itemDto
-
-//    private val _enableUpdateButton = MutableLiveData<Boolean>().apply { false }
-//    val enableUpdateButton: LiveData<Boolean> = _enableUpdateButton
-//
-//    private val _warehouseStringList = MutableLiveData<List<String>>()
-//    val warehouseStringList: LiveData<List<String>> = _warehouseStringList
 
     private val _errorFieldMessage = MutableLiveData<String>()
     val errorFieldMessage: LiveData<String> = _errorFieldMessage
@@ -54,12 +41,6 @@ class StockItemAdjustmentViewModel(
 
     private val _errorItemSerialNo = MutableLiveData<Boolean>()
     val errorItemSerialNo: LiveData<Boolean> = _errorItemSerialNo
-
-//    private val _errorQuantity = MutableLiveData<Boolean>()
-//    val errorQuantity: LiveData<Boolean> = _errorQuantity
-//
-//    private val _errorWarehouse = MutableLiveData<Boolean>()
-//    val errorWarehouse: LiveData<Boolean> = _errorWarehouse
 
     private val _errorGetItemsStatusMessage = MutableLiveData<String>()
     val errorGetItemsStatusMessage: LiveData<String> = _errorGetItemsStatusMessage
@@ -74,9 +55,6 @@ class StockItemAdjustmentViewModel(
     private val _isItemSerialized = MutableLiveData<Boolean>()
     val isItemSerialized: LiveData<Boolean> = _isItemSerialized
 
-    private val _quantityString = MutableLiveData<String>().apply { postValue("") }
-    val quantityString: LiveData<String> = _quantityString
-
     private val _saveItemStatus = MutableLiveData<Boolean>()
     val saveItemStatus: LiveData<Boolean> = _saveItemStatus
 
@@ -85,12 +63,6 @@ class StockItemAdjustmentViewModel(
 
     private val _checkedSerialItemsList = MutableLiveData<SerialItemsDtoList>()
     val checkedSerialItemsList: LiveData<SerialItemsDtoList> = _checkedSerialItemsList
-
-    private val _showDialogToAddItem = MutableLiveData<Boolean>()
-    val showDialogToAddItem: LiveData<Boolean> = _showDialogToAddItem
-
-    private val _warehouseStringList = MutableLiveData<List<String>>()
-    val warehouseStringList: LiveData<List<String>> = _warehouseStringList
 
     private val _costString = MutableLiveData<String>()
     val costString: LiveData<String> = _costString
@@ -112,31 +84,15 @@ class StockItemAdjustmentViewModel(
     private var selectedWarehouse: String = ""
     private var selectedWarehouseID: Long? = null
 
-    //    private var selectedLocation: String = ""
-    private var quantity: Double = 0.0
     private var warehouseDto: WarehouseDto? = null
-
-    //    private var warehousesList: List<WarehouseDto>? = null
-//    private var stockItemsDetailsDto: ReconciliationItemsDetailsDto? = null
-//    private var itemsDto: ItemsDto? = null
-    var showCheckBoxes: Boolean = false
-    var numberOfItemsToCheckOrAddValue: Double = 0.0
-
-    //    var stockItemsList: ArrayList<StockItemsDetailsDto> = ArrayList()
-//    private var stockItemsList: ArrayList<ReconciliationItemsDetailsDto> = ArrayList()
-
-//    private var userCheckedItems: ArrayList<SerialItemsDto> = ArrayList()
-//    private var userSelectedSerialItemsList: ArrayList<SerialItemsDto> = ArrayList()
-
+    private var showCheckBoxes: Boolean = false
 
     var stockItemsList: ArrayList<StockItemsDetailsDto> = ArrayList()
 
-    //    var showCheckBoxes: Boolean = false
     private var adjustmentQuantity: Double = 0.0
     var cost: Double = 0.0
-    var adjustmentTypeValue: String = ""
+    private var adjustmentTypeValue: String = ""
     var itemsDto: ItemsDto? = null
-    var warehousesList: List<WarehouseDto>? = null
     var stockItemsDetailsDto: StockItemsDetailsDto? = null
 
     private var userCheckedItems: ArrayList<SerialItemsDto> = ArrayList()
@@ -291,37 +247,9 @@ class StockItemAdjustmentViewModel(
         }
     }
 
-    fun getItemDto1(): ItemsDto? = itemsDto
-
-
-    private fun getItemList() = stockItemsList
-
-    private fun getItemListSize() = getItemList().takeIf { it.isNotEmpty() }?.let { list ->
-        list.size
-    } ?: 0
-
-    fun saveItems() {
-        getItemList().takeIf { it.isNotEmpty() }?.let { list ->
-            updatedItems(list)
-        }
-    }
-
-    private fun updatedItems(stockList: ArrayList<StockItemsDetailsDto>) {
-        showProgressIndicator()
-        coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
-            val requestDto =
-                StockAdjustmentRequestDto(StockAdjustmentID = 0, ItemsDetails = stockList)
-            stockAdjustmentRepo.saveStockAdjustmentItems(requestDto)
-                .collect { dto ->
-                    Log.v("WMS EXERT", "saveStockAdjustmentItems response $dto")
-                    hideProgressIndicator()
-                }
-        }
-    }
-
     fun setSelectedSerialItemsList(dtoList: SerialItemsDtoList?) {
         dtoList?.takeIf { it.serialItemsDto != null }?.let { serialItemsList ->
-            if (serialItemsList.serialItemsDto?.isNotEmpty() == true && serialItemsList.itemId!= null) {
+            if (serialItemsList.serialItemsDto?.isNotEmpty() == true && serialItemsList.itemId != null) {
                 userSelectedSerialItemsList =
                     serialItemsList.serialItemsDto as ArrayList<SerialItemsDto>
                 userSelectedItemId = dtoList.itemId
@@ -329,8 +257,9 @@ class StockItemAdjustmentViewModel(
                 _adjustmentQuantityString.postValue(getAdjustmentQuantity().toString())
                 _adjustmentTotalCostString.postValue(getAdjustmentTotalCostInString())
                 _enableSaveButton.postValue(true)
-            }else if(serialItemsList.itemId== userSelectedItemId && (serialItemsList.serialItemsDto == null || serialItemsList.serialItemsDto.isEmpty()) ){
-                userSelectedSerialItemsList= serialItemsList.serialItemsDto as ArrayList<SerialItemsDto>
+            } else if (serialItemsList.itemId == userSelectedItemId && (serialItemsList.serialItemsDto == null || serialItemsList.serialItemsDto.isEmpty())) {
+                userSelectedSerialItemsList =
+                    serialItemsList.serialItemsDto as ArrayList<SerialItemsDto>
                 adjustmentQuantity = getAdjustmentQuantity().toDouble()
                 _adjustmentQuantityString.postValue(getAdjustmentQuantity().toString())
                 _adjustmentTotalCostString.postValue(getAdjustmentTotalCostInString())
@@ -341,97 +270,6 @@ class StockItemAdjustmentViewModel(
 
     private fun getAdjustmentTotalCostInString(): String {
         return (cost * userSelectedSerialItemsList.size).toString()
-    }
-
-    private fun getQuantity() =
-        userSelectedSerialItemsList.size
-
-    fun getWarehouseStockDetails1(): WarehouseStockDetails? {
-        return itemsDto?.wStockDetails?.find { it.WarehouseID == getWarehouseObject()?.WarehouseID }
-    }
-
-    private fun getWarehouseObject(): WarehouseDto? {
-        return warehousesList?.filter { it.Warehouse == selectedWarehouse }.run {
-            this?.get(0)
-        }
-    }
-
-    private fun setQuantityValue(qty: Double) {
-        quantity = qty
-//        reSetQuantityAndTotalCost()
-//        _errorAdjustmentType.postValue(false)
-    }
-
-    private fun setCheckBoxState1(checkBoxState: Boolean) {
-        showCheckBoxes = checkBoxState
-    }
-
-    fun getCheckBoxStateValue1() = showCheckBoxes
-
-    fun setWarehouseAndItemDetails(
-        itemsDto: ItemsDto?,
-        warehouseStockDetails: WarehouseStockDetails?,
-        qty: String
-    ) {
-        if (itemsDto != null && itemsDto.Stock > 0 && qty.isNotEmpty()) {
-            val qtyValue = qty.toDoubleOrNull() ?: 0.0
-            setQuantityValue(qtyValue)
-            val difference = qtyValue - itemsDto.Stock
-            setNumberOfItemsToCheckOrAdd(difference)
-            if (difference > 0) {// quantity - system quanty = +ve number) then add those many serialized numbers
-                setCheckBoxState(false)
-                _showAddItemButton.value = true
-            } else {//negative type-get serial numbers list
-                setCheckBoxState(true)
-                _showAddItemButton.value = false
-                getSerialNumbersList(itemsDto, warehouseStockDetails)
-            }
-        }
-    }
-
-    private fun setNumberOfItemsToCheckOrAdd(difference: Double) {
-        numberOfItemsToCheckOrAddValue = difference
-    }
-
-    private fun getSerialNumbersList(
-        itemsDto: ItemsDto?,
-        warehouseStockDetails: WarehouseStockDetails?
-    ) {
-        if (itemsDto != null && warehouseStockDetails != null) {
-            if (warehouseStockDetails.wSerialItemDetails != null && warehouseStockDetails.wSerialItemDetails.isNotEmpty()) {
-                _warehouseSerialNosList.postValue(warehouseStockDetails.wSerialItemDetails)
-            } else if ((itemsDto.ItemPartCode != null || itemsDto.ItemSerialNumber != null) && warehouseStockDetails.WarehouseID > 0) {
-                getWarehouseSerialNosList(
-                    itemsDto.ItemPartCode!!,
-                    itemsDto.ItemSerialNumber!!,
-                    warehouseStockDetails.WarehouseID
-                )
-            } else {
-                _errorFieldMessage.postValue(stringProvider.getString(R.string.invalid_details_message))
-            }
-
-        }
-    }
-
-    fun getSelectedItems() {
-        if (userCheckedItems.isNotEmpty()) {
-            val dto = SerialItemsDtoList(userCheckedItems)
-            _checkedSerialItemsList.postValue(dto)
-        } else {
-            _errorFieldMessage.postValue(stringProvider.getString(R.string.check_serial_items_empty_message))
-        }
-    }
-
-    fun setCheckedItems1(checkedItems: ArrayList<SerialItemsDto>) {
-        userCheckedItems = checkedItems
-        if (userCheckedItems.isNotEmpty()) {
-            if (numberOfItemsToCheckOrAddValue > 0) {
-                setConvertedWarehouseSerialNoList()
-            }
-            _enableSaveButton.postValue(true)
-        } else {
-            _enableSaveButton.postValue(false)
-        }
     }
 
     private fun setConvertedWarehouseSerialNoList() {
@@ -453,52 +291,15 @@ class StockItemAdjustmentViewModel(
     }
 
     private fun getWarrantyNumber(warrantyPeriod: String?): String? {
-        warrantyPeriod?.let {str ->
-            if(str.contains("Year") || str.contains("Years")){
+        warrantyPeriod?.let { str ->
+            if (str.contains("Year") || str.contains("Years")) {
                 return str.filter { it.isDigit() }
             }
         }
         return warrantyPeriod
     }
 
-    fun checkAddedItemsCount() {
-        if (numberOfItemsToCheckOrAddValue > 0 && userCheckedItems.size < numberOfItemsToCheckOrAddValue) {
-            _showDialogToAddItem.postValue(true)
-        } else {
-            _showDialogToAddItem.postValue(false)
-        }
-    }
-
-    fun checkNoOfItemsToSelect(): Boolean {
-        return numberOfItemsToCheckOrAddValue < 0 && userCheckedItems.size < abs(
-            numberOfItemsToCheckOrAddValue
-        )
-    }
-
-
-    ///////////
-
     fun getItemDto(): ItemsDto? = itemsDto
-
-    fun selectedWarehouse(warehouseName: String) {
-        if (warehouseName != stringProvider.getString(R.string.select_warehouse)) {
-            selectedWarehouse = warehouseName
-        }
-        resetItemsList()
-    }
-
-    private fun resetItemsList() {
-        stockItemsList.clear()
-        _itemsList.postValue(null)
-    }
-
-    fun getSelectedWarehouseIndex(): Int {
-        return _warehouseStringList.value?.indexOf(selectedWarehouse) ?: 0
-    }
-
-    fun getWarehouseStockDetailsOld(): WarehouseStockDetails? {
-        return itemsDto?.wStockDetails?.find { it.WarehouseID == getWarehouseObject()?.WarehouseID }
-    }
 
     fun getWarehouseStockDetails(): WarehouseStockDetails? {
         return itemsDto?.wStockDetails?.find { it.WarehouseID == selectedWarehouseID }
@@ -544,7 +345,6 @@ class StockItemAdjustmentViewModel(
                     warehouseStockDetails.wSerialItemDetails,
                     serialItemsList
                 )
-//                _warehouseSerialNosList.postValue(warehouseStockDetails.wSerialItemDetails)
             } else if (warehouseStockDetails != null) {
                 if ((itemsDto.ItemPartCode != null || itemsDto.ItemSerialNumber != null) && warehouseStockDetails.WarehouseID > 0) {
                     getWarehouseSerialNosList(
@@ -555,7 +355,7 @@ class StockItemAdjustmentViewModel(
                 } else {
                     _errorFieldMessage.postValue(stringProvider.getString(R.string.error_warehouse_empty_message))
                 }
-            } else { //
+            } else {
                 _errorFieldMessage.postValue(stringProvider.getString(R.string.invalid_details_message))
             }
 
@@ -588,26 +388,14 @@ class StockItemAdjustmentViewModel(
                             }
                     }
                 }
-//            if (serialItemsList?.serialItemsDto != null) {
-//                wSerialItemDetails.forEach { warehouse ->
-//                    userSelectedSerialItemsList.find { it.SerialNumber == warehouse.SerialNumber }
-//                        .run {
-//                            warehouse.selected = true
-//                        }
-//                }
-//            }
 
         }
         _warehouseSerialNosList.postValue(wSerialItemDetails)
     }
 
     fun getSelectedItems(itemID: Long) {
-//        if (userCheckedItems.isNotEmpty()) {
-            val dto = SerialItemsDtoList(userCheckedItems, itemId = itemID)
-            _checkedSerialItemsList.postValue(dto)
-//        } else {
-//            _errorFieldMessage.postValue(stringProvider.getString(R.string.check_serial_items_empty_message))
-//        }
+        val dto = SerialItemsDtoList(userCheckedItems, itemId = itemID)
+        _checkedSerialItemsList.postValue(dto)
     }
 
     fun setCheckedItems(checkedItems: ArrayList<SerialItemsDto>) {
