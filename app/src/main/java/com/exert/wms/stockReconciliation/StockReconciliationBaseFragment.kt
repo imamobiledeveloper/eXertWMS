@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.R
 import com.exert.wms.databinding.FragmentStockReconciliationBinding
+import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.MVVMFragment
 import com.exert.wms.stockReconciliation.api.ReconciliationItemsDetailsDto
 import com.exert.wms.stockReconciliation.item.StockItemReconciliationActivity
@@ -129,6 +132,19 @@ class StockReconciliationBaseFragment :
                 )
             }
         })
+
+        mViewModel.saveItemStatus.observe(viewLifecycleOwner) {
+            if (it) {
+                showBriefToastMessage(
+                    getString(R.string.success_save_stock_adjustment),
+                    coordinateLayout,
+                    bgColor = requireActivity().getColor(R.color.green_msg)
+                )
+                Handler(Looper.getMainLooper()).postDelayed({
+                    (activity as HomeActivity).setSelectedItem(0)
+                }, 2000)
+            }
+        }
     }
 
     private fun setWarehouseList(stringList: List<String>) {

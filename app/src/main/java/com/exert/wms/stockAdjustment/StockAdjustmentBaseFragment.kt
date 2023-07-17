@@ -126,7 +126,7 @@ class StockAdjustmentBaseFragment :
         mViewModel.saveItemStatus.observe(viewLifecycleOwner) {
             if (it) {
                 showBriefToastMessage(
-                    getString(R.string.sucess_save_stock_adjusment),
+                    getString(R.string.success_save_stock_adjustment),
                     coordinateLayout,
                     bgColor = requireActivity().getColor(R.color.green_msg)
                 )

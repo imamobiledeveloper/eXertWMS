@@ -32,17 +32,8 @@ class StockItemReconciliationViewModel(
     private val _enableSaveButton = MutableLiveData<Boolean>().apply { false }
     val enableSaveButton: LiveData<Boolean> = _enableSaveButton
 
-//    private val _itemsList = MutableLiveData<List<StockItemsDetailsDto>?>()
-//    val itemsList: MutableLiveData<List<StockItemsDetailsDto>?> = _itemsList
-
     private val _itemDto = MutableLiveData<ItemsDto>()
     val itemDto: LiveData<ItemsDto> = _itemDto
-
-//    private val _enableUpdateButton = MutableLiveData<Boolean>().apply { false }
-//    val enableUpdateButton: LiveData<Boolean> = _enableUpdateButton
-//
-//    private val _warehouseStringList = MutableLiveData<List<String>>()
-//    val warehouseStringList: LiveData<List<String>> = _warehouseStringList
 
     private val _errorFieldMessage = MutableLiveData<String>()
     val errorFieldMessage: LiveData<String> = _errorFieldMessage
@@ -58,9 +49,6 @@ class StockItemReconciliationViewModel(
 
     private val _errorQuantity = MutableLiveData<Boolean>()
     val errorQuantity: LiveData<Boolean> = _errorQuantity
-
-    private val _errorWarehouse = MutableLiveData<Boolean>()
-    val errorWarehouse: LiveData<Boolean> = _errorWarehouse
 
     private val _errorGetItemsStatusMessage = MutableLiveData<String>()
     val errorGetItemsStatusMessage: LiveData<String> = _errorGetItemsStatusMessage
@@ -102,9 +90,7 @@ class StockItemReconciliationViewModel(
     var showCheckBoxes: Boolean = false
     var numberOfItemsToCheckOrAddValue: Double = 0.0
 
-    //    var stockItemsList: ArrayList<StockItemsDetailsDto> = ArrayList()
     private var stockItemsList: ArrayList<ReconciliationItemsDetailsDto> = ArrayList()
-
     private var userCheckedItems: ArrayList<SerialItemsDto> = ArrayList()
     private var userSelectedSerialItemsList: ArrayList<SerialItemsDto> = ArrayList()
 
@@ -174,8 +160,6 @@ class StockItemReconciliationViewModel(
                     if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
                         itemsDto = dto.Items[0]
                         _itemDto.postValue(dto.Items[0])
-//                        cost = dto.Items[0].SalesPrice
-//                        _costString.postValue(dto.Items[0].SalesPrice.toString())
                         _isItemSerialized.postValue(dto.Items[0].IsSerialItem == 1)
 
                         val warehouseList = dto.Items[0].wStockDetails

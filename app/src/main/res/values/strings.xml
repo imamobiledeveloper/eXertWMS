@@ -125,9 +125,11 @@
     <string name="quantity_full">Quantity</string>
     <string name="select_location">Select Location</string>
     <string name="error_quantity_message">Please enter Quantity</string>
-    <string name="error_stock_reconciliation_add_more">You cannot add more than difference of qyuantity and system stock</string>
-    <string name="sucess_save_stock_adjusment">Updated Stock adjustment items successfully</string>
+    <string name="error_stock_reconciliation_add_more">You cannot add more than difference of quantity and system stock</string>
+    <string name="success_save_stock_adjustment">Updated Stock adjustment items successfully</string>
     <string name="error_save_stock_adjustment_items">Failed to save Stock adjustment items. Please try again!</string>
+    <string name="success_save_stock_reconciliation">Updated Stock reconciliation items successfully</string>
+    <string name="error_save_stock_reconciliation_items">Failed to save Stock reconciliation items. Please try again!</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>
