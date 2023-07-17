@@ -10,6 +10,10 @@ import com.exert.wms.stockAdjustment.api.SaveStockItemAdjustmentResponse
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRequestDto
 import com.exert.wms.stockReconciliation.api.StockItemReconciliationDto
 import com.exert.wms.stockReconciliation.api.StockReconciliationRequestDto
+import com.exert.wms.transferIn.api.SaveTransferInResponse
+import com.exert.wms.transferIn.api.TransferInRequestDto
+import com.exert.wms.transferOut.api.SaveTransferOutResponse
+import com.exert.wms.transferOut.api.TransferOutRequestDto
 import com.exert.wms.warehouse.WarehouseListDto
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -49,5 +53,15 @@ interface ExertWmsApi {
     suspend fun saveStockReconciliationItems(
         @Body requestBody: StockReconciliationRequestDto
     ): StockItemReconciliationDto
+
+    @POST("webapi/api/StockAdjustment/SaveStockAdjustment")
+    suspend fun saveTransferOutItems(
+        @Body requestBody: TransferOutRequestDto
+    ): SaveTransferOutResponse
+
+    @POST("webapi/api/StockAdjustment/SaveStockAdjustment")
+    suspend fun saveTransferInItems(
+        @Body requestBody: TransferInRequestDto
+    ): SaveTransferInResponse
 
 }

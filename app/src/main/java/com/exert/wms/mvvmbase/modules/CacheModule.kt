@@ -10,6 +10,10 @@ import com.exert.wms.stockAdjustment.api.StockAdjustmentDataSource
 import com.exert.wms.stockAdjustment.api.StockAdjustmentDataSourceRemote
 import com.exert.wms.stockReconciliation.api.StockReconciliationDataSource
 import com.exert.wms.stockReconciliation.api.StockReconciliationDataSourceRemote
+import com.exert.wms.transferIn.api.TransferInDataSource
+import com.exert.wms.transferIn.api.TransferInDataSourceRemote
+import com.exert.wms.transferOut.api.TransferOutDataSource
+import com.exert.wms.transferOut.api.TransferOutDataSourceRemote
 import com.exert.wms.warehouse.WarehouseDataSource
 import com.exert.wms.warehouse.WarehouseDataSourceRemote
 import org.koin.core.qualifier.named
@@ -71,6 +75,26 @@ val cacheModule = module {
 
     factory {
         StockReconciliationDataSourceRemote(
+            exertWmsApi = get(named("exertTokenApi"))
+        )
+    }
+
+    single {
+        TransferInDataSource( get())
+    }
+
+    factory {
+        TransferInDataSourceRemote(
+            exertWmsApi = get(named("exertTokenApi"))
+        )
+    }
+
+    single {
+        TransferOutDataSource( get())
+    }
+
+    factory {
+        TransferOutDataSourceRemote(
             exertWmsApi = get(named("exertTokenApi"))
         )
     }

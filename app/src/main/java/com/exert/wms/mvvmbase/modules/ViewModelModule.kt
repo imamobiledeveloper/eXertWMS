@@ -15,6 +15,7 @@ import com.exert.wms.stockReconciliation.StockReconciliationBaseViewModel
 import com.exert.wms.stockReconciliation.item.StockItemReconciliationViewModel
 import com.exert.wms.transferIn.TransferInBaseViewModel
 import com.exert.wms.transferOut.TransferOutBaseViewModel
+import com.exert.wms.transferOut.item.TransferOutViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -57,6 +58,9 @@ val viewModelModule = module {
     }
     viewModel {
         TransferOutBaseViewModel(get(), get(), get())
+    }
+    viewModel {
+        TransferOutViewModel(get(), get())
     }
     viewModel {
         TransferInBaseViewModel(get(), get(), get())

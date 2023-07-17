@@ -66,6 +66,12 @@
         <activity
             android:name="com.exert.wms.stockReconciliation.item.StockItemReconciliationActivity"
             android:exported="false" />
+        <activity
+            android:name="com.exert.wms.transferOut.item.TransferOutItemActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.exert.wms.transferOut.item.TransferOutQuantityActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
