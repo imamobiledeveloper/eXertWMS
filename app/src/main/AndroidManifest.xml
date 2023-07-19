@@ -17,6 +17,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name="com.exert.wms.stockReconciliation.item.StockQuantityReconciliationActivity"
             android:exported="false" />
@@ -67,10 +68,16 @@
             android:name="com.exert.wms.stockReconciliation.item.StockItemReconciliationActivity"
             android:exported="false" />
         <activity
-            android:name="com.exert.wms.transferOut.item.TransferOutItemActivity"
+            android:name="com.exert.wms.transfer.transferOut.item.TransferOutItemActivity"
             android:exported="false" />
         <activity
-            android:name="com.exert.wms.transferOut.item.TransferOutQuantityActivity"
+            android:name="com.exert.wms.transfer.transferOut.item.TransferOutQuantityActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.exert.wms.transfer.transferIn.item.TransferInItemActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.exert.wms.transfer.transferIn.item.TransferInQuantityActivity"
             android:exported="false" />
     </application>
 

@@ -1,0 +1,54 @@
+package com.exert.wms.transfer.transferIn.item
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.exert.wms.databinding.StockAdjustmentItemNameListItemLayoutBinding
+import com.exert.wms.transfer.api.TransferInItemsDetailsDto
+
+class TransferInItemsListAdapter(
+    private val itemsList: List<TransferInItemsDetailsDto>,
+    private val onItemTextClick: (String) -> Unit
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val viewHolderBinding = StockAdjustmentItemNameListItemLayoutBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ItemsListViewHolder(viewHolderBinding, onItemTextClick)
+    }
+
+    override fun getItemCount(): Int {
+        return itemsList.count()
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as ItemsListViewHolder).bind(itemsList[position], position)
+    }
+
+    inner class ItemsListViewHolder(
+        private val holderBinding: StockAdjustmentItemNameListItemLayoutBinding,
+        private val onFeatureTextClick: (String) -> Unit?
+    ) : RecyclerView.ViewHolder(holderBinding.root) {
+        private val itemName: TextView = holderBinding.itemNameTV
+
+        fun bind(item: TransferInItemsDetailsDto, position: Int) {
+            holderBinding.whiteBg = position % 2 == 0
+            holderBinding.setGreen = item.AdjustmentType == 0
+
+            holderBinding.itemCountTV.text = item.getAdjustmentQtyString()
+            holderBinding.itemNameTV.text = item.getItemIDString()
+            holderBinding.rightArrowIV.visibility = View.VISIBLE
+            holderBinding.executePendingBindings()
+
+            itemName.setOnClickListener {
+                onFeatureTextClick(item.ItemCode)
+            }
+        }
+    }
+}
