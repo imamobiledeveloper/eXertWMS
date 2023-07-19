@@ -51,14 +51,13 @@
 
                 <TextView
                     android:id="@+id/warehouseTV"
-                    style="@style/TextViewBold14Label"
+                    style="@style/TextViewBold16Label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="15dp"
                     android:drawablePadding="@dimen/margin_15dp"
                     android:gravity="center_vertical"
                     android:text="@string/warehouse"
-                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/addItemsTV"
                     app:layout_constraintEnd_toStartOf="@+id/addItemsTV"
                     app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +99,6 @@
                     android:singleLine="true"
                     android:text="@string/select_warehouse"
                     android:textAlignment="gravity"
-                    android:textColor="@color/black"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
