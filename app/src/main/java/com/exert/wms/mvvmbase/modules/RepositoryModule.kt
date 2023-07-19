@@ -4,8 +4,7 @@ import com.exert.wms.itemStocks.api.ItemStocksRepository
 import com.exert.wms.login.api.LoginRepository
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRepository
 import com.exert.wms.stockReconciliation.api.StockReconciliationRepository
-import com.exert.wms.transferIn.api.TransferInRepository
-import com.exert.wms.transferOut.api.TransferOutRepository
+import com.exert.wms.transfer.api.TransferRepository
 import com.exert.wms.warehouse.WarehouseRepository
 import org.koin.dsl.module
 
@@ -27,9 +26,6 @@ val repositoryModule = module(override = true) {
         StockReconciliationRepository(get())
     }
     single {
-        TransferOutRepository(get())
-    }
-    single {
-        TransferInRepository(get())
+        TransferRepository(get())
     }
 }

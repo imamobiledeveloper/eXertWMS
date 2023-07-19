@@ -1,4 +1,4 @@
-package com.exert.wms.transferOut
+package com.exert.wms.transfer.transferIn
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.mvvmbase.BaseViewModel
-import com.exert.wms.transferOut.api.TransferOutItemsDetailsDto
-import com.exert.wms.transferOut.api.TransferOutRepository
-import com.exert.wms.transferOut.api.TransferOutRequestDto
+import com.exert.wms.transfer.api.TransferInItemsDetailsDto
+import com.exert.wms.transfer.api.TransferInRequestDto
+import com.exert.wms.transfer.api.TransferRepository
 import com.exert.wms.utils.StringProvider
 import com.exert.wms.warehouse.WarehouseDto
 import com.exert.wms.warehouse.WarehouseRepository
@@ -18,17 +18,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class TransferOutBaseViewModel(
+class TransferInBaseViewModel(
     private val stringProvider: StringProvider,
-    private val transferOutRepo: TransferOutRepository,
+    private val transferRepo: TransferRepository,
     private val warehouseRepo: WarehouseRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BaseViewModel() {
 
     private var coroutineJob: Job? = null
 
-    private val _itemsList = MutableLiveData<List<TransferOutItemsDetailsDto>?>()
-    val itemsList: MutableLiveData<List<TransferOutItemsDetailsDto>?> = _itemsList
+    private val _itemsList = MutableLiveData<List<TransferInItemsDetailsDto>?>()
+    val itemsList: MutableLiveData<List<TransferInItemsDetailsDto>?> = _itemsList
 
     private val _errorFieldMessage = MutableLiveData<String>()
     val errorFieldMessage: LiveData<String> = _errorFieldMessage
@@ -47,7 +47,8 @@ class TransferOutBaseViewModel(
 
     private var selectedFromWarehouse: String = ""
     private var selectedToWarehouse: String = ""
-    var stockItemsList: ArrayList<TransferOutItemsDetailsDto> = ArrayList()
+    private var selectedTransferNo: String = ""
+    var stockItemsList: ArrayList<TransferInItemsDetailsDto> = ArrayList()
     var itemsDto: ItemsDto? = null
     var warehousesList: List<WarehouseDto>? = null
 
@@ -94,6 +95,13 @@ class TransferOutBaseViewModel(
         resetItemsList()
     }
 
+    fun selectedTransferOutNo(transferNo: String) {
+        if (transferNo != stringProvider.getString(R.string.select_transfer_out_no)) {
+            selectedTransferNo = transferNo
+        }
+        resetItemsList()
+    }
+
     private fun resetItemsList() {
         stockItemsList.clear()
         _itemsList.postValue(null)
@@ -106,20 +114,20 @@ class TransferOutBaseViewModel(
         }
     }
 
-    private fun updatedItems(stockList: ArrayList<TransferOutItemsDetailsDto>) {
+    private fun updatedItems(stockList: ArrayList<TransferInItemsDetailsDto>) {
         showProgressIndicator()
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
             val requestDto =
-                TransferOutRequestDto(StockAdjustmentID = 0, ItemsDetails = stockList)
-            transferOutRepo.saveTransferOutItems(requestDto)
+                TransferInRequestDto(StockAdjustmentID = 0, ItemsDetails = stockList)
+            transferRepo.saveTransferInItems(requestDto)
                 .collect { response ->
-                    Log.v("WMS EXERT", "saveStockAdjustmentItems response $response")
+                    Log.v("WMS EXERT", "saveTransferInItems response $response")
                     hideProgressIndicator()
                     if (response.Success) {
                         _enableUpdateButton.postValue(false)
                         _saveItemStatus.postValue(true)
                     } else {
-                        _errorFieldMessage.postValue(stringProvider.getString(R.string.error_save_stock_adjustment_items))
+                        _errorFieldMessage.postValue(stringProvider.getString(R.string.error_save_transfer_in_items))
                     }
                 }
         }
@@ -133,7 +141,7 @@ class TransferOutBaseViewModel(
         }
     }
 
-    private fun addItemToList(item: TransferOutItemsDetailsDto) {
+    private fun addItemToList(item: TransferInItemsDetailsDto) {
         stockItemsList.add(item)
     }
 
@@ -163,7 +171,7 @@ class TransferOutBaseViewModel(
         return _warehouseStringList.value?.indexOf(selectedToWarehouse) ?: 0
     }
 
-    fun setTransferOutItemDetails(item: TransferOutItemsDetailsDto?) {
+    fun setTransferInItemDetails(item: TransferInItemsDetailsDto?) {
         item?.let { dto ->
             val itemDto = dto.copy(ItemSeqNumber = (getItemListSize() + 1))
             addItemToList(itemDto)

@@ -1,4 +1,4 @@
-package com.exert.wms.transferOut.api
+package com.exert.wms.transfer.api
 
 import android.os.Parcelable
 import androidx.annotation.Keep
@@ -50,6 +50,40 @@ TransferOutRequestDto(
 
 @Keep
 data class SaveTransferOutResponse(
+    val Success: Boolean,
+    val SalesList: ArrayList<String> = arrayOf<String>().toCollection(ArrayList())
+) {
+    companion object
+}
+
+@Parcelize
+@Keep
+data class TransferInItemsDetailsDto(
+    val ItemSeqNumber: Int = 0,
+    val WarehouseID: Long = 0,
+    val ItemID: Long = 0,
+    val ItemCode: String,
+    val AdjustmentType: Int,
+    val AdjustmentQty: Double,
+    val SerialItems: List<SerialItemsDto>,
+) : Parcelable {
+    companion object
+
+    fun getItemIDString() = ItemID.toString()
+    fun getAdjustmentQtyString() = AdjustmentQty.toString()
+}
+
+@Keep
+data class
+TransferInRequestDto(
+    val StockAdjustmentID: Long = 0,
+    val ItemsDetails: List<TransferInItemsDetailsDto>
+) {
+    companion object
+}
+
+@Keep
+data class SaveTransferInResponse(
     val Success: Boolean,
     val SalesList: ArrayList<String> = arrayOf<String>().toCollection(ArrayList())
 ) {

@@ -1,4 +1,4 @@
-package com.exert.wms.transferOut
+package com.exert.wms.transfer.transferOut
 
 import android.app.Activity
 import android.content.Intent
@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,8 +19,8 @@ import com.exert.wms.R
 import com.exert.wms.databinding.FragmentTransferOutBaseBinding
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.MVVMFragment
-import com.exert.wms.transferOut.api.TransferOutItemsDetailsDto
-import com.exert.wms.transferOut.item.TransferOutItemActivity
+import com.exert.wms.transfer.api.TransferOutItemsDetailsDto
+import com.exert.wms.transfer.transferOut.item.TransferOutItemActivity
 import com.exert.wms.utils.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -27,6 +28,9 @@ class TransferOutBaseFragment :
     MVVMFragment<TransferOutBaseViewModel, FragmentTransferOutBaseBinding>() {
 
     override val title = R.string.transfer_out
+
+    override val coordinateLayout: CoordinatorLayout
+        get() = binding.coordinateLayout
 
     override val mViewModel by lazy {
         getViewModel<TransferOutBaseViewModel>()
@@ -113,7 +117,7 @@ class TransferOutBaseFragment :
                 startForResult.launch(intent)
             } else {
                 showBriefToastMessage(
-                    getString(R.string.warehouse_empty_message),
+                    getString(R.string.warehouse_from_to_empty_message),
                     coordinateLayout
                 )
             }

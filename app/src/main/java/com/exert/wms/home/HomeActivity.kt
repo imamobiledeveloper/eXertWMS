@@ -23,8 +23,8 @@ import com.exert.wms.purchaseReturn.PurchaseReturnBaseFragment
 import com.exert.wms.salesReturn.SalesReturnBaseFragment
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseFragment
 import com.exert.wms.stockReconciliation.StockReconciliationBaseFragment
-import com.exert.wms.transferIn.TransferInBaseFragment
-import com.exert.wms.transferOut.TransferOutBaseFragment
+import com.exert.wms.transfer.transferIn.TransferInBaseFragment
+import com.exert.wms.transfer.transferOut.TransferOutBaseFragment
 import com.google.android.material.navigation.NavigationView
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 

@@ -1,4 +1,4 @@
-package com.exert.wms.transferOut.item
+package com.exert.wms.transfer.transferOut.item
 
 import android.app.Activity
 import android.content.Intent
@@ -26,7 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 class TransferOutItemActivity :
     BaseActivity<TransferOutViewModel, ActivityTransferOutItemBinding>() {
 
-    override val title = R.string.item_adjustment
+    override val title = R.string.item_transfer_out
 
     override val showHomeButton: Int = 1
 

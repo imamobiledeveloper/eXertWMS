@@ -13,9 +13,9 @@ import com.exert.wms.stockAdjustment.item.AddStockItemViewModel
 import com.exert.wms.stockAdjustment.item.StockItemAdjustmentViewModel
 import com.exert.wms.stockReconciliation.StockReconciliationBaseViewModel
 import com.exert.wms.stockReconciliation.item.StockItemReconciliationViewModel
-import com.exert.wms.transferIn.TransferInBaseViewModel
-import com.exert.wms.transferOut.TransferOutBaseViewModel
-import com.exert.wms.transferOut.item.TransferOutViewModel
+import com.exert.wms.transfer.transferIn.TransferInBaseViewModel
+import com.exert.wms.transfer.transferOut.TransferOutBaseViewModel
+import com.exert.wms.transfer.transferOut.item.TransferOutViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

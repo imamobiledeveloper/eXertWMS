@@ -1,4 +1,4 @@
-package com.exert.wms.transferOut.item
+package com.exert.wms.transfer.transferOut.item
 
 import android.app.Activity
 import android.content.Intent
@@ -25,7 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 class TransferOutQuantityActivity :
     BaseActivity<TransferOutViewModel, ActivityTransferOutQuantityBinding>() {
 
-    override val title = R.string.warehouse_status
+    override val title = R.string.item_stock_status
 
     override val showHomeButton: Int = 1
 

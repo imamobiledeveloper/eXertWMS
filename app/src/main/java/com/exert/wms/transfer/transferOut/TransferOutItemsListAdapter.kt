@@ -1,11 +1,11 @@
-package com.exert.wms.transferOut
+package com.exert.wms.transfer.transferOut
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.StockAdjustmentItemNameListItemLayoutBinding
-import com.exert.wms.transferOut.api.TransferOutItemsDetailsDto
+import com.exert.wms.transfer.api.TransferOutItemsDetailsDto
 
 class TransferOutItemsListAdapter(
     private val itemsList: List<TransferOutItemsDetailsDto>,

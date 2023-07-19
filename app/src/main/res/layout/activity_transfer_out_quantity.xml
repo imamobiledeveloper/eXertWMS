@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.exert.wms.transferOut.item.TransferOutViewModel" />
+            type="com.exert.wms.transfer.transferOut.item.TransferOutViewModel" />
 
         <variable
             name="itemDto"

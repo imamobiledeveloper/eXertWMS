@@ -10,10 +10,10 @@ import com.exert.wms.stockAdjustment.api.SaveStockItemAdjustmentResponse
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRequestDto
 import com.exert.wms.stockReconciliation.api.StockItemReconciliationDto
 import com.exert.wms.stockReconciliation.api.StockReconciliationRequestDto
-import com.exert.wms.transferIn.api.SaveTransferInResponse
-import com.exert.wms.transferIn.api.TransferInRequestDto
-import com.exert.wms.transferOut.api.SaveTransferOutResponse
-import com.exert.wms.transferOut.api.TransferOutRequestDto
+import com.exert.wms.transfer.api.SaveTransferInResponse
+import com.exert.wms.transfer.api.SaveTransferOutResponse
+import com.exert.wms.transfer.api.TransferInRequestDto
+import com.exert.wms.transfer.api.TransferOutRequestDto
 import com.exert.wms.warehouse.WarehouseListDto
 import retrofit2.http.Body
 import retrofit2.http.GET
