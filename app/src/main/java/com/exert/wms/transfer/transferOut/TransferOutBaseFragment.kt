@@ -29,6 +29,10 @@ class TransferOutBaseFragment :
 
     override val title = R.string.transfer_out
 
+    private var showNavigationButton: Int = 1
+
+    override val showHomeButton: Int = showNavigationButton
+
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 

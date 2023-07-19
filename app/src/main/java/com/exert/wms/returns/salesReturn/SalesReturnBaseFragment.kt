@@ -1,29 +1,29 @@
-package com.exert.wms.purchaseReturn
+package com.exert.wms.returns.salesReturn
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.exert.wms.R
-import com.exert.wms.databinding.FragmentPurchaseReturnBaseBinding
+import com.exert.wms.databinding.FragmentSalesReturnBaseBinding
 import com.exert.wms.mvvmbase.MVVMFragment
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
-class PurchaseReturnBaseFragment :
-    MVVMFragment<PurchaseReturnBaseViewModel, FragmentPurchaseReturnBaseBinding>() {
+class SalesReturnBaseFragment :
+    MVVMFragment<SalesReturnBaseViewModel, FragmentSalesReturnBaseBinding>() {
 
-    override val title = R.string.purchase_return
+    override val title = R.string.sales_return
 
     override val mViewModel by lazy {
-        getViewModel<PurchaseReturnBaseViewModel>()
+        getViewModel<SalesReturnBaseViewModel>()
     }
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentPurchaseReturnBaseBinding {
-        return FragmentPurchaseReturnBaseBinding.inflate(inflater, container, false)
+    ): FragmentSalesReturnBaseBinding {
+        return FragmentSalesReturnBaseBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,7 +31,7 @@ class PurchaseReturnBaseFragment :
         observeViewModel()
     }
 
-    override fun onBindData(binding: FragmentPurchaseReturnBaseBinding) {
+    override fun onBindData(binding: FragmentSalesReturnBaseBinding) {
 
     }
 

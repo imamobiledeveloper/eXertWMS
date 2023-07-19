@@ -1,11 +1,16 @@
 package com.exert.wms.mvvmbase.network
 
+import com.exert.wms.delivery.api.*
 import com.exert.wms.itemStocks.api.ItemStocksRequestDto
 import com.exert.wms.itemStocks.api.ItemStocksResponseDto
 import com.exert.wms.itemStocks.api.WarehouseSerialItemsRequestDto
 import com.exert.wms.login.api.FinancialPeriodDto
 import com.exert.wms.login.api.LoginDto
 import com.exert.wms.login.api.LoginRequestDto
+import com.exert.wms.returns.api.DeliveryNoteItemsRequestDto
+import com.exert.wms.returns.api.DeliveryReceiptItemsRequestDto
+import com.exert.wms.returns.api.SaveDeliveryNoteItemsResponse
+import com.exert.wms.returns.api.SaveDeliveryReceiptItemsResponse
 import com.exert.wms.stockAdjustment.api.SaveStockItemAdjustmentResponse
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRequestDto
 import com.exert.wms.stockReconciliation.api.StockItemReconciliationDto
@@ -54,14 +59,34 @@ interface ExertWmsApi {
         @Body requestBody: StockReconciliationRequestDto
     ): StockItemReconciliationDto
 
-    @POST("webapi/api/StockAdjustment/SaveStockAdjustment")
+    @POST("webapi/api/StockAdjustment/SaveTransferOutItems")
     suspend fun saveTransferOutItems(
         @Body requestBody: TransferOutRequestDto
     ): SaveTransferOutResponse
 
-    @POST("webapi/api/StockAdjustment/SaveStockAdjustment")
+    @POST("webapi/api/StockAdjustment/SaveTransferInItems")
     suspend fun saveTransferInItems(
         @Body requestBody: TransferInRequestDto
     ): SaveTransferInResponse
+
+    @POST("webapi/api/StockAdjustment/SaveDeliveryReceiptItems")
+    suspend fun saveDeliveryReceiptItems(
+        @Body requestBody: DeliveryReceiptItemsRequestDto
+    ): SaveDeliveryReceiptItemsResponse
+
+    @POST("webapi/api/StockAdjustment/SaveDeliveryNoteItems")
+    suspend fun saveDeliveryNoteItems(
+        @Body requestBody: DeliveryNoteItemsRequestDto
+    ): SaveDeliveryNoteItemsResponse
+
+    @POST("webapi/api/StockAdjustment/SavePurchaseItems")
+    suspend fun savePurchaseItems(
+        @Body requestBody: PurchaseItemsRequestDto
+    ): SavePurchaseItemsResponse
+
+    @POST("webapi/api/StockAdjustment/SaveSalesItems")
+    suspend fun saveSalesItems(
+        @Body requestBody: SalesItemsRequestDto
+    ): SaveSalesItemsResponse
 
 }

@@ -1,12 +1,12 @@
 package com.exert.wms.mvvmbase.modules
 
-import com.exert.wms.deliveryNote.DeliveryNoteBaseViewModel
-import com.exert.wms.deliveryReceipt.DeliveryReceiptBaseViewModel
+import com.exert.wms.delivery.deliveryNote.DeliveryNoteBaseViewModel
+import com.exert.wms.delivery.deliveryReceipt.DeliveryReceiptBaseViewModel
 import com.exert.wms.home.HomeViewModel
 import com.exert.wms.itemStocks.ItemStocksViewModel
 import com.exert.wms.login.LoginViewModel
-import com.exert.wms.purchaseReturn.PurchaseReturnBaseViewModel
-import com.exert.wms.salesReturn.SalesReturnBaseViewModel
+import com.exert.wms.returns.purchaseReturn.PurchaseReturnBaseViewModel
+import com.exert.wms.returns.salesReturn.SalesReturnBaseViewModel
 import com.exert.wms.splash.SplashViewModel
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseViewModel
 import com.exert.wms.stockAdjustment.item.AddStockItemViewModel

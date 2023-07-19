@@ -1,29 +1,28 @@
-package com.exert.wms.salesReturn
+package com.exert.wms.delivery.deliveryReceipt
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.exert.wms.R
-import com.exert.wms.databinding.FragmentSalesReturnBaseBinding
+import com.exert.wms.databinding.FragmentDeliveryReceiptBaseBinding
 import com.exert.wms.mvvmbase.MVVMFragment
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
+class DeliveryReceiptBaseFragment :
+    MVVMFragment<DeliveryReceiptBaseViewModel, FragmentDeliveryReceiptBaseBinding>() {
 
-class SalesReturnBaseFragment :
-    MVVMFragment<SalesReturnBaseViewModel, FragmentSalesReturnBaseBinding>() {
-
-    override val title = R.string.sales_return
+    override val title = R.string.delivery_receipt
 
     override val mViewModel by lazy {
-        getViewModel<SalesReturnBaseViewModel>()
+        getViewModel<DeliveryReceiptBaseViewModel>()
     }
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentSalesReturnBaseBinding {
-        return FragmentSalesReturnBaseBinding.inflate(inflater, container, false)
+    ): FragmentDeliveryReceiptBaseBinding {
+        return FragmentDeliveryReceiptBaseBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,7 +30,7 @@ class SalesReturnBaseFragment :
         observeViewModel()
     }
 
-    override fun onBindData(binding: FragmentSalesReturnBaseBinding) {
+    override fun onBindData(binding: FragmentDeliveryReceiptBaseBinding) {
 
     }
 

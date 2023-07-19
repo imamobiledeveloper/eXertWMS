@@ -1,4 +1,4 @@
-package com.exert.wms.salesReturn
+package com.exert.wms.returns.salesReturn
 
 import com.exert.wms.itemStocks.api.ItemStocksRepository
 import com.exert.wms.mvvmbase.BaseViewModel

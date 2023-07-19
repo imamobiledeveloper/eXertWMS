@@ -15,12 +15,12 @@ import androidx.navigation.fragment.NavHostFragment
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.databinding.ActivityHomeBinding
-import com.exert.wms.deliveryNote.DeliveryNoteBaseFragment
-import com.exert.wms.deliveryReceipt.DeliveryReceiptBaseFragment
+import com.exert.wms.delivery.deliveryNote.DeliveryNoteBaseFragment
+import com.exert.wms.delivery.deliveryReceipt.DeliveryReceiptBaseFragment
 import com.exert.wms.itemStocks.ItemStocksFragment
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.purchaseReturn.PurchaseReturnBaseFragment
-import com.exert.wms.salesReturn.SalesReturnBaseFragment
+import com.exert.wms.returns.purchaseReturn.PurchaseReturnBaseFragment
+import com.exert.wms.returns.salesReturn.SalesReturnBaseFragment
 import com.exert.wms.stockAdjustment.StockAdjustmentBaseFragment
 import com.exert.wms.stockReconciliation.StockReconciliationBaseFragment
 import com.exert.wms.transfer.transferIn.TransferInBaseFragment

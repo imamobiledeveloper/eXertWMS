@@ -1,7 +1,9 @@
 package com.exert.wms.mvvmbase.modules
 
+import com.exert.wms.delivery.api.DeliveryRepository
 import com.exert.wms.itemStocks.api.ItemStocksRepository
 import com.exert.wms.login.api.LoginRepository
+import com.exert.wms.returns.api.ReturnsRepository
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRepository
 import com.exert.wms.stockReconciliation.api.StockReconciliationRepository
 import com.exert.wms.transfer.api.TransferRepository
@@ -27,5 +29,11 @@ val repositoryModule = module(override = true) {
     }
     single {
         TransferRepository(get())
+    }
+    single {
+        DeliveryRepository(get())
+    }
+    single {
+        ReturnsRepository(get())
     }
 }

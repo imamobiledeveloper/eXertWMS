@@ -1,4 +1,4 @@
-package com.exert.wms.deliveryNote
+package com.exert.wms.delivery.deliveryNote
 
 import android.os.Bundle
 import android.view.LayoutInflater

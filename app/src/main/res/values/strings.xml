@@ -43,6 +43,7 @@
     <string name="warehouse">Warehouse</string>
     <string name="fromWarehouse">From Warehouse</string>
     <string name="toWarehouse">To Warehouse</string>
+    <string name="transfer_out_no">Transfer Out No.</string>
     <string name="warehouse_list">Warehouse List</string>
     <string name="serial_nos_list">Item Serial Numbers List</string>
     <string name="view">VIEW</string>
@@ -61,7 +62,7 @@
     <string name="quantity_adjustment">Quantity Adjustment</string>
     <string name="quantity_reconciliation">Quantity Reconciliation</string>
     <string name="select_warehouse">Select Warehouse</string>
-    <string name="select_transfer_out_no">Select Transfer Out No</string>
+    <string name="select_transfer_out_no">Select Transfer Out No.</string>
     <string name="select_warranty_period">Select Warranty Period</string>
     <string name="update">Update</string>
     <string name="adjustment_type">Adjustment type</string>

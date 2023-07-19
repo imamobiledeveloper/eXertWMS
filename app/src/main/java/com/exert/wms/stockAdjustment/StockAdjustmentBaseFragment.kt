@@ -30,6 +30,8 @@ class StockAdjustmentBaseFragment :
 
     override val title = R.string.stock_adjustment
 
+    override val showHomeButton: Int = 1
+
     override val mViewModel by lazy {
         getViewModel<StockAdjustmentBaseViewModel>()
     }

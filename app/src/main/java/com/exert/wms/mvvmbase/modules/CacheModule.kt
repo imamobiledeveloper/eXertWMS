@@ -1,11 +1,15 @@
 package com.exert.wms.mvvmbase.modules
 
+import com.exert.wms.delivery.api.DeliveryDataSource
+import com.exert.wms.delivery.api.DeliveryDataSourceRemote
 import com.exert.wms.itemStocks.api.ItemStocksDataSource
 import com.exert.wms.itemStocks.api.ItemStocksDataSourceLocal
 import com.exert.wms.itemStocks.api.ItemStocksDataSourceRemote
 import com.exert.wms.login.api.LoginDataSource
 import com.exert.wms.login.api.LoginDataSourceLocal
 import com.exert.wms.login.api.LoginDataSourceRemote
+import com.exert.wms.returns.api.ReturnsDataSource
+import com.exert.wms.returns.api.ReturnsDataSourceRemote
 import com.exert.wms.stockAdjustment.api.StockAdjustmentDataSource
 import com.exert.wms.stockAdjustment.api.StockAdjustmentDataSourceRemote
 import com.exert.wms.stockReconciliation.api.StockReconciliationDataSource
@@ -83,6 +87,26 @@ val cacheModule = module {
 
     factory {
         TransferDataSourceRemote(
+            exertWmsApi = get(named("exertTokenApi"))
+        )
+    }
+
+    single {
+        DeliveryDataSource( get())
+    }
+
+    factory {
+        DeliveryDataSourceRemote(
+            exertWmsApi = get(named("exertTokenApi"))
+        )
+    }
+
+    single {
+        ReturnsDataSource( get())
+    }
+
+    factory {
+        ReturnsDataSourceRemote(
             exertWmsApi = get(named("exertTokenApi"))
         )
     }

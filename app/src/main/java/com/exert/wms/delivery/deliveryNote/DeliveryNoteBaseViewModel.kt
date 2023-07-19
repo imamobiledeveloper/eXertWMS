@@ -1,4 +1,4 @@
-package com.exert.wms.deliveryReceipt
+package com.exert.wms.delivery.deliveryNote
 
 import com.exert.wms.itemStocks.api.ItemStocksRepository
 import com.exert.wms.mvvmbase.BaseViewModel
@@ -7,7 +7,7 @@ import com.exert.wms.utils.StringProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
-class DeliveryReceiptBaseViewModel(
+class DeliveryNoteBaseViewModel (
     private val stringProvider: StringProvider,
     private val itemStocksRepo: ItemStocksRepository,
     private val stockAdjustmentRepo: StockAdjustmentRepository,

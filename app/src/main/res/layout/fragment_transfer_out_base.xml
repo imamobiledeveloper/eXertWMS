@@ -130,6 +130,28 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:id="@+id/transferOutNoTV"
+                style="@style/TextViewBold16Label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:gravity="center_vertical"
+                android:text="@string/transfer_out_no"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toWarehouseSpinnerLayout" />
+
+            <EditText
+                android:id="@+id/itemNameEnglishEditText"
+                style="@style/EditTextDisabledStyle"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                tools:text="transfer out no 123"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/transferOutNoTV" />
+
+            <TextView
                 android:id="@+id/addItemsTV"
                 style="@style/TextViewWithDrawableStyle"
                 android:layout_width="wrap_content"
@@ -145,7 +167,7 @@
                 android:textColor="@color/white"
                 app:drawableStartCompat="@drawable/ic_add_circle_white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toWarehouseSpinnerLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/itemNameEnglishEditText" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/itemsLayout"
@@ -211,7 +233,7 @@
                 android:id="@+id/coordinateLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/updateButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
