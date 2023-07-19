@@ -2,60 +2,61 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="HardcodedText">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="@string/home" />
 
-    <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/ic_menu_home"
-        android:title="@string/home" />
+        <item
+            android:id="@+id/nav_item_stocks"
+            android:icon="@drawable/ic_menu_item_stocks"
+            android:title="@string/item_stocks" />
 
-    <item
-        android:id="@+id/nav_item_stocks"
-        android:icon="@drawable/ic_menu_item_stocks"
-        android:title="@string/item_stocks" />
+        <item
+            android:id="@+id/nav_stock_adjustment"
+            android:icon="@drawable/ic_menu_stock_adjustment"
+            android:title="@string/stock_adjustment" />
 
-    <item
-        android:id="@+id/nav_stock_adjustment"
-        android:icon="@drawable/ic_menu_stock_adjustment"
-        android:title="@string/stock_adjustment" />
+        <item
+            android:id="@+id/nav_stock_reconciliation"
+            android:icon="@drawable/ic_menu_stock_reconcilication"
+            android:title="@string/stock_reconciliation" />
 
-    <item
-        android:id="@+id/nav_stock_reconciliation"
-        android:icon="@drawable/ic_menu_stock_reconcilication"
-        android:title="@string/stock_reconciliation" />
+        <item
+            android:id="@+id/nav_transfer_out"
+            android:icon="@drawable/ic_menu_transfer_out"
+            android:title="@string/transfer_out" />
 
-    <item
-        android:id="@+id/nav_transfer_out"
-        android:icon="@drawable/ic_menu_transfer_out"
-        android:title="@string/transfer_out" />
+        <item
+            android:id="@+id/nav_transfer_in"
+            android:icon="@drawable/ic_menu_transfer_in"
+            android:title="@string/transfer_in" />
 
-    <item
-        android:id="@+id/nav_transfer_in"
-        android:icon="@drawable/ic_menu_transfer_in"
-        android:title="@string/transfer_in" />
+        <item
+            android:id="@+id/nav_delivery_receipt"
+            android:icon="@drawable/ic_menu_delivery_receipt"
+            android:title="@string/delivery_receipt" />
 
-    <item
-        android:id="@+id/nav_delivery_receipt"
-        android:icon="@drawable/ic_menu_delivery_receipt"
-        android:title="@string/delivery_receipt" />
-
-    <item
-        android:id="@+id/nav_delivery_note"
-        android:icon="@drawable/ic_menu_delivery_note"
-        android:title="@string/delivery_note" />
-    <item
-        android:id="@+id/nav_purchase_return"
-        android:icon="@drawable/ic_menu_purchase_return"
-        android:title="@string/purchase_return" />
-    <item
-        android:id="@+id/nav_sales_return"
-        android:icon="@drawable/ic_menu_sales_return"
-        android:title="@string/sales_return" />
-    <item
-        android:id="@+id/nav_notifications"
-        android:icon="@drawable/ic_menu_notifications"
-        android:title="@string/notifications" />
-    <item
-        android:id="@+id/nav_settings"
-        android:icon="@drawable/ic_menu_settings"
-        android:title="@string/settings" />
+        <item
+            android:id="@+id/nav_delivery_note"
+            android:icon="@drawable/ic_menu_delivery_note"
+            android:title="@string/delivery_note" />
+        <item
+            android:id="@+id/nav_purchase_return"
+            android:icon="@drawable/ic_menu_purchase_return"
+            android:title="@string/purchase_return" />
+        <item
+            android:id="@+id/nav_sales_return"
+            android:icon="@drawable/ic_menu_sales_return"
+            android:title="@string/sales_return" />
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_menu_notifications"
+            android:title="@string/notifications" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/settings" />
+    </group>
 </menu>
