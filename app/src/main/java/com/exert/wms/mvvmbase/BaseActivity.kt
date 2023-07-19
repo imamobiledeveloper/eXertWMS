@@ -79,10 +79,8 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
         for (i in 0 until menu!!.size()) {
             if (menu.getItem(i).title == getString(R.string.home)) {
                 menu.getItem(i).isVisible = showHomeButton == 1
-//                hideBackButton()
             } else if (showHomeButton == 0) {
                 menu.getItem(i).isVisible = showHomeButton != 1
-//                hideBackButton()
             } else {
                 menu.getItem(i).isVisible = false
                 showBackButton()
@@ -123,12 +121,11 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
 
             R.id.home_menu -> {
                 HomeActivity.relaunch(this)
-//                finish()
                 true
             }
 
             R.id.notifications_menu -> {
-                logOut()
+//                logOut()
                 true
             }
 
@@ -219,7 +216,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
                 editTextLayout.requestFocus()
             }
             editTextLayout.text?.let { editTextLayout.setSelection(it.length) }
-            editTextLayout.isSelected= true
+            editTextLayout.isSelected = true
         }
     }
 
@@ -228,7 +225,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
     ) {
         textInputLayout.isErrorEnabled = false
         textInputLayout.clearFocus()
-        editTextLayout.isSelected= false
+        editTextLayout.isSelected = false
     }
 
     fun disableErrorMessageWhileEditing(
@@ -236,38 +233,41 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
     ) {
         textInputLayout.isErrorEnabled = false
         editTextLayout.isSelected = false
-        editTextLayout.isFocusable= true
+        editTextLayout.isFocusable = true
     }
+
     fun setTextViewText(textView: TextView, text: String, visible: Int) {
         textView.text = text
         textView.visibility = visible
     }
 
-    fun setTextViewVisibility(textView: TextView,visible: Int) {
+    fun setTextViewVisibility(textView: TextView, visible: Int) {
         textView.visibility = visible
     }
 
     fun clearTextInputEditText(editText: TextInputEditText, hintTV: TextView) {
-        editText.text=getString(R.string.empty).toEditable()
-        hintTV.visibility= View.VISIBLE
+        editText.text = getString(R.string.empty).toEditable()
+        hintTV.visibility = View.VISIBLE
     }
 
-    fun getEditTextText(editText: TextInputEditText): Editable? =editText.text
+    fun getEditTextText(editText: TextInputEditText): Editable? = editText.text
 
-    fun edittextTextWatcher(textInputLayout: TextInputLayout, editText: TextInputEditText)=object :
-        TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
+    fun edittextTextWatcher(textInputLayout: TextInputLayout, editText: TextInputEditText) =
+        object :
+            TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
 
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
 
-        override fun afterTextChanged(s: Editable?) {
-            val isTextEmpty= getEditTextText(editText)?.trim()?.isNotEmpty()
-            if(isTextEmpty == true) {
-                disableErrorMessageWhileEditing(textInputLayout,editText
-                )
+            override fun afterTextChanged(s: Editable?) {
+                val isTextEmpty = getEditTextText(editText)?.trim()?.isNotEmpty()
+                if (isTextEmpty == true) {
+                    disableErrorMessageWhileEditing(
+                        textInputLayout, editText
+                    )
+                }
             }
         }
-    }
 }

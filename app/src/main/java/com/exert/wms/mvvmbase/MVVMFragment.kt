@@ -48,50 +48,6 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
         super.onCreateView(inflater, container, savedInstanceState)
         return binding.root
     }
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        // The usage of an interface lets you inject your own implementation
-//        val menuHost: MenuHost = requireActivity()
-//
-//        // Add menu items without using the Fragment Menu APIs
-//        // Note how we can tie the MenuProvider to the viewLifecycleOwner
-//        // and an optional Lifecycle.State (here, RESUMED) to indicate when
-//        // the menu should be visible
-//        menuHost.addMenuProvider(object : MenuProvider {
-//            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-//                // Add menu items here
-//                menuInflater.inflate(R.menu.menu_home, menu)
-//
-//                for (i in 0 until menu!!.size()) {
-//                    if (menu.getItem(i).title == getString(R.string.home)) {
-//                        menu.getItem(i).isVisible = showHomeButton == 1
-////                hideBackButton()
-//                    } else if (showHomeButton == 0) {
-//                        menu.getItem(i).isVisible = showHomeButton != 1
-////                hideBackButton()
-//                    } else {
-//                        menu.getItem(i).isVisible = false
-////                        showBackButton()
-//                    }
-//                }
-//            }
-//
-//            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-//                // Handle the menu selection
-//                return when (menuItem.itemId) {
-//                    R.id.home_menu -> {
-//                        // clearCompletedTasks()
-//                        true
-//                    }
-//                    R.id.notifications_menu -> {
-//                        // loadTasks(true)
-//                        true
-//                    }
-//                    else -> false
-//                }
-//            }
-//        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-//    }
 
     fun enableErrorMessage(
         textInputLayout: TextInputLayout,
@@ -107,7 +63,7 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
                 editTextLayout.requestFocus()
             }
             editTextLayout.text?.let { editTextLayout.setSelection(it.length) }
-            editTextLayout.isSelected= true
+            editTextLayout.isSelected = true
         }
     }
 
@@ -116,7 +72,7 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
     ) {
         textInputLayout.isErrorEnabled = false
         textInputLayout.clearFocus()
-        editTextLayout.isSelected= false
+        editTextLayout.isSelected = false
     }
 
     fun disableErrorMessageWhileEditing(
@@ -124,7 +80,7 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
     ) {
         textInputLayout.isErrorEnabled = false
         editTextLayout.isSelected = false
-        editTextLayout.isFocusable= true
+        editTextLayout.isFocusable = true
     }
 
     fun hideKeyBoard() {
@@ -170,53 +126,44 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
         textView.visibility = visible
     }
 
-    fun setTextViewVisibility(textView: TextView,visible: Int) {
+    fun setTextViewVisibility(textView: TextView, visible: Int) {
         textView.visibility = visible
     }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
     }
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu_home, menu)
-//        for (i in 0 until menu!!.size()) {
-//            if (menu.getItem(i).title == getString(R.string.home)) {
-//                menu.getItem(i).isVisible = showHomeButton == 1
-////                hideBackButton()
-//            } else if (showHomeButton == 0) {
-//                menu.getItem(i).isVisible = showHomeButton != 1
-////                hideBackButton()
-//            } else {
-//                menu.getItem(i).isVisible = false
-//                showBackButton()
-//            }
-//        }
-//
-//        return true
-//    }
 
     fun clearTextInputEditText(editText: TextInputEditText, hintTV: TextView) {
-        editText.text=getString(R.string.empty).toEditable()
-        hintTV.visibility= View.VISIBLE
+        editText.text = getString(R.string.empty).toEditable()
+        hintTV.visibility = View.VISIBLE
     }
 
-    fun getEditTextText(editText: TextInputEditText): Editable? =editText.text
+    fun getEditTextText(editText: TextInputEditText): Editable? = editText.text
 
-    fun edittextTextWatcher(textInputLayout: TextInputLayout, editText: TextInputEditText)=object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
+    fun edittextTextWatcher(textInputLayout: TextInputLayout, editText: TextInputEditText) =
+        object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
 
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
 
-        override fun afterTextChanged(s: Editable?) {
-            val isTextEmpty= getEditTextText(editText)?.trim()?.isNotEmpty()
-            if(isTextEmpty == true) {
-                disableErrorMessageWhileEditing(textInputLayout,editText
-                )
+            override fun afterTextChanged(s: Editable?) {
+                val isTextEmpty = getEditTextText(editText)?.trim()?.isNotEmpty()
+                if (isTextEmpty == true) {
+                    disableErrorMessageWhileEditing(
+                        textInputLayout, editText
+                    )
+                }
             }
         }
-    }
-    fun edittextFocusChangeListener(hintTextView: TextView, editText: TextInputEditText,errorMessage: String)=
+
+    fun edittextFocusChangeListener(
+        hintTextView: TextView,
+        editText: TextInputEditText,
+        errorMessage: String
+    ) =
         View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 setTextViewVisibility(
