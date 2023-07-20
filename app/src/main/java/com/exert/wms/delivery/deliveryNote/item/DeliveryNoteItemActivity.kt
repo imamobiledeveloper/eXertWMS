@@ -1,4 +1,4 @@
-package com.exert.wms.transfer.transferIn.item
+package com.exert.wms.delivery.deliveryNote.item
 
 import android.app.Activity
 import android.content.Intent
@@ -11,7 +11,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDtoList
-import com.exert.wms.databinding.ActivityTransferInItemBinding
+import com.exert.wms.databinding.ActivityDeliveryNoteItemBinding
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
@@ -21,17 +21,17 @@ import com.exert.wms.warehouse.WarehouseDto
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class TransferInItemActivity :
-    BaseActivity<TransferInViewModel, ActivityTransferInItemBinding>() {
+class DeliveryNoteItemActivity :
+    BaseActivity<DeliveryNoteItemViewModel, ActivityDeliveryNoteItemBinding>() {
 
-    override val title = R.string.item_transfer_in
+    override val title = R.string.item_delivery_note
 
     override val showHomeButton: Int = 1
 
     override fun getLayoutID(): Int = R.layout.activity_transfer_in_item
 
     override val mViewModel by lazy {
-        getViewModel<TransferInViewModel>()
+        getViewModel<DeliveryNoteItemViewModel>()
     }
 
     override fun getBindingVariable(): Int = BR.viewModel
@@ -44,7 +44,7 @@ class TransferInItemActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTransferInItemBinding.inflate(layoutInflater)
+        binding = ActivityDeliveryNoteItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.setTitle(title)
@@ -124,7 +124,7 @@ class TransferInItemActivity :
                     Constants.WAREHOUSE_STOCK_DETAILS,
                     mViewModel.getWarehouseStockDetails()
                 )
-                val intent = Intent(this, TransferInQuantityActivity::class.java)
+                val intent = Intent(this, DeliveryNoteQuantityActivity::class.java)
                 intent.putExtras(bundle)
                 startForResult.launch(intent)
 
@@ -182,7 +182,7 @@ class TransferInItemActivity :
 
     }
 
-    override fun onBindData(binding: ActivityTransferInItemBinding) {
+    override fun onBindData(binding: ActivityDeliveryNoteItemBinding) {
         binding.viewModel = mViewModel
     }
 

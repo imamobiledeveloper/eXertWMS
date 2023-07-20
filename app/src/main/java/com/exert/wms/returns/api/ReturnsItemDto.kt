@@ -24,7 +24,7 @@ data class DeliveryReceiptItemsDto(
 
 @Parcelize
 @Keep
-data class DeliveryReceiptItemsItemsDetailsDto(
+data class DeliveryReceiptItemsDetailsDto(
     val ItemSeqNumber: Int = 0,
     val WarehouseID: Long = 0,
     val ItemID: Long = 0,
@@ -43,7 +43,7 @@ data class DeliveryReceiptItemsItemsDetailsDto(
 data class
 DeliveryReceiptItemsRequestDto(
     val StockAdjustmentID: Long = 0,
-    val ItemsDetails: List<DeliveryReceiptItemsItemsDetailsDto>
+    val ItemsDetails: List<DeliveryReceiptItemsDetailsDto>
 ) {
     companion object
 }
@@ -58,7 +58,7 @@ data class SaveDeliveryReceiptItemsResponse(
 
 @Parcelize
 @Keep
-data class DeliveryNoteItemsItemsDetailsDto(
+data class DeliveryNoteItemsDetailsDto(
     val ItemSeqNumber: Int = 0,
     val WarehouseID: Long = 0,
     val ItemID: Long = 0,
@@ -77,7 +77,7 @@ data class DeliveryNoteItemsItemsDetailsDto(
 data class
 DeliveryNoteItemsRequestDto(
     val StockAdjustmentID: Long = 0,
-    val ItemsDetails: List<DeliveryNoteItemsItemsDetailsDto>
+    val ItemsDetails: List<DeliveryNoteItemsDetailsDto>
 ) {
     companion object
 }

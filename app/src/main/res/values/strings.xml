@@ -56,12 +56,16 @@
     <string name="items_list">Items List</string>
     <string name="stock_adjustment">Stock Adjustment</string>
     <string name="item_adjustment">Item Adjustment</string>
-    <string name="item_transfer_in">TransferIn Item </string>
-    <string name="item_transfer_out">TransferOut Item </string>
+    <string name="item_transfer_in">Item TransferIn</string>
+    <string name="item_transfer_out">Item TransferOut</string>
+    <string name="item_delivery_receipt">Item Delivery Receipt</string>
+    <string name="item_delivery_note">Item Delivery Note</string>
     <string name="item_reconciliation">Item Reconciliation</string>
     <string name="quantity_adjustment">Quantity Adjustment</string>
     <string name="quantity_reconciliation">Quantity Reconciliation</string>
     <string name="select_warehouse">Select Warehouse</string>
+    <string name="select_to_warehouse">Select To Warehouse</string>
+    <string name="select_from_warehouse">Select From Warehouse</string>
     <string name="select_transfer_out_no">Select Transfer Out No.</string>
     <string name="select_warranty_period">Select Warranty Period</string>
     <string name="update">Update</string>
@@ -135,10 +139,22 @@
     <string name="error_save_stock_adjustment_items">Failed to save Stock adjustment items. Please try again!</string>
     <string name="success_save_stock_reconciliation">Updated Stock reconciliation items successfully</string>
     <string name="error_save_stock_reconciliation_items">Failed to save Stock reconciliation items. Please try again!</string>
-    <string name="error_save_transfer_in_items">Failed to update Transfer In items items. Please try again!</string>
+    <string name="error_save_transfer_in_items">Failed to update Transfer In items. Please try again!</string>
     <string name="success_save_transfer_in">Updated Transfer In items successfully</string>
-    <string name="error_save_transfer_out_items">Failed to update Transfer out items items. Please try again!</string>
+    <string name="error_save_transfer_out_items">Failed to update Transfer out items. Please try again!</string>
     <string name="success_save_transfer_out">Updated Transfer Out items successfully</string>
+    <string name="error_save_delivery_receipt_items">Failed to update Delivery receipt items. Please try again!</string>
+    <string name="error_save_delivery_notes_items">Failed to update Delivery notes items. Please try again!</string>
+    <string name="purchase_order_no">Purchase Order No.</string>
+    <string name="select_purchase_order_no">Select Purchase Order No.</string>
+    <string name="vendor_name">Vendor Name</string>
+    <string name="manufacturing_date">Manufacturing Date</string>
+    <string name="select_branch">Select Branch</string>
+    <string name="select_vendor_name">Select Vendor Name</string>
+    <string name="sales_invoice_no">Sales Invoice No.</string>
+    <string name="enter_to_select">Enter to select</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="branch">Branch</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

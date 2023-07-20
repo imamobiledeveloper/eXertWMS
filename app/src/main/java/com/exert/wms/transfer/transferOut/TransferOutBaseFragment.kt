@@ -53,7 +53,7 @@ class TransferOutBaseFragment :
     }
 
     override fun onBindData(binding: FragmentTransferOutBaseBinding) {
-
+        binding.viewModel=mViewModel
     }
 
     private fun observeViewModel() {

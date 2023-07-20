@@ -1,18 +1,23 @@
-package com.exert.wms.transfer.transferIn.item
+package com.exert.wms.delivery.deliveryReceipt.item
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.lifecycle.Observer
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDtoList
+import com.exert.wms.databinding.ActivityDeliveryReceiptItemBinding
 import com.exert.wms.databinding.ActivityTransferInItemBinding
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.transfer.transferIn.item.TransferInQuantityActivity
+import com.exert.wms.transfer.transferIn.item.TransferInViewModel
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
@@ -21,17 +26,17 @@ import com.exert.wms.warehouse.WarehouseDto
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class TransferInItemActivity :
-    BaseActivity<TransferInViewModel, ActivityTransferInItemBinding>() {
+class DeliveryReceiptItemActivity :
+    BaseActivity<DeliveryReceiptItemViewModel, ActivityDeliveryReceiptItemBinding>() {
 
-    override val title = R.string.item_transfer_in
+    override val title = R.string.item_delivery_receipt
 
     override val showHomeButton: Int = 1
 
-    override fun getLayoutID(): Int = R.layout.activity_transfer_in_item
+    override fun getLayoutID(): Int = R.layout.activity_delivery_receipt_item
 
     override val mViewModel by lazy {
-        getViewModel<TransferInViewModel>()
+        getViewModel<DeliveryReceiptItemViewModel>()
     }
 
     override fun getBindingVariable(): Int = BR.viewModel
@@ -44,7 +49,7 @@ class TransferInItemActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTransferInItemBinding.inflate(layoutInflater)
+        binding = ActivityDeliveryReceiptItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.setTitle(title)
@@ -76,8 +81,8 @@ class TransferInItemActivity :
         warehouseDto = intent.getSerializable(Constants.WAREHOUSE, WarehouseDto::class.java)
         mViewModel.setSelectedWarehouseDto(warehouseId, warehouseDto)
 
-        binding.itemNameManufactureLayout.itemStockLabel.text = getString(R.string.item_part_code)
-        binding.itemNameManufactureLayout.itemStockLabel.isEnabled = false
+        binding.itemNameManufactureLayout.itemStockLabel.text = getString(R.string.serial_no)
+        binding.itemNameManufactureLayout.itemStockLabel.isEnabled = true
 
         mViewModel.isLoadingData.observe(this) { status ->
             if (status) {
@@ -182,7 +187,7 @@ class TransferInItemActivity :
 
     }
 
-    override fun onBindData(binding: ActivityTransferInItemBinding) {
+    override fun onBindData(binding: ActivityDeliveryReceiptItemBinding) {
         binding.viewModel = mViewModel
     }
 

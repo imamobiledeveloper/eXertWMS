@@ -17,7 +17,18 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name="com.exert.wms.delivery.deliveryNote.item.DeliveryNoteQuantityActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.exert.wms.delivery.deliveryNote.item.DeliveryNoteItemActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.exert.wms.delivery.deliveryReceipt.item.DeliveryReceiptQuantityActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.exert.wms.delivery.deliveryReceipt.item.DeliveryReceiptItemActivity"
+            android:exported="false" />
         <activity
             android:name="com.exert.wms.stockReconciliation.item.StockQuantityReconciliationActivity"
             android:exported="false" />
