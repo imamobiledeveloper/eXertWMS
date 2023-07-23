@@ -95,3 +95,10 @@ data class WarehouseSerialItemsRequestDto(
 ) {
     companion object
 }
+
+@Keep
+data class ItemsBarCodeDto(
+    val isItItemPartCode: Boolean = false,
+    val ItemPartCodeData: String = "",
+    val ItemSerialNoData: String = "",
+){}

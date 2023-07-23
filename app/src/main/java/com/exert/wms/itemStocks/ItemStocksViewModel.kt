@@ -60,6 +60,9 @@ class ItemStocksViewModel(
     private val _errorFieldMessage = MutableLiveData<String>()
     val errorFieldMessage: LiveData<String> = _errorFieldMessage
 
+    private val _itemBarCodeData = MutableLiveData<ItemsBarCodeDto>()
+    val itemBarCodeData: LiveData<ItemsBarCodeDto> = _itemBarCodeData
+
     var itemPartCode: String = ""
     var itemSerialNo: String = ""
     var itemsDto: ItemsDto? = null
@@ -78,11 +81,14 @@ class ItemStocksViewModel(
                         if (dto.Items != null && dto.Items.isNotEmpty()) {
                             itemsDto = dto.Items[0]
                             _itemDto.postValue(dto.Items[0])
+                            _enableStatusButton.postValue(true)
                         } else {
                             _errorGetItemsStatusMessage.postValue(stringProvider.getString(R.string.empty_items_list))
+                            _enableStatusButton.postValue(false)
                         }
                     } else {
                         _getItemsStatus.value = (false)
+                        _enableStatusButton.postValue(false)
                     }
                 }
 
@@ -146,7 +152,6 @@ class ItemStocksViewModel(
 
     private fun checkAndEnableStatusButton() {
         if (validateUserDetails(itemPartCode, itemSerialNo)) {
-            _enableStatusButton.postValue(true)
             _errorItemPartCode.postValue(false)
             _errorItemSerialNo.postValue(false)
         } else {
@@ -233,6 +238,18 @@ class ItemStocksViewModel(
         }
         if (serialNo != null) {
             itemSerialNo = serialNo
+        }
+    }
+
+    fun setBarCodeData(barCode: String) {
+        if(isItPartCodeScanRequest()){
+            setItemPartCodeValue(barCode)
+            val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = true, ItemPartCodeData=barCode, ItemSerialNoData="")
+            _itemBarCodeData.postValue(itemBarCodeDto)
+        }else{
+            setItemSerialNumberValue(barCode)
+            val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = false, ItemPartCodeData="", ItemSerialNoData=barCode)
+            _itemBarCodeData.postValue(itemBarCodeDto)
         }
     }
 }

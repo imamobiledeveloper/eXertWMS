@@ -1,5 +1,6 @@
 package com.exert.wms.itemStocks
 
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,17 +10,21 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.exert.wms.R
+import com.exert.wms.ScanBarcodeBroadcastListener
+import com.exert.wms.ScanBarcodeDataReceiver
 import com.exert.wms.databinding.FragmentItemStocksBinding
 import com.exert.wms.itemStocks.warehouse.WarehouseListActivity
 import com.exert.wms.mvvmbase.MVVMFragment
 import com.exert.wms.utils.Constants
+import com.exert.wms.utils.Constants.ACTION_BARCODE_DATA
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
 import com.exert.wms.utils.toEditable
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksBinding>() {
+class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksBinding>(),
+    ScanBarcodeBroadcastListener {
 
     override val title = R.string.item_stocks
 
@@ -66,6 +71,26 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
             mViewModel.setItemPartCodeValue(getString(R.string.empty))
             mViewModel.setItemSerialNumberValue(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
             mViewModel.searchItemWithSerialNumber()
+        }
+
+        binding.itemPartCodeSerialNoLayout.scanItemPartCodeIV.setOnClickListener {
+            clearOtherField(
+                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
+                binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV
+            )
+            mViewModel.setItemSerialNumberValue(getString(R.string.empty))
+            mViewModel.searchItemWithPartCode()
+            mViewModel.setIsItPartCodeScanRequest(true)
+            triggerScanner(requireActivity())
+        }
+        binding.itemPartCodeSerialNoLayout.scanItemSerialNoIV.setOnClickListener {
+            clearOtherField(
+                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
+                binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV
+            )
+            mViewModel.setItemPartCodeValue(getString(R.string.empty))
+            mViewModel.setIsItPartCodeScanRequest(false)
+            triggerScanner(requireActivity())
         }
     }
 
@@ -261,6 +286,11 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
             binding.itemNameManufactureLayout.itemStockEditText.isEnabled = dto.IsSerialItem == 1
         })
 
+        mViewModel.itemBarCodeData.observe(viewLifecycleOwner, Observer { dto ->
+            binding.itemBarCodeDto = dto
+            binding.executePendingBindings()
+        })
+
         mViewModel.errorFieldMessage.observe(viewLifecycleOwner, Observer { msg ->
             if (msg.isNotEmpty()) {
                 showBriefToastMessage(
@@ -284,6 +314,26 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
 
     override fun onBindData(binding: FragmentItemStocksBinding) {
         binding.viewModel = mViewModel
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().registerReceiver(barcodeDataReceiver, IntentFilter(ACTION_BARCODE_DATA))
+        claimScanner(requireActivity())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireActivity().unregisterReceiver(barcodeDataReceiver)
+        releaseScanner(requireActivity())
+    }
+
+    private val barcodeDataReceiver = ScanBarcodeDataReceiver(this)
+
+    override fun onDataReceived(data: String?) {
+        data?.let {
+            mViewModel.setBarCodeData(it)
+        }
     }
 
 }

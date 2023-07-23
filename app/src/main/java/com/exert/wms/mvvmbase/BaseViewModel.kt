@@ -14,10 +14,12 @@ abstract class BaseViewModel : ViewModel() {
         value = Result.Loading
     }
 
+    private var isItItemPartCodeScanRequest = false
+
     private val _isLoadingData = MutableLiveData<Boolean>()
     val isLoadingData: LiveData<Boolean> = _isLoadingData
 
-    val exceptionHandler= CoroutineExceptionHandler { _, throwable ->
+    val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         handleException(throwable)
     }
 
@@ -25,16 +27,22 @@ abstract class BaseViewModel : ViewModel() {
         hideProgressIndicator()
     }
 
-     fun hideProgressIndicator() {
+    fun hideProgressIndicator() {
         _isLoadingData.postValue(false)
     }
 
-     fun showProgressIndicator() {
+    fun showProgressIndicator() {
         _isLoadingData.postValue(true)
     }
 
     public override fun onCleared() {
         super.onCleared()
         disposable.dispose()
+    }
+
+    fun isItPartCodeScanRequest(): Boolean = isItItemPartCodeScanRequest
+
+    fun setIsItPartCodeScanRequest(request: Boolean) {
+        isItItemPartCodeScanRequest = request
     }
 }
