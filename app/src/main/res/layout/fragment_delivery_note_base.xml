@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16dp"
                 android:gravity="center_vertical"
-                android:text="@string/customer_name"
+                android:text="@string/vendor_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/branchSpinnerLayout" />
@@ -155,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="50dp"
                 app:endIconCheckable="true"
-                app:endIconDrawable="@drawable/ic_arrow_right"
+                app:endIconDrawable="@drawable/ic_right_arrow1"
                 app:boxBackgroundMode="none"
                 app:endIconMode="custom"
                 app:endIconTint="@color/blue_dark"

@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
+import com.exert.wms.delivery.api.DeliveryNoteItemsDetailsDto
+import com.exert.wms.delivery.api.DeliveryNoteItemsRequestDto
 import com.exert.wms.delivery.api.DeliveryRepository
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.mvvmbase.BaseViewModel
-import com.exert.wms.returns.api.DeliveryNoteItemsDetailsDto
-import com.exert.wms.returns.api.DeliveryNoteItemsRequestDto
 import com.exert.wms.utils.StringProvider
 import com.exert.wms.warehouse.WarehouseDto
 import com.exert.wms.warehouse.WarehouseRepository
@@ -42,8 +42,8 @@ class DeliveryNoteBaseViewModel(
     private val _saveItemStatus = MutableLiveData<Boolean>()
     val saveItemStatus: LiveData<Boolean> = _saveItemStatus
 
-    private val _errorWarehouse = MutableLiveData<Boolean>()
-    val errorWarehouse: LiveData<Boolean> = _errorWarehouse
+    private val _errorBranch = MutableLiveData<Boolean>()
+    val errorBranch: LiveData<Boolean> = _errorBranch
 
     private var selectedBranch: String = ""
     private var selectedCustomerName: String = ""
@@ -159,9 +159,9 @@ class DeliveryNoteBaseViewModel(
                 R.string.select_vendor_name
             )
         ) {
-            _errorWarehouse.postValue(true)
+            _errorBranch.postValue(true)
         } else {
-            _errorWarehouse.postValue(false)
+            _errorBranch.postValue(false)
         }
     }
 

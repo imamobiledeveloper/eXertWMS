@@ -1,4 +1,4 @@
-package com.exert.wms.stockAdjustment.item
+package com.exert.wms.addItem
 
 import android.app.DatePickerDialog
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.exert.wms.R
 import com.exert.wms.databinding.FragmentAddStockItemDialogLayoutBinding
 import com.exert.wms.mvvmbase.MVVMBottomSheetDialogFragment
+import com.exert.wms.stockAdjustment.item.OnItemAddListener
 import com.exert.wms.utils.SpinnerCustomAdapter
 import com.exert.wms.utils.toEditable
 import org.koin.androidx.viewmodel.ext.android.getViewModel

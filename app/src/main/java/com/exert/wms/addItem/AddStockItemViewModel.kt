@@ -1,4 +1,4 @@
-package com.exert.wms.stockAdjustment.item
+package com.exert.wms.addItem
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -6,7 +6,7 @@ import com.exert.wms.SerialItemsDto
 import kotlinx.parcelize.Parcelize
 
 @Keep
-data class PurchaseItemsDto(
+data class DeliveryReceiptItemsDto(
     val warehouse: String,
     val itemPartCode: String,
     val itemSerialNo: String,
@@ -24,7 +24,7 @@ data class PurchaseItemsDto(
 
 @Parcelize
 @Keep
-data class PurchaseItemsDetailsDto(
+data class DeliveryReceiptItemsDetailsDto(
     val ItemSeqNumber: Int = 0,
     val WarehouseID: Long = 0,
     val ItemID: Long = 0,
@@ -41,15 +41,15 @@ data class PurchaseItemsDetailsDto(
 
 @Keep
 data class
-PurchaseItemsRequestDto(
+DeliveryReceiptItemsRequestDto(
     val StockAdjustmentID: Long = 0,
-    val ItemsDetails: List<PurchaseItemsDetailsDto>
+    val ItemsDetails: List<DeliveryReceiptItemsDetailsDto>
 ) {
     companion object
 }
 
 @Keep
-data class SavePurchaseItemsResponse(
+data class SaveDeliveryReceiptItemsResponse(
     val Success: Boolean,
     val SalesList: ArrayList<String> = arrayOf<String>().toCollection(ArrayList())
 ) {
@@ -58,7 +58,7 @@ data class SavePurchaseItemsResponse(
 
 @Parcelize
 @Keep
-data class SalesItemsDetailsDto(
+data class DeliveryNoteItemsDetailsDto(
     val ItemSeqNumber: Int = 0,
     val WarehouseID: Long = 0,
     val ItemID: Long = 0,
@@ -75,15 +75,15 @@ data class SalesItemsDetailsDto(
 
 @Keep
 data class
-SalesItemsRequestDto(
+DeliveryNoteItemsRequestDto(
     val StockAdjustmentID: Long = 0,
-    val ItemsDetails: List<SalesItemsDetailsDto>
+    val ItemsDetails: List<DeliveryNoteItemsDetailsDto>
 ) {
     companion object
 }
 
 @Keep
-data class SaveSalesItemsResponse(
+data class SaveDeliveryNoteItemsResponse(
     val Success: Boolean,
     val SalesList: ArrayList<String> = arrayOf<String>().toCollection(ArrayList())
 ) {

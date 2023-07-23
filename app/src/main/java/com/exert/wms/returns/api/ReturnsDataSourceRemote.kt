@@ -1,9 +1,5 @@
 package com.exert.wms.returns.api
 
-import com.exert.wms.delivery.api.PurchaseItemsRequestDto
-import com.exert.wms.delivery.api.SalesItemsRequestDto
-import com.exert.wms.delivery.api.SavePurchaseItemsResponse
-import com.exert.wms.delivery.api.SaveSalesItemsResponse
 import com.exert.wms.mvvmbase.network.ExertWmsApi
 
 class ReturnsDataSourceRemote(private val exertWmsApi: ExertWmsApi) {

@@ -18,6 +18,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name="com.exert.wms.returns.salesReturn.item.SalesReturnQuantityActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.exert.wms.returns.salesReturn.item.SalesReturnItemActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.exert.wms.returns.purchaseReturn.item.PurchaseReturnQuantityActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.exert.wms.returns.purchaseReturn.item.PurchaseReturnItemActivity"
+            android:exported="false" />
+        <activity
             android:name="com.exert.wms.delivery.deliveryNote.item.DeliveryNoteQuantityActivity"
             android:exported="false" />
         <activity

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.exert.wms.transfer.transferOut.item.TransferOutItemViewModel" />
+            type="com.exert.wms.returns.purchaseReturn.item.PurchaseReturnItemViewModel" />
 
         <variable
             name="itemDto"
@@ -16,18 +15,9 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/transferOutItemAdjustmentScreen"
+        android:id="@+id/purchaseReturnItemScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/itemPartCodeSerialNoLayout"
-            layout="@layout/item_part_code_serial_no_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:id="@+id/itemsScrollView"
@@ -38,7 +28,7 @@
             app:layout_constraintBottom_toTopOf="@+id/saveButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemPartCodeSerialNoLayout">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -53,9 +43,9 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     app:itemDto="@{itemDto}"
-                    app:labelFour="@{@string/manufacturer}"
+                    app:labelFour="@{@string/purchase_quantity}"
                     app:labelOne="@{@string/item_name_english}"
-                    app:labelThree="@{@string/stock}"
+                    app:labelThree="@{@string/manufacturer}"
                     app:labelTwo="@{@string/item_name_arabic}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +60,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/itemNameManufactureLayout">
 
                     <TextView
-                        android:id="@+id/quantityLabel"
+                        android:id="@+id/returningQuantityLabel"
                         style="@style/TextViewBold14Label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -80,26 +70,26 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/quantityEditTextLayout"
+                        android:id="@+id/returningQuantityEditTextLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="12dp"
                         android:minHeight="50dp"
+                        app:boxBackgroundMode="none"
                         app:endIconCheckable="true"
                         app:endIconDrawable="@drawable/ic_arrow_right"
-                        app:boxBackgroundMode="none"
                         app:endIconMode="custom"
                         app:endIconTint="@color/blue_dark"
                         app:errorTextAppearance="@style/EdittextError"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/quantityLabel">
+                        app:layout_constraintTop_toBottomOf="@+id/returningQuantityLabel">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/quantityEditText"
+                            android:id="@+id/returningQuantityEditText"
+                            style="@style/EditTextEnabledStyle"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            style="@style/EditTextEnabledStyle"
                             android:drawablePadding="8dp"
                             android:ellipsize="end"
                             android:enabled="false"
@@ -108,8 +98,7 @@
                             android:inputType="numberDecimal"
                             android:maxLength="20"
                             android:singleLine="true"
-                            android:text="@{viewModel.quantityString}"
-                            tools:text="123456789012345678901234567890" />
+                            android:text="@{viewModel.returningQuantityString}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -135,10 +124,10 @@
             android:id="@+id/coordinateLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/saveButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"

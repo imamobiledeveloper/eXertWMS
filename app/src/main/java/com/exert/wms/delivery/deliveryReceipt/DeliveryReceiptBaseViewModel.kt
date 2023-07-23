@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
+import com.exert.wms.delivery.api.DeliveryReceiptItemsDetailsDto
+import com.exert.wms.delivery.api.DeliveryReceiptItemsRequestDto
 import com.exert.wms.delivery.api.DeliveryRepository
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.mvvmbase.BaseViewModel
-import com.exert.wms.returns.api.DeliveryReceiptItemsDetailsDto
-import com.exert.wms.returns.api.DeliveryReceiptItemsRequestDto
 import com.exert.wms.utils.StringProvider
 import com.exert.wms.warehouse.WarehouseDto
 import com.exert.wms.warehouse.WarehouseRepository

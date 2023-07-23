@@ -12,6 +12,7 @@ import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
 import com.exert.wms.SerialItemsDtoList
+import com.exert.wms.addItem.AddStockItemDialogFragment
 import com.exert.wms.databinding.ActivityStockQuantityAdjustmentBinding
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
@@ -21,7 +22,7 @@ import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class StockQuantityAdjustmentActivity :
-    BaseActivity<StockItemAdjustmentViewModel, ActivityStockQuantityAdjustmentBinding>() {
+    BaseActivity<StockAdjustmentItemViewModel, ActivityStockQuantityAdjustmentBinding>() {
 
     override val title = R.string.quantity_adjustment
 
@@ -30,7 +31,7 @@ class StockQuantityAdjustmentActivity :
     override fun getLayoutID(): Int = R.layout.activity_stock_quantity_adjustment
 
     override val mViewModel by lazy {
-        getViewModel<StockItemAdjustmentViewModel>()
+        getViewModel<StockAdjustmentItemViewModel>()
     }
 
     override fun getBindingVariable(): Int = BR.viewModel

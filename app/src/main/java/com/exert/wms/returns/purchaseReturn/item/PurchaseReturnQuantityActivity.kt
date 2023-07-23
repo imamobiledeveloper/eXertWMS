@@ -1,4 +1,4 @@
-package com.exert.wms.transfer.transferIn.item
+package com.exert.wms.returns.purchaseReturn.item
 
 import android.app.Activity
 import android.content.Intent
@@ -10,7 +10,7 @@ import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
 import com.exert.wms.SerialItemsDtoList
-import com.exert.wms.databinding.ActivityTransferInQuantityBinding
+import com.exert.wms.databinding.ActivityPurchaseReturnQuantityBinding
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListAdapter
@@ -21,17 +21,17 @@ import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
-class TransferInQuantityActivity :
-    BaseActivity<TransferInItemViewModel, ActivityTransferInQuantityBinding>() {
+class PurchaseReturnQuantityActivity :
+    BaseActivity<PurchaseReturnItemViewModel, ActivityPurchaseReturnQuantityBinding>() {
 
     override val title = R.string.item_stock_status
 
     override val showHomeButton: Int = 1
 
-    override fun getLayoutID(): Int = R.layout.activity_transfer_out_quantity
+    override fun getLayoutID(): Int = R.layout.activity_purchase_return_quantity
 
     override val mViewModel by lazy {
-        getViewModel<TransferInItemViewModel>()
+        getViewModel<PurchaseReturnItemViewModel>()
     }
 
     override fun getBindingVariable(): Int = BR.viewModel
@@ -47,7 +47,7 @@ class TransferInQuantityActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTransferInQuantityBinding.inflate(layoutInflater)
+        binding = ActivityPurchaseReturnQuantityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.setTitle(title)
@@ -89,6 +89,10 @@ class TransferInQuantityActivity :
             itemDto?.ItemID?.let { it1 -> mViewModel.getSelectedItems(it1) }
         }
 
+//        binding.addButton.setOnClickListener {
+//            showBottomSheetDialog()
+//        }
+
         mViewModel.errorGetItemsStatusMessage.observe(this) { status ->
             showBriefToastMessage(status, coordinateLayout)
         }
@@ -116,6 +120,10 @@ class TransferInQuantityActivity :
                         })
             }
         }
+
+//        mViewModel.showAddItemButton.observe(this, Observer {
+//            binding.addButton.visibility = if (it) View.VISIBLE else View.INVISIBLE
+//        })
 
         mViewModel.enableSaveButton.observe(this) {
             binding.saveButton.isEnabled = it
@@ -156,7 +164,7 @@ class TransferInQuantityActivity :
         dialog.show(this.supportFragmentManager, "AddStockItemDialogFragment")
     }
 
-    override fun onBindData(binding: ActivityTransferInQuantityBinding) {
+    override fun onBindData(binding: ActivityPurchaseReturnQuantityBinding) {
         binding.viewModel = mViewModel
         binding.executePendingBindings()
     }

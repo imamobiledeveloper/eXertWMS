@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="setGreen"
+            type="Boolean" />
+
+        <variable
+            name="whiteBg"
+            type="Boolean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stockItemListItemLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@{whiteBg ? @color/white : @color/grey_50}"
+        android:paddingBottom="@dimen/margin_5dp">
+
+        <LinearLayout
+            android:id="@+id/itemsListLabelsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/itemNameTV"
+                style="@style/RecyclerViewListItemTextViewStyle_Return"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                app:layout_constraintEnd_toStartOf="@+id/itemCountTV"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Item 1" />
+
+            <TextView
+                android:id="@+id/purchaseCountTV"
+                style="@style/RecyclerViewListItemTextViewStyle_Return"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:gravity="center"
+                android:textColor="@{setGreen ? @color/green : @color/red}"
+                app:layout_constraintEnd_toStartOf="@+id/rightArrowIV"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="100" />
+
+            <TextView
+                android:id="@+id/returningCountTV"
+                style="@style/RecyclerViewListItemTextViewStyle_Return"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:gravity="center"
+                android:text="@string/returning_qty"
+                android:textColor="@{setGreen ? @color/green : @color/red}"
+                tools:text="100" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/rightArrowIV"
+                style="@style/ImageViewEndStyle"
+                android:layout_width="wrap_content"
+                android:layout_weight="0.1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="@dimen/margin_8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_right_arrow1"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

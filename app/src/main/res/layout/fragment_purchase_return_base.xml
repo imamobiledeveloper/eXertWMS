@@ -16,6 +16,295 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/purchaseReturnLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/branchTV"
+                style="@style/TextViewBold16Label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/branch"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/branchSpinnerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/branchTV">
+
+                <Spinner
+                    android:id="@+id/branchSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#00FFFFFF"
+                    android:dropDownWidth="match_parent"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@drawable/edittext_rectangle_white_bg"
+                    android:popupElevation="15dp"
+                    android:theme="@style/Spinner"
+                    app:layout_constraintBottom_toBottomOf="@+id/branchSpinnerTV"
+                    app:layout_constraintTop_toTopOf="@+id/branchSpinnerTV" />
+
+                <TextView
+                    android:id="@+id/branchSpinnerTV"
+                    style="@style/TextViewLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edittext_rectangle_white_bg"
+                    android:drawablePadding="@dimen/margin_10dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/select_branch"
+                    android:textAlignment="gravity"
+                    app:drawableEndCompat="@drawable/ic_arrow_down"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/vendorNameTV"
+                style="@style/TextViewBold16Label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:gravity="center_vertical"
+                android:text="@string/vendor_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/branchSpinnerLayout" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/vendorNameSpinnerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vendorNameTV">
+
+                <Spinner
+                    android:id="@+id/vendorNameSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#00FFFFFF"
+                    android:dropDownWidth="match_parent"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@drawable/edittext_rectangle_white_bg"
+                    android:popupElevation="15dp"
+                    android:theme="@style/Spinner"
+                    app:layout_constraintBottom_toBottomOf="@+id/vendorNameSpinnerTV"
+                    app:layout_constraintTop_toTopOf="@+id/vendorNameSpinnerTV" />
+
+                <TextView
+                    android:id="@+id/vendorNameSpinnerTV"
+                    style="@style/TextViewLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edittext_rectangle_white_bg"
+                    android:drawablePadding="@dimen/margin_10dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/select_vendor_name"
+                    android:textAlignment="gravity"
+                    app:drawableEndCompat="@drawable/ic_arrow_down"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/purchaseInvoiceNoTV"
+                style="@style/TextViewBold16Label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:gravity="center_vertical"
+                android:text="@string/purchase_invoice_no"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vendorNameSpinnerLayout" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/purchaseInvoiceNoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/purchaseInvoiceNoTV">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/purchaseInvoiceNoEditTextLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="50dp"
+                    app:boxBackgroundMode="none"
+                    app:endIconCheckable="true"
+                    app:endIconDrawable="@drawable/ic_right_arrow1"
+                    app:endIconMode="custom"
+                    app:endIconTint="@color/blue_dark"
+                    app:errorTextAppearance="@style/EdittextError"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/purchaseInvoiceNoEditText"
+                        style="@style/EditTextEnabledStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:drawablePadding="8dp"
+                        android:ellipsize="end"
+                        android:enabled="false"
+                        android:gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:maxLength="20"
+                        android:singleLine="true" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/purchaseInvoiceHintTV"
+                    style="@style/TextViewHintLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:drawablePadding="@dimen/margin_10dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:text="@string/enter_to_select"
+                    android:textAlignment="gravity"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/itemsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/margin_20dp"
+                android:layout_marginBottom="@dimen/margin_15dp"
+                app:layout_constraintBottom_toTopOf="@+id/updateButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/purchaseInvoiceNoLayout">
+
+                <LinearLayout
+                    android:id="@+id/itemsListLabelsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/itemListTV"
+                        style="@style/TextViewHeaderBlueLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1.4"
+                        android:text="@string/items_list" />
+
+                    <TextView
+                        android:id="@+id/purchaseQuantityTV"
+                        style="@style/TextViewHeaderBlueLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:padding="@dimen/margin_5dp"
+                        android:text="@string/purchase_qty"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/returningQuantityTV"
+                        style="@style/TextViewHeaderBlueLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:padding="@dimen/margin_5dp"
+                        android:text="@string/returning_qty"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="5dp"
+                        android:layout_weight="0.3" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/itemsListRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edittext_rectangle_less_padding_bg"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/itemsListLabelsLayout"
+                    tools:itemCount="10"
+                    tools:listitem="@layout/return_purchase_sale_list_item_layout" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/updateButton"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="@string/update"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/coordinateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/updateButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/blue_light"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/blue_50"
+                android:indeterminateTintMode="src_atop"
+                android:minWidth="40dp"
+                android:minHeight="40dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

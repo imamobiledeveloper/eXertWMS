@@ -20,7 +20,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-class StockItemReconciliationViewModel(
+class StockReconciliationItemViewModel(
     private val stringProvider: StringProvider,
     private val itemStocksRepo: ItemStocksRepository,
     private val stockReconciliationRepo: StockReconciliationRepository,

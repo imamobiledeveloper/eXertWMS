@@ -16,14 +16,14 @@ import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListAdapter
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.stockAdjustment.item.AddStockItemDialogFragment
+import com.exert.wms.addItem.AddStockItemDialogFragment
 import com.exert.wms.stockAdjustment.item.OnItemAddListener
 import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class TransferOutQuantityActivity :
-    BaseActivity<TransferOutViewModel, ActivityTransferOutQuantityBinding>() {
+    BaseActivity<TransferOutItemViewModel, ActivityTransferOutQuantityBinding>() {
 
     override val title = R.string.item_stock_status
 
@@ -32,7 +32,7 @@ class TransferOutQuantityActivity :
     override fun getLayoutID(): Int = R.layout.activity_transfer_out_quantity
 
     override val mViewModel by lazy {
-        getViewModel<TransferOutViewModel>()
+        getViewModel<TransferOutItemViewModel>()
     }
 
     override fun getBindingVariable(): Int = BR.viewModel
@@ -126,25 +126,25 @@ class TransferOutQuantityActivity :
 //            binding.addButton.visibility = if (it) View.VISIBLE else View.INVISIBLE
 //        })
 
-        mViewModel.enableSaveButton.observe(this, Observer {
+        mViewModel.enableSaveButton.observe(this) {
             binding.saveButton.isEnabled = it
-        })
+        }
 
-        mViewModel.checkedSerialItemsList.observe(this, Observer { list ->
+        mViewModel.checkedSerialItemsList.observe(this) { list ->
             val data = Intent()
             data.putExtra(Constants.CHECKED_SERIAL_ITEMS, list)
             setResult(Activity.RESULT_OK, data)
             finish()
-        })
+        }
 
-        mViewModel.errorFieldMessage.observe(this, Observer { msg ->
+        mViewModel.errorFieldMessage.observe(this) { msg ->
             if (msg.isNotEmpty()) {
                 showBriefToastMessage(
                     msg,
                     coordinateLayout
                 )
             }
-        })
+        }
     }
 
     override fun onBackPressed() {

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.StockAdjustmentItemNameListItemLayoutBinding
-import com.exert.wms.returns.api.DeliveryReceiptItemsDetailsDto
+import com.exert.wms.delivery.api.DeliveryReceiptItemsDetailsDto
 
 class DeliveryReceiptListAdapter(
     private val itemsList: List<DeliveryReceiptItemsDetailsDto>,

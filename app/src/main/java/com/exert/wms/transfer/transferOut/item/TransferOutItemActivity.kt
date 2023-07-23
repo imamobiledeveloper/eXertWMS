@@ -24,7 +24,7 @@ import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class TransferOutItemActivity :
-    BaseActivity<TransferOutViewModel, ActivityTransferOutItemBinding>() {
+    BaseActivity<TransferOutItemViewModel, ActivityTransferOutItemBinding>() {
 
     override val title = R.string.item_transfer_out
 
@@ -33,7 +33,7 @@ class TransferOutItemActivity :
     override fun getLayoutID(): Int = R.layout.activity_transfer_out_item
 
     override val mViewModel by lazy {
-        getViewModel<TransferOutViewModel>()
+        getViewModel<TransferOutItemViewModel>()
     }
 
     override fun getBindingVariable(): Int = BR.viewModel

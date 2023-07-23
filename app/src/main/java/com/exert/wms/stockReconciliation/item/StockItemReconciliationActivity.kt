@@ -24,7 +24,7 @@ import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class StockItemReconciliationActivity :
-    BaseActivity<StockItemReconciliationViewModel, ActivityStockItemReconciliationBinding>() {
+    BaseActivity<StockReconciliationItemViewModel, ActivityStockItemReconciliationBinding>() {
 
     override val title = R.string.item_reconciliation
 
@@ -33,7 +33,7 @@ class StockItemReconciliationActivity :
     override fun getLayoutID(): Int = R.layout.activity_stock_item_reconciliation
 
     override val mViewModel by lazy {
-        getViewModel<StockItemReconciliationViewModel>()
+        getViewModel<StockReconciliationItemViewModel>()
     }
 
     override fun getBindingVariable(): Int = BR.viewModel

@@ -1,20 +1,20 @@
-package com.exert.wms.delivery.deliveryNote
+package com.exert.wms.returns.salesReturn
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.exert.wms.databinding.StockAdjustmentItemNameListItemLayoutBinding
-import com.exert.wms.delivery.api.DeliveryNoteItemsDetailsDto
+import com.exert.wms.databinding.ReturnPurchaseSaleListItemLayoutBinding
+import com.exert.wms.returns.api.SalesItemsDetailsDto
 
-class DeliveryNoteListAdapter(
-    private val itemsList: List<DeliveryNoteItemsDetailsDto>,
+class SalesReturnListAdapter(
+    private val itemsList: List<SalesItemsDetailsDto>,
     private val onItemTextClick: (String) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val viewHolderBinding = StockAdjustmentItemNameListItemLayoutBinding.inflate(
+        val viewHolderBinding = ReturnPurchaseSaleListItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -31,17 +31,18 @@ class DeliveryNoteListAdapter(
     }
 
     inner class ItemsListViewHolder(
-        private val holderBinding: StockAdjustmentItemNameListItemLayoutBinding,
+        private val holderBinding: ReturnPurchaseSaleListItemLayoutBinding,
         private val onFeatureTextClick: (String) -> Unit?
     ) : RecyclerView.ViewHolder(holderBinding.root) {
         private val itemName: TextView = holderBinding.itemNameTV
 
-        fun bind(item: DeliveryNoteItemsDetailsDto, position: Int) {
+        fun bind(item: SalesItemsDetailsDto, position: Int) {
             holderBinding.whiteBg = position % 2 == 0
 //            holderBinding.itemDto = item
-            holderBinding.setGreen = item.AdjustmentType == 0
+            holderBinding.setGreen = true //item.AdjustmentType == 0
 
-            holderBinding.itemCountTV.text = item.getAdjustmentQtyString()
+            holderBinding.purchaseCountTV.text = item.getPurchaseQtyString()
+            holderBinding.returningCountTV.text = item.getSalesQtyString()
             holderBinding.itemNameTV.text = item.getItemIDString()
             holderBinding.executePendingBindings()
 

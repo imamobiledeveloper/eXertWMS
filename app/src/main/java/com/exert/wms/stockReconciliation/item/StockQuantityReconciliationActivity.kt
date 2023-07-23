@@ -15,14 +15,14 @@ import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListAdapter
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.stockAdjustment.item.AddStockItemDialogFragment
+import com.exert.wms.addItem.AddStockItemDialogFragment
 import com.exert.wms.stockAdjustment.item.OnItemAddListener
 import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class StockQuantityReconciliationActivity :
-    BaseActivity<StockItemReconciliationViewModel, ActivityStockQuantityReconciliationBinding>() {
+    BaseActivity<StockReconciliationItemViewModel, ActivityStockQuantityReconciliationBinding>() {
 
     override val title = R.string.quantity_reconciliation
 
@@ -31,7 +31,7 @@ class StockQuantityReconciliationActivity :
     override fun getLayoutID(): Int = R.layout.activity_stock_quantity_reconciliation
 
     override val mViewModel by lazy {
-        getViewModel<StockItemReconciliationViewModel>()
+        getViewModel<StockReconciliationItemViewModel>()
     }
 
     override fun getBindingVariable(): Int = BR.viewModel

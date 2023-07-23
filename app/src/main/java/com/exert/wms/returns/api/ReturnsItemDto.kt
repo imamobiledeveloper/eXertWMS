@@ -6,7 +6,7 @@ import com.exert.wms.SerialItemsDto
 import kotlinx.parcelize.Parcelize
 
 @Keep
-data class DeliveryReceiptItemsDto(
+data class PurchaseItemsDto(
     val warehouse: String,
     val itemPartCode: String,
     val itemSerialNo: String,
@@ -24,32 +24,33 @@ data class DeliveryReceiptItemsDto(
 
 @Parcelize
 @Keep
-data class DeliveryReceiptItemsDetailsDto(
+data class PurchaseItemsDetailsDto(
     val ItemSeqNumber: Int = 0,
     val WarehouseID: Long = 0,
     val ItemID: Long = 0,
     val ItemCode: String,
-    val AdjustmentType: Int,
-    val AdjustmentQty: Double,
+    val PurchaseQty: Double,
+    val SalesQty: Double,
     val SerialItems: List<SerialItemsDto>,
 ) : Parcelable {
     companion object
 
     fun getItemIDString() = ItemID.toString()
-    fun getAdjustmentQtyString() = AdjustmentQty.toString()
+    fun getPurchaseQtyString() = PurchaseQty.toString()
+    fun getSalesQtyString() = SalesQty.toString()
 }
 
 @Keep
 data class
-DeliveryReceiptItemsRequestDto(
+PurchaseItemsRequestDto(
     val StockAdjustmentID: Long = 0,
-    val ItemsDetails: List<DeliveryReceiptItemsDetailsDto>
+    val ItemsDetails: List<PurchaseItemsDetailsDto>
 ) {
     companion object
 }
 
 @Keep
-data class SaveDeliveryReceiptItemsResponse(
+data class SavePurchaseItemsResponse(
     val Success: Boolean,
     val SalesList: ArrayList<String> = arrayOf<String>().toCollection(ArrayList())
 ) {
@@ -58,32 +59,33 @@ data class SaveDeliveryReceiptItemsResponse(
 
 @Parcelize
 @Keep
-data class DeliveryNoteItemsDetailsDto(
+data class SalesItemsDetailsDto(
     val ItemSeqNumber: Int = 0,
     val WarehouseID: Long = 0,
     val ItemID: Long = 0,
     val ItemCode: String,
-    val AdjustmentType: Int,
-    val AdjustmentQty: Double,
+    val PurchaseQty: Double,
+    val SalesQty: Double,
     val SerialItems: List<SerialItemsDto>,
 ) : Parcelable {
     companion object
 
     fun getItemIDString() = ItemID.toString()
-    fun getAdjustmentQtyString() = AdjustmentQty.toString()
+    fun getPurchaseQtyString() = PurchaseQty.toString()
+    fun getSalesQtyString() = SalesQty.toString()
 }
 
 @Keep
 data class
-DeliveryNoteItemsRequestDto(
+SalesItemsRequestDto(
     val StockAdjustmentID: Long = 0,
-    val ItemsDetails: List<DeliveryNoteItemsDetailsDto>
+    val ItemsDetails: List<SalesItemsDetailsDto>
 ) {
     companion object
 }
 
 @Keep
-data class SaveDeliveryNoteItemsResponse(
+data class SaveSalesItemsResponse(
     val Success: Boolean,
     val SalesList: ArrayList<String> = arrayOf<String>().toCollection(ArrayList())
 ) {

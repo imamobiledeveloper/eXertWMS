@@ -168,6 +168,16 @@
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
+    <style name="RecyclerViewListItemTextViewStyle_Return">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">@dimen/margin_8dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_8dp</item>
+        <item name="android:layout_marginBottom">@dimen/margin_8dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
     <style name="ImageViewEndStyle">
         <item name="android:gravity">center_vertical</item>
         <item name="android:padding">@dimen/margin_8dp</item>

@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.R
 import com.exert.wms.databinding.FragmentDeliveryReceiptBaseBinding
+import com.exert.wms.delivery.api.DeliveryReceiptItemsDetailsDto
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.MVVMFragment
-import com.exert.wms.returns.api.DeliveryReceiptItemsDetailsDto
 import com.exert.wms.transfer.transferOut.item.TransferOutItemActivity
 import com.exert.wms.utils.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -127,7 +127,7 @@ class DeliveryReceiptBaseFragment :
         mViewModel.saveItemStatus.observe(viewLifecycleOwner) {
             if (it) {
                 showBriefToastMessage(
-                    getString(R.string.success_save_stock_adjustment),
+                    getString(R.string.success_save_delivery_receipt),
                     coordinateLayout,
                     bgColor = requireActivity().getColor(R.color.green_msg)
                 )

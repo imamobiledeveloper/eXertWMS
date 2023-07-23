@@ -7,10 +7,10 @@ import com.exert.wms.itemStocks.api.WarehouseSerialItemsRequestDto
 import com.exert.wms.login.api.FinancialPeriodDto
 import com.exert.wms.login.api.LoginDto
 import com.exert.wms.login.api.LoginRequestDto
-import com.exert.wms.returns.api.DeliveryNoteItemsRequestDto
-import com.exert.wms.returns.api.DeliveryReceiptItemsRequestDto
-import com.exert.wms.returns.api.SaveDeliveryNoteItemsResponse
-import com.exert.wms.returns.api.SaveDeliveryReceiptItemsResponse
+import com.exert.wms.returns.api.PurchaseItemsRequestDto
+import com.exert.wms.returns.api.SalesItemsRequestDto
+import com.exert.wms.returns.api.SavePurchaseItemsResponse
+import com.exert.wms.returns.api.SaveSalesItemsResponse
 import com.exert.wms.stockAdjustment.api.SaveStockItemAdjustmentResponse
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRequestDto
 import com.exert.wms.stockReconciliation.api.StockItemReconciliationDto

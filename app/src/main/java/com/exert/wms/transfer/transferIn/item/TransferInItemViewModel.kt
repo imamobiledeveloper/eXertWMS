@@ -1,4 +1,4 @@
-package com.exert.wms.transfer.transferOut.item
+package com.exert.wms.transfer.transferIn.item
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class TransferOutViewModel(
+class TransferInItemViewModel(
     private val stringProvider: StringProvider,
     private val itemStocksRepo: ItemStocksRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO

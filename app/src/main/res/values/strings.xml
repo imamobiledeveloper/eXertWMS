@@ -61,6 +61,8 @@
     <string name="item_delivery_receipt">Item Delivery Receipt</string>
     <string name="item_delivery_note">Item Delivery Note</string>
     <string name="item_reconciliation">Item Reconciliation</string>
+    <string name="item_purchase_return">Item Purchase Return</string>
+    <string name="item_sales_return">Item Sales Return</string>
     <string name="quantity_adjustment">Quantity Adjustment</string>
     <string name="quantity_reconciliation">Quantity Reconciliation</string>
     <string name="select_warehouse">Select Warehouse</string>
@@ -145,6 +147,8 @@
     <string name="success_save_transfer_out">Updated Transfer Out items successfully</string>
     <string name="error_save_delivery_receipt_items">Failed to update Delivery receipt items. Please try again!</string>
     <string name="error_save_delivery_notes_items">Failed to update Delivery notes items. Please try again!</string>
+    <string name="error_save_purchase_return_items">Failed to update Purchase return items. Please try again!</string>
+    <string name="error_save_sales_return_items">Failed to update Sales return items. Please try again!</string>
     <string name="purchase_order_no">Purchase Order No.</string>
     <string name="select_purchase_order_no">Select Purchase Order No.</string>
     <string name="vendor_name">Vendor Name</string>
@@ -152,9 +156,26 @@
     <string name="select_branch">Select Branch</string>
     <string name="select_vendor_name">Select Vendor Name</string>
     <string name="sales_invoice_no">Sales Invoice No.</string>
+    <string name="purchase_invoice_no">Purchase Invoice No.</string>
     <string name="enter_to_select">Enter to select</string>
     <string name="customer_name">Customer Name</string>
     <string name="branch">Branch</string>
+    <string name="branch_empty_message">"Please select Branch from the list"</string>
+    <string name="success_save_delivery_receipt">Updated Delivery receipt items successfully</string>
+    <string name="success_save_delivery_note">Updated Delivery note items successfully</string>
+    <string name="success_save_purchase_return">Updated Purchase return items successfully</string>
+    <string name="success_save_sales_return">Updated Sales return items successfully</string>
+    <string name="purchase_quantity">Purchase Quantity</string>
+    <string name="sold_quantity">Sold Quantity</string>
+    <string name="purchase_qty">Purchase Qty</string>
+    <string name="returning_qty">Returning Qty</string>
+    <string name="error_returning_qty">Returning quantity should be equal or less than purchase quantity</string>
+    <string name="item_empty_message">"Please select Item from the list"</string>
+    <string name="alert">Alert</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_to_sales_invoice_no">Enter Sales Invoice No.</string>
+    <string name="sold_qty">Sold Qty</string>
+    <string name="select_customer_name">Select Customer Name</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

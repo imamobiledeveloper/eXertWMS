@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.R
 import com.exert.wms.databinding.FragmentDeliveryNoteBaseBinding
+import com.exert.wms.delivery.api.DeliveryNoteItemsDetailsDto
 import com.exert.wms.delivery.deliveryNote.item.DeliveryNoteItemActivity
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.MVVMFragment
-import com.exert.wms.returns.api.DeliveryNoteItemsDetailsDto
 import com.exert.wms.utils.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -100,7 +100,7 @@ class DeliveryNoteBaseFragment :
                 binding.itemsListRecyclerView.hide()
             }
         }
-        mViewModel.errorWarehouse.observe(viewLifecycleOwner) {
+        mViewModel.errorBranch.observe(viewLifecycleOwner) {
             if (it) {
                 val bundle = Bundle()
 //                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
@@ -111,7 +111,7 @@ class DeliveryNoteBaseFragment :
                 startForResult.launch(intent)
             } else {
                 showBriefToastMessage(
-                    getString(R.string.warehouse_empty_message),
+                    getString(R.string.branch_empty_message),
                     coordinateLayout
                 )
             }
@@ -125,7 +125,7 @@ class DeliveryNoteBaseFragment :
         mViewModel.saveItemStatus.observe(viewLifecycleOwner) {
             if (it) {
                 showBriefToastMessage(
-                    getString(R.string.success_save_stock_adjustment),
+                    getString(R.string.success_save_delivery_note),
                     coordinateLayout,
                     bgColor = requireActivity().getColor(R.color.green_msg)
                 )
