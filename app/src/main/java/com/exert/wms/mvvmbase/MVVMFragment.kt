@@ -15,6 +15,19 @@ import androidx.core.os.bundleOf
 import androidx.databinding.ViewDataBinding
 import com.exert.wms.LogoutManager
 import com.exert.wms.R
+import com.exert.wms.utils.Constants.ACTION_BARCODE_DATA
+import com.exert.wms.utils.Constants.ACTION_BARCODE_DATA_KEY
+import com.exert.wms.utils.Constants.ACTION_CLAIM_SCANNER
+import com.exert.wms.utils.Constants.ACTION_RELEASE_SCANNER
+import com.exert.wms.utils.Constants.DPR_DATA_INTENT_KEY
+import com.exert.wms.utils.Constants.EXTRA_CONTROL
+import com.exert.wms.utils.Constants.EXTRA_PROFILE
+import com.exert.wms.utils.Constants.EXTRA_PROFILE_VALUE
+import com.exert.wms.utils.Constants.EXTRA_PROPERTIES
+import com.exert.wms.utils.Constants.EXTRA_SCAN
+import com.exert.wms.utils.Constants.EXTRA_SCANNER
+import com.exert.wms.utils.Constants.EXTRA_SCANNER_APP_PACKAGE
+import com.exert.wms.utils.Constants.EXTRA_SCANNER_VALUE
 import com.exert.wms.utils.toEditable
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -130,9 +143,29 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
         textView.visibility = visible
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
+////        super.onCreateOptionsMenu(menu, inflater)
+//        menuInflater.inflate(R.menu.menu_home, menu)
+//        for (i in 0 until menu.size()) {
+//            if (menu.getItem(i).title == getString(R.string.home)) {
+//                menu.getItem(i).isVisible = showHomeButton == 1
+//            } else if (showHomeButton == 0) {
+//                menu.getItem(i).isVisible = showHomeButton != 1
+//            } else {
+//                menu.getItem(i).isVisible = false
+////                showBackButton()
+//            }
+//        }
+//
+//        super.onCreateOptionsMenu(menu, menuInflater)
+//    }
+
+//    override fun onPrepareOptionsMenu(menu: Menu) {
+//        val item = menu.findItem(R.id.home_menu)
+//        if (item != null) item.isVisible = true
+//        val notificationsitem = menu.findItem(R.id.notifications_menu)
+//        if (notificationsitem != null) notificationsitem.isVisible = false
+//    }
 
     fun clearTextInputEditText(editText: TextInputEditText, hintTV: TextView) {
         editText.text = getString(R.string.empty).toEditable()
@@ -185,4 +218,40 @@ abstract class MVVMFragment<VM : BaseViewModel, VB : ViewDataBinding> : BaseFrag
             }
 
         }
+
+    fun triggerScanner(context: Context) {
+        context.sendBroadcast(
+            Intent(EXTRA_CONTROL)
+                .setPackage(EXTRA_SCANNER_APP_PACKAGE)
+                .putExtra(EXTRA_SCAN, true)
+        )
+    }
+
+    fun claimScanner(context: Context) {
+        val properties = Bundle()
+        properties.putBoolean(DPR_DATA_INTENT_KEY, true)
+        properties.putString(ACTION_BARCODE_DATA_KEY, ACTION_BARCODE_DATA)
+        context.sendBroadcast(
+            Intent(ACTION_CLAIM_SCANNER)
+                .putExtra(EXTRA_SCANNER, EXTRA_SCANNER_VALUE)
+                .putExtra(EXTRA_PROFILE, EXTRA_PROFILE_VALUE)
+                .putExtra(EXTRA_PROPERTIES, properties)
+        )
+    }
+
+    fun releaseScanner(context: Context) {
+        context.sendBroadcast(Intent(ACTION_RELEASE_SCANNER))
+    }
+
+    private fun bytesToHexString(arr: ByteArray?): String {
+        var s = "[]"
+        if (arr != null) {
+            s = "["
+            for (i in arr.indices) {
+                s += "0x" + Integer.toHexString(arr[i].toInt()) + ", "
+            }
+            s = s.substring(0, s.length - 2) + "]"
+        }
+        return s
+    }
 }
