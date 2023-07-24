@@ -13,7 +13,7 @@
             android:id="@+id/notifications_menu"
             android:icon="@drawable/ic_notification"
             android:title="@string/notifications"
-            android:visible="true"
+            android:visible="false"
             app:showAsAction="always" />
     </group>
 </menu>

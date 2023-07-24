@@ -87,7 +87,10 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
                 showBackButton()
             }
         }
-
+        val item = menu.findItem(R.id.notifications_menu)
+        item?.let {
+            it.setVisible(false)
+        }
         return true
     }
 
