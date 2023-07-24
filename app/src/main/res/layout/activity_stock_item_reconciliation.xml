@@ -13,6 +13,10 @@
             name="itemDto"
             type="com.exert.wms.itemStocks.api.ItemsDto" />
 
+        <variable
+            name="itemBarCodeDto"
+            type="com.exert.wms.itemStocks.api.ItemsBarCodeDto" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,6 +29,7 @@
             layout="@layout/item_part_code_serial_no_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:itemBarCodeDto="@{itemBarCodeDto}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

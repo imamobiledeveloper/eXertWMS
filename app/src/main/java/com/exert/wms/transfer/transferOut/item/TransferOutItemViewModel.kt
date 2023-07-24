@@ -73,6 +73,9 @@ class TransferOutItemViewModel(
     private val _errorAdjustmentType = MutableLiveData<Boolean>()
     val errorAdjustmentType: LiveData<Boolean> = _errorAdjustmentType
 
+    private val _itemBarCodeData = MutableLiveData<ItemsBarCodeDto>()
+    val itemBarCodeData: LiveData<ItemsBarCodeDto> = _itemBarCodeData
+
     private var itemPartCode: String = ""
     var itemSerialNo: String = ""
     private var selectedWarehouse: String = ""
@@ -419,5 +422,17 @@ class TransferOutItemViewModel(
 
     fun checkAndEnableSaveButton() {
         _enableSaveButton.postValue(alreadySelected)
+    }
+
+    fun setBarCodeData(barCode: String) {
+        if(isItPartCodeScanRequest()){
+            setItemPartCodeValue(barCode)
+            val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = true, ItemPartCodeData=barCode, ItemSerialNoData="")
+            _itemBarCodeData.postValue(itemBarCodeDto)
+        }else{
+            setItemSerialNumberValue(barCode)
+            val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = false, ItemPartCodeData="", ItemSerialNoData=barCode)
+            _itemBarCodeData.postValue(itemBarCodeDto)
+        }
     }
 }

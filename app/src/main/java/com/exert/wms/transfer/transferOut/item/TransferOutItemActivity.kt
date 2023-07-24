@@ -2,6 +2,7 @@ package com.exert.wms.transfer.transferOut.item
 
 import android.app.Activity
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -10,9 +11,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
-import com.exert.wms.BR
-import com.exert.wms.R
-import com.exert.wms.SerialItemsDtoList
+import com.exert.wms.*
 import com.exert.wms.databinding.ActivityTransferOutItemBinding
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.utils.Constants
@@ -24,7 +23,8 @@ import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class TransferOutItemActivity :
-    BaseActivity<TransferOutItemViewModel, ActivityTransferOutItemBinding>() {
+    BaseActivity<TransferOutItemViewModel, ActivityTransferOutItemBinding>(),
+    ScanBarcodeBroadcastListener {
 
     override val title = R.string.item_transfer_out
 
@@ -83,6 +83,25 @@ class TransferOutItemActivity :
             mViewModel.setItemPartCodeValue(getString(R.string.empty))
             mViewModel.setItemSerialNumberValue(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
             mViewModel.searchItemWithSerialNumber()
+        }
+        binding.itemPartCodeSerialNoLayout.scanItemPartCodeIV.setOnClickListener {
+            clearOtherField(
+                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
+                binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV
+            )
+            mViewModel.setItemSerialNumberValue(getString(R.string.empty))
+            mViewModel.searchItemWithPartCode()
+            mViewModel.setIsItPartCodeScanRequest(true)
+            triggerScanner(this)
+        }
+        binding.itemPartCodeSerialNoLayout.scanItemSerialNoIV.setOnClickListener {
+            clearOtherField(
+                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
+                binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV
+            )
+            mViewModel.setItemPartCodeValue(getString(R.string.empty))
+            mViewModel.setIsItPartCodeScanRequest(false)
+            triggerScanner(this)
         }
     }
 
@@ -304,6 +323,10 @@ class TransferOutItemActivity :
             binding.quantityEditText.text = value.toEditable()
         })
 
+        mViewModel.itemBarCodeData.observe(this) { dto ->
+            binding.itemBarCodeDto = dto
+            binding.executePendingBindings()
+        }
     }
 
     private val startForResult =
@@ -346,5 +369,25 @@ class TransferOutItemActivity :
     override fun onBackPressed() {
         setResult(Activity.RESULT_CANCELED, null)
         super.onBackPressed()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(barcodeDataReceiver, IntentFilter(Constants.ACTION_BARCODE_DATA))
+        claimScanner(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(barcodeDataReceiver)
+        releaseScanner(this)
+    }
+
+    private val barcodeDataReceiver = ScanBarcodeDataReceiver(this)
+
+    override fun onDataReceived(data: String?) {
+        data?.let {
+            mViewModel.setBarCodeData(it)
+        } ?: showBriefToastMessage(getString(R.string.error_barcode_message), coordinateLayout)
     }
 }

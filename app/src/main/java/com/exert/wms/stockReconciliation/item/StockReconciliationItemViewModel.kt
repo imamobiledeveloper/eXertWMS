@@ -78,6 +78,9 @@ class StockReconciliationItemViewModel(
     private val _showDialogToAddItem = MutableLiveData<Boolean>()
     val showDialogToAddItem: LiveData<Boolean> = _showDialogToAddItem
 
+    private val _itemBarCodeData = MutableLiveData<ItemsBarCodeDto>()
+    val itemBarCodeData: LiveData<ItemsBarCodeDto> = _itemBarCodeData
+
     private var itemPartCode: String = ""
     var itemSerialNo: String = ""
     private var selectedWarehouse: String = ""
@@ -398,5 +401,17 @@ class StockReconciliationItemViewModel(
 
     fun checkNoOfItemsToSelect(): Boolean {
         return numberOfItemsToCheckOrAddValue < 0 && userCheckedItems.size < abs(numberOfItemsToCheckOrAddValue)
+    }
+
+    fun setBarCodeData(barCode: String) {
+        if(isItPartCodeScanRequest()){
+            setItemPartCodeValue(barCode)
+            val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = true, ItemPartCodeData=barCode, ItemSerialNoData="")
+            _itemBarCodeData.postValue(itemBarCodeDto)
+        }else{
+            setItemSerialNumberValue(barCode)
+            val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = false, ItemPartCodeData="", ItemSerialNoData=barCode)
+            _itemBarCodeData.postValue(itemBarCodeDto)
+        }
     }
 }

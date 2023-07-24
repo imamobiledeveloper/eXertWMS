@@ -2,6 +2,7 @@ package com.exert.wms.stockReconciliation.item
 
 import android.app.Activity
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -9,10 +10,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.Observer
-import com.exert.wms.BR
-import com.exert.wms.R
-import com.exert.wms.SerialItemsDtoList
+import com.exert.wms.*
 import com.exert.wms.databinding.ActivityStockItemReconciliationBinding
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.utils.Constants
@@ -24,7 +22,8 @@ import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class StockItemReconciliationActivity :
-    BaseActivity<StockReconciliationItemViewModel, ActivityStockItemReconciliationBinding>() {
+    BaseActivity<StockReconciliationItemViewModel, ActivityStockItemReconciliationBinding>(),
+    ScanBarcodeBroadcastListener {
 
     override val title = R.string.item_reconciliation
 
@@ -85,6 +84,25 @@ class StockItemReconciliationActivity :
             mViewModel.setItemPartCodeValue(getString(R.string.empty))
             mViewModel.setItemSerialNumberValue(binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString())
             mViewModel.searchItemWithSerialNumber()
+        }
+        binding.itemPartCodeSerialNoLayout.scanItemPartCodeIV.setOnClickListener {
+            clearOtherField(
+                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
+                binding.itemPartCodeSerialNoLayout.itemSerialNoHintTV
+            )
+            mViewModel.setItemSerialNumberValue(getString(R.string.empty))
+            mViewModel.searchItemWithPartCode()
+            mViewModel.setIsItPartCodeScanRequest(true)
+            triggerScanner(this)
+        }
+        binding.itemPartCodeSerialNoLayout.scanItemSerialNoIV.setOnClickListener {
+            clearOtherField(
+                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
+                binding.itemPartCodeSerialNoLayout.itemPartCodeHintTV
+            )
+            mViewModel.setItemPartCodeValue(getString(R.string.empty))
+            mViewModel.setIsItPartCodeScanRequest(false)
+            triggerScanner(this)
         }
     }
 
@@ -177,24 +195,24 @@ class StockItemReconciliationActivity :
             )
         }
 
-        mViewModel.isLoadingData.observe(this, Observer { status ->
+        mViewModel.isLoadingData.observe(this) { status ->
             if (status) {
                 binding.progressBar.show()
             } else {
                 binding.progressBar.hide()
             }
-        })
+        }
 
-        mViewModel.errorFieldMessage.observe(this, Observer { msg ->
+        mViewModel.errorFieldMessage.observe(this) { msg ->
             if (msg.isNotEmpty()) {
                 showBriefToastMessage(
                     msg,
                     coordinateLayout
                 )
             }
-        })
+        }
 
-        mViewModel.errorItemSelectionMessage.observe(this, Observer {
+        mViewModel.errorItemSelectionMessage.observe(this) {
             if (it) {
                 disableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
@@ -211,9 +229,9 @@ class StockItemReconciliationActivity :
                     getString(R.string.error_item_partcode_serial_no_empty_message)
                 )
             }
-        })
+        }
 
-        mViewModel.saveItemStatus.observe(this, Observer {
+        mViewModel.saveItemStatus.observe(this) {
             if (it) {
                 showBriefToastMessage(
                     getString(R.string.item_saved_message), coordinateLayout,
@@ -228,9 +246,9 @@ class StockItemReconciliationActivity :
             } else {
                 showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
             }
-        })
+        }
 
-        mViewModel.navigateToSerialNo.observe(this, Observer {
+        mViewModel.navigateToSerialNo.observe(this) {
             if (it) {
                 val bundle = Bundle()
                 bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
@@ -238,7 +256,10 @@ class StockItemReconciliationActivity :
                     Constants.WAREHOUSE_STOCK_DETAILS,
                     mViewModel.getWarehouseStockDetails()
                 )
-                bundle.putString(Constants.ITEM_QUANTITY, binding.quantityEditText.text.toString().trim())
+                bundle.putString(
+                    Constants.ITEM_QUANTITY,
+                    binding.quantityEditText.text.toString().trim()
+                )
                 val intent = Intent(this, StockQuantityReconciliationActivity::class.java)
                 intent.putExtras(bundle)
                 startForResult.launch(intent)
@@ -246,12 +267,12 @@ class StockItemReconciliationActivity :
             } else {
                 showBriefToastMessage(getString(R.string.invalid_details_message), coordinateLayout)
             }
-        })
-        mViewModel.enableSaveButton.observe(this, Observer {
+        }
+        mViewModel.enableSaveButton.observe(this) {
             binding.saveButton.isEnabled = it
-        })
+        }
 
-        mViewModel.errorItemPartCode.observe(this, Observer {
+        mViewModel.errorItemPartCode.observe(this) {
             if (it) {
                 enableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
@@ -268,8 +289,8 @@ class StockItemReconciliationActivity :
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
                 )
             }
-        })
-        mViewModel.errorItemSerialNo.observe(this, Observer {
+        }
+        mViewModel.errorItemSerialNo.observe(this) {
             if (it) {
                 enableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout,
@@ -286,8 +307,8 @@ class StockItemReconciliationActivity :
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
                 )
             }
-        })
-        mViewModel.errorQuantity.observe(this, Observer {
+        }
+        mViewModel.errorQuantity.observe(this) {
             if (it) {
                 enableErrorMessage(
                     binding.quantityEditTextLayout,
@@ -300,20 +321,25 @@ class StockItemReconciliationActivity :
                     binding.quantityEditText,
                 )
             }
-        })
+        }
 
-        mViewModel.itemDto.observe(this, Observer { dto ->
+        mViewModel.itemDto.observe(this) { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
-        })
+        }
 
-        mViewModel.isItemSerialized.observe(this, Observer { isItSerialized ->
+        mViewModel.isItemSerialized.observe(this) {
 //            binding.quantityEditText.isEnabled = !isItSerialized
-        })
+        }
 
-        mViewModel.quantityString.observe(this, Observer { value ->
+        mViewModel.quantityString.observe(this) { value ->
             binding.quantityEditText.text = value.toEditable()
-        })
+        }
+
+        mViewModel.itemBarCodeData.observe(this) { dto ->
+            binding.itemBarCodeDto = dto
+            binding.executePendingBindings()
+        }
 
     }
 
@@ -364,4 +390,23 @@ class StockItemReconciliationActivity :
         super.onBackPressed()
     }
 
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(barcodeDataReceiver, IntentFilter(Constants.ACTION_BARCODE_DATA))
+        claimScanner(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(barcodeDataReceiver)
+        releaseScanner(this)
+    }
+
+    private val barcodeDataReceiver = ScanBarcodeDataReceiver(this)
+
+    override fun onDataReceived(data: String?) {
+        data?.let {
+            mViewModel.setBarCodeData(it)
+        } ?: showBriefToastMessage(getString(R.string.error_barcode_message), coordinateLayout)
+    }
 }

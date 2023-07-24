@@ -24,6 +24,7 @@ import com.exert.wms.SessionExpirationObject
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.login.LoginActivity
 import com.exert.wms.login.api.LoginDataSource
+import com.exert.wms.utils.Constants
 import com.exert.wms.utils.UserDefaults
 import com.exert.wms.utils.toEditable
 import com.google.android.material.textfield.TextInputEditText
@@ -270,4 +271,41 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
                 }
             }
         }
+
+    fun triggerScanner(context: Context) {
+        context.sendBroadcast(
+            Intent(Constants.EXTRA_CONTROL)
+                .setPackage(Constants.EXTRA_SCANNER_APP_PACKAGE)
+                .putExtra(Constants.EXTRA_SCAN, true)
+        )
+//        Toast.makeText(this, "Releasing the Scanner", Toast.LENGTH_SHORT).show()
+    }
+
+    fun claimScanner(context: Context) {
+        val properties = Bundle()
+        properties.putBoolean(Constants.DPR_DATA_INTENT_KEY, true)
+        properties.putString(Constants.ACTION_BARCODE_DATA_KEY, Constants.ACTION_BARCODE_DATA)
+        context.sendBroadcast(
+            Intent(Constants.ACTION_CLAIM_SCANNER)
+                .putExtra(Constants.EXTRA_SCANNER, Constants.EXTRA_SCANNER_VALUE)
+                .putExtra(Constants.EXTRA_PROFILE, Constants.EXTRA_PROFILE_VALUE)
+                .putExtra(Constants.EXTRA_PROPERTIES, properties)
+        )
+    }
+
+    fun releaseScanner(context: Context) {
+        context.sendBroadcast(Intent(Constants.ACTION_RELEASE_SCANNER))
+    }
+
+    private fun bytesToHexString(arr: ByteArray?): String {
+        var s = "[]"
+        if (arr != null) {
+            s = "["
+            for (i in arr.indices) {
+                s += "0x" + Integer.toHexString(arr[i].toInt()) + ", "
+            }
+            s = s.substring(0, s.length - 2) + "]"
+        }
+        return s
+    }
 }

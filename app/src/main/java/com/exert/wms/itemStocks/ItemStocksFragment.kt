@@ -333,7 +333,7 @@ class ItemStocksFragment : MVVMFragment<ItemStocksViewModel, FragmentItemStocksB
     override fun onDataReceived(data: String?) {
         data?.let {
             mViewModel.setBarCodeData(it)
-        }
+        } ?: showBriefToastMessage(getString(R.string.error_barcode_message), coordinateLayout)
     }
 
 }
