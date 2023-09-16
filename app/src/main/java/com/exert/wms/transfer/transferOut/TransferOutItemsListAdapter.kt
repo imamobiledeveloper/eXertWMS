@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.StockAdjustmentItemNameListItemLayoutBinding
-import com.exert.wms.transfer.api.TransferOutItemsDetailsDto
+import com.exert.wms.transfer.api.TransferOutItemDetailsDto
 
 class TransferOutItemsListAdapter(
-    private val itemsList: List<TransferOutItemsDetailsDto>,
+    private val itemsList: List<TransferOutItemDetailsDto>,
     private val onItemTextClick: (String) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -38,13 +38,10 @@ class TransferOutItemsListAdapter(
     ) : RecyclerView.ViewHolder(holderBinding.root) {
         private val itemName: TextView = holderBinding.itemNameTV
 
-        fun bind(item: TransferOutItemsDetailsDto, position: Int, selectedPosition: Int) {
+        fun bind(item: TransferOutItemDetailsDto, position: Int, selectedPosition: Int) {
             holderBinding.whiteBg = position % 2 == 0
-//            holderBinding.itemDto = item
-            holderBinding.setGreen = item.AdjustmentType == 0
-
-            holderBinding.itemCountTV.text = item.getAdjustmentQtyString()
-            holderBinding.itemNameTV.text = item.getItemIDString()
+            holderBinding.itemCountTV.text = item.getItemQuantityString()
+            holderBinding.itemNameTV.text = item.displayName
             holderBinding.executePendingBindings()
 
             itemName.setOnClickListener {

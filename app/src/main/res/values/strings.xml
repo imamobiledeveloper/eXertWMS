@@ -26,9 +26,9 @@
     <string name="item_part_code">Item Part Code</string>
     <string name="item_part_code_hint">Enter Item Part Code</string>
     <string name="error_item_part_code">Please select Item Part Code</string>
-    <string name="item_serial_no">Item Serial No</string>
-    <string name="item_serial_no_hint">Enter Item Serial No</string>
-    <string name="error_item_serial_no">Please select Item Serial No</string>
+    <string name="item_serial_no">Item Serial Number</string>
+    <string name="item_serial_no_hint">Enter Item Serial Number</string>
+    <string name="error_item_serial_no">Please select Item Serial Number</string>
     <string name="item_name_english">Item Name (English)</string>
     <string name="item_name_arabic">Item Name (Arabic)</string>
     <string name="status">Status</string>
@@ -47,6 +47,7 @@
     <string name="warehouse_list">Warehouse List</string>
     <string name="serial_nos_list">Item Serial Numbers List</string>
     <string name="view">VIEW</string>
+    <string name="error_quantity_empty_message">Quantity should not empty or 0</string>
     <string name="error_item_partcode_serial_no_empty_message">Please enter Item Part code or Serial number</string>
     <string name="error_item_serial_no_message">Please enter Item Serial number or scan barcode</string>
     <string name="error_item_part_code_message">Please enter Item Part code or scan barcode</string>
@@ -177,6 +178,7 @@
     <string name="sold_qty">Sold Qty</string>
     <string name="select_customer_name">Select Customer Name</string>
     <string name="error_barcode_message">Barcode is empty, Please scan valid barcode</string>
+    <string name="from_and_to_warehouse_should_not_be_same">From warehouse and To warehouses should not be same</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

@@ -74,7 +74,6 @@ class TransferOutQuantityActivity :
         mViewModel.setWarehouseAndItemDetails(
             itemDto,
             warehouseStockDetails,
-            adjustmentType,
             serialItemsList
         )
 

@@ -59,7 +59,7 @@ interface ExertWmsApi {
         @Body requestBody: StockReconciliationRequestDto
     ): StockItemReconciliationDto
 
-    @POST("webapi/api/StockAdjustment/SaveTransferOutItems")
+    @POST("webapi/api/TransferOut/SaveTransferOut")
     suspend fun saveTransferOutItems(
         @Body requestBody: TransferOutRequestDto
     ): SaveTransferOutResponse

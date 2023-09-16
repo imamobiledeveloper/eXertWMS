@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.ActivityResult
@@ -41,8 +43,9 @@ class TransferOutItemActivity :
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 
-    var warehouseDto: WarehouseDto? = null
-    var warehouseId: Long? = null
+    var fromWarehouseDto: WarehouseDto? = null
+
+    var fromWarehouseId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,12 +171,25 @@ class TransferOutItemActivity :
                 binding.itemPartCodeSerialNoLayout.itemSerialNoEditText
             )
         )
+        binding.quantityEditText.addTextChangedListener(object :
+            TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(text: Editable?) {
+                mViewModel.setQuantity(text.toString())
+            }
+
+        })
     }
 
     private fun observeViewModel() {
-        warehouseId = intent.getLongExtra(Constants.ITEM_WAREHOUSE_ID, 0)
-        warehouseDto = intent.getSerializable(Constants.WAREHOUSE, WarehouseDto::class.java)
-        mViewModel.setSelectedWarehouseDto(warehouseId, warehouseDto)
+        fromWarehouseId = intent.getLongExtra(Constants.ITEM_WAREHOUSE_ID, 0)
+        fromWarehouseDto = intent.getSerializable(Constants.WAREHOUSE, WarehouseDto::class.java)
+        mViewModel.setSelectedWarehouseDto(fromWarehouseId, fromWarehouseDto)
 
         binding.itemNameManufactureLayout.itemStockLayout.visibility = View.GONE
         binding.saveButton.setOnClickListener {
@@ -229,6 +245,20 @@ class TransferOutItemActivity :
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
                     getString(R.string.error_item_partcode_serial_no_empty_message)
+                )
+            }
+        }
+        mViewModel.errorQuantityType.observe(this) {
+            if (it) {
+                enableErrorMessage(
+                    binding.quantityEditTextLayout,
+                    binding.quantityEditText,
+                    getString(R.string.error_quantity_empty_message)
+                )
+            } else {
+                disableErrorMessage(
+                    binding.quantityEditTextLayout,
+                    binding.quantityEditText,
                 )
             }
         }
@@ -310,18 +340,29 @@ class TransferOutItemActivity :
             }
         }
 
+        mViewModel.getItemsStatus.observe(this) {
+            if (!it) {
+                showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
+            }
+        }
+
+        mViewModel.errorGetItemsStatusMessage.observe(this) { status ->
+            showBriefToastMessage(status, coordinateLayout)
+        }
+
         mViewModel.itemDto.observe(this, Observer { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
         })
 
-        mViewModel.isItemSerialized.observe(this, Observer { isItSerialized ->
+        mViewModel.isItemSerialized.observe(this) { isItSerialized ->
             binding.quantityEditText.isEnabled = !isItSerialized
-        })
+            binding.quantityEditTextLayout.isEndIconVisible = isItSerialized
+        }
 
-        mViewModel.quantityString.observe(this, Observer { value ->
+        mViewModel.quantityString.observe(this) { value ->
             binding.quantityEditText.text = value.toEditable()
-        })
+        }
 
         mViewModel.itemBarCodeData.observe(this) { dto ->
             binding.itemBarCodeDto = dto

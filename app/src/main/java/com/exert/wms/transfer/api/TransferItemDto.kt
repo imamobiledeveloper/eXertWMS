@@ -22,32 +22,6 @@ data class TransferOutDto(
     companion object
 }
 
-@Parcelize
-@Keep
-data class TransferOutItemsDetailsDto(
-    val ItemSeqNumber: Int = 0,
-    val WarehouseID: Long = 0,
-    val ItemID: Long = 0,
-    val ItemCode: String,
-    val AdjustmentType: Int,
-    val AdjustmentQty: Double,
-    val SerialItems: List<SerialItemsDto>,
-) : Parcelable {
-    companion object
-
-    fun getItemIDString() = ItemID.toString()
-    fun getAdjustmentQtyString() = AdjustmentQty.toString()
-}
-
-@Keep
-data class
-TransferOutRequestDto(
-    val StockAdjustmentID: Long = 0,
-    val ItemsDetails: List<TransferOutItemsDetailsDto>
-) {
-    companion object
-}
-
 @Keep
 data class SaveTransferOutResponse(
     val Success: Boolean,
@@ -86,6 +60,32 @@ TransferInRequestDto(
 data class SaveTransferInResponse(
     val Success: Boolean,
     val SalesList: ArrayList<String> = arrayOf<String>().toCollection(ArrayList())
+) {
+    companion object
+}
+
+@Parcelize
+@Keep
+data class TransferOutItemDetailsDto(
+    val ItemSeqNumber: Int = 0,
+    val ItemID: Long = 0,
+    val ItemCode: String,
+    val Quantity: Int,
+    val SerialItems: List<SerialItemsDto>,
+    val displayName:String
+) : Parcelable {
+    companion object
+
+    fun getItemIDString() = ItemID.toString()
+    fun getItemQuantityString() = Quantity.toString()
+}
+
+@Keep
+data class TransferOutRequestDto(
+    val TransferOutID: Int = 0,
+    val FromWarehouseID: Long = 0,
+    val ToWarehouseID: Long = 0,
+    val ItemsDetails: List<TransferOutItemDetailsDto>,
 ) {
     companion object
 }

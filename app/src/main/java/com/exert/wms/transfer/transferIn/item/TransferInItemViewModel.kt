@@ -194,12 +194,16 @@ class TransferInItemViewModel(
                 ItemCode = getItemCode(),
                 AdjustmentType = getAdjustmentTypeIntValue(),
                 AdjustmentQty = adjustmentQuantity,
-                SerialItems = userSelectedSerialItemsList
+                SerialItems = userSelectedSerialItemsList,
+                displayName = getItemListName()
             )
             _saveItemStatus.postValue(true)
         }
     }
 
+    private fun getItemListName() = run {
+        itemsDto?.let { it.getItemListName() } ?: ""
+    }
     private fun getAdjustmentTypeIntValue() =
         if (adjustmentTypeValue == stringProvider.getString(R.string.positive)) 0 else 1
 

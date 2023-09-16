@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.mvvmbase.BaseViewModel
-import com.exert.wms.transfer.api.TransferOutItemsDetailsDto
-import com.exert.wms.transfer.api.TransferRepository
+import com.exert.wms.transfer.api.TransferOutItemDetailsDto
 import com.exert.wms.transfer.api.TransferOutRequestDto
+import com.exert.wms.transfer.api.TransferRepository
 import com.exert.wms.utils.StringProvider
 import com.exert.wms.warehouse.WarehouseDto
 import com.exert.wms.warehouse.WarehouseRepository
@@ -27,8 +27,8 @@ class TransferOutBaseViewModel(
 
     private var coroutineJob: Job? = null
 
-    private val _itemsList = MutableLiveData<List<TransferOutItemsDetailsDto>?>()
-    val itemsList: MutableLiveData<List<TransferOutItemsDetailsDto>?> = _itemsList
+    private val _itemsList = MutableLiveData<List<TransferOutItemDetailsDto>?>()
+    val itemsList: MutableLiveData<List<TransferOutItemDetailsDto>?> = _itemsList
 
     private val _errorFieldMessage = MutableLiveData<String>()
     val errorFieldMessage: LiveData<String> = _errorFieldMessage
@@ -47,7 +47,7 @@ class TransferOutBaseViewModel(
 
     private var selectedFromWarehouse: String = ""
     private var selectedToWarehouse: String = ""
-    var stockItemsList: ArrayList<TransferOutItemsDetailsDto> = ArrayList()
+    var transferOutItemsList: ArrayList<TransferOutItemDetailsDto> = ArrayList()
     var itemsDto: ItemsDto? = null
     var warehousesList: List<WarehouseDto>? = null
 
@@ -95,7 +95,7 @@ class TransferOutBaseViewModel(
     }
 
     private fun resetItemsList() {
-        stockItemsList.clear()
+        transferOutItemsList.clear()
         _itemsList.postValue(null)
         _enableUpdateButton.postValue(false)
     }
@@ -106,11 +106,16 @@ class TransferOutBaseViewModel(
         }
     }
 
-    private fun updatedItems(stockList: ArrayList<TransferOutItemsDetailsDto>) {
+    private fun updatedItems(stockList: ArrayList<TransferOutItemDetailsDto>) {
         showProgressIndicator()
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
             val requestDto =
-                TransferOutRequestDto(StockAdjustmentID = 0, ItemsDetails = stockList)
+                TransferOutRequestDto(
+                    TransferOutID = 0,
+                    FromWarehouseID = getSelectedFromWarehouseId(),
+                    ToWarehouseID = getSelectedToWarehouseId(),
+                    ItemsDetails = stockList.toList()
+                )
             transferRepo.saveTransferOutItems(requestDto)
                 .collect { response ->
                     Log.v("WMS EXERT", "saveTransferOutItems response $response")
@@ -126,18 +131,18 @@ class TransferOutBaseViewModel(
     }
 
     private fun checkAndEnableUpdateButton() {
-        if (stockItemsList.size > 0) {
+        if (transferOutItemsList.size > 0) {
             _enableUpdateButton.postValue(true)
         } else {
             _enableUpdateButton.postValue(false)
         }
     }
 
-    private fun addItemToList(item: TransferOutItemsDetailsDto) {
-        stockItemsList.add(item)
+    private fun addItemToList(item: TransferOutItemDetailsDto) {
+        transferOutItemsList.add(item)
     }
 
-    private fun getItemList() = stockItemsList
+    private fun getItemList() = transferOutItemsList
 
     private fun getItemListSize() = getItemList().takeIf { it.isNotEmpty() }?.let { list ->
         list.size
@@ -156,14 +161,32 @@ class TransferOutBaseViewModel(
     }
 
     fun getSelectedFromWarehouseIndex(): Int {
-        return _warehouseStringList.value?.indexOf(selectedFromWarehouse) ?: 0
+        return if (selectedFromWarehouse != selectedToWarehouse) {
+            _warehouseStringList.value?.indexOf(selectedFromWarehouse) ?: 0
+        } else if (selectedFromWarehouse == selectedToWarehouse && selectedFromWarehouse != stringProvider.getString(
+                R.string.select_warehouse
+            ) && selectedFromWarehouse.isNotEmpty()
+        ) {
+            selectedFromWarehouse = ""
+            _errorFieldMessage.postValue(stringProvider.getString(R.string.from_and_to_warehouse_should_not_be_same))
+            0
+        } else 0
     }
 
     fun getSelectedToWarehouseIndex(): Int {
-        return _warehouseStringList.value?.indexOf(selectedToWarehouse) ?: 0
+        return if (selectedFromWarehouse != selectedToWarehouse) {
+            _warehouseStringList.value?.indexOf(selectedToWarehouse) ?: 0
+        } else if (selectedFromWarehouse == selectedToWarehouse && selectedToWarehouse != stringProvider.getString(
+                R.string.select_warehouse
+            ) && selectedToWarehouse.isNotEmpty()
+        ) {
+            selectedToWarehouse = ""
+            _errorFieldMessage.postValue(stringProvider.getString(R.string.from_and_to_warehouse_should_not_be_same))
+            0
+        } else 0
     }
 
-    fun setTransferOutItemDetails(item: TransferOutItemsDetailsDto?) {
+    fun setTransferOutItemDetails(item: TransferOutItemDetailsDto?) {
         item?.let { dto ->
             val itemDto = dto.copy(ItemSeqNumber = (getItemListSize() + 1))
             addItemToList(itemDto)
@@ -173,5 +196,25 @@ class TransferOutBaseViewModel(
             }
             checkAndEnableUpdateButton()
         }
+    }
+
+    fun getItemDto(): ItemsDto? = itemsDto
+
+    fun getSelectedFromWarehouseId(): Long {
+        return warehousesList?.filter { it.Warehouse == selectedFromWarehouse }.run {
+            this?.get(0)?.WarehouseID
+        } ?: 0
+    }
+
+    fun getSelectedFromWarehouseDto(): WarehouseDto? {
+        return warehousesList?.filter { it.Warehouse == selectedFromWarehouse }.run {
+            this?.get(0)
+        }
+    }
+
+    fun getSelectedToWarehouseId(): Long {
+        return warehousesList?.filter { it.Warehouse == selectedToWarehouse }.run {
+            this?.get(0)?.WarehouseID
+        } ?: 0
     }
 }

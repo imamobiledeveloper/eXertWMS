@@ -19,7 +19,7 @@ import com.exert.wms.R
 import com.exert.wms.databinding.FragmentTransferOutBaseBinding
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.MVVMFragment
-import com.exert.wms.transfer.api.TransferOutItemsDetailsDto
+import com.exert.wms.transfer.api.TransferOutItemDetailsDto
 import com.exert.wms.transfer.transferOut.item.TransferOutItemActivity
 import com.exert.wms.utils.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -53,7 +53,7 @@ class TransferOutBaseFragment :
     }
 
     override fun onBindData(binding: FragmentTransferOutBaseBinding) {
-        binding.viewModel=mViewModel
+        binding.viewModel = mViewModel
     }
 
     private fun observeViewModel() {
@@ -113,9 +113,13 @@ class TransferOutBaseFragment :
         mViewModel.errorWarehouse.observe(viewLifecycleOwner) {
             if (it) {
                 val bundle = Bundle()
-//                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
-//                bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedWarehouseId())
-//                bundle.putSerializable(Constants.WAREHOUSE, mViewModel.getWarehouseObject())
+                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
+                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
+                bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedFromWarehouseId())
+                bundle.putSerializable(
+                    Constants.WAREHOUSE,
+                    mViewModel.getSelectedFromWarehouseDto()
+                )
                 val intent = Intent(requireContext(), TransferOutItemActivity::class.java)
                 intent.putExtras(bundle)
                 startForResult.launch(intent)
@@ -135,7 +139,7 @@ class TransferOutBaseFragment :
         mViewModel.saveItemStatus.observe(viewLifecycleOwner) {
             if (it) {
                 showBriefToastMessage(
-                    getString(R.string.success_save_stock_adjustment),
+                    getString(R.string.success_save_transfer_out),
                     coordinateLayout,
                     bgColor = requireActivity().getColor(R.color.green_msg)
                 )
@@ -162,6 +166,7 @@ class TransferOutBaseFragment :
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_layout)
         binding.fromWarehouseSpinner.adapter = adapter
+        binding.toWarehouseSpinner.adapter = adapter
     }
 
     private val startForResult =
@@ -172,7 +177,7 @@ class TransferOutBaseFragment :
                     val item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         intent.getParcelableExtra(
                             Constants.STOCK_ITEMS_DETAILS_DTO,
-                            TransferOutItemsDetailsDto::class.java
+                            TransferOutItemDetailsDto::class.java
                         )
                     } else {
                         intent.getParcelableExtra(Constants.STOCK_ITEMS_DETAILS_DTO)
