@@ -113,12 +113,13 @@ class StockAdjustmentItemViewModel(
     private fun validateUserDetails(
         itemPartCode: String,
         itemSerialNo: String,
-        adjustmentType: String
+        adjustmentType: String,
+        checkAdjustmentType:Boolean= false
     ): Boolean {
         return if (selectedWarehouse.isEmpty()) {
             _errorFieldMessage.postValue(stringProvider.getString(R.string.warehouse_empty_message))
             false
-        } else if (adjustmentType.isEmpty()) {
+        } else if (checkAdjustmentType && adjustmentType.isEmpty()) {
             _errorAdjustmentType.postValue(true)
             false
         } else if (itemPartCode.isEmpty() && itemSerialNo.isEmpty()) {
@@ -205,7 +206,7 @@ class StockAdjustmentItemViewModel(
     }
 
     fun saveItemStock(itemPartCode: String, itemSerialNo: String) {
-        if (validateUserDetails(itemPartCode, itemSerialNo, adjustmentTypeValue)) {
+        if (validateUserDetails(itemPartCode, itemSerialNo, adjustmentTypeValue, isItemSerialize)) {
             stockItemsDetailsDto = StockItemsDetailsDto(
                 WarehouseID = getWarehouseId(),
                 ItemID = getItemId(),
@@ -266,6 +267,7 @@ class StockAdjustmentItemViewModel(
                 userSelectedSerialItemsList =
                     serialItemsList.serialItemsDto as ArrayList<SerialItemsDto>
                 userSelectedItemId = dtoList.itemId
+//                quantity = getAdjustmentQuantity()
                 adjustmentQuantity = getAdjustmentQuantity().toDouble()
                 _adjustmentQuantityString.postValue(getAdjustmentQuantity().toString())
                 _adjustmentTotalCostString.postValue(getAdjustmentTotalCostInString())
@@ -472,6 +474,7 @@ class StockAdjustmentItemViewModel(
     fun setAdjustmentQuantity(text: String) {
         if (!isItemSerialize && text.isNotEmpty() && cost > 0) {
             val quantity = text.toInt()
+            adjustmentQuantity= text.toDouble()
             val adjustment = quantity * cost
             _adjustmentTotalCostString.postValue(adjustment.toString())
             _enableSaveButton.postValue(adjustment > 0)

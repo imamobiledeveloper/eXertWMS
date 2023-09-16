@@ -25,66 +25,66 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ExertWmsApi {
-    @GET("webapi/")
+    @GET("")
     suspend fun getApiAccess(): String
 
-    @GET("webapi/api/Login/GetFinancialPeriod")
+    @GET("api/Login/GetFinancialPeriod")
     suspend fun getFinancialPeriod(): FinancialPeriodDto
 
-    @POST("webapi/api/Login/LoginAuthentication")
+    @POST("api/Login/LoginAuthentication")
     suspend fun authenticateUser(
         @Body requestBody: LoginRequestDto
     ): LoginDto
 
-    @POST("webapi/api/Items/GetItems?CurrentPage=1&PageSize=10")
+    @POST("api/Items/GetItems?CurrentPage=1&PageSize=10")
     suspend fun getOnlineSalesItems(
         @Body requestBody: ItemStocksRequestDto
     ): ItemStocksResponseDto
 
-    @POST("webapi/api/Items/GetItems?CurrentPage=1&PageSize=10")
+    @POST("api/Items/GetItems?CurrentPage=1&PageSize=10")
     suspend fun getWarehouseSerialItemDetails(
         @Body requestBody: WarehouseSerialItemsRequestDto
     ): ItemStocksResponseDto
 
-    @POST("webapi/api/StockAdjustment/SaveStockAdjustment")
+    @POST("api/StockAdjustment/SaveStockAdjustment")
     suspend fun saveStockAdjustmentItems(
         @Body requestBody: StockAdjustmentRequestDto
     ): SaveStockItemAdjustmentResponse
 
-    @GET("webapi/api/Warehouse/GetWarehouse")
+    @GET("api/Warehouse/GetWarehouse")
     suspend fun getWarehouseList(): WarehouseListDto
 
-    @POST("webapi/api/StockAdjustment/SaveStockAdjustment")
+    @POST("api/StockAdjustment/SaveStockAdjustment")
     suspend fun saveStockReconciliationItems(
         @Body requestBody: StockReconciliationRequestDto
     ): StockItemReconciliationDto
 
-    @POST("webapi/api/TransferOut/SaveTransferOut")
+    @POST("api/TransferOut/SaveTransferOut")
     suspend fun saveTransferOutItems(
         @Body requestBody: TransferOutRequestDto
     ): SaveTransferOutResponse
 
-    @POST("webapi/api/StockAdjustment/SaveTransferInItems")
+    @POST("api/StockAdjustment/SaveTransferInItems")
     suspend fun saveTransferInItems(
         @Body requestBody: TransferInRequestDto
     ): SaveTransferInResponse
 
-    @POST("webapi/api/StockAdjustment/SaveDeliveryReceiptItems")
+    @POST("api/StockAdjustment/SaveDeliveryReceiptItems")
     suspend fun saveDeliveryReceiptItems(
         @Body requestBody: DeliveryReceiptItemsRequestDto
     ): SaveDeliveryReceiptItemsResponse
 
-    @POST("webapi/api/StockAdjustment/SaveDeliveryNoteItems")
+    @POST("api/StockAdjustment/SaveDeliveryNoteItems")
     suspend fun saveDeliveryNoteItems(
         @Body requestBody: DeliveryNoteItemsRequestDto
     ): SaveDeliveryNoteItemsResponse
 
-    @POST("webapi/api/StockAdjustment/SavePurchaseItems")
+    @POST("api/StockAdjustment/SavePurchaseItems")
     suspend fun savePurchaseItems(
         @Body requestBody: PurchaseItemsRequestDto
     ): SavePurchaseItemsResponse
 
-    @POST("webapi/api/StockAdjustment/SaveSalesItems")
+    @POST("api/StockAdjustment/SaveSalesItems")
     suspend fun saveSalesItems(
         @Body requestBody: SalesItemsRequestDto
     ): SaveSalesItemsResponse

@@ -117,6 +117,10 @@ class StockItemAdjustmentActivity :
         clearFields()
         clearTextInputEditText(clearEditText, clearHintTV)
         mViewModel.clearPreviousSearchedListItems()
+        disableErrorMessage(
+            binding.adjustmentQuantityEditTextLayout,
+            binding.adjustmentQuantityEditText,
+        )
     }
 
     private fun addFocusChangeListeners() {
@@ -409,25 +413,6 @@ class StockItemAdjustmentActivity :
             getString(R.string.empty).toEditable()
         binding.saveButton.isEnabled = false
 
-//        if (binding.radioButtonParent.checkedRadioButtonId != -1) {
-//            binding.radioButtonParent.clearCheck()
-//        }
-
-//        val childCount = binding.radioButtonParent.childCount
-//
-//        for (i in 0 until childCount) {
-//            val view = binding.radioButtonParent.getChildAt(i)
-//            if (view is RadioButton) {
-//                view.isChecked = false
-//            }
-//        }
-
-//        if(binding.positiveRadioButton.isChecked) {
-//            binding.positiveRadioButton.isChecked = false
-//        }
-//        if(binding.negativeRadioButton.isChecked) {
-//            binding.negativeRadioButton.isChecked = false
-//        }
     }
 
     override fun onBindData(binding: ActivityStockItemAdjustmentBinding) {
