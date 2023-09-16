@@ -44,7 +44,7 @@ class StockAdjustmentItemsListAdapter(
             holderBinding.setGreen = item.AdjustmentType == 0
 
             holderBinding.itemCountTV.text =item.getAdjustmentQtyString()
-            holderBinding.itemNameTV.text =item.getItemIDString()
+            holderBinding.itemNameTV.text =item.displayName
             holderBinding.executePendingBindings()
 
             itemName.setOnClickListener {

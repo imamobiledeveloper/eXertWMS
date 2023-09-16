@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.RadioButton
 import android.widget.TextView
@@ -15,7 +17,10 @@ import androidx.lifecycle.Observer
 import com.exert.wms.*
 import com.exert.wms.databinding.ActivityStockItemAdjustmentBinding
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.utils.*
+import com.exert.wms.utils.Constants
+import com.exert.wms.utils.hide
+import com.exert.wms.utils.show
+import com.exert.wms.utils.toEditable
 import com.exert.wms.warehouse.WarehouseDto
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -24,7 +29,7 @@ class StockItemAdjustmentActivity :
     BaseActivity<StockAdjustmentItemViewModel, ActivityStockItemAdjustmentBinding>(),
     ScanBarcodeBroadcastListener {
 
-    override val title = R.string.item_adjustment
+    override val title = R.string.stock_adjustment
 
     override val showHomeButton: Int = 1
 
@@ -167,12 +172,25 @@ class StockItemAdjustmentActivity :
                 binding.itemPartCodeSerialNoLayout.itemSerialNoEditText
             )
         )
+        binding.adjustmentQuantityEditText.addTextChangedListener(object :
+            TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(text: Editable?) {
+                mViewModel.setAdjustmentQuantity(text.toString())
+            }
+
+        })
     }
 
     private fun observeViewModel() {
         warehouseId = intent.getLongExtra(Constants.ITEM_WAREHOUSE_ID, 0)
         warehouseDto = intent.getSerializable(Constants.WAREHOUSE, WarehouseDto::class.java)
-        mViewModel.setSelectedWarehouseDto(warehouseId,warehouseDto)
+        mViewModel.setSelectedWarehouseDto(warehouseId, warehouseDto)
 
         binding.saveButton.setOnClickListener {
             mViewModel.saveItemStock(
@@ -254,7 +272,10 @@ class StockItemAdjustmentActivity :
             if (it) {
                 val bundle = Bundle()
                 bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
-                bundle.putParcelable(Constants.USER_SELECTED_WAREHOUSE_LIST, mViewModel.getUserSelectedSerialItemsList())
+                bundle.putParcelable(
+                    Constants.USER_SELECTED_WAREHOUSE_LIST,
+                    mViewModel.getUserSelectedSerialItemsList()
+                )
                 bundle.putSerializable(
                     Constants.WAREHOUSE_STOCK_DETAILS,
                     mViewModel.getWarehouseStockDetails()
@@ -309,22 +330,23 @@ class StockItemAdjustmentActivity :
             }
         })
 
-        mViewModel.itemDto.observe(this, Observer { dto ->
+        mViewModel.itemDto.observe(this) { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
-        })
+        }
 
-        mViewModel.isItemSerialized.observe(this, Observer { isItSerialized ->
+        mViewModel.isItemSerialized.observe(this) { isItSerialized ->
             binding.adjustmentQuantityEditText.isEnabled = !isItSerialized
-        })
+            binding.adjustmentQuantityEditTextLayout.isEndIconVisible = isItSerialized
+        }
 
-        mViewModel.adjustmentQuantityString.observe(this, Observer { value ->
+        mViewModel.adjustmentQuantityString.observe(this) { value ->
             binding.adjustmentQuantityEditText.text = value.toEditable()
-        })
+        }
 
-        mViewModel.adjustmentTotalCostString.observe(this, Observer { value ->
+        mViewModel.adjustmentTotalCostString.observe(this) { value ->
             binding.adjustmentTotalCostEditText.text = value.toEditable()
-        })
+        }
 
         mViewModel.costString.observe(this) { value ->
             binding.costEditText.text = value.toEditable()
@@ -357,14 +379,15 @@ class StockItemAdjustmentActivity :
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
                 intent?.let {
-                    val serialItemsList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        it.getParcelableExtra(
-                            Constants.CHECKED_SERIAL_ITEMS,
-                            SerialItemsDtoList::class.java
-                        )
-                    } else {
-                        it.getParcelableExtra(Constants.CHECKED_SERIAL_ITEMS)
-                    }
+                    val serialItemsList =
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            it.getParcelableExtra(
+                                Constants.CHECKED_SERIAL_ITEMS,
+                                SerialItemsDtoList::class.java
+                            )
+                        } else {
+                            it.getParcelableExtra(Constants.CHECKED_SERIAL_ITEMS)
+                        }
 
                     mViewModel.setSelectedSerialItemsList(serialItemsList)
                 }
@@ -384,7 +407,7 @@ class StockItemAdjustmentActivity :
             getString(R.string.empty).toEditable()
         binding.costEditText.text =
             getString(R.string.empty).toEditable()
-        binding.saveButton.isEnabled=false
+        binding.saveButton.isEnabled = false
 
 //        if (binding.radioButtonParent.checkedRadioButtonId != -1) {
 //            binding.radioButtonParent.clearCheck()

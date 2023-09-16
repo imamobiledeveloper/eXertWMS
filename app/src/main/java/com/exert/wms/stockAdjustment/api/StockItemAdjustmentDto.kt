@@ -32,6 +32,7 @@ data class StockItemsDetailsDto(
     val AdjustmentType: Int,
     val AdjustmentQty: Double,
     val SerialItems: List<SerialItemsDto>,
+    val displayName:String
 ) : Parcelable {
     companion object
 
@@ -43,6 +44,7 @@ data class StockItemsDetailsDto(
 data class
 StockAdjustmentRequestDto(
     val StockAdjustmentID: Long = 0,
+    val WarehouseID:Long =1,
     val ItemsDetails: List<StockItemsDetailsDto>
 ) {
     companion object

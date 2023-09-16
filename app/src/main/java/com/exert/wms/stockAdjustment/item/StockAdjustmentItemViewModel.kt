@@ -102,6 +102,7 @@ class StockAdjustmentItemViewModel(
     private var userSelectedSerialItemsList: ArrayList<SerialItemsDto> = ArrayList()
     private var userSelectedItemId: Long? = null
     var alreadySelected: Boolean = true
+    var isItemSerialize: Boolean = false
 
     fun checkItemDetailsEntered(itemPartCode: String, itemSerialNo: String) {
         if (validateUserDetails(itemPartCode, itemSerialNo, adjustmentTypeValue)) {
@@ -162,29 +163,34 @@ class StockAdjustmentItemViewModel(
                     Log.v("WMS EXERT", "Stock Adjustment: getWarehouseSerialNosList response $dto")
                     hideProgressIndicator()
 
-                    if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
-                        itemsDto = dto.Items[0]
-                        _itemDto.postValue(dto.Items[0])
-                        cost = dto.Items[0].SalesPrice
-                        _costString.postValue(dto.Items[0].SalesPrice.toString())
-                        _isItemSerialized.postValue(dto.Items[0].IsSerialItem == 1)
+                   if (dto.success) {
+                        if (dto.Items != null && dto.Items.isNotEmpty()) {
+                            itemsDto = dto.Items[0]
+                            _itemDto.postValue(dto.Items[0])
+                            cost = dto.Items[0].SalesPrice
+                            _costString.postValue(dto.Items[0].SalesPrice.toString())
+                            isItemSerialize = dto.Items[0].IsSerialItem == 1
+                            _isItemSerialized.postValue(dto.Items[0].IsSerialItem == 1)
 
-                        val warehouseList = dto.Items[0].wStockDetails
-                        if (warehouseList != null && warehouseList.isNotEmpty() && warehouseList[0].wSerialItemDetails != null) {
-                            warehouseList[0].wSerialItemDetails?.let {
-                                _warehouseSerialNosList.postValue(it)
-                            } ?: _errorGetItemsStatusMessage.postValue(
-                                stringProvider.getString(
-                                    R.string.error_warehouse_serials_nos_message
+                            val warehouseList = dto.Items[0].wStockDetails
+                            if (warehouseList != null && warehouseList.isNotEmpty() && warehouseList[0].wSerialItemDetails != null) {
+                                warehouseList[0].wSerialItemDetails?.let {
+                                    _warehouseSerialNosList.postValue(it)
+                                } ?: _errorGetItemsStatusMessage.postValue(
+                                    stringProvider.getString(
+                                        R.string.error_warehouse_serials_nos_message
+                                    )
                                 )
-                            )
 
+                            } else {
+                                _errorGetItemsStatusMessage.postValue(
+                                    stringProvider.getString(
+                                        R.string.error_warehouse_serials_nos_message
+                                    )
+                                )
+                            }
                         } else {
-                            _errorGetItemsStatusMessage.postValue(
-                                stringProvider.getString(
-                                    R.string.error_warehouse_serials_nos_message
-                                )
-                            )
+                            _errorGetItemsStatusMessage.postValue(stringProvider.getString(R.string.empty_items_list))
                         }
                     } else {
                         _errorGetItemsStatusMessage.postValue(
@@ -206,7 +212,8 @@ class StockAdjustmentItemViewModel(
                 ItemCode = getItemCode(),
                 AdjustmentType = getAdjustmentTypeIntValue(),
                 AdjustmentQty = adjustmentQuantity,
-                SerialItems = userSelectedSerialItemsList
+                SerialItems = userSelectedSerialItemsList,
+                displayName = getItemListName()
             )
             _saveItemStatus.postValue(true)
         }
@@ -225,6 +232,9 @@ class StockAdjustmentItemViewModel(
 
     private fun getItemCode() = run {
         itemsDto?.let { it.ItemCode } ?: ""
+    }
+    private fun getItemListName() = run {
+        itemsDto?.let { it.getItemListName() } ?: ""
     }
 
     fun getSavedItemDto() = stockItemsDetailsDto
@@ -384,7 +394,7 @@ class StockAdjustmentItemViewModel(
                 ?.let { list ->
                     wSerialItemDetails.forEach { warehouse ->
                         list.serialItemsDto?.find { it.SerialNumber == warehouse.SerialNumber }
-                            .run {
+                            ?.let {
                                 warehouse.selected = true
                                 alreadySelected = true
                                 _enableSaveButton.postValue(true)
@@ -440,14 +450,34 @@ class StockAdjustmentItemViewModel(
     }
 
     fun setBarCodeData(barCode: String) {
-        if(isItPartCodeScanRequest()){
+        if (isItPartCodeScanRequest()) {
             setItemPartCodeValue(barCode)
-            val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = true, ItemPartCodeData=barCode, ItemSerialNoData="")
+            val itemBarCodeDto = ItemsBarCodeDto(
+                isItItemPartCode = true,
+                ItemPartCodeData = barCode,
+                ItemSerialNoData = ""
+            )
             _itemBarCodeData.postValue(itemBarCodeDto)
-        }else{
+        } else {
             setItemSerialNumberValue(barCode)
-            val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = false, ItemPartCodeData="", ItemSerialNoData=barCode)
+            val itemBarCodeDto = ItemsBarCodeDto(
+                isItItemPartCode = false,
+                ItemPartCodeData = "",
+                ItemSerialNoData = barCode
+            )
             _itemBarCodeData.postValue(itemBarCodeDto)
+        }
+    }
+
+    fun setAdjustmentQuantity(text: String) {
+        if (!isItemSerialize && text.isNotEmpty() && cost > 0) {
+            val quantity = text.toInt()
+            val adjustment = quantity * cost
+            _adjustmentTotalCostString.postValue(adjustment.toString())
+            _enableSaveButton.postValue(adjustment > 0)
+        } else if (!isItemSerialize && text.isEmpty()) {
+            _adjustmentTotalCostString.postValue("")
+            _enableSaveButton.postValue(false)
         }
     }
 }

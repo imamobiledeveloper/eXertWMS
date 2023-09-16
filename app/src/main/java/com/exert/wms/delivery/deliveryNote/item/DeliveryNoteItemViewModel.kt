@@ -194,10 +194,15 @@ class DeliveryNoteItemViewModel(
                 ItemCode = getItemCode(),
                 AdjustmentType = getAdjustmentTypeIntValue(),
                 AdjustmentQty = adjustmentQuantity,
-                SerialItems = userSelectedSerialItemsList
+                SerialItems = userSelectedSerialItemsList,
+                displayName = getItemListName()
             )
             _saveItemStatus.postValue(true)
         }
+    }
+
+    private fun getItemListName() = run {
+        itemsDto?.let { it.getItemListName() } ?: ""
     }
 
     private fun getAdjustmentTypeIntValue() =

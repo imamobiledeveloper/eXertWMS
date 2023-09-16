@@ -23,7 +23,7 @@ abstract class BaseFragment : Fragment() {
     fun showBriefToastMessage(
         message: String,
         coordinatorLayout: CoordinatorLayout?,
-        bgColor: Int = baseActivity.getColor(R.color.red)
+        bgColor: Int = baseActivity.getColor(R.color.orange)
     ) {
         coordinatorLayout?.let { layout ->
             baseActivity.appSnackbar(layout, message, Snackbar.LENGTH_LONG, bgColor = bgColor)?.setDuration(4000)?.show()

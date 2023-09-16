@@ -84,7 +84,7 @@
                 android:layout_marginTop="6dp"
                 android:gravity="center_vertical"
                 android:text="@string/item_part_code_hint"
-                android:visibility="@{itemBarCodeDto.itemPartCodeData == @string/empty ? View. VISIBLE : View.GONE}"
+                android:visibility="@{(itemBarCodeDto.itemPartCodeData == @string/empty || itemBarCodeDto.itemPartCodeData == null) ? View. VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/scanItemPartCodeIV"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -154,7 +154,7 @@
                 android:layout_marginTop="6dp"
                 android:gravity="center_vertical"
                 android:text="@string/item_serial_no_hint"
-                android:visibility="@{itemBarCodeDto.itemSerialNoData == @string/empty ? View. VISIBLE : View.GONE}"
+                android:visibility="@{(itemBarCodeDto.itemSerialNoData == @string/empty || itemBarCodeDto.itemSerialNoData == null) ? View. VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/scanItemSerialNoIV"
                 app:layout_constraintTop_toTopOf="parent" />

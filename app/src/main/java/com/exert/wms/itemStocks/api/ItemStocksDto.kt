@@ -50,6 +50,7 @@ data class ItemsDto(
     companion object
 
     fun getStockString() = Stock.toString()
+    fun getItemListName() = "$ItemCode - $ItemName"
 
 }
 

@@ -13,7 +13,7 @@ abstract class ExertBaseActivity : BaseAppCompatActivity() {
     fun showBriefToastMessage(
         message: String,
         coordinatorLayout: CoordinatorLayout?,
-        bgColor: Int= getColor(R.color.red)
+        bgColor: Int= getColor(R.color.orange)
     ) {
         coordinatorLayout?.let { layout ->
             appSnackbar(layout, message, LENGTH_LONG, bgColor = bgColor)?.setDuration(4000)?.show()
