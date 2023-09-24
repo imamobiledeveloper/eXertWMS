@@ -330,6 +330,7 @@ class StockItemReconciliationActivity :
 
         mViewModel.isItemSerialized.observe(this) {
 //            binding.quantityEditText.isEnabled = !isItSerialized
+//            binding.quantityEditTextLayout.isEndIconVisible = isItSerialized
         }
 
         mViewModel.quantityString.observe(this) { value ->

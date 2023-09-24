@@ -408,10 +408,16 @@ class StockReconciliationItemViewModel(
             setItemPartCodeValue(barCode)
             val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = true, ItemPartCodeData=barCode, ItemSerialNoData="")
             _itemBarCodeData.postValue(itemBarCodeDto)
+            searchItemWithPartCode()
         }else{
             setItemSerialNumberValue(barCode)
             val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = false, ItemPartCodeData="", ItemSerialNoData=barCode)
             _itemBarCodeData.postValue(itemBarCodeDto)
+            searchItemWithSerialNumber()
         }
+    }
+    override fun onCleared() {
+        super.onCleared()
+        coroutineJob?.cancel()
     }
 }

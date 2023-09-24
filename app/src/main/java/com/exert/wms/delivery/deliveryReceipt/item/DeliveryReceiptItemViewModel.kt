@@ -423,4 +423,9 @@ class DeliveryReceiptItemViewModel(
     fun checkAndEnableSaveButton() {
         _enableSaveButton.postValue(alreadySelected)
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineJob?.cancel()
+    }
 }

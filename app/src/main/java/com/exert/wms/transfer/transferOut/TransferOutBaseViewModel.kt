@@ -217,4 +217,9 @@ class TransferOutBaseViewModel(
             this?.get(0)?.WarehouseID
         } ?: 0
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineJob?.cancel()
+    }
 }

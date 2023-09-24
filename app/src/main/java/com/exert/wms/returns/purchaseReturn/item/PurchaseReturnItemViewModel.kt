@@ -395,4 +395,9 @@ class PurchaseReturnItemViewModel(
     fun checkAndEnableSaveButton() {
         _enableSaveButton.postValue(alreadySelected)
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineJob?.cancel()
+    }
 }

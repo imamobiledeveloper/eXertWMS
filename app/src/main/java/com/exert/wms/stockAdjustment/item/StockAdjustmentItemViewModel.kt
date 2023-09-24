@@ -460,6 +460,7 @@ class StockAdjustmentItemViewModel(
                 ItemSerialNoData = ""
             )
             _itemBarCodeData.postValue(itemBarCodeDto)
+            searchItemWithPartCode()
         } else {
             setItemSerialNumberValue(barCode)
             val itemBarCodeDto = ItemsBarCodeDto(
@@ -468,6 +469,7 @@ class StockAdjustmentItemViewModel(
                 ItemSerialNoData = barCode
             )
             _itemBarCodeData.postValue(itemBarCodeDto)
+            searchItemWithSerialNumber()
         }
     }
 
@@ -482,5 +484,10 @@ class StockAdjustmentItemViewModel(
             _adjustmentTotalCostString.postValue("")
             _enableSaveButton.postValue(false)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineJob?.cancel()
     }
 }

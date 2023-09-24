@@ -174,4 +174,9 @@ class DeliveryReceiptBaseViewModel(
             checkAndEnableUpdateButton()
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineJob?.cancel()
+    }
 }

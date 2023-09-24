@@ -170,4 +170,8 @@ class StockReconciliationBaseViewModel(
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        coroutineJob?.cancel()
+    }
 }

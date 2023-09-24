@@ -176,4 +176,8 @@ class StockAdjustmentBaseViewModel(
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        coroutineJob?.cancel()
+    }
 }

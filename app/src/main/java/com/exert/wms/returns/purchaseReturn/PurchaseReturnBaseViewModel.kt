@@ -184,4 +184,9 @@ class PurchaseReturnBaseViewModel(
             checkAndEnableUpdateButton()
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineJob?.cancel()
+    }
 }

@@ -375,12 +375,14 @@ class TransferOutItemViewModel(
                 isItItemPartCode = true, ItemPartCodeData = barCode, ItemSerialNoData = ""
             )
             _itemBarCodeData.postValue(itemBarCodeDto)
+            searchItemWithPartCode()
         } else {
             setItemSerialNumberValue(barCode)
             val itemBarCodeDto = ItemsBarCodeDto(
                 isItItemPartCode = false, ItemPartCodeData = "", ItemSerialNoData = barCode
             )
             _itemBarCodeData.postValue(itemBarCodeDto)
+            searchItemWithSerialNumber()
         }
     }
 
@@ -391,5 +393,10 @@ class TransferOutItemViewModel(
         } else if (!isItemSerialize && text.isEmpty()) {
             _enableSaveButton.postValue(false)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineJob?.cancel()
     }
 }
