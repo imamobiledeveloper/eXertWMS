@@ -25,3 +25,46 @@ data class WarehouseDto(
 
     companion object
 }
+
+@Keep
+data class VendorsListDto(
+    val success: Boolean,
+    val Vendors: List<VendorDto>,
+) {
+    companion object
+}
+
+@Parcelize
+@Keep
+data class VendorDto(
+    val ID: Long,
+    val Vendor: String,
+) : Serializable, Parcelable {
+    override fun toString(): String {
+        return this.Vendor
+    }
+
+    companion object
+}
+
+
+@Keep
+data class BranchesListDto(
+    val success: Boolean,
+    val Branches: List<BranchDto>,
+) {
+    companion object
+}
+
+@Parcelize
+@Keep
+data class BranchDto(
+    val BranchID: Long,
+    val BranchCode: String,
+) : Serializable, Parcelable {
+    override fun toString(): String {
+        return this.BranchCode
+    }
+
+    companion object
+}

@@ -114,7 +114,6 @@ class TransferOutBaseFragment :
             if (it) {
                 val bundle = Bundle()
                 bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
-                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
                 bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedFromWarehouseId())
                 bundle.putSerializable(
                     Constants.WAREHOUSE,

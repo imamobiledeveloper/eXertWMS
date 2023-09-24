@@ -8,7 +8,15 @@ class TransferRepository(private val transferDataSource: TransferDataSource) {
         return transferDataSource.saveTransferOutItems(requestDto)
     }
 
-    fun saveTransferInItems(requestDto: TransferInRequestDto): Flow<SaveTransferInResponse> {
+    fun saveTransferInItems(requestDto: SaveTransferInRequestDto): Flow<SaveTransferInResponse> {
         return transferDataSource.saveTransferInItems(requestDto)
+    }
+
+    fun getTransferOutNumbers(requestDto: TransferOutNumbersRequestDto): Flow<TransferOutNumbersResponseDto> {
+        return transferDataSource.getTransferOutNumbers(requestDto)
+    }
+
+    fun getTransferOutItemsList(requestDto: TransferOutItemsRequestDto): Flow<TransferInItemsResponseDto> {
+        return transferDataSource.getTransferOutItemsList(requestDto)
     }
 }

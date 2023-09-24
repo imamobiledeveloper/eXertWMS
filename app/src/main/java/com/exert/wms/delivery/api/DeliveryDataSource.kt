@@ -22,4 +22,20 @@ class DeliveryDataSource(
         }
     }
 
+    fun getSalesOrdersList(requestDto: SalesOrdersRequestDto): Flow<SalesOrdersListResponseDto> {
+        return flow {
+            emit(
+                deliveryDataSourceRemote.getSalesOrdersList(requestDto)
+            )
+        }
+    }
+
+    fun getDeliveryNotesItemsList(requestDto: DeliveryNoteItemsRequestDto): Flow<DeliveryNoteItemsResponseDto> {
+        return flow {
+            emit(
+                deliveryDataSourceRemote.getDeliveryNotesItemsList(requestDto)
+            )
+        }
+    }
+
 }

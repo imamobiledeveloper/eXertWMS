@@ -59,25 +59,71 @@ data class SaveDeliveryReceiptItemsResponse(
 @Parcelize
 @Keep
 data class DeliveryNoteItemsDetailsDto(
-    val ItemSeqNumber: Int = 0,
     val WarehouseID: Long = 0,
+    val Warehouse: String,
     val ItemID: Long = 0,
     val ItemCode: String,
-    val AdjustmentType: Int,
-    val AdjustmentQty: Double,
-    val SerialItems: List<SerialItemsDto>,
-) : Parcelable {
+    val ItemName: String,
+    val ItemNameArabic: String,
+    val Manfacturer: String,
+    val UnitID: Int = 0,
+    val UnitName: String,
+    val QTYReceived: Double,
+    val QTYReceiving: Double,
+    val QTYBackOrder: Double,
+    val QtyBalance: Double,
+    val QtyCanceled: Double,
+    val Quantity: Double,
+    val QTYOrdered: Double,
+    val Price: Double,
+    val DiscountAmount: Double,
+    val DiscountPercentage: Double,
+    val AllowBackOrder: Boolean,
+    val NetTotal: Double,
+    val Factor: Double,
+    val TotalCost: Double,
+    val SalesOrderID: Int,
+    val SalesOrderItemID: Int,
+    val ItemDiscountPercentage: Double,
+    val ItemDiscount: Double,
+    val TrackingTypes: Int,
+    val IsSerialItem: Int,
+    val CC: String,
+    val VATPercentage: Double,
+    val SQM: Double,
+    val SerialItems: List<SerialItemsDto>?,
+) : Parcelable, java.io.Serializable {
     companion object
 
     fun getItemIDString() = ItemID.toString()
-    fun getAdjustmentQtyString() = AdjustmentQty.toString()
+    fun getQuantityString() = Quantity.toString()
+
+    fun getItemListName() = "$ItemCode - $ItemName"
+}
+
+@Keep
+data class
+DeliveryNoteItemsResponseDto(
+    val success: Boolean,
+    val Items: List<DeliveryNoteItemsDetailsDto>?
+) {
+    companion object
 }
 
 @Keep
 data class
 DeliveryNoteItemsRequestDto(
-    val StockAdjustmentID: Long = 0,
-    val ItemsDetails: List<DeliveryNoteItemsDetailsDto>
+    val BranchID: Long = 0,
+    val CustomerID: Long = 0,
+    val SalesOrderIDs: List<SalesOrderIDDto>
+) {
+    companion object
+}
+
+@Keep
+data class
+SalesOrderIDDto(
+    val SalesOrderID: Long = 0
 ) {
     companion object
 }
@@ -89,3 +135,31 @@ data class SaveDeliveryNoteItemsResponse(
 ) {
     companion object
 }
+
+@Keep
+data class
+SalesOrdersRequestDto(
+    val BranchID: Long = 0,
+    val CustomerID: Long = 0,
+) {
+    companion object
+}
+
+@Keep
+data class
+SalesOrdersListResponseDto(
+    val success: Boolean,
+    val SalesOrders: List<SalesOrdersDto>
+) {
+    companion object
+}
+
+@Keep
+data class
+SalesOrdersDto(
+    val SalesOrderID: Long = 0,
+    val SalesOrderNumber: String
+) {
+    companion object
+}
+

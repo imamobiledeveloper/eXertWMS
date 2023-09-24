@@ -41,7 +41,7 @@
             style="@style/RecyclerViewListItemTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@{setGreen ? @color/green : @color/red}"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/rightArrowIV"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="100" />
