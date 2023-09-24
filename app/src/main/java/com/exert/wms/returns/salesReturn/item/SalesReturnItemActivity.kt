@@ -139,6 +139,7 @@ class SalesReturnItemActivity :
 
         mViewModel.isItemSerialized.observe(this) { isItSerialized ->
             binding.returningQuantityEditText.isEnabled = !isItSerialized
+            binding.returningQuantityEditTextLayout.isEndIconVisible = isItSerialized
         }
 
         mViewModel.returningQuantityString.observe(this) { value ->
