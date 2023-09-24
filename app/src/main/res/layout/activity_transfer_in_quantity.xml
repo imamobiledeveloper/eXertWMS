@@ -28,14 +28,15 @@
             android:layout_height="0dp"
             android:layout_margin="16dp"
             android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@+id/saveButton"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/margin_16dp">
 
                 <include
                     android:id="@+id/itemNameManufactureLayout"
@@ -59,25 +60,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/itemNameManufactureLayout">
-
-                    <!--                    <TextView-->
-                    <!--                        android:id="@+id/addButton"-->
-                    <!--                        style="@style/TextViewWithDrawableStyle"-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_marginEnd="8dp"-->
-                    <!--                        android:paddingStart="12dp"-->
-                    <!--                        android:paddingEnd="12dp"-->
-                    <!--                        android:drawablePadding="@dimen/margin_8dp"-->
-                    <!--                        android:gravity="center_vertical"-->
-                    <!--                        android:text="@string/add"-->
-                    <!--                        android:background="@drawable/button_green_bg_selector"-->
-                    <!--                        android:visibility="@{viewModel.showAddItemButton == true ? View.VISIBLE : View.INVISIBLE}"-->
-                    <!--                        android:textColor="@color/white"-->
-                    <!--                        android:textSize="16sp"-->
-                    <!--                        app:drawableStartCompat="@drawable/ic_add_circle_white"-->
-                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--                        app:layout_constraintTop_toTopOf="parent" />-->
 
                     <TextView
                         android:id="@+id/warehouseListLabel"
@@ -108,17 +90,17 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/ButtonStyle"
-            android:layout_margin="16dp"
-            android:enabled="false"
-            android:id="@+id/saveButton"
-            android:text="@string/save"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            style="@style/ButtonStyle"-->
+<!--            android:layout_margin="16dp"-->
+<!--            android:enabled="false"-->
+<!--            android:id="@+id/saveButton"-->
+<!--            android:text="@string/save"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent" />-->
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinateLayout"

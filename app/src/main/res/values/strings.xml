@@ -69,7 +69,8 @@
     <string name="select_warehouse">Select Warehouse</string>
     <string name="select_to_warehouse">Select To Warehouse</string>
     <string name="select_from_warehouse">Select From Warehouse</string>
-    <string name="select_transfer_out_no">Select Transfer Out No.</string>
+    <string name="select_transfer_out_no">Select Transfer Out Number</string>
+    <string name="select_sales_invoice_no">Select Sales Invoice Number</string>
     <string name="select_warranty_period">Select Warranty Period</string>
     <string name="update">Update</string>
     <string name="adjustment_type">Adjustment type</string>
@@ -80,9 +81,13 @@
     <string name="item_saved_message">Item is saved successfully</string>
     <string name="cost">Cost</string>
     <string name="location_empty_message">"Please select Location from the list"</string>
+    <string name="delivery_note_item_empty_message">"Please select Delivery note item from the list"</string>
     <string name="warehouse_empty_message">"Please select Warehouse from the list"</string>
     <string name="warehouse_from_to_empty_message">"Please select FromWarehouse and ToWarehouse from the list"</string>
     <string name="warehouse_list_empty_message">"Warehouse are not available"</string>
+    <string name="sales_invoice_list_empty_message">"Sales Invoices are not available"</string>
+    <string name="vendors_list_empty_message">"Vendors are not available"</string>
+    <string name="branches_list_empty_message">"Branches are not available"</string>
     <string name="adjustment_type_empty_message">"Please select Adjustment Type to get list"</string>
     <string name="invalid_details_message">"Please enter valid details"</string>
     <string name="error_warehouse_empty_message">"Serial Items are empty"</string>
@@ -92,6 +97,7 @@
     <string name="empty_items_list">Items are empty</string>
     <string name="item_details">Item Details</string>
     <string name="check_serial_items_empty_message">Please select Items to save</string>
+    <string name="serial_items_empty_message">Serial items are empty</string>
     <string name="add">Add</string>
     <string name="dd_mm_yyyy">DD/MM/YYYY</string>
     <string name="add_serial_no">Add Serial No</string>
@@ -179,6 +185,7 @@
     <string name="select_customer_name">Select Customer Name</string>
     <string name="error_barcode_message">Barcode is empty, Please scan valid barcode</string>
     <string name="from_and_to_warehouse_should_not_be_same">From warehouse and To warehouses should not be same</string>
+    <string name="transfer_out_numbers_list_empty_message">Transfer out numbers are not found</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

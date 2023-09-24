@@ -8,7 +8,15 @@ class TransferDataSourceRemote(private val exertWmsApi: ExertWmsApi) {
         return exertWmsApi.saveTransferOutItems(requestDto)
     }
 
-    suspend fun saveTransferInItems(requestDto: TransferInRequestDto): SaveTransferInResponse {
+    suspend fun saveTransferInItems(requestDto: SaveTransferInRequestDto): SaveTransferInResponse {
         return exertWmsApi.saveTransferInItems(requestDto)
+    }
+
+    suspend fun getTransferOutNumbers(requestDto: TransferOutNumbersRequestDto): TransferOutNumbersResponseDto {
+        return exertWmsApi.getTransferOutNumbers(ToWarehouseID = requestDto.ToWarehouseID)//requestDto)
+    }
+
+    suspend fun getTransferOutItemsList(requestDto: TransferOutItemsRequestDto): TransferInItemsResponseDto {
+        return exertWmsApi.getTransferOutItemsList(ExternalTransferID = requestDto.ExternalTransferID)
     }
 }

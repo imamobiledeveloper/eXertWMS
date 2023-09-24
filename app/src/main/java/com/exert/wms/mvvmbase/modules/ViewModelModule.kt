@@ -71,7 +71,7 @@ val viewModelModule = module {
         TransferInBaseViewModel(get(), get(), get())
     }
     viewModel {
-        TransferInItemViewModel(get(), get())
+        TransferInItemViewModel()
     }
     viewModel {
         DeliveryReceiptBaseViewModel(get(), get(), get())

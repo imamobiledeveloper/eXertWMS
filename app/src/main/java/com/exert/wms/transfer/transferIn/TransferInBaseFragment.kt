@@ -1,16 +1,12 @@
 package com.exert.wms.transfer.transferIn
 
-import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +15,7 @@ import com.exert.wms.R
 import com.exert.wms.databinding.FragmentTransferInBaseBinding
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.MVVMFragment
-import com.exert.wms.transfer.api.TransferInItemsDetailsDto
+import com.exert.wms.transfer.api.ExternalTransferItemsDto
 import com.exert.wms.transfer.transferIn.item.TransferInItemActivity
 import com.exert.wms.transfer.transferIn.item.TransferInItemsListAdapter
 import com.exert.wms.utils.*
@@ -76,7 +72,7 @@ class TransferInBaseFragment :
                 binding.transferOutNoSpinnerTV.isActivated = true
             }
             mViewModel.selectedTransferOutNo(parent?.getItemAtPosition(position).toString())
-            binding.transferOutNoSpinner.setSelection(mViewModel.getSelectedToWarehouseIndex())
+            binding.transferOutNoSpinner.setSelection(mViewModel.selectedTransferOutNoIndex())
         }
         binding.updateButton.setOnClickListener {
             mViewModel.saveItems()
@@ -98,6 +94,7 @@ class TransferInBaseFragment :
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 binding.itemsListRecyclerView.apply {
                     adapter = TransferInItemsListAdapter(list) {
+                        navigateToTransferInItemScreen(it)
                     }
                     val dividerDrawable = ContextCompat.getDrawable(context, R.drawable.divider)
                     dividerDrawable?.let {
@@ -115,12 +112,15 @@ class TransferInBaseFragment :
         mViewModel.errorWarehouse.observe(viewLifecycleOwner) {
             if (it) {
                 val bundle = Bundle()
-//                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
-//                bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedWarehouseId())
-//                bundle.putSerializable(Constants.WAREHOUSE, mViewModel.getWarehouseObject())
+                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
+                bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedToWarehouseId())
+                bundle.putSerializable(
+                    Constants.WAREHOUSE,
+                    mViewModel.getSelectedToWarehouseDto()
+                )
                 val intent = Intent(requireContext(), TransferInItemActivity::class.java)
                 intent.putExtras(bundle)
-                startForResult.launch(intent)
+                startActivity(intent)
             } else {
                 showBriefToastMessage(
                     getString(R.string.warehouse_empty_message),
@@ -134,10 +134,16 @@ class TransferInBaseFragment :
             }
         }
 
+        mViewModel.transferOutNumberStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setTransferOutNumbersList(it)
+            }
+        }
+
         mViewModel.saveItemStatus.observe(viewLifecycleOwner) {
             if (it) {
                 showBriefToastMessage(
-                    getString(R.string.success_save_stock_adjustment),
+                    getString(R.string.success_save_transfer_in),
                     coordinateLayout,
                     bgColor = requireActivity().getColor(R.color.green_msg)
                 )
@@ -156,6 +162,16 @@ class TransferInBaseFragment :
         }
     }
 
+    private fun setTransferOutNumbersList(stringList: List<String>) {
+        val adapter = SpinnerCustomAdapter(
+            requireContext(),
+            stringList.toTypedArray(),
+            android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_item_layout)
+        binding.transferOutNoSpinner.adapter = adapter
+    }
+
     private fun setWarehouseList(stringList: List<String>) {
         val adapter = SpinnerCustomAdapter(
             requireContext(),
@@ -164,23 +180,17 @@ class TransferInBaseFragment :
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_layout)
         binding.fromWarehouseSpinner.adapter = adapter
+        binding.toWarehouseSpinner.adapter = adapter
     }
 
-    private val startForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val intent = result.data
-                intent?.let {
-                    val item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        intent.getParcelableExtra(
-                            Constants.STOCK_ITEMS_DETAILS_DTO,
-                            TransferInItemsDetailsDto::class.java
-                        )
-                    } else {
-                        intent.getParcelableExtra(Constants.STOCK_ITEMS_DETAILS_DTO)
-                    }
-                    mViewModel.setTransferInItemDetails(item)
-                }
-            }
-        }
+    private fun navigateToTransferInItemScreen(externalTransferItemsDto: ExternalTransferItemsDto) {
+        val bundle = Bundle()
+        bundle.putSerializable(Constants.ITEM_DTO, externalTransferItemsDto)
+        bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedToWarehouseId())
+        bundle.putSerializable(
+            Constants.WAREHOUSE,
+            mViewModel.getSelectedToWarehouseDto()
+        )
+        requireActivity().startActivity<TransferInItemActivity>(bundle)
+    }
 }

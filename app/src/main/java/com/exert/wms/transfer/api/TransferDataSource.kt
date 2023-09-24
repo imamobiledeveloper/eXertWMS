@@ -14,10 +14,26 @@ class TransferDataSource(
         }
     }
 
-    fun saveTransferInItems(requestDto: TransferInRequestDto): Flow<SaveTransferInResponse> {
+    fun saveTransferInItems(requestDto: SaveTransferInRequestDto): Flow<SaveTransferInResponse> {
         return flow {
             emit(
                 transferDataSourceRemote.saveTransferInItems(requestDto)
+            )
+        }
+    }
+
+    fun getTransferOutNumbers(requestDto: TransferOutNumbersRequestDto): Flow<TransferOutNumbersResponseDto> {
+        return flow {
+            emit(
+                transferDataSourceRemote.getTransferOutNumbers(requestDto)
+            )
+        }
+    }
+
+    fun getTransferOutItemsList(requestDto: TransferOutItemsRequestDto): Flow<TransferInItemsResponseDto> {
+        return flow {
+            emit(
+                transferDataSourceRemote.getTransferOutItemsList(requestDto)
             )
         }
     }

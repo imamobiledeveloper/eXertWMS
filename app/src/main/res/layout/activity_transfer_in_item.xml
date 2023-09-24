@@ -89,7 +89,7 @@
                             android:id="@+id/quantityEditText"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            style="@style/EditTextEnabledStyle"
+                            style="@style/EditTextDisabledStyle"
                             android:drawablePadding="8dp"
                             android:ellipsize="end"
                             android:enabled="false"

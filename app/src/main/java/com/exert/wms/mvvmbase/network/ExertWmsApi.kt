@@ -15,14 +15,14 @@ import com.exert.wms.stockAdjustment.api.SaveStockItemAdjustmentResponse
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRequestDto
 import com.exert.wms.stockReconciliation.api.StockItemReconciliationDto
 import com.exert.wms.stockReconciliation.api.StockReconciliationRequestDto
-import com.exert.wms.transfer.api.SaveTransferInResponse
-import com.exert.wms.transfer.api.SaveTransferOutResponse
-import com.exert.wms.transfer.api.TransferInRequestDto
-import com.exert.wms.transfer.api.TransferOutRequestDto
+import com.exert.wms.transfer.api.*
+import com.exert.wms.warehouse.BranchesListDto
+import com.exert.wms.warehouse.VendorsListDto
 import com.exert.wms.warehouse.WarehouseListDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ExertWmsApi {
     @GET("")
@@ -36,12 +36,12 @@ interface ExertWmsApi {
         @Body requestBody: LoginRequestDto
     ): LoginDto
 
-    @POST("api/Items/GetItems?CurrentPage=1&PageSize=10")
+    @POST("api/Items/GetItems?CurrentPage=1&PageSize=100")
     suspend fun getOnlineSalesItems(
         @Body requestBody: ItemStocksRequestDto
     ): ItemStocksResponseDto
 
-    @POST("api/Items/GetItems?CurrentPage=1&PageSize=10")
+    @POST("api/Items/GetItems?CurrentPage=1&PageSize=100")
     suspend fun getWarehouseSerialItemDetails(
         @Body requestBody: WarehouseSerialItemsRequestDto
     ): ItemStocksResponseDto
@@ -54,6 +54,12 @@ interface ExertWmsApi {
     @GET("api/Warehouse/GetWarehouse")
     suspend fun getWarehouseList(): WarehouseListDto
 
+    @GET("api/Vendor/GetVendor")
+    suspend fun getVendorsList(): VendorsListDto
+
+    @GET("api/Branch/GetBranches")
+    suspend fun getBranchesList(): BranchesListDto
+
     @POST("api/StockAdjustment/SaveStockAdjustment")
     suspend fun saveStockReconciliationItems(
         @Body requestBody: StockReconciliationRequestDto
@@ -64,20 +70,41 @@ interface ExertWmsApi {
         @Body requestBody: TransferOutRequestDto
     ): SaveTransferOutResponse
 
-    @POST("api/StockAdjustment/SaveTransferInItems")
+    @POST("api/TransferIn/SaveTransferIn")
     suspend fun saveTransferInItems(
-        @Body requestBody: TransferInRequestDto
+        @Body requestBody: SaveTransferInRequestDto
     ): SaveTransferInResponse
+
+    @GET("api/TransferIn/GetPostedExternalTransfers")
+    suspend fun getTransferOutNumbers(
+        @Query("ToWarehouseID") ToWarehouseID: Long
+    ): TransferOutNumbersResponseDto
+
+    @GET("api/TransferIn/GetExternalTransferItems")
+    suspend fun getTransferOutItemsList(
+        @Query("ExternalTransferID") ExternalTransferID: Long
+    ): TransferInItemsResponseDto
 
     @POST("api/StockAdjustment/SaveDeliveryReceiptItems")
     suspend fun saveDeliveryReceiptItems(
         @Body requestBody: DeliveryReceiptItemsRequestDto
     ): SaveDeliveryReceiptItemsResponse
 
-    @POST("api/StockAdjustment/SaveDeliveryNoteItems")
+    @POST("api/DeliveryNote/SaveDeliveryNote")
     suspend fun saveDeliveryNoteItems(
         @Body requestBody: DeliveryNoteItemsRequestDto
     ): SaveDeliveryNoteItemsResponse
+
+    @GET("api/DeliveryNote/GetApprovedSalesOrders")
+    suspend fun getSalesOrdersList(
+        @Query("CustomerID") CustomerID: Long,
+        @Query("BranchID") BranchID: Long
+    ): SalesOrdersListResponseDto
+
+    @GET("api/DeliveryNote/GetMultipleSalesOrderItems")
+    suspend fun getDeliveryNotesItemsList(
+        @Body requestBody: DeliveryNoteItemsRequestDto
+    ): DeliveryNoteItemsResponseDto
 
     @POST("api/StockAdjustment/SavePurchaseItems")
     suspend fun savePurchaseItems(

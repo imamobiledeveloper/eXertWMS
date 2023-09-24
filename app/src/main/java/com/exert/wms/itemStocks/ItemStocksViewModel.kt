@@ -202,24 +202,21 @@ class ItemStocksViewModel(
                     Log.v("WMS EXERT", "getWarehouseSerialNosList response $dto")
                     hideProgressIndicator()
 
-                    if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
+                    if (dto.success && dto.Items != null && dto.Items.isNotEmpty() && dto.Items[0].wStockDetails != null && dto.Items[0].wStockDetails?.isNotEmpty() == true) {
                         val warehouseList = dto.Items[0].wStockDetails
-                        if (warehouseList != null && warehouseList.isNotEmpty() && warehouseList[0].wSerialItemDetails != null) {
-                            warehouseList[0].wSerialItemDetails?.let {
+                        warehouseList?.filter { it.WarehouseID == warehouseId }?.let { list ->
+                            list[0].wSerialItemDetails?.let {
                                 _warehouseSerialIsList.postValue(it)
                             } ?: _errorGetItemsStatusMessage.postValue(
                                 stringProvider.getString(
                                     R.string.error_warehouse_serials_nos_message
                                 )
                             )
-
-                        } else {
-                            _errorGetItemsStatusMessage.postValue(
-                                stringProvider.getString(
-                                    R.string.error_warehouse_serials_nos_message
-                                )
+                        } ?: _errorGetItemsStatusMessage.postValue(
+                            stringProvider.getString(
+                                R.string.error_warehouse_serials_nos_message
                             )
-                        }
+                        )
                     } else {
                         _errorGetItemsStatusMessage.postValue(
                             stringProvider.getString(
@@ -242,14 +239,24 @@ class ItemStocksViewModel(
     }
 
     fun setBarCodeData(barCode: String) {
-        if(isItPartCodeScanRequest()){
+        if (isItPartCodeScanRequest()) {
             setItemPartCodeValue(barCode)
-            val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = true, ItemPartCodeData=barCode, ItemSerialNoData="")
+            val itemBarCodeDto = ItemsBarCodeDto(
+                isItItemPartCode = true,
+                ItemPartCodeData = barCode,
+                ItemSerialNoData = ""
+            )
             _itemBarCodeData.postValue(itemBarCodeDto)
-        }else{
+            searchItemWithPartCode()
+        } else {
             setItemSerialNumberValue(barCode)
-            val itemBarCodeDto=ItemsBarCodeDto(isItItemPartCode = false, ItemPartCodeData="", ItemSerialNoData=barCode)
+            val itemBarCodeDto = ItemsBarCodeDto(
+                isItItemPartCode = false,
+                ItemPartCodeData = "",
+                ItemSerialNoData = barCode
+            )
             _itemBarCodeData.postValue(itemBarCodeDto)
+            searchItemWithSerialNumber()
         }
     }
 }

@@ -1,16 +1,17 @@
 package com.exert.wms.transfer.transferIn.item
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.StockAdjustmentItemNameListItemLayoutBinding
-import com.exert.wms.transfer.api.TransferInItemsDetailsDto
+import com.exert.wms.transfer.api.ExternalTransferItemsDto
 
 class TransferInItemsListAdapter(
-    private val itemsList: List<TransferInItemsDetailsDto>,
-    private val onItemTextClick: (String) -> Unit
+    private val itemsList: List<ExternalTransferItemsDto>,
+    private val onItemTextClick: (ExternalTransferItemsDto) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -33,21 +34,21 @@ class TransferInItemsListAdapter(
 
     inner class ItemsListViewHolder(
         private val holderBinding: StockAdjustmentItemNameListItemLayoutBinding,
-        private val onFeatureTextClick: (String) -> Unit?
+        private val onFeatureTextClick: (ExternalTransferItemsDto) -> Unit?
     ) : RecyclerView.ViewHolder(holderBinding.root) {
-        private val itemName: TextView = holderBinding.itemNameTV
+        private val layout: ConstraintLayout = holderBinding.stockItemListItemLayout
 
-        fun bind(item: TransferInItemsDetailsDto, position: Int) {
-            holderBinding.whiteBg = position % 2 == 0
-            holderBinding.setGreen = item.AdjustmentType == 0
-
-            holderBinding.itemCountTV.text = item.getAdjustmentQtyString()
-            holderBinding.itemNameTV.text = item.getItemIDString()
+        fun bind(item: ExternalTransferItemsDto, position: Int) {
             holderBinding.rightArrowIV.visibility = View.VISIBLE
+            holderBinding.whiteBg = position % 2 == 0
+
+            holderBinding.itemCountTV.setTextColor(Color.BLACK)
+            holderBinding.itemCountTV.text = item.getQuantityString()
+            holderBinding.itemNameTV.text = item.getItemListName()
             holderBinding.executePendingBindings()
 
-            itemName.setOnClickListener {
-                onFeatureTextClick(item.ItemCode)
+            layout.setOnClickListener {
+                onFeatureTextClick(item)
             }
         }
     }
