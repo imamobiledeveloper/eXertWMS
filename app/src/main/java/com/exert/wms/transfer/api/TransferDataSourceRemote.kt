@@ -16,7 +16,7 @@ class TransferDataSourceRemote(private val exertWmsApi: ExertWmsApi) {
         return exertWmsApi.getTransferOutNumbers(ToWarehouseID = requestDto.ToWarehouseID)//requestDto)
     }
 
-    suspend fun getTransferOutItemsList(requestDto: TransferOutItemsRequestDto): TransferInItemsResponseDto {
-        return exertWmsApi.getTransferOutItemsList(ExternalTransferID = requestDto.ExternalTransferID)
+    suspend fun getTransferInItemsList(requestDto: TransferOutItemsRequestDto): TransferInItemsResponseDto {
+        return exertWmsApi.getTransferInItemsList(ExternalTransferID = requestDto.ExternalTransferID)
     }
 }

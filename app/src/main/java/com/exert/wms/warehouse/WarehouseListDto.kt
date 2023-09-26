@@ -29,7 +29,7 @@ data class WarehouseDto(
 @Keep
 data class VendorsListDto(
     val success: Boolean,
-    val Vendors: List<VendorDto>,
+    val Vendors: List<VendorDto>?,
 ) {
     companion object
 }
@@ -49,9 +49,30 @@ data class VendorDto(
 
 
 @Keep
+data class CustomersListDto(
+    val success: Boolean,
+    val Customers: List<CustomerDto>?,
+) {
+    companion object
+}
+
+@Parcelize
+@Keep
+data class CustomerDto(
+    val CustomerID: Long,
+    val CustomerName: String,
+) : Serializable, Parcelable {
+    override fun toString(): String {
+        return this.CustomerID.toString()
+    }
+
+    companion object
+}
+
+@Keep
 data class BranchesListDto(
     val success: Boolean,
-    val Branches: List<BranchDto>,
+    val Branches: List<BranchDto>?,
 ) {
     companion object
 }

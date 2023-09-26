@@ -73,7 +73,6 @@
                         android:id="@+id/quantityEditTextLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
                         android:minHeight="50dp"
                         app:endIconCheckable="true"
                         app:endIconDrawable="@drawable/ic_arrow_right"

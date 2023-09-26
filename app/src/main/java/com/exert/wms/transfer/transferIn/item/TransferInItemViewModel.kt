@@ -36,7 +36,7 @@ class TransferInItemViewModel : BaseViewModel() {
     private var selectedItemDto: ExternalTransferItemsDto? = null
     private var selectedItemDtoInSerialNoScreen: ExternalTransferItemsDto? = null
 
-    fun setSelectedWarehouseDto(
+    fun setSelectedItemDto(
         externalTransferItemsDto: ExternalTransferItemsDto?
     ) {
         externalTransferItemsDto?.let {

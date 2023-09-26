@@ -1,6 +1,5 @@
 package com.exert.wms.transfer.transferIn.item
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -52,10 +51,9 @@ class TransferInItemActivity :
     private fun observeViewModel() {
         externalTransferItemsDto =
             intent.getSerializable(Constants.ITEM_DTO, ExternalTransferItemsDto::class.java)
-        mViewModel.setSelectedWarehouseDto(externalTransferItemsDto)
+        mViewModel.setSelectedItemDto(externalTransferItemsDto)
 
         binding.itemNameManufactureLayout.itemStockLayout.visibility = View.GONE
-        binding.quantityEditText.isEnabled
 
         mViewModel.isLoadingData.observe(this) { status ->
             if (status) {
@@ -110,8 +108,4 @@ class TransferInItemActivity :
         binding.viewModel = mViewModel
     }
 
-    override fun onBackPressed() {
-        setResult(Activity.RESULT_CANCELED, null)
-        super.onBackPressed()
-    }
 }

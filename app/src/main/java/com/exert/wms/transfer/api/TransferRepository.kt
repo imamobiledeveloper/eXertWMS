@@ -16,7 +16,7 @@ class TransferRepository(private val transferDataSource: TransferDataSource) {
         return transferDataSource.getTransferOutNumbers(requestDto)
     }
 
-    fun getTransferOutItemsList(requestDto: TransferOutItemsRequestDto): Flow<TransferInItemsResponseDto> {
-        return transferDataSource.getTransferOutItemsList(requestDto)
+    fun getTransferInItemsList(requestDto: TransferOutItemsRequestDto): Flow<TransferInItemsResponseDto> {
+        return transferDataSource.getTransferInItemsList(requestDto)
     }
 }

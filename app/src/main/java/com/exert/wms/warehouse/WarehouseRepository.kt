@@ -12,6 +12,10 @@ class WarehouseRepository(private val warehouseDataSource: WarehouseDataSource) 
         return warehouseDataSource.getVendorsList()
     }
 
+    fun getCustomersList(): Flow<CustomersListDto> {
+        return warehouseDataSource.getCustomersList()
+    }
+
     fun getBranchesList(): Flow<BranchesListDto> {
         return warehouseDataSource.getBranchesList()
     }

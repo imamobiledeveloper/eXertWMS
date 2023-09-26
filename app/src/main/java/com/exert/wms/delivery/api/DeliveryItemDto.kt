@@ -3,6 +3,8 @@ package com.exert.wms.delivery.api
 import android.os.Parcelable
 import androidx.annotation.Keep
 import com.exert.wms.SerialItemsDto
+import com.exert.wms.transfer.api.TransferInSerialItemDto
+import com.exert.wms.transfer.api.TransferSerialItemListDto
 import kotlinx.parcelize.Parcelize
 
 @Keep
@@ -91,11 +93,10 @@ data class DeliveryNoteItemsDetailsDto(
     val CC: String,
     val VATPercentage: Double,
     val SQM: Double,
-    val SerialItems: List<SerialItemsDto>?,
+    val SerialItems: List<TransferSerialItemListDto>?,
 ) : Parcelable, java.io.Serializable {
     companion object
 
-    fun getItemIDString() = ItemID.toString()
     fun getQuantityString() = Quantity.toString()
 
     fun getItemListName() = "$ItemCode - $ItemName"
@@ -112,10 +113,11 @@ DeliveryNoteItemsResponseDto(
 
 @Keep
 data class
-DeliveryNoteItemsRequestDto(
+DeliveryNoteItemsListRequestDto(
     val BranchID: Long = 0,
-    val CustomerID: Long = 0,
-    val SalesOrderIDs: List<SalesOrderIDDto>
+    val CustomerID: Int = 0,
+    val SalesOrderIDs: List<SalesOrderIDDto>,
+    val ItemsDetails: List<DeliveryNoteItemDto>
 ) {
     companion object
 }
@@ -129,9 +131,25 @@ SalesOrderIDDto(
 }
 
 @Keep
+data class
+DeliveryNoteItemDto(
+    val ItemSeqNumber: Int = 0,
+    val ItemID: Long = 0,
+    val WarehouseID: Long = 0,
+    val UnitID: Int = 0,
+    val SalesOrderItemID: Int = 0,
+    val TrackingTypes: Int = 0,
+    val Quantity: Double = 0.0,
+    val SerialItems: List<TransferInSerialItemDto>
+) {
+    companion object
+}
+
+@Keep
 data class SaveDeliveryNoteItemsResponse(
     val Success: Boolean,
-    val SalesList: ArrayList<String> = arrayOf<String>().toCollection(ArrayList())
+    val DeliveryNoteID: String,
+    val ErrorMessage: String
 ) {
     companion object
 }
@@ -149,7 +167,7 @@ SalesOrdersRequestDto(
 data class
 SalesOrdersListResponseDto(
     val success: Boolean,
-    val SalesOrders: List<SalesOrdersDto>
+    val SalesOrders: List<SalesOrdersDto>?
 ) {
     companion object
 }

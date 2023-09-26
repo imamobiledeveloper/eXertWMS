@@ -87,6 +87,7 @@
     <string name="warehouse_list_empty_message">"Warehouse are not available"</string>
     <string name="sales_invoice_list_empty_message">"Sales Invoices are not available"</string>
     <string name="vendors_list_empty_message">"Vendors are not available"</string>
+    <string name="customers_list_empty_message">"Customers are not available"</string>
     <string name="branches_list_empty_message">"Branches are not available"</string>
     <string name="adjustment_type_empty_message">"Please select Adjustment Type to get list"</string>
     <string name="invalid_details_message">"Please enter valid details"</string>
@@ -186,6 +187,8 @@
     <string name="error_barcode_message">Barcode is empty, Please scan valid barcode</string>
     <string name="from_and_to_warehouse_should_not_be_same">From warehouse and To warehouses should not be same</string>
     <string name="transfer_out_numbers_list_empty_message">Transfer out numbers are not found</string>
+    <string name="transfer_in_items_list_empty_message">Transfer out numbers are not found</string>
+    <string name="delivery_notes_items_list_empty_message">Delivery notes items are not found</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

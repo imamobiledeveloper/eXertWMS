@@ -11,12 +11,10 @@ import com.exert.wms.delivery.api.DeliveryRepository
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.mvvmbase.BaseViewModel
 import com.exert.wms.utils.StringProvider
-import com.exert.wms.warehouse.WarehouseDto
-import com.exert.wms.warehouse.WarehouseRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import com.exert.wms.warehouse.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 class DeliveryReceiptBaseViewModel(
     private val stringProvider: StringProvider,
@@ -36,6 +34,12 @@ class DeliveryReceiptBaseViewModel(
     private val _warehouseStringList = MutableLiveData<List<String>>()
     val warehouseStringList: LiveData<List<String>> = _warehouseStringList
 
+    private val _vendorsStringList = MutableLiveData<List<String>>()
+    val vendorsStringList: LiveData<List<String>> = _vendorsStringList
+
+    private val _branchesStringList = MutableLiveData<List<String>>()
+    val branchesStringList: LiveData<List<String>> = _branchesStringList
+
     private val _enableUpdateButton = MutableLiveData<Boolean>().apply { false }
     val enableUpdateButton: LiveData<Boolean> = _enableUpdateButton
 
@@ -51,8 +55,84 @@ class DeliveryReceiptBaseViewModel(
     var itemsDto: ItemsDto? = null
     var warehousesList: List<WarehouseDto>? = null
 
+    private var selectedBranch: String = ""
+    private var selectedCustomerName: String = ""
+    var branchessList: List<BranchDto>? = null
+    var vendorsList: List<VendorDto>? = null
+
     init {
-        getWarehouseList()
+        getBranchesAndCustomerList()
+    }
+
+    private fun getBranchesAndCustomerList() {
+        showProgressIndicator()
+        coroutineJob = viewModelScope.launch(dispatcher + CoroutineExceptionHandler { _, _ ->
+            hideProgressIndicator()
+        }) {
+            combine(
+//                getWarehouseList(),
+                getBranchesList(),
+                getVendorsList()
+            ) { wList, cList ->
+                Pair(wList, cList)
+            }.collect { result ->
+                hideProgressIndicator()
+                Log.v("WMS EXERT", "getWarehouseList response $result")
+                hideProgressIndicator()
+//                processWarehouseList(result.first)
+                processBranchesList(result.first)
+                processCustomersList(result.second)
+
+            }
+        }
+    }
+
+    private fun getBranchesList(): Flow<BranchesListDto> {
+        return warehouseRepo.getBranchesList()
+    }
+
+    private fun getVendorsList(): Flow<VendorsListDto> {
+        return warehouseRepo.getVendorsList()
+    }
+
+
+//    fun selectedBranch(branchName: String) {
+//        if (branchName != stringProvider.getString(R.string.select_branch)) {
+//            selectedBranch = branchName
+//            checkWarehouse()
+//        }
+//        resetItemsList()
+//    }
+
+    fun selectedCustomerName(customerName: String) {
+        if (customerName != stringProvider.getString(R.string.select_vendor_name)) {
+            selectedCustomerName = customerName
+            checkWarehouse()
+        }
+        resetItemsList()
+    }
+
+
+    private fun processBranchesList(dto: BranchesListDto) {
+        if (dto.success && dto.Branches != null && dto.Branches.isNotEmpty()) {
+            branchessList = dto.Branches
+            val stringList = dto.Branches.map { it.BranchCode }.toMutableList()
+            stringList.add(0, stringProvider.getString(R.string.select_warehouse))
+            _branchesStringList.postValue(stringList)
+        } else {
+            _errorFieldMessage.postValue(stringProvider.getString(R.string.branches_list_empty_message))
+        }
+    }
+
+    private fun processCustomersList(dto: VendorsListDto) {
+        if (dto.success && dto.Vendors != null && dto.Vendors.isNotEmpty()) {
+            vendorsList = dto.Vendors
+            val stringList = dto.Vendors.map { it.Vendor }.toMutableList()
+            stringList.add(0, stringProvider.getString(R.string.select_customer_name))
+            _vendorsStringList.postValue(stringList)
+        } else {
+            _errorFieldMessage.postValue(stringProvider.getString(R.string.customers_list_empty_message))
+        }
     }
 
     private fun getWarehouseList() {
@@ -178,5 +258,9 @@ class DeliveryReceiptBaseViewModel(
     override fun onCleared() {
         super.onCleared()
         coroutineJob?.cancel()
+    }
+
+    fun getSelectedVendorNameIndex(): Int {
+        return _vendorsStringList.value?.indexOf(selectedCustomerName) ?: 0
     }
 }

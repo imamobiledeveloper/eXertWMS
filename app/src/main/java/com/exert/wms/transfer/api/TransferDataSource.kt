@@ -30,10 +30,10 @@ class TransferDataSource(
         }
     }
 
-    fun getTransferOutItemsList(requestDto: TransferOutItemsRequestDto): Flow<TransferInItemsResponseDto> {
+    fun getTransferInItemsList(requestDto: TransferOutItemsRequestDto): Flow<TransferInItemsResponseDto> {
         return flow {
             emit(
-                transferDataSourceRemote.getTransferOutItemsList(requestDto)
+                transferDataSourceRemote.getTransferInItemsList(requestDto)
             )
         }
     }

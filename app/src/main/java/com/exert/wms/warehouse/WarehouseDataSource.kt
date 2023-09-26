@@ -20,6 +20,13 @@ class  WarehouseDataSource(
             )
         }
     }
+    fun getCustomersList(): Flow<CustomersListDto> {
+        return flow {
+            emit(
+                warehouseDataSourceRemote.getCustomersList()
+            )
+        }
+    }
     fun getBranchesList(): Flow<BranchesListDto> {
         return flow {
             emit(

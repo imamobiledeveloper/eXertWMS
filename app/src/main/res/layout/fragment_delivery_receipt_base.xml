@@ -88,14 +88,46 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/purchaseOrderNoSpinnerLayout" />
 
-            <EditText
-                android:id="@+id/vendorNameEditText"
-                style="@style/EditTextDisabledStyle"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/vendorNameSpinnerLayout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vendorNameTV" />
+                app:layout_constraintTop_toBottomOf="@+id/vendorNameTV">
+
+                <Spinner
+                    android:id="@+id/vendorNameSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#00FFFFFF"
+                    android:dropDownWidth="match_parent"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@drawable/edittext_rectangle_white_bg"
+                    android:popupElevation="15dp"
+                    android:theme="@style/Spinner"
+                    app:layout_constraintBottom_toBottomOf="@+id/vendorNameSpinnerTV"
+                    app:layout_constraintTop_toTopOf="@+id/vendorNameSpinnerTV" />
+
+                <TextView
+                    android:id="@+id/vendorNameSpinnerTV"
+                    style="@style/TextViewLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edittext_rectangle_white_bg"
+                    android:drawablePadding="@dimen/margin_10dp"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/select_customer_name"
+                    android:textAlignment="gravity"
+                    app:drawableEndCompat="@drawable/ic_arrow_down"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/toWarehouseTV"
@@ -107,7 +139,7 @@
                 android:text="@string/toWarehouse"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vendorNameEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/vendorNameSpinnerLayout" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/toWarehouseSpinnerLayout"

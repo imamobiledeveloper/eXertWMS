@@ -1,7 +1,6 @@
 package com.exert.wms.delivery.api
 
 import com.exert.wms.mvvmbase.network.ExertWmsApi
-import kotlinx.coroutines.flow.Flow
 
 class DeliveryDataSourceRemote(private val exertWmsApi: ExertWmsApi) {
 
@@ -9,15 +8,15 @@ class DeliveryDataSourceRemote(private val exertWmsApi: ExertWmsApi) {
         return exertWmsApi.saveDeliveryReceiptItems(requestDto)
     }
 
-    suspend fun saveDeliveryNoteItems(requestDto: DeliveryNoteItemsRequestDto): SaveDeliveryNoteItemsResponse {
+    suspend fun saveDeliveryNoteItems(requestDto: DeliveryNoteItemsListRequestDto): SaveDeliveryNoteItemsResponse {
         return exertWmsApi.saveDeliveryNoteItems(requestDto)
     }
 
     suspend fun getSalesOrdersList(requestDto: SalesOrdersRequestDto): SalesOrdersListResponseDto {
-        return exertWmsApi.getSalesOrdersList(CustomerID = 131, BranchID = requestDto.BranchID)//requestDto.CustomerID
+        return exertWmsApi.getSalesOrdersList(CustomerID = requestDto.CustomerID, BranchID = requestDto.BranchID)
     }
 
-    suspend fun getDeliveryNotesItemsList(requestDto: DeliveryNoteItemsRequestDto): DeliveryNoteItemsResponseDto {
+    suspend fun getDeliveryNotesItemsList(requestDto: DeliveryNoteItemsListRequestDto): DeliveryNoteItemsResponseDto {
         return exertWmsApi.getDeliveryNotesItemsList(requestDto)
     }
 }

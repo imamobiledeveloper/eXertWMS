@@ -1,16 +1,12 @@
 package com.exert.wms.delivery.deliveryNote
 
-import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,8 +29,7 @@ class DeliveryNoteBaseFragment :
     }
 
     override fun getFragmentBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
+        inflater: LayoutInflater, container: ViewGroup?
     ): FragmentDeliveryNoteBaseBinding {
         return FragmentDeliveryNoteBaseBinding.inflate(inflater, container, false)
     }
@@ -65,6 +60,14 @@ class DeliveryNoteBaseFragment :
             mViewModel.selectedCustomerName(parent?.getItemAtPosition(position).toString())
             binding.customerNameSpinner.setSelection(mViewModel.getSelectedCustomerNameIndex())
         }
+        binding.salesInvoiceNoSpinner.selected { parent, position ->
+            binding.salesInvoiceNoSpinnerTV.text = parent?.getItemAtPosition(position).toString()
+            if (position != 0) {
+                binding.salesInvoiceNoSpinnerTV.isActivated = true
+            }
+            mViewModel.selectedSalesInvoiceNo(parent?.getItemAtPosition(position).toString())
+            binding.salesInvoiceNoSpinner.setSelection(mViewModel.getSelectedSalesInvoiceNoIndex())
+        }
 
         binding.updateButton.setOnClickListener {
             mViewModel.saveItems()
@@ -86,6 +89,7 @@ class DeliveryNoteBaseFragment :
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 binding.itemsListRecyclerView.apply {
                     adapter = DeliveryNoteListAdapter(list) {
+                        navigateToDeliveryNoteItemScreen(it)
                     }
                     val dividerDrawable = ContextCompat.getDrawable(context, R.drawable.divider)
                     dividerDrawable?.let {
@@ -103,22 +107,28 @@ class DeliveryNoteBaseFragment :
         mViewModel.errorBranch.observe(viewLifecycleOwner) {
             if (it) {
                 val bundle = Bundle()
-//                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
-//                bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedWarehouseId())
-//                bundle.putSerializable(Constants.WAREHOUSE, mViewModel.getWarehouseObject())
                 val intent = Intent(requireContext(), DeliveryNoteItemActivity::class.java)
                 intent.putExtras(bundle)
-                startForResult.launch(intent)
+                startActivity(intent)
             } else {
                 showBriefToastMessage(
-                    getString(R.string.branch_empty_message),
-                    coordinateLayout
+                    getString(R.string.branch_empty_message), coordinateLayout
                 )
             }
         }
-        mViewModel.warehouseStringList.observe(viewLifecycleOwner) {
+        mViewModel.branchesStringList.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                setWarehouseList(it)
+                setBranchesList(it)
+            }
+        }
+        mViewModel.customersStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setVendorsList(it)
+            }
+        }
+        mViewModel.salesOrdersStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setSalesOrdersList(it)
             }
         }
 
@@ -137,38 +147,39 @@ class DeliveryNoteBaseFragment :
         mViewModel.errorFieldMessage.observe(viewLifecycleOwner) { msg ->
             if (msg.isNotEmpty()) {
                 showBriefToastMessage(
-                    msg,
-                    coordinateLayout
+                    msg, coordinateLayout
                 )
             }
         }
     }
 
-    private fun setWarehouseList(stringList: List<String>) {
+    private fun setSalesOrdersList(stringList: List<String>) {
         val adapter = SpinnerCustomAdapter(
-            requireContext(),
-            stringList.toTypedArray(),
-            android.R.layout.simple_spinner_item
+            requireContext(), stringList.toTypedArray(), android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_item_layout)
+        binding.salesInvoiceNoSpinner.adapter = adapter
+    }
+
+    private fun setVendorsList(stringList: List<String>) {
+        val adapter = SpinnerCustomAdapter(
+            requireContext(), stringList.toTypedArray(), android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_item_layout)
+        binding.customerNameSpinner.adapter = adapter
+    }
+
+    private fun setBranchesList(stringList: List<String>) {
+        val adapter = SpinnerCustomAdapter(
+            requireContext(), stringList.toTypedArray(), android.R.layout.simple_spinner_item
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_layout)
         binding.branchSpinner.adapter = adapter
     }
 
-    private val startForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val intent = result.data
-                intent?.let {
-                    val item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        intent.getParcelableExtra(
-                            Constants.STOCK_ITEMS_DETAILS_DTO,
-                            DeliveryNoteItemsDetailsDto::class.java
-                        )
-                    } else {
-                        intent.getParcelableExtra(Constants.STOCK_ITEMS_DETAILS_DTO)
-                    }
-                    mViewModel.setDeliveryNoteItemsDetails(item)
-                }
-            }
-        }
+    private fun navigateToDeliveryNoteItemScreen(itemsDto: DeliveryNoteItemsDetailsDto) {
+        val bundle = Bundle()
+        bundle.putSerializable(Constants.ITEM_DTO, itemsDto)
+        requireActivity().startActivity<DeliveryNoteItemActivity>(bundle)
+    }
 }

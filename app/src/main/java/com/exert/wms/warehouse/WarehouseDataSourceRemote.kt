@@ -10,6 +10,9 @@ class WarehouseDataSourceRemote(private val exertWmsApi: ExertWmsApi) {
     suspend fun getVendorsList(): VendorsListDto {
         return exertWmsApi.getVendorsList()
     }
+    suspend fun getCustomersList(): CustomersListDto {
+        return exertWmsApi.getCustomersList()
+    }
     suspend fun getBranchesList(): BranchesListDto {
         return exertWmsApi.getBranchesList()
     }

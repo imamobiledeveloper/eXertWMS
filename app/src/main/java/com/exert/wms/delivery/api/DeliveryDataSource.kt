@@ -14,7 +14,7 @@ class DeliveryDataSource(
         }
     }
 
-    fun saveDeliveryNoteItems(requestDto: DeliveryNoteItemsRequestDto): Flow<SaveDeliveryNoteItemsResponse> {
+    fun saveDeliveryNoteItems(requestDto: DeliveryNoteItemsListRequestDto): Flow<SaveDeliveryNoteItemsResponse> {
         return flow {
             emit(
                 deliveryDataSourceRemote.saveDeliveryNoteItems(requestDto)
@@ -30,7 +30,7 @@ class DeliveryDataSource(
         }
     }
 
-    fun getDeliveryNotesItemsList(requestDto: DeliveryNoteItemsRequestDto): Flow<DeliveryNoteItemsResponseDto> {
+    fun getDeliveryNotesItemsList(requestDto: DeliveryNoteItemsListRequestDto): Flow<DeliveryNoteItemsResponseDto> {
         return flow {
             emit(
                 deliveryDataSourceRemote.getDeliveryNotesItemsList(requestDto)

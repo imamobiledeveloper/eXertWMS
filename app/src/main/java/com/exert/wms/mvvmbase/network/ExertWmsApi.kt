@@ -17,6 +17,7 @@ import com.exert.wms.stockReconciliation.api.StockItemReconciliationDto
 import com.exert.wms.stockReconciliation.api.StockReconciliationRequestDto
 import com.exert.wms.transfer.api.*
 import com.exert.wms.warehouse.BranchesListDto
+import com.exert.wms.warehouse.CustomersListDto
 import com.exert.wms.warehouse.VendorsListDto
 import com.exert.wms.warehouse.WarehouseListDto
 import retrofit2.http.Body
@@ -57,6 +58,9 @@ interface ExertWmsApi {
     @GET("api/Vendor/GetVendor")
     suspend fun getVendorsList(): VendorsListDto
 
+    @GET("api/Customer/GetCreditCustomers")
+    suspend fun getCustomersList(): CustomersListDto
+
     @GET("api/Branch/GetBranches")
     suspend fun getBranchesList(): BranchesListDto
 
@@ -81,7 +85,7 @@ interface ExertWmsApi {
     ): TransferOutNumbersResponseDto
 
     @GET("api/TransferIn/GetExternalTransferItems")
-    suspend fun getTransferOutItemsList(
+    suspend fun getTransferInItemsList(
         @Query("ExternalTransferID") ExternalTransferID: Long
     ): TransferInItemsResponseDto
 
@@ -92,7 +96,7 @@ interface ExertWmsApi {
 
     @POST("api/DeliveryNote/SaveDeliveryNote")
     suspend fun saveDeliveryNoteItems(
-        @Body requestBody: DeliveryNoteItemsRequestDto
+        @Body requestBody: DeliveryNoteItemsListRequestDto
     ): SaveDeliveryNoteItemsResponse
 
     @GET("api/DeliveryNote/GetApprovedSalesOrders")
@@ -101,9 +105,9 @@ interface ExertWmsApi {
         @Query("BranchID") BranchID: Long
     ): SalesOrdersListResponseDto
 
-    @GET("api/DeliveryNote/GetMultipleSalesOrderItems")
+    @POST("api/DeliveryNote/GetMultipleSalesOrderItems")
     suspend fun getDeliveryNotesItemsList(
-        @Body requestBody: DeliveryNoteItemsRequestDto
+        @Body requestBody: DeliveryNoteItemsListRequestDto
     ): DeliveryNoteItemsResponseDto
 
     @POST("api/StockAdjustment/SavePurchaseItems")

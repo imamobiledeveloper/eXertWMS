@@ -65,6 +65,14 @@ class DeliveryReceiptBaseFragment :
             mViewModel.selectedToWarehouse(parent?.getItemAtPosition(position).toString())
             binding.toWarehouseSpinner.setSelection(mViewModel.getSelectedToWarehouseIndex())
         }
+        binding.vendorNameSpinner.selected { parent, position ->
+            binding.vendorNameSpinnerTV.text = parent?.getItemAtPosition(position).toString()
+            if (position != 0) {
+                binding.vendorNameSpinnerTV.isActivated = true
+            }
+            mViewModel.selectedCustomerName(parent?.getItemAtPosition(position).toString())
+            binding.vendorNameSpinner.setSelection(mViewModel.getSelectedVendorNameIndex())
+        }
         binding.addItemsTV.setOnClickListener {
             mViewModel.checkWarehouse()
         }
@@ -124,6 +132,17 @@ class DeliveryReceiptBaseFragment :
             }
         }
 
+        mViewModel.branchesStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setWarehouseList(it)
+            }
+        }
+        mViewModel.vendorsStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setVendorsList(it)
+            }
+        }
+
         mViewModel.saveItemStatus.observe(viewLifecycleOwner) {
             if (it) {
                 showBriefToastMessage(
@@ -146,6 +165,15 @@ class DeliveryReceiptBaseFragment :
         }
     }
 
+    private fun setVendorsList(stringList: List<String>) {
+        val adapter = SpinnerCustomAdapter(
+            requireContext(),
+            stringList.toTypedArray(),
+            android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_item_layout)
+        binding.vendorNameSpinner.adapter = adapter
+    }
     private fun setWarehouseList(stringList: List<String>) {
         val adapter = SpinnerCustomAdapter(
             requireContext(),

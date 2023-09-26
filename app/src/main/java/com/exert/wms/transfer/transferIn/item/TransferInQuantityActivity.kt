@@ -1,15 +1,12 @@
 package com.exert.wms.transfer.transferIn.item
 
-import android.os.Build
 import android.os.Bundle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
-import com.exert.wms.SerialItemsDtoList
 import com.exert.wms.databinding.ActivityTransferInQuantityBinding
-import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListAdapter
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.item.OnItemCheckListener
@@ -36,8 +33,6 @@ class TransferInQuantityActivity :
         get() = binding.coordinateLayout
 
     var tItemDto: ExternalTransferItemsDto? = null
-    var serialItemsList: SerialItemsDtoList? = null
-    private var warehouseStockDetails: WarehouseStockDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,23 +45,7 @@ class TransferInQuantityActivity :
 
     private fun observeViewModel() {
         tItemDto = intent.getSerializable(Constants.ITEM_DTO, ExternalTransferItemsDto::class.java)
-        serialItemsList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(
-                Constants.USER_SELECTED_WAREHOUSE_LIST,
-                SerialItemsDtoList::class.java
-            )
-        } else {
-            intent.getParcelableExtra(Constants.USER_SELECTED_WAREHOUSE_LIST)
-        }
-        warehouseStockDetails =
-            intent.getSerializable(
-                Constants.WAREHOUSE_STOCK_DETAILS,
-                WarehouseStockDetails::class.java
-            )
         mViewModel.setSelectedExternalTransferItemsDto(tItemDto)
-        warehouseStockDetails?.let {
-            binding.itemNameManufactureLayout.itemManufactureEditText.text = it.WarehouseDescription
-        }
         mViewModel.transferInSerialItems.observe(this) { list ->
             if (list != null) {
                 binding.serialNumbersListRecyclerView.layoutManager =

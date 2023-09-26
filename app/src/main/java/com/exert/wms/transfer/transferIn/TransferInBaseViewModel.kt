@@ -68,7 +68,7 @@ class TransferInBaseViewModel(
                 .collect { dto ->
                     Log.v("WMS EXERT", "getWarehouseList response $dto")
                     hideProgressIndicator()
-                    if (dto.success && dto.Warehouses != null && dto.Warehouses.isNotEmpty()) {
+                    if (dto.success && dto.Warehouses.isNotEmpty()) {
                         warehousesList = dto.Warehouses
                         val stringList = dto.Warehouses.map { it.Warehouse }.toMutableList()
                         stringList.add(0, stringProvider.getString(R.string.select_warehouse))
@@ -119,9 +119,9 @@ class TransferInBaseViewModel(
         showProgressIndicator()
         val requestDto = TransferOutItemsRequestDto(ExternalTransferID = externalTransferID)
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
-            transferRepo.getTransferOutItemsList(requestDto)
+            transferRepo.getTransferInItemsList(requestDto)
                 .collect { dto ->
-                    Log.v("WMS EXERT", "getTransferOutItemsList response $dto")
+                    Log.v("WMS EXERT", "getTransferInItemsList response $dto")
                     hideProgressIndicator()
                     if (dto.success && dto.ExternalTransferDetails != null && dto.ExternalTransferDetails.isNotEmpty()) {
                         transfersInItemsList = dto.ExternalTransferDetails[0]
@@ -130,7 +130,7 @@ class TransferInBaseViewModel(
                         _itemsList.postValue(externalTransfersInItemsList)
                         _enableUpdateButton.postValue(true)
                     } else {
-                        _errorFieldMessage.postValue(stringProvider.getString(R.string.transfer_out_numbers_list_empty_message))
+                        _errorFieldMessage.postValue(stringProvider.getString(R.string.transfer_in_items_list_empty_message))
                     }
                 }
         }
@@ -197,11 +197,8 @@ class TransferInBaseViewModel(
                     ItemID = dto.ItemID,
                     ItemCode = (dto.ItemCode ?: ""),
                     Quantity = dto.Quantity,
-                    TransferOutItemID = dto.ExternalTransferItemID,
-                    SerialItems = (dto.SerialItems
-                        ?: emptyList<TransferInSerialItemDto>()) as List<TransferInSerialItemDto>
-                )
-            )
+                    SerialItems = getConvertedSerialItems(dto.SerialItems)
+            ))
         }
         return SaveTransferInRequestDto(
             ToWarehouseID = getSelectedToWarehouseId(),
@@ -209,6 +206,16 @@ class TransferInBaseViewModel(
             TransferOutID = getSelectedTransferNoId(),
             ItemsDetails = itemsDetailsList
         )
+    }
+
+    private fun getConvertedSerialItems(list: List<TransferSerialItemListDto>?): List<TransferInSerialItemDto> {
+        val newList=ArrayList<TransferInSerialItemDto>()
+        if(list!=null && list.isNotEmpty()){
+            list.map {
+                newList.add(it.getConvertedTransferInSerialItemDto())
+            }
+        }
+        return newList
     }
 
     private fun getItemList() = transfersInItemsList
