@@ -83,7 +83,7 @@ class SerialNumbersListAdapter(
     }
 
     private fun getSerialItemsDto(item: WarehouseSerialItemDetails): SerialItemsDto {
-        return SerialItemsDto(SerialNumber=item.SerialNumber,ManufactureDate=item.MFGDate, WarrantyPeriod = getWarrantyNumber(item.WarentyDays))
+        return SerialItemsDto(SerialNumber=item.SerialNumber,ManufactureDate=item.MFGDate, WarrantyPeriod = getWarrantyNumber(item.WarentyDays), Quantity = 1)
     }
 
     private fun getWarrantyNumber(warrantyPeriod: String?): String? {

@@ -116,16 +116,15 @@ class DeliveryNoteBaseViewModel(
         if (branchName != stringProvider.getString(R.string.select_branch)) {
             resetItemsList()
             selectedBranch = branchName
-            checkWarehouse()
+            checkDetails()
         }
-
     }
 
     fun selectedCustomerName(customerName: String) {
         if (customerName != stringProvider.getString(R.string.select_customer_name)) {
             resetItemsList()
             selectedCustomerName = customerName
-            checkWarehouse()
+            checkDetails()
         }
     }
 
@@ -139,11 +138,11 @@ class DeliveryNoteBaseViewModel(
 
     private fun getDeliveryNotesItemsList() {
         showProgressIndicator()
-        val request = DeliveryNoteItemsListRequestDto(
+        val request = DeliveryNoteItemsListWithOutItemsRequestDto(
             BranchID = getSelectedBranchId(),
             CustomerID = getSelectedCustomerNameIndex(),
             SalesOrderIDs = listOf(SalesOrderIDDto(SalesOrderID = getSelectedSalesOrdersId())),
-            ItemsDetails = emptyList()
+//            ItemsDetails = emptyList()
         )
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
             deliveryRepo.getDeliveryNotesItemsList(request)
@@ -228,7 +227,7 @@ class DeliveryNoteBaseViewModel(
 
     private fun getItemList() = deliveryNotesItemsList
 
-    fun checkWarehouse() {
+    fun checkDetails() {
         if (selectedBranch.isNotEmpty() && selectedBranch != stringProvider.getString(
                 R.string.select_branch
             )
@@ -236,7 +235,7 @@ class DeliveryNoteBaseViewModel(
                 R.string.select_customer_name
             )
         ) {
-            getSalesInvoiceNumbers(getSelectedBranchId(), getSelectedVendorId())
+            getSalesInvoiceNumbers(getSelectedBranchId(), getSelectedCustomerId())
         }
     }
 
@@ -246,7 +245,7 @@ class DeliveryNoteBaseViewModel(
         } ?: 0
     }
 
-    private fun getSelectedVendorId(): Long {
+    private fun getSelectedCustomerId(): Long {
         return customersList?.filter { it.CustomerName == selectedCustomerName }.run {
             this?.get(0)?.CustomerID
         } ?: 0
@@ -296,5 +295,14 @@ class DeliveryNoteBaseViewModel(
     override fun onCleared() {
         super.onCleared()
         coroutineJob?.cancel()
+    }
+
+    override fun handleException(throwable: Throwable) {
+        hideProgressIndicator()
+        _errorFieldMessage.postValue(
+            if (throwable.message?.isNotEmpty() == true) throwable.message else stringProvider.getString(
+                R.string.error_api_access_message
+            )
+        )
     }
 }

@@ -107,7 +107,7 @@ interface ExertWmsApi {
 
     @POST("api/DeliveryNote/GetMultipleSalesOrderItems")
     suspend fun getDeliveryNotesItemsList(
-        @Body requestBody: DeliveryNoteItemsListRequestDto
+        @Body requestBody: DeliveryNoteItemsListWithOutItemsRequestDto
     ): DeliveryNoteItemsResponseDto
 
     @POST("api/StockAdjustment/SavePurchaseItems")

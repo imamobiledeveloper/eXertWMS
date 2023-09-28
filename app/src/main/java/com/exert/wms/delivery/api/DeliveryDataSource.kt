@@ -30,7 +30,7 @@ class DeliveryDataSource(
         }
     }
 
-    fun getDeliveryNotesItemsList(requestDto: DeliveryNoteItemsListRequestDto): Flow<DeliveryNoteItemsResponseDto> {
+    fun getDeliveryNotesItemsList(requestDto: DeliveryNoteItemsListWithOutItemsRequestDto): Flow<DeliveryNoteItemsResponseDto> {
         return flow {
             emit(
                 deliveryDataSourceRemote.getDeliveryNotesItemsList(requestDto)

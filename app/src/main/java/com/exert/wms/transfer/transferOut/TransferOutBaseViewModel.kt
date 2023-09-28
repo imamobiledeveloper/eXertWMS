@@ -124,7 +124,11 @@ class TransferOutBaseViewModel(
                         _enableUpdateButton.postValue(false)
                         _saveItemStatus.postValue(true)
                     } else {
-                        _errorFieldMessage.postValue(stringProvider.getString(R.string.error_save_transfer_out_items))
+                        if (response.ErrorMessage.isNotEmpty()) {
+                            _errorFieldMessage.postValue(response.ErrorMessage)
+                        } else {
+                            _errorFieldMessage.postValue(stringProvider.getString(R.string.error_save_transfer_out_items))
+                        }
                     }
                 }
         }
@@ -212,10 +216,19 @@ class TransferOutBaseViewModel(
         }
     }
 
-    fun getSelectedToWarehouseId(): Long {
+    private fun getSelectedToWarehouseId(): Long {
         return warehousesList?.filter { it.Warehouse == selectedToWarehouse }.run {
             this?.get(0)?.WarehouseID
         } ?: 0
+    }
+
+    override fun handleException(throwable: Throwable) {
+        hideProgressIndicator()
+        _errorFieldMessage.postValue(
+            if (throwable.message?.isNotEmpty() == true) throwable.message else stringProvider.getString(
+                R.string.error_api_access_message
+            )
+        )
     }
 
     override fun onCleared() {

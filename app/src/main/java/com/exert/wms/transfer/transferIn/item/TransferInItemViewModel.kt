@@ -56,7 +56,8 @@ class TransferInItemViewModel : BaseViewModel() {
             ItemPartCode = it.ItemCode,
             Stock = it.Quantity,
             convertedStockDetails = it.SerialItems,
-            wStockDetails = emptyList()
+            wStockDetails = emptyList(),
+            Warehouse = it.Warehouse ?: ""
         )
 
     private fun getWarrantyNumber(warrantyPeriod: String?): String? {
@@ -95,7 +96,6 @@ class TransferInItemViewModel : BaseViewModel() {
                 dto.SerialItems.map { it.getConvertedWarehouseSerialItemDetails() }.let {
                     list.addAll(it)
                 }
-
                 _transferInSerialItems.postValue(list.toList())
             }
         }

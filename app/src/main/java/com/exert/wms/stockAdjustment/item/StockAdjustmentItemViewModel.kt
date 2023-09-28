@@ -105,7 +105,7 @@ class StockAdjustmentItemViewModel(
     var isItemSerialize: Boolean = false
 
     fun checkItemDetailsEntered(itemPartCode: String, itemSerialNo: String) {
-        if (validateUserDetails(itemPartCode, itemSerialNo, adjustmentTypeValue)) {
+        if (validateUserDetails(itemPartCode, itemSerialNo, adjustmentTypeValue, checkAdjustmentType = isItemSerialize)) {
             _navigateToSerialNo.postValue(true)
         }
     }

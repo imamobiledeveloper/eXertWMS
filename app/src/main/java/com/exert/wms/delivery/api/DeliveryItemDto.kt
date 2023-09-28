@@ -113,6 +113,17 @@ DeliveryNoteItemsResponseDto(
 
 @Keep
 data class
+DeliveryNoteItemsListWithOutItemsRequestDto(
+    val BranchID: Long = 0,
+    val CustomerID: Int = 0,
+    val SalesOrderIDs: List<SalesOrderIDDto>,
+//    val ItemsDetails: List<DeliveryNoteItemDto>
+) {
+    companion object
+}
+
+@Keep
+data class
 DeliveryNoteItemsListRequestDto(
     val BranchID: Long = 0,
     val CustomerID: Int = 0,

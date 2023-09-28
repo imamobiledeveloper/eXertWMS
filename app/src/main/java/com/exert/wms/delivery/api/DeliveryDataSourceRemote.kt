@@ -16,7 +16,7 @@ class DeliveryDataSourceRemote(private val exertWmsApi: ExertWmsApi) {
         return exertWmsApi.getSalesOrdersList(CustomerID = requestDto.CustomerID, BranchID = requestDto.BranchID)
     }
 
-    suspend fun getDeliveryNotesItemsList(requestDto: DeliveryNoteItemsListRequestDto): DeliveryNoteItemsResponseDto {
+    suspend fun getDeliveryNotesItemsList(requestDto: DeliveryNoteItemsListWithOutItemsRequestDto): DeliveryNoteItemsResponseDto {
         return exertWmsApi.getDeliveryNotesItemsList(requestDto)
     }
 }

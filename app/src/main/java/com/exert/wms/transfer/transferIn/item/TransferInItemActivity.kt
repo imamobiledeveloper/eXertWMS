@@ -100,7 +100,7 @@ class TransferInItemActivity :
         }
 
         mViewModel.quantityString.observe(this) { value ->
-            binding.quantityEditText.text = value.toEditable()
+            binding.quantityEditText.setText(value)
         }
     }
 

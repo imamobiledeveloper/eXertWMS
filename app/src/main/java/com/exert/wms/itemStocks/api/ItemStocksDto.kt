@@ -47,12 +47,13 @@ data class ItemsDto(
     val SNO: Long = 0,
     val IsSerialItem: Int = 0,
     val wStockDetails: List<WarehouseStockDetails>?,
-    var convertedStockDetails: List<TransferSerialItemListDto>? = emptyList()
+    var convertedStockDetails: List<TransferSerialItemListDto>? = emptyList(),
+    var Warehouse: String? = ""
 ) : Serializable, Parcelable {
     companion object
 
     fun getStockString() = Stock.toString()
-    fun getWarehouseString() = WarehouseID.toString()
+    fun getWarehouseString() = Warehouse
     fun getItemListName() = "$ItemCode - $ItemName"
 
 }
@@ -105,4 +106,4 @@ data class ItemsBarCodeDto(
     val isItItemPartCode: Boolean = false,
     val ItemPartCodeData: String = "",
     val ItemSerialNoData: String = "",
-){}
+) {}

@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,9 @@ class DeliveryNoteBaseFragment :
     override val mViewModel by lazy {
         getViewModel<DeliveryNoteBaseViewModel>()
     }
+
+    override val coordinateLayout: CoordinatorLayout
+        get() = binding.coordinateLayout
 
     override fun getFragmentBinding(
         inflater: LayoutInflater, container: ViewGroup?

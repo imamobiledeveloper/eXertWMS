@@ -66,7 +66,7 @@ class StockReconciliationBaseViewModel(
                 .collect { dto ->
                     Log.v("WMS EXERT", "getWarehouseList response $dto")
                     hideProgressIndicator()
-                    if (dto.success && dto.Warehouses.isNotEmpty()) {
+                    if (dto.success && dto.Warehouses!=null && dto.Warehouses.isNotEmpty()) {
                         warehousesList = dto.Warehouses
                         val stringList = dto.Warehouses.map { it.Warehouse }.toMutableList()
                         stringList.add(0, stringProvider.getString(R.string.select_warehouse))

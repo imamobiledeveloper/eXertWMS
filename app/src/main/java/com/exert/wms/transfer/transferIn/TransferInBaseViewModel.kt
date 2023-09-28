@@ -68,7 +68,7 @@ class TransferInBaseViewModel(
                 .collect { dto ->
                     Log.v("WMS EXERT", "getWarehouseList response $dto")
                     hideProgressIndicator()
-                    if (dto.success && dto.Warehouses.isNotEmpty()) {
+                    if (dto.success && dto.Warehouses!=null && dto.Warehouses.isNotEmpty()) {
                         warehousesList = dto.Warehouses
                         val stringList = dto.Warehouses.map { it.Warehouse }.toMutableList()
                         stringList.add(0, stringProvider.getString(R.string.select_warehouse))
@@ -283,5 +283,14 @@ class TransferInBaseViewModel(
         super.onCleared()
         coroutineJob?.cancel()
         coroutineJobTransferOut?.cancel()
+    }
+
+    override fun handleException(throwable: Throwable) {
+        hideProgressIndicator()
+        _errorFieldMessage.postValue(
+            if (throwable.message?.isNotEmpty() == true) throwable.message else stringProvider.getString(
+                R.string.error_api_access_message
+            )
+        )
     }
 }

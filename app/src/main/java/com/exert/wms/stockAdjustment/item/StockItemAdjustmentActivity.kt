@@ -220,24 +220,24 @@ class StockItemAdjustmentActivity :
             val radioButton = radioGroup.findViewById<RadioButton>(checkedId)
             mViewModel.setAdjustmentType(radioButton.text as String)
         }
-        mViewModel.isLoadingData.observe(this, Observer { status ->
+        mViewModel.isLoadingData.observe(this) { status ->
             if (status) {
                 binding.progressBar.show()
             } else {
                 binding.progressBar.hide()
             }
-        })
+        }
 
-        mViewModel.errorFieldMessage.observe(this, Observer { msg ->
+        mViewModel.errorFieldMessage.observe(this) { msg ->
             if (msg.isNotEmpty()) {
                 showBriefToastMessage(
                     msg,
                     coordinateLayout
                 )
             }
-        })
+        }
 
-        mViewModel.errorItemSelectionMessage.observe(this, Observer {
+        mViewModel.errorItemSelectionMessage.observe(this) {
             if (it) {
                 disableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
@@ -254,9 +254,9 @@ class StockItemAdjustmentActivity :
                     getString(R.string.error_item_partcode_serial_no_empty_message)
                 )
             }
-        })
+        }
 
-        mViewModel.saveItemStatus.observe(this, Observer {
+        mViewModel.saveItemStatus.observe(this) {
             if (it) {
                 showBriefToastMessage(
                     getString(R.string.item_saved_message), coordinateLayout,
@@ -270,9 +270,9 @@ class StockItemAdjustmentActivity :
             } else {
                 showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
             }
-        })
+        }
 
-        mViewModel.navigateToSerialNo.observe(this, Observer {
+        mViewModel.navigateToSerialNo.observe(this) {
             if (it) {
                 val bundle = Bundle()
                 bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
@@ -292,12 +292,12 @@ class StockItemAdjustmentActivity :
             } else {
                 showBriefToastMessage(getString(R.string.invalid_details_message), coordinateLayout)
             }
-        })
-        mViewModel.enableSaveButton.observe(this, Observer {
+        }
+        mViewModel.enableSaveButton.observe(this) {
             binding.saveButton.isEnabled = it
-        })
+        }
 
-        mViewModel.errorItemPartCode.observe(this, Observer {
+        mViewModel.errorItemPartCode.observe(this) {
             if (it) {
                 enableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditTextLayout,
@@ -314,8 +314,8 @@ class StockItemAdjustmentActivity :
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditText,
                 )
             }
-        })
-        mViewModel.errorItemSerialNo.observe(this, Observer {
+        }
+        mViewModel.errorItemSerialNo.observe(this) {
             if (it) {
                 enableErrorMessage(
                     binding.itemPartCodeSerialNoLayout.itemSerialNoEditTextLayout,
@@ -332,7 +332,7 @@ class StockItemAdjustmentActivity :
                     binding.itemPartCodeSerialNoLayout.itemPartCodeEditText,
                 )
             }
-        })
+        }
 
         mViewModel.itemDto.observe(this) { dto ->
             binding.itemDto = dto
@@ -354,6 +354,10 @@ class StockItemAdjustmentActivity :
 
         mViewModel.costString.observe(this) { value ->
             binding.costEditText.text = value.toEditable()
+        }
+
+        mViewModel.errorGetItemsStatusMessage.observe(this) { status ->
+            showBriefToastMessage(status, coordinateLayout)
         }
 
         mViewModel.errorAdjustmentType.observe(this) {
