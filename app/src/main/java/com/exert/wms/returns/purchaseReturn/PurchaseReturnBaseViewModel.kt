@@ -7,16 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.mvvmbase.BaseViewModel
-import com.exert.wms.returns.api.PurchaseItemsDetailsDto
-import com.exert.wms.returns.api.PurchaseItemsRequestDto
-import com.exert.wms.returns.api.ReturnsRepository
+import com.exert.wms.returns.api.*
 import com.exert.wms.utils.StringProvider
-import com.exert.wms.warehouse.WarehouseDto
-import com.exert.wms.warehouse.WarehouseRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import com.exert.wms.warehouse.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 class PurchaseReturnBaseViewModel(
     private val stringProvider: StringProvider,
@@ -33,9 +29,6 @@ class PurchaseReturnBaseViewModel(
     private val _errorFieldMessage = MutableLiveData<String>()
     val errorFieldMessage: LiveData<String> = _errorFieldMessage
 
-    private val _warehouseStringList = MutableLiveData<List<String>>()
-    val warehouseStringList: LiveData<List<String>> = _warehouseStringList
-
     private val _enableUpdateButton = MutableLiveData<Boolean>().apply { false }
     val enableUpdateButton: LiveData<Boolean> = _enableUpdateButton
 
@@ -45,67 +38,149 @@ class PurchaseReturnBaseViewModel(
     private val _errorBranch = MutableLiveData<Boolean>()
     val errorBranch: LiveData<Boolean> = _errorBranch
 
+    private val _branchesStringList = MutableLiveData<List<String>>()
+    val branchesStringList: LiveData<List<String>> = _branchesStringList
+
+    private val _vendorsStringList = MutableLiveData<List<String>>()
+    val vendorsStringList: LiveData<List<String>> = _vendorsStringList
+
+    private val _pInvoiceStringList = MutableLiveData<List<String>>()
+    val pInvoiceStringList: LiveData<List<String>> = _pInvoiceStringList
+
     private var selectedBranch: String = ""
-    private var selectedCustomerName: String = ""
-    private var selectedSalesInvoiceNo: String = ""
+    private var selectedVendor: String = ""
+    private var selectedPInvoiceNo: String = ""
     var stockItemsList: ArrayList<PurchaseItemsDetailsDto> = ArrayList()
     var itemsDto: ItemsDto? = null
-    var warehousesList: List<WarehouseDto>? = null
+
+    var branchesList: List<BranchDto>? = null
+    var vendorsList: List<VendorDto>? = null
+    private var purchaseInvoiceList: List<PurchaseDto>? = null
+    var purchaseItemsList: List<PurchaseItemsDetailsDto>? = null
 
     init {
-        getWarehouseList()
+        getBranchesAndVendorList()
     }
 
-    private fun getWarehouseList() {
+    private fun getBranchesAndVendorList() {
         showProgressIndicator()
-        coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
-            warehouseRepo.getWarehouseList()
-                .collect { dto ->
-                    Log.v("WMS EXERT", "getWarehouseList response $dto")
-                    hideProgressIndicator()
-                    if (dto.success && dto.Warehouses != null && dto.Warehouses.isNotEmpty()) {
-                        warehousesList = dto.Warehouses
-                        val stringList = dto.Warehouses.map { it.Warehouse }.toMutableList()
-                        stringList.add(0, stringProvider.getString(R.string.select_warehouse))
-                        _warehouseStringList.postValue(stringList)
-                    } else {
-                        _errorFieldMessage.postValue(stringProvider.getString(R.string.warehouse_list_empty_message))
-                    }
-                }
+        coroutineJob = viewModelScope.launch(dispatcher + CoroutineExceptionHandler { _, _ ->
+            hideProgressIndicator()
+        }) {
+            combine(
+                getBranchesList(),
+                getVendorsList()
+            ) { wList, cList ->
+                Pair(wList, cList)
+            }.collect { result ->
+                hideProgressIndicator()
+                Log.v("WMS EXERT", "getBranchesAndVendorList response $result")
+                hideProgressIndicator()
+                processBranchesList(result.first)
+                processVendorsList(result.second)
+
+            }
         }
     }
 
-    fun getWarehouseFromObject(): WarehouseDto? {
-        return warehousesList?.filter { it.Warehouse == selectedBranch }.run {
-            this?.get(0)
+    private fun getBranchesList(): Flow<BranchesListDto> {
+        return warehouseRepo.getBranchesList()
+    }
+
+    private fun getVendorsList(): Flow<VendorsListDto> {
+        return warehouseRepo.getVendorsList()
+    }
+
+    private fun processBranchesList(dto: BranchesListDto) {
+        if (dto.success && dto.Branches != null && dto.Branches.isNotEmpty()) {
+            branchesList = dto.Branches
+            val stringList = dto.Branches.map { it.BranchCode }.toMutableList()
+            stringList.add(0, stringProvider.getString(R.string.select_branch))
+            _branchesStringList.postValue(stringList)
+        } else {
+            _errorFieldMessage.postValue(stringProvider.getString(R.string.branches_list_empty_message))
+        }
+    }
+
+    private fun processVendorsList(dto: VendorsListDto) {
+        if (dto.success && dto.Vendors != null && dto.Vendors.isNotEmpty()) {
+            vendorsList = dto.Vendors
+            val stringList = dto.Vendors.map { it.Vendor }.toMutableList()
+            stringList.add(0, stringProvider.getString(R.string.select_vendor_name))
+            _vendorsStringList.postValue(stringList)
+        } else {
+            _errorFieldMessage.postValue(stringProvider.getString(R.string.vendors_list_empty_message))
         }
     }
 
     fun selectedBranch(branchName: String) {
         if (branchName != stringProvider.getString(R.string.select_branch)) {
+            resetItemsList()
             selectedBranch = branchName
+            checkDetails()
         }
-        resetItemsList()
     }
 
-    fun selectedCustomerName(customerName: String) {
-        if (customerName != stringProvider.getString(R.string.select_vendor_name)) {
-            selectedCustomerName = customerName
+    fun selectedVendorName(vendorName: String) {
+        if (vendorName != stringProvider.getString(R.string.select_vendor_name)) {
+            resetItemsList()
+            selectedVendor = vendorName
+            checkDetails()
+//            getPurchaseItemsList()
         }
-        resetItemsList()
     }
-
-//    fun selectedTransferOutNo(transferNo: String) {
-//        if (transferNo != stringProvider.getString(R.string.select_transfer_out_no)) {
-//            selectedTransferNo = transferNo
-//        }
-//        resetItemsList()
-//    }
 
     private fun resetItemsList() {
         stockItemsList.clear()
         _itemsList.postValue(null)
         _enableUpdateButton.postValue(false)
+    }
+
+    private fun checkDetails() {
+        if (selectedBranch.isNotEmpty() && selectedBranch != stringProvider.getString(
+                R.string.select_branch
+            )
+            && selectedVendor.isNotEmpty() && selectedVendor != stringProvider.getString(
+                R.string.select_vendor_name
+            )
+        ) {
+            getPurchaseInvoiceNumbers(getSelectedBranchId(), getSelectedVendorId())
+        }
+    }
+
+    private fun getSelectedBranchId(): Long {
+        return branchesList?.filter { it.BranchCode == selectedBranch }.run {
+            this?.get(0)?.BranchID
+        } ?: 0
+    }
+
+    private fun getSelectedVendorId(): Long {
+        return vendorsList?.filter { it.Vendor == selectedVendor }.run {
+            this?.get(0)?.ID
+        } ?: 0
+    }
+
+    private fun getPurchaseInvoiceNumbers(branchId: Long, vendorId: Long) {
+        showProgressIndicator()
+        val requestDto = PurchaseReturnInvoiceRequestDto(BranchID = branchId, VendorID = vendorId)
+        coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
+            returnsRepo.getPurchaseInvoiceNoList(requestDto)
+                .collect { dto ->
+                    Log.v("WMS EXERT", "getPurchaseInvoiceNoList response $dto")
+                    hideProgressIndicator()
+                    if (dto.success && dto.PurchasesList != null && dto.PurchasesList.isNotEmpty()) {
+                        purchaseInvoiceList = dto.PurchasesList
+                        val stringList = dto.PurchasesList.map { it.PurchaseNumber }.toMutableList()
+                        stringList.add(
+                            0,
+                            stringProvider.getString(R.string.select_purchase_invoice_no)
+                        )
+                        _pInvoiceStringList.postValue(stringList)
+                    } else {
+                        _errorFieldMessage.postValue(stringProvider.getString(R.string.purchase_invoice_list_empty_message))
+                    }
+                }
+        }
     }
 
     fun saveItems() {
@@ -155,7 +230,7 @@ class PurchaseReturnBaseViewModel(
         if (selectedBranch.isNotEmpty() && selectedBranch != stringProvider.getString(
                 R.string.select_branch
             )
-            && selectedCustomerName.isNotEmpty() && selectedCustomerName != stringProvider.getString(
+            && selectedVendor.isNotEmpty() && selectedVendor != stringProvider.getString(
                 R.string.select_vendor_name
             )
         ) {
@@ -166,27 +241,65 @@ class PurchaseReturnBaseViewModel(
     }
 
     fun getSelectedBranchIndex(): Int {
-        return _warehouseStringList.value?.indexOf(selectedBranch) ?: 0
+        return _branchesStringList.value?.indexOf(selectedBranch) ?: 0
     }
 
-    fun getSelectedCustomerNameIndex(): Int {
-        return _warehouseStringList.value?.indexOf(selectedCustomerName) ?: 0
+    fun getSelectedVendorNameIndex(): Int {
+        return _vendorsStringList.value?.indexOf(selectedVendor) ?: 0
     }
 
-    fun setPurchaseItemsDetails(item: PurchaseItemsDetailsDto?) {
-        item?.let { dto ->
-            val itemDto = dto.copy(ItemSeqNumber = (getItemListSize() + 1))
-            addItemToList(itemDto)
-
-            getItemList().takeIf { it.isNotEmpty() }?.let { list ->
-                _itemsList.postValue(list)
-            }
-            checkAndEnableUpdateButton()
-        }
+    fun setPurchaseReturnItemsDetails(item: PurchaseItemsDetailsDto?) {
+//        item?.let { dto ->
+//            val itemDto = dto.copy(ItemSeqNumber = (getItemListSize() + 1))
+//            addItemToList(itemDto)
+//
+//            getItemList().takeIf { it.isNotEmpty() }?.let { list ->
+//                _itemsList.postValue(list)
+//            }
+//            checkAndEnableUpdateButton()
+//        }
     }
 
     override fun onCleared() {
         super.onCleared()
         coroutineJob?.cancel()
     }
+
+    fun getSelectedPurchaseInvoiceNoIndex(): Int {
+        return _pInvoiceStringList.value?.indexOf(selectedPInvoiceNo) ?: 0
+    }
+
+    fun selectedPurchaseInvoiceNo(invoice: String) {
+        if (invoice != stringProvider.getString(R.string.select_purchase_invoice_no)) {
+            resetItemsList()
+            selectedPInvoiceNo = invoice
+            getPurchaseItemsList()
+        }
+    }
+
+    private fun getSelectedPInvoiceId(): Long {
+        return purchaseInvoiceList?.filter { it.PurchaseNumber == selectedPInvoiceNo }.run {
+            this?.get(0)?.PurchaseID
+        } ?: 0
+    }
+
+    private fun getPurchaseItemsList() {
+        showProgressIndicator()
+        val request = PurchaseItemsListItemsRequestDto(PurchaseID = 1)//getSelectedPInvoiceId())
+        coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
+            returnsRepo.getPurchaseItemsList(request)
+                .collect { dto ->
+                    Log.v("WMS EXERT", "getPurchaseItemsList response $dto")
+                    hideProgressIndicator()
+                    if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
+                        purchaseItemsList = dto.Items
+                        _itemsList.postValue(dto.Items)
+                        _enableUpdateButton.postValue(true)
+                    } else {
+                        _errorFieldMessage.postValue(stringProvider.getString(R.string.delivery_notes_items_list_empty_message))
+                    }
+                }
+        }
+    }
+
 }

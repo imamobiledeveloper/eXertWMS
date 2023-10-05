@@ -16,6 +16,7 @@ import com.exert.wms.alertDialog.AlertDialogWithCallBack
 import com.exert.wms.databinding.ActivityPurchaseReturnItemBinding
 import com.exert.wms.delivery.deliveryNote.item.DeliveryNoteQuantityActivity
 import com.exert.wms.mvvmbase.BaseActivity
+import com.exert.wms.returns.api.PurchaseItemsDetailsDto
 import com.exert.wms.returns.salesReturn.item.SalesReturnQuantityActivity
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
@@ -44,6 +45,7 @@ class PurchaseReturnItemActivity :
         get() = binding.coordinateLayout
 
     var warehouseDto: WarehouseDto? = null
+    var itemDto: PurchaseItemsDetailsDto? = null
     var warehouseId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,6 +76,7 @@ class PurchaseReturnItemActivity :
 
 
     private fun observeViewModel() {
+        itemDto = intent.getSerializable(Constants.ITEM_DTO, PurchaseItemsDetailsDto::class.java)
         warehouseId = intent.getLongExtra(Constants.ITEM_WAREHOUSE_ID, 0)
         warehouseDto = intent.getSerializable(Constants.WAREHOUSE, WarehouseDto::class.java)
 //        mViewModel.setSelectedWarehouseDto(warehouseId, warehouseDto)

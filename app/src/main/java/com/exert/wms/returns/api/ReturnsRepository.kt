@@ -11,4 +11,12 @@ class ReturnsRepository(private val transferDataSource: ReturnsDataSource) {
     fun saveSalesItems(requestDto: SalesItemsRequestDto): Flow<SaveSalesItemsResponse> {
         return transferDataSource.saveSalesItems(requestDto)
     }
+
+    fun getPurchaseInvoiceNoList(requestDto: PurchaseReturnInvoiceRequestDto): Flow<PurchaseReturnInvoiceListResponseDto> {
+        return transferDataSource.getPurchaseInvoiceNoList(requestDto)
+    }
+
+    fun getPurchaseItemsList(requestDto: PurchaseItemsListItemsRequestDto): Flow<PurchaseItemsListResponseDto> {
+        return transferDataSource.getPurchaseItemsList(requestDto)
+    }
 }

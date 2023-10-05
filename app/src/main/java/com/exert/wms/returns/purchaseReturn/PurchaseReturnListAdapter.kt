@@ -9,7 +9,7 @@ import com.exert.wms.returns.api.PurchaseItemsDetailsDto
 
 class PurchaseReturnListAdapter(
     private val itemsList: List<PurchaseItemsDetailsDto>,
-    private val onItemTextClick: (String) -> Unit
+    private val onItemTextClick: (PurchaseItemsDetailsDto) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -32,7 +32,7 @@ class PurchaseReturnListAdapter(
 
     inner class ItemsListViewHolder(
         private val holderBinding: ReturnPurchaseSaleListItemLayoutBinding,
-        private val onFeatureTextClick: (String) -> Unit?
+        private val onFeatureTextClick: (PurchaseItemsDetailsDto) -> Unit?
     ) : RecyclerView.ViewHolder(holderBinding.root) {
         private val itemName: TextView = holderBinding.itemNameTV
 
@@ -42,12 +42,12 @@ class PurchaseReturnListAdapter(
             holderBinding.setGreen = true //item.AdjustmentType == 0
 
             holderBinding.purchaseCountTV.text = item.getPurchaseQtyString()
-            holderBinding.returningCountTV.text = item.getSalesQtyString()
-            holderBinding.itemNameTV.text = item.getItemIDString()
+            holderBinding.returningCountTV.text = item.getUserReturningQtyString()
+            holderBinding.itemNameTV.text = item.getItemListName()
             holderBinding.executePendingBindings()
 
             itemName.setOnClickListener {
-                onFeatureTextClick(item.ItemCode)
+                onFeatureTextClick(item)
             }
         }
     }

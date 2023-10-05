@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.R
 import com.exert.wms.databinding.FragmentPurchaseReturnBaseBinding
-import com.exert.wms.delivery.deliveryNote.item.DeliveryNoteItemActivity
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.MVVMFragment
 import com.exert.wms.returns.api.PurchaseItemsDetailsDto
+import com.exert.wms.returns.purchaseReturn.item.PurchaseReturnItemActivity
 import com.exert.wms.utils.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -63,8 +63,16 @@ class PurchaseReturnBaseFragment :
             if (position != 0) {
                 binding.vendorNameSpinnerTV.isActivated = true
             }
-            mViewModel.selectedCustomerName(parent?.getItemAtPosition(position).toString())
-            binding.vendorNameSpinner.setSelection(mViewModel.getSelectedCustomerNameIndex())
+            mViewModel.selectedVendorName(parent?.getItemAtPosition(position).toString())
+            binding.vendorNameSpinner.setSelection(mViewModel.getSelectedVendorNameIndex())
+        }
+        binding.purchaseInvoiceNoSpinner.selected { parent, position ->
+            binding.purchaseInvoiceNoSpinnerTV.text = parent?.getItemAtPosition(position).toString()
+            if (position != 0) {
+                binding.purchaseInvoiceNoSpinnerTV.isActivated = true
+            }
+            mViewModel.selectedPurchaseInvoiceNo(parent?.getItemAtPosition(position).toString())
+            binding.purchaseInvoiceNoSpinner.setSelection(mViewModel.getSelectedPurchaseInvoiceNoIndex())
         }
 
         binding.updateButton.setOnClickListener {
@@ -87,6 +95,7 @@ class PurchaseReturnBaseFragment :
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 binding.itemsListRecyclerView.apply {
                     adapter = PurchaseReturnListAdapter(list) {
+                        navigateToPurchaseReturnItemScreen(it)
                     }
                     val dividerDrawable = ContextCompat.getDrawable(context, R.drawable.divider)
                     dividerDrawable?.let {
@@ -107,19 +116,14 @@ class PurchaseReturnBaseFragment :
 //                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
 //                bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedWarehouseId())
 //                bundle.putSerializable(Constants.WAREHOUSE, mViewModel.getWarehouseObject())
-                val intent = Intent(requireContext(), DeliveryNoteItemActivity::class.java)
-                intent.putExtras(bundle)
-                startForResult.launch(intent)
+//                val intent = Intent(requireContext(), DeliveryNoteItemActivity::class.java)
+//                intent.putExtras(bundle)
+//                startForResult.launch(intent)
             } else {
                 showBriefToastMessage(
                     getString(R.string.branch_empty_message),
                     coordinateLayout
                 )
-            }
-        }
-        mViewModel.warehouseStringList.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                setWarehouseList(it)
             }
         }
 
@@ -143,6 +147,32 @@ class PurchaseReturnBaseFragment :
                 )
             }
         }
+        mViewModel.branchesStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setWarehouseList(it)
+            }
+        }
+        mViewModel.vendorsStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setVendorsList(it)
+            }
+        }
+        mViewModel.pInvoiceStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setSalesOrdersList(it)
+            }
+        }
+    }
+
+    private fun navigateToPurchaseReturnItemScreen(itemDto: PurchaseItemsDetailsDto) {
+        val bundle = Bundle()
+//        bundle.putSerializable(Constants.ITEM_DTO, itemDto)
+//        requireActivity().startActivity<DeliveryNoteItemActivity>(bundle)
+
+        val intent = Intent(requireContext(), PurchaseReturnItemActivity::class.java)
+        bundle.putSerializable(Constants.ITEM_DTO, itemDto)
+        startForResult.launch(intent)
+
     }
 
     private fun setWarehouseList(stringList: List<String>) {
@@ -153,6 +183,24 @@ class PurchaseReturnBaseFragment :
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_layout)
         binding.branchSpinner.adapter = adapter
+    }
+
+    private fun setSalesOrdersList(stringList: List<String>) {
+        val adapter = SpinnerCustomAdapter(
+            requireContext(), stringList.toTypedArray(), android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_item_layout)
+        binding.purchaseInvoiceNoSpinner.adapter = adapter
+    }
+
+    private fun setVendorsList(stringList: List<String>) {
+        val adapter = SpinnerCustomAdapter(
+            requireContext(),
+            stringList.toTypedArray(),
+            android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_item_layout)
+        binding.vendorNameSpinner.adapter = adapter
     }
 
     private val startForResult =
@@ -168,7 +216,7 @@ class PurchaseReturnBaseFragment :
                     } else {
                         intent.getParcelableExtra(Constants.STOCK_ITEMS_DETAILS_DTO)
                     }
-                    mViewModel.setPurchaseItemsDetails(item)
+                    mViewModel.setPurchaseReturnItemsDetails(item)
                 }
             }
         }

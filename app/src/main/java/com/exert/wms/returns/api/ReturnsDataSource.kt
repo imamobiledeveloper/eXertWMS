@@ -22,4 +22,20 @@ class ReturnsDataSource(
         }
     }
 
+    fun getPurchaseInvoiceNoList(requestDto: PurchaseReturnInvoiceRequestDto): Flow<PurchaseReturnInvoiceListResponseDto> {
+        return flow {
+            emit(
+                deliveryDataSourceRemote.getPurchaseInvoiceNoList(requestDto)
+            )
+        }
+    }
+
+    fun getPurchaseItemsList(requestDto: PurchaseItemsListItemsRequestDto): Flow<PurchaseItemsListResponseDto> {
+        return flow {
+            emit(
+                deliveryDataSourceRemote.getPurchaseItemsList(requestDto)
+            )
+        }
+    }
+
 }
