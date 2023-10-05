@@ -22,7 +22,7 @@ class DeliveryNoteItemActivity :
 
     override val showHomeButton: Int = 1
 
-    override fun getLayoutID(): Int = R.layout.activity_transfer_in_item
+    override fun getLayoutID(): Int = R.layout.activity_delivery_note_item
 
     override val mViewModel by lazy {
         getViewModel<DeliveryNoteItemViewModel>()
@@ -101,7 +101,7 @@ class DeliveryNoteItemActivity :
         }
 
         mViewModel.quantityString.observe(this) { value ->
-            binding.quantityEditText.text = value.toEditable()
+            binding.quantityEditText.setText(value)
         }
     }
 

@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
 import com.exert.wms.delivery.api.*
 import com.exert.wms.mvvmbase.BaseViewModel
-import com.exert.wms.transfer.api.TransferInSerialItemDto
-import com.exert.wms.transfer.api.TransferSerialItemListDto
 import com.exert.wms.utils.StringProvider
 import com.exert.wms.warehouse.*
 import kotlinx.coroutines.*
@@ -141,8 +139,7 @@ class DeliveryNoteBaseViewModel(
         val request = DeliveryNoteItemsListWithOutItemsRequestDto(
             BranchID = getSelectedBranchId(),
             CustomerID = getSelectedCustomerNameIndex(),
-            SalesOrderIDs = listOf(SalesOrderIDDto(SalesOrderID = getSelectedSalesOrdersId())),
-//            ItemsDetails = emptyList()
+            SalesOrderIDs = listOf(SalesOrderIDDto(SalesOrderID = getSelectedSalesOrdersId()))
         )
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
             deliveryRepo.getDeliveryNotesItemsList(request)
@@ -180,18 +177,21 @@ class DeliveryNoteBaseViewModel(
                 .collect { response ->
                     Log.v("WMS EXERT", "saveDeliveryNoteItems response $response")
                     hideProgressIndicator()
-                    if (response.Success) {
+                    if (response.Success && response.ErrorMessage.isEmpty()) {
                         _enableUpdateButton.postValue(false)
                         _saveItemStatus.postValue(true)
                     } else {
-                        _errorFieldMessage.postValue(stringProvider.getString(R.string.error_save_delivery_notes_items))
+                        if (response.ErrorMessage.isNotEmpty()) {
+                            _errorFieldMessage.postValue(response.ErrorMessage)
+                        } else {
+                            _errorFieldMessage.postValue(stringProvider.getString(R.string.error_save_delivery_notes_items))
+                        }
                     }
                 }
         }
     }
 
     private fun processRequest(list: List<DeliveryNoteItemsDetailsDto>): DeliveryNoteItemsListRequestDto {
-
         val itemsDetailsList: MutableList<DeliveryNoteItemDto> = mutableListOf()
         list.map { dto ->
             itemsDetailsList.add(
@@ -203,7 +203,7 @@ class DeliveryNoteBaseViewModel(
                     SalesOrderItemID = dto.SalesOrderItemID,
                     TrackingTypes = dto.TrackingTypes,
                     Quantity = dto.Quantity,
-                    SerialItems = getConvertedSerialItems(dto.SerialItems)
+                    SerialItems = dto.SerialItems
                 )
             )
         }
@@ -215,19 +215,9 @@ class DeliveryNoteBaseViewModel(
         )
     }
 
-    private fun getConvertedSerialItems(list: List<TransferSerialItemListDto>?): List<TransferInSerialItemDto> {
-        val newList = ArrayList<TransferInSerialItemDto>()
-        if (list != null && list.isNotEmpty()) {
-            list.map {
-                newList.add(it.getConvertedTransferInSerialItemDto())
-            }
-        }
-        return newList
-    }
-
     private fun getItemList() = deliveryNotesItemsList
 
-    fun checkDetails() {
+    private fun checkDetails() {
         if (selectedBranch.isNotEmpty() && selectedBranch != stringProvider.getString(
                 R.string.select_branch
             )
@@ -259,11 +249,11 @@ class DeliveryNoteBaseViewModel(
 
     private fun getSalesInvoiceNumbers(branchId: Long, customerId: Long) {
         showProgressIndicator()
-        val requestDto = SalesOrdersRequestDto(BranchID = branchId, CustomerID = customerId)
+        val requestDto = SalesInvoiceRequestDto(BranchID = branchId, CustomerID = customerId)
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
-            deliveryRepo.getSalesOrdersList(requestDto)
+            deliveryRepo.getSalesInvoiceNosList(requestDto)
                 .collect { dto ->
-                    Log.v("WMS EXERT", "getSalesOrdersList response $dto")
+                    Log.v("WMS EXERT", "getSalesInvoiceNosList response $dto")
                     hideProgressIndicator()
                     if (dto.success && dto.SalesOrders != null && dto.SalesOrders.isNotEmpty()) {
                         salesOrdersList = dto.SalesOrders

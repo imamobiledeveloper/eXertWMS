@@ -26,6 +26,7 @@
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
             android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/saveButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -43,116 +44,21 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     app:itemDto="@{itemDto}"
-                    app:labelFour="@{@string/manufacturer}"
+                    app:labelFour="@{@string/ordered_quantity}"
                     app:labelOne="@{@string/item_name_english}"
-                    app:labelThree="@{@string/stock}"
+                    app:labelThree="@{@string/manufacturer}"
                     app:labelTwo="@{@string/item_name_arabic}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/manufacturingDateLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/itemNameManufactureLayout">
-
-                    <TextView
-                        android:id="@+id/manufacturingDateLabel"
-                        style="@style/TextViewBold14Label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/manufacturing_date"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/manufacturingDateEditTextLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:minHeight="50dp"
-                        app:boxBackgroundMode="none"
-                        app:errorTextAppearance="@style/EdittextError"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/manufacturingDateLabel">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/manufacturingDateEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            style="@style/EditTextEnabledStyle"
-                            android:drawablePadding="8dp"
-                            android:ellipsize="end"
-                            android:enabled="false"
-                            android:gravity="center_vertical"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:maxLength="20"
-                            android:singleLine="true" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/warrantyPeriodLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/manufacturingDateLayout">
-
-                    <TextView
-                        android:id="@+id/warrantyPeriodLabel"
-                        style="@style/TextViewBold14Label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/warranty_period"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/warrantyPeriodEditTextLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:minHeight="50dp"
-                        app:boxBackgroundMode="none"
-                        app:errorTextAppearance="@style/EdittextError"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/warrantyPeriodLabel">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/warrantyPeriodEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            style="@style/EditTextEnabledStyle"
-                            android:ellipsize="end"
-                            android:enabled="false"
-                            android:gravity="center_vertical"
-                            android:imeOptions="actionNext"
-                            android:inputType="numberDecimal"
-                            android:maxLength="20"
-                            android:singleLine="true" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/warrantyPeriodLayout">
 
                     <TextView
                         android:id="@+id/quantityLabel"
@@ -192,7 +98,6 @@
                             android:inputType="numberDecimal"
                             android:maxLength="20"
                             android:singleLine="true"
-                            android:text="@{viewModel.quantityString}"
                             tools:text="123456789012345678901234567890" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -203,12 +108,25 @@
 
         </ScrollView>
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/saveButton"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:enabled="false"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinateLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_16dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/saveButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

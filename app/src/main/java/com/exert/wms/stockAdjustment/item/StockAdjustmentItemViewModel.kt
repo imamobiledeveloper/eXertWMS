@@ -338,6 +338,17 @@ class StockAdjustmentItemViewModel(
         if (adjustmentType.isNotEmpty()) {
             setAdjustmentType(adjustmentType)
             if (adjustmentType == stringProvider.getString(R.string.positive)) {// positive adjustment
+                serialItemsList?.takeIf { it.itemId == itemsDto?.ItemID && it.serialItemsDto != null && it.serialItemsDto.isNotEmpty() }
+                    ?.let { slist ->
+                        val list = mutableListOf<WarehouseSerialItemDetails>()
+                        slist.serialItemsDto?.let { dtoList ->
+                            dtoList.map { it.getConvertedWarehouseSerialItemDetails() }.let {
+                              list.addAll(it)
+                          }
+                        }
+                        _warehouseSerialNosList.postValue(list.toList())
+                    }
+
                 setCheckBoxState(false)
                 _showAddItemButton.value = true
             } else {//negative type-get serial numbers list
@@ -414,7 +425,7 @@ class StockAdjustmentItemViewModel(
     }
 
     fun setCheckedItems(checkedItems: ArrayList<SerialItemsDto>) {
-        userCheckedItems = checkedItems
+        userCheckedItems.addAll(checkedItems)
         if (userCheckedItems.isNotEmpty()) {
             if (getAdjustmentType() == stringProvider.getString(R.string.positive)) {
                 setConvertedWarehouseSerialNoList()

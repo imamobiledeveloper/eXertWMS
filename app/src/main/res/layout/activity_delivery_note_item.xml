@@ -97,7 +97,6 @@
                             android:inputType="numberDecimal"
                             android:maxLength="20"
                             android:singleLine="true"
-                            android:text="@{viewModel.quantityString}"
                             tools:text="123456789012345678901234567890" />
 
                     </com.google.android.material.textfield.TextInputLayout>

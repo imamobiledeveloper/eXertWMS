@@ -17,7 +17,7 @@
         android:layout_height="match_parent">
 
         <ScrollView
-            android:id="@+id/transferInScrollView"
+            android:id="@+id/deliveryReceiptScrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="16dp"
@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/transferInLayout"
+                android:id="@+id/deliveryReceiptLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -128,7 +128,7 @@
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:text="@string/select_customer_name"
+                        android:text="@string/select_vendor_name"
                         android:textAlignment="gravity"
                         app:drawableEndCompat="@drawable/ic_arrow_down"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -233,6 +233,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/itemListTV"
                         tools:itemCount="10"
+                        android:visibility="gone"
                         tools:listitem="@layout/stock_adjustment_item_name_list_item_layout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -257,6 +258,7 @@
             android:id="@+id/coordinateLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_16dp"
             app:layout_constraintBottom_toTopOf="@+id/updateButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

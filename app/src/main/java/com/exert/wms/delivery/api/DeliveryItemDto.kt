@@ -3,8 +3,6 @@ package com.exert.wms.delivery.api
 import android.os.Parcelable
 import androidx.annotation.Keep
 import com.exert.wms.SerialItemsDto
-import com.exert.wms.transfer.api.TransferInSerialItemDto
-import com.exert.wms.transfer.api.TransferSerialItemListDto
 import kotlinx.parcelize.Parcelize
 
 @Keep
@@ -26,7 +24,7 @@ data class DeliveryReceiptItemsDto(
 
 @Parcelize
 @Keep
-data class DeliveryReceiptItemsDetailsDto(
+data class DeliveryReceiptItemsDetailsDto1(
     val ItemSeqNumber: Int = 0,
     val WarehouseID: Long = 0,
     val ItemID: Long = 0,
@@ -44,8 +42,11 @@ data class DeliveryReceiptItemsDetailsDto(
 @Keep
 data class
 DeliveryReceiptItemsRequestDto(
-    val StockAdjustmentID: Long = 0,
-    val ItemsDetails: List<DeliveryReceiptItemsDetailsDto>
+    val DeliveryReceiptID: Long = 0,
+    val BranchID: Long = 0,
+    val VendorID: Long = 0,
+    val PurchaseOrderIDs: List<PurchaseOrderIDDto>,
+    val ItemsDetails: List<DeliveryReceiptItemsDetailsRequestDto>
 ) {
     companion object
 }
@@ -53,7 +54,8 @@ DeliveryReceiptItemsRequestDto(
 @Keep
 data class SaveDeliveryReceiptItemsResponse(
     val Success: Boolean,
-    val SalesList: ArrayList<String> = arrayOf<String>().toCollection(ArrayList())
+    val DeliveryReceiptID: String,
+    val ErrorMessage: String
 ) {
     companion object
 }
@@ -93,7 +95,7 @@ data class DeliveryNoteItemsDetailsDto(
     val CC: String,
     val VATPercentage: Double,
     val SQM: Double,
-    val SerialItems: List<TransferSerialItemListDto>?,
+    val SerialItems: List<SerialItemsDto>?,
 ) : Parcelable, java.io.Serializable {
     companion object
 
@@ -117,7 +119,6 @@ DeliveryNoteItemsListWithOutItemsRequestDto(
     val BranchID: Long = 0,
     val CustomerID: Int = 0,
     val SalesOrderIDs: List<SalesOrderIDDto>,
-//    val ItemsDetails: List<DeliveryNoteItemDto>
 ) {
     companion object
 }
@@ -151,7 +152,7 @@ DeliveryNoteItemDto(
     val SalesOrderItemID: Int = 0,
     val TrackingTypes: Int = 0,
     val Quantity: Double = 0.0,
-    val SerialItems: List<TransferInSerialItemDto>
+    val SerialItems: List<SerialItemsDto>?
 ) {
     companion object
 }
@@ -168,6 +169,15 @@ data class SaveDeliveryNoteItemsResponse(
 @Keep
 data class
 SalesOrdersRequestDto(
+    val BranchID: Long = 0,
+    val VendorID: Long = 0,
+) {
+    companion object
+}
+
+@Keep
+data class
+SalesInvoiceRequestDto(
     val BranchID: Long = 0,
     val CustomerID: Long = 0,
 ) {
@@ -192,3 +202,125 @@ SalesOrdersDto(
     companion object
 }
 
+@Keep
+data class
+PurchaseOrdersListResponseDto(
+    val success: Boolean,
+    val PurchaseOrders: List<PurchaseOrdersDto>?
+) {
+    companion object
+}
+
+@Keep
+data class
+PurchaseOrdersDto(
+    val PurchaseOrderID: Long = 0,
+    val PurchaseOrderNumber: String
+) {
+    companion object
+}
+
+@Keep
+data class
+DeliveryReceiptItemsListWithOutItemsRequestDto(
+    val BranchID: Long = 0,
+    val VendorID: Long = 0,
+    val PurchaseOrderIDs: List<PurchaseOrderIDDto>,
+) {
+    companion object
+}
+
+@Keep
+data class
+PurchaseOrderIDDto(
+    val PurchaseOrderID: Long = 0
+) {
+    companion object
+}
+
+@Keep
+data class
+DeliveryReceiptItemsResponseDto(
+    val success: Boolean,
+    val Items: List<DeliveryReceiptItemsDetailsDto>?
+) {
+    companion object
+}
+
+
+@Parcelize
+@Keep
+data class DeliveryReceiptItemsDetailsDto(
+    val ItemSeqNumber:Int=0,
+    val WarehouseID: Long = 0,
+    val Warehouse: String,
+    val ItemID: Long = 0,
+    val ItemCode: String,
+    val ItemName: String,
+    val ItemNameArabic: String,
+    val Manfacturer: String,
+    val UnitID: Int = 0,
+    val UnitName: String,
+    val QTYReceived: Double,
+    val QTYReceiving: Double,
+    val QTYBackOrder: Double,
+    val QtyBalance: Double,
+    val QtyCanceled: Double,
+    val Quantity: Double,
+    val QTYOrdered: Double,
+    var OrderedQty: Double?=0.0,
+    val LCYPrice: Double,
+    val Price: Double,
+    val DiscountAmount: Double,
+    val DiscountPercentage: Double,
+    val AllowBackOrder: Boolean,
+    val NetTotal: Double,
+    val Factor: Double,
+    val TotalCost: Double,
+    val PurchaseOrderID: Int,
+    val PurchaseOrderItemID: Int,
+    val ItemDiscountPercentage: Double,
+    val ItemDiscount: Double,
+    val VendorDiscountPercentage: Double,
+    val VendorDiscount: Double,
+    val TrackingTypes: Int,
+    val IsSerialItem: Int,
+    val CC: String,
+    val VATPercentage: Double,
+    val SQM: Double,
+//    val SerialItems: List<TransferSerialItemListDto>?,
+    val SerialItems: List<SerialItemsDto>?= emptyList(),
+) : Parcelable, java.io.Serializable {
+    companion object
+
+    fun getQuantityString() = Quantity.toString()
+
+    fun getItemListName() = "$ItemCode - $ItemName"
+}
+
+
+@Parcelize
+@Keep
+data class DeliveryReceiptItemsDetailsRequestDto(
+    val ItemSeqNumber:Int=0,
+    val ItemID: Long = 0,
+    val ItemCode: String,
+    val UnitID: Int = 0,
+    val Quantity: Double,
+    val OrderedQty: Double?=0.0,
+    val LCYPrice: Double,
+    val Price: Double,
+    val DiscountAmount: Double,
+    val DiscountPercentage: Double,
+    val Factor: Double,
+    val PurchaseOrderID: Int,
+    val PurchaseOrderItemID: Int,
+    val ItemDiscountPercentage: Double,
+    val ItemDiscount: Double,
+    val VendorDiscountPercentage: Double,
+    val VendorDiscount: Double,
+    val TrackingTypes: Int,
+    val SerialItems: List<SerialItemsDto>?= emptyList(),
+) : Parcelable, java.io.Serializable {
+    companion object
+}

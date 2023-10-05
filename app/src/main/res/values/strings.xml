@@ -37,6 +37,7 @@
     <string name="stock">Stock</string>
     <string name="system_stock">System Stock</string>
     <string name="manufacturer">Manufacturer</string>
+    <string name="ordered_quantity">Ordered Quantity</string>
     <string name="item_name">Item Name</string>
     <string name="part_code">Part Code</string>
     <string name="total_stock">Total Stock</string>
@@ -71,6 +72,7 @@
     <string name="select_from_warehouse">Select From Warehouse</string>
     <string name="select_transfer_out_no">Select Transfer Out Number</string>
     <string name="select_sales_invoice_no">Select Sales Invoice Number</string>
+    <string name="select_purchase_invoice_no">Select Purchase Invoice Number</string>
     <string name="select_warranty_period">Select Warranty Period</string>
     <string name="update">Update</string>
     <string name="adjustment_type">Adjustment type</string>
@@ -86,6 +88,7 @@
     <string name="warehouse_from_to_empty_message">"Please select FromWarehouse and ToWarehouse from the list"</string>
     <string name="warehouse_list_empty_message">"Warehouse are not available"</string>
     <string name="sales_invoice_list_empty_message">"Sales Invoices are not available"</string>
+    <string name="purchase_invoice_list_empty_message">"Purchase Invoices are not available"</string>z
     <string name="vendors_list_empty_message">"Vendors are not available"</string>
     <string name="customers_list_empty_message">"Customers are not available"</string>
     <string name="branches_list_empty_message">"Branches are not available"</string>
@@ -102,7 +105,7 @@
     <string name="add">Add</string>
     <string name="dd_mm_yyyy">DD/MM/YYYY</string>
     <string name="add_serial_no">Add Serial No</string>
-    <string name="error_manufaturer_empty_message">Please select Manufacture Date</string>
+    <string name="error_manufacturer_empty_message">Please select Manufacture Date</string>
     <string name="error_warranty_empty_message">Please select Warranty Period from list</string>
     <string name="error_serial_number_empty_message">Please enter valid Serial Number</string>
     <string name="remember_me">Remember Me</string>
@@ -189,6 +192,9 @@
     <string name="transfer_out_numbers_list_empty_message">Transfer out numbers are not found</string>
     <string name="transfer_in_items_list_empty_message">Transfer out numbers are not found</string>
     <string name="delivery_notes_items_list_empty_message">Delivery notes items are not found</string>
+    <string name="delivery_receipt_items_list_empty_message">Delivery receipt items are not found</string>
+    <string name="purchase_orders_list_empty_message">Purchase orders are not available</string>
+    <string name="quantity_empty_message">Quantity should not be empty</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>

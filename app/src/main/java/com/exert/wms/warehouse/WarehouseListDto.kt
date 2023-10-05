@@ -8,7 +8,7 @@ import java.io.Serializable
 @Keep
 data class WarehouseListDto(
     val success: Boolean,
-    val Warehouses: List<WarehouseDto>,
+    val Warehouses: List<WarehouseDto>?,
 ) {
     companion object
 }
@@ -80,6 +80,29 @@ data class BranchesListDto(
 @Parcelize
 @Keep
 data class BranchDto(
+    val BranchID: Long,
+    val BranchCode: String,
+) : Serializable, Parcelable {
+    override fun toString(): String {
+        return this.BranchCode
+    }
+
+    companion object
+}
+
+
+
+@Keep
+data class PurchaseOrdersListDto(
+    val success: Boolean,
+    val Branches: List<PurchaseOrderDto>?,
+) {
+    companion object
+}
+
+@Parcelize
+@Keep
+data class PurchaseOrderDto(
     val BranchID: Long,
     val BranchCode: String,
 ) : Serializable, Parcelable {

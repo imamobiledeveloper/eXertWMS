@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.widget.TextView
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -12,14 +14,11 @@ import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDtoList
 import com.exert.wms.databinding.ActivityDeliveryReceiptItemBinding
+import com.exert.wms.delivery.api.DeliveryReceiptItemsDetailsDto
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.transfer.transferIn.item.TransferInQuantityActivity
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
-import com.exert.wms.utils.toEditable
-import com.exert.wms.warehouse.WarehouseDto
-import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class DeliveryReceiptItemActivity :
@@ -40,8 +39,7 @@ class DeliveryReceiptItemActivity :
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 
-    var warehouseDto: WarehouseDto? = null
-    var warehouseId: Long? = null
+    var itemDto: DeliveryReceiptItemsDetailsDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,32 +51,36 @@ class DeliveryReceiptItemActivity :
         observeViewModel()
 
         binding.quantityEditTextLayout.setEndIconOnClickListener {
-//            mViewModel.checkItemDetailsEntered(
-//                binding.itemPartCodeSerialNoLayout.itemPartCodeEditText.text.toString(),
-//                binding.itemPartCodeSerialNoLayout.itemSerialNoEditText.text.toString(),
-//            )
+            mViewModel.checkSerialItems()
         }
 
-    }
+        binding.saveButton.setOnClickListener {
+            mViewModel.saveItemStock(
+                binding.quantityEditText.text.toString()
+            )
+        }
 
-    private fun clearOtherField(
-        clearEditText: TextInputEditText,
-        clearHintTV: TextView
-    ) {
-        hideKeyBoard()
-        clearFields()
-        clearTextInputEditText(clearEditText, clearHintTV)
-        mViewModel.clearPreviousSearchedListItems()
-    }
+        binding.quantityEditText.addTextChangedListener(object :
+            TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
 
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(text: Editable?) {
+                mViewModel.setAdjustmentQuantity(text.toString())
+            }
+
+        })
+    }
 
     private fun observeViewModel() {
-        warehouseId = intent.getLongExtra(Constants.ITEM_WAREHOUSE_ID, 0)
-        warehouseDto = intent.getSerializable(Constants.WAREHOUSE, WarehouseDto::class.java)
-        mViewModel.setSelectedWarehouseDto(warehouseId, warehouseDto)
+        itemDto =
+            intent.getSerializable(Constants.ITEM_DTO, DeliveryReceiptItemsDetailsDto::class.java)
+        mViewModel.setSelectedItemDto(itemDto)
 
-        binding.itemNameManufactureLayout.itemStockLabel.text = getString(R.string.serial_no)
-        binding.itemNameManufactureLayout.itemStockLabel.isEnabled = true
+        binding.itemNameManufactureLayout.itemStockLayout.visibility = View.VISIBLE
 
         mViewModel.isLoadingData.observe(this) { status ->
             if (status) {
@@ -104,7 +106,9 @@ class DeliveryReceiptItemActivity :
                     getColor(R.color.blue_50)
                 )
                 val intent = Intent().apply {
-                    putExtra(Constants.STOCK_ITEMS_DETAILS_DTO, mViewModel.getSavedItemDto())
+                    val bundle = Bundle()
+                    bundle.putSerializable(Constants.STOCK_ITEMS_DETAILS_DTO, mViewModel.getSavedItemDto())
+                    putExtras(bundle)
                 }
                 setResult(Activity.RESULT_OK, intent)
                 finish()
@@ -121,33 +125,49 @@ class DeliveryReceiptItemActivity :
                     Constants.USER_SELECTED_WAREHOUSE_LIST,
                     mViewModel.getUserSelectedSerialItemsList()
                 )
-                bundle.putSerializable(
-                    Constants.WAREHOUSE_STOCK_DETAILS,
-                    mViewModel.getWarehouseStockDetails()
-                )
-                val intent = Intent(this, TransferInQuantityActivity::class.java)
+                val intent = Intent(this, DeliveryReceiptQuantityActivity::class.java)
                 intent.putExtras(bundle)
                 startForResult.launch(intent)
 
             } else {
-                showBriefToastMessage(getString(R.string.invalid_details_message), coordinateLayout)
+                showBriefToastMessage(getString(R.string.serial_items_empty_message), coordinateLayout)
             }
         }
 
         mViewModel.itemDto.observe(this) { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
+            binding.itemNameManufactureLayout.itemManufactureEditText.setText(
+                itemDto?.QTYOrdered?.toString() ?: "")
+            binding.itemNameManufactureLayout.itemStockEditText.setText(dto.Manufacturer)
         }
 
         mViewModel.isItemSerialized.observe(this) { isItSerialized ->
-            binding.quantityEditText.isEnabled = !isItSerialized
-            binding.quantityEditTextLayout.isEndIconVisible = isItSerialized
+            binding.quantityEditText.isEnabled = !isItSerialized//false //!isItSerialized
+            binding.quantityEditTextLayout.isEndIconVisible = isItSerialized//true//isItSerialized
         }
 
         mViewModel.quantityString.observe(this) { value ->
-            binding.quantityEditText.text = value.toEditable()
+            binding.quantityEditText.setText(value)
         }
 
+        mViewModel.errorQuantityType.observe(this) {
+            if (it) {
+                enableErrorMessage(
+                    binding.quantityEditTextLayout,
+                    binding.quantityEditText,
+                    getString(R.string.quantity_empty_message), false
+                )
+            } else {
+                disableErrorMessage(
+                    binding.quantityEditTextLayout,
+                    binding.quantityEditText,
+                )
+            }
+        }
+        mViewModel.enableSaveButton.observe(this) {
+            binding.saveButton.isEnabled = it
+        }
     }
 
     private val startForResult =
@@ -170,19 +190,6 @@ class DeliveryReceiptItemActivity :
             }
         }
 
-    private fun clearFields() {
-        binding.itemNameManufactureLayout.itemNameEnglishEditText.text =
-            getString(R.string.empty).toEditable()
-        binding.itemNameManufactureLayout.itemNameArabicEditText.text =
-            getString(R.string.empty).toEditable()
-        binding.itemNameManufactureLayout.itemStockEditText.text =
-            getString(R.string.empty).toEditable()
-        binding.itemNameManufactureLayout.itemManufactureEditText.text =
-            getString(R.string.empty).toEditable()
-        binding.quantityEditText.text =
-            getString(R.string.empty).toEditable()
-
-    }
 
     override fun onBindData(binding: ActivityDeliveryReceiptItemBinding) {
         binding.viewModel = mViewModel

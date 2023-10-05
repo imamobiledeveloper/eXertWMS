@@ -120,7 +120,7 @@ class TransferOutBaseViewModel(
                 .collect { response ->
                     Log.v("WMS EXERT", "saveTransferOutItems response $response")
                     hideProgressIndicator()
-                    if (response.Success) {
+                    if (response.Success && response.ErrorMessage.isEmpty()) {
                         _enableUpdateButton.postValue(false)
                         _saveItemStatus.postValue(true)
                     } else {

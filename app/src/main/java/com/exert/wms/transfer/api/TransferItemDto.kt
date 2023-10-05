@@ -100,7 +100,7 @@ ExternalTransferItemsDto(
     val ItemNameArabic: String? = null,
     val Manfacturer: String? = null,
     val TrackingType: Long = 0,
-    val UnitID: Long = 0,
+    val UnitID: Int = 0,
 //    val ItemPartCode: String? = null,
 //    val ItemSerialNumber: String? = null,
     val UnitName: String? = null,
@@ -114,40 +114,40 @@ ExternalTransferItemsDto(
     val SQM: Double = 0.0,
     val TotalSalesPrice: Double = 0.0,
     val IsSerialItem: Int = 0,
-    val SerialItems: List<TransferSerialItemListDto>?
-//    val SerialItems: List<SerialItemsDto>?
-) : Parcelable,java.io.Serializable {
+//    val SerialItems: List<TransferSerialItemListDto>?
+    val SerialItems: List<SerialItemsDto>?
+) : Parcelable, Serializable {
     companion object
 
     fun getItemListName() = "$ItemCode - $ItemName"
     fun getQuantityString() = "$Quantity"
+
 }
-
-@Parcelize
-@Keep
-data class TransferSerialItemListDto(
-//    val ItemSerialID: String? = null,
-//    val ItemID: String? = null,
-//    val SerialNumber: String = "0",
-//    val StockInHand: String? = null,
-//    val MFGDate: String? = null,
-//    val WarrantyDays: String? = null,
-//    val ActualQuantity: String? = null,
-//    val TrackingType: String? = null,
-//    val IsChecked: String? = null,
-    val SerialNumber: String? = "",
-    val ManufactureDate: String? = "",
-    val WarrantyPeriod: String? = "",
-    val Quantity: String? = "",
-) : Parcelable, Serializable {
-    companion object
-
-    fun getConvertedTransferInSerialItemDto()=  TransferInSerialItemDto(SerialNumber=SerialNumber?.takeIf { it.isNotEmpty() }?.let { it.toLong() } ?: 0, ManufactureDate = ManufactureDate, WarrantyPeriod =WarrantyPeriod ,Quantity= Quantity?.toInt()
-        ?: 0)
-
-    fun getConvertedWarehouseSerialItemDetails()= WarehouseSerialItemDetails(WarehouseID=0,SerialNumber=SerialNumber,MFGDate=ManufactureDate,
-        WarentyDays=WarrantyPeriod,selected = false)
-}
+//
+//@Parcelize
+//@Keep
+//data class TransferSerialItemListDto(
+////    val ItemSerialID: String? = null,
+////    val ItemID: String? = null,
+////    val SerialNumber: String = "0",
+////    val StockInHand: String? = null,
+////    val MFGDate: String? = null,
+////    val WarrantyDays: String? = null,
+////    val ActualQuantity: String? = null,
+////    val TrackingType: String? = null,
+////    val IsChecked: String? = null,
+//    val SerialNumber: String = "",
+//    val ManufactureDate: String = "",
+//    val WarrantyPeriod: String = "",
+//    val Quantity: Double = 0.0,
+//) : Parcelable, Serializable {
+//    companion object
+//
+//    fun getConvertedTransferInSerialItemDto()=  TransferInSerialItemDto(SerialNumber=SerialNumber, ManufactureDate = ManufactureDate, WarrantyPeriod =WarrantyPeriod ,Quantity= Quantity)
+//
+//    fun getConvertedWarehouseSerialItemDetails()= WarehouseSerialItemDetails(WarehouseID=0,SerialNumber=SerialNumber,MFGDate=ManufactureDate,
+//        WarentyDays=WarrantyPeriod,selected = false)
+//}
 
 @Keep
 data class
@@ -181,7 +181,7 @@ data class TransferInItemDto(
     val ItemID: Long = 0,
     val ItemCode: String,
     val Quantity: Double,
-    val SerialItems: List<TransferInSerialItemDto>
+    val SerialItems: List<SerialItemsDto>
 ) : Parcelable {
     companion object
 }
@@ -189,10 +189,10 @@ data class TransferInItemDto(
 @Parcelize
 @Keep
 data class TransferInSerialItemDto(
-    val SerialNumber:Long = 0,
+    val SerialNumber:String? = "",
     val ManufactureDate: String? = "",
     val WarrantyPeriod: String? = "",
-    val Quantity:Int = 0,
+    val Quantity:Double? = 0.0,
 ) : Parcelable {
     companion object
 }

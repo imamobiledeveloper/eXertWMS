@@ -74,7 +74,6 @@
                         android:text="@string/add"
                         android:textColor="@color/white"
                         android:textSize="16sp"
-                        android:visibility="@{viewModel.showAddItemButton == true ? View.VISIBLE : View.INVISIBLE}"
                         app:drawableStartCompat="@drawable/ic_add_circle_white"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -87,7 +86,8 @@
                         android:layout_marginEnd="10dp"
                         android:gravity="center_vertical"
                         android:text="@string/serial_nos_list"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/addButton"
+                        app:layout_constraintEnd_toStartOf="@+id/addButton"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

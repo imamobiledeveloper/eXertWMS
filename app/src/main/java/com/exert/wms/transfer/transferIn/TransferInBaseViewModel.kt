@@ -183,7 +183,11 @@ class TransferInBaseViewModel(
                         _enableUpdateButton.postValue(false)
                         _saveItemStatus.postValue(true)
                     } else {
-                        _errorFieldMessage.postValue(stringProvider.getString(R.string.error_save_transfer_in_items))
+                        if (response.ErrorMessage.isNotEmpty()) {
+                            _errorFieldMessage.postValue(response.ErrorMessage)
+                        } else {
+                            _errorFieldMessage.postValue(stringProvider.getString(R.string.error_save_transfer_in_items))
+                        }
                     }
                 }
         }
@@ -197,7 +201,7 @@ class TransferInBaseViewModel(
                     ItemID = dto.ItemID,
                     ItemCode = (dto.ItemCode ?: ""),
                     Quantity = dto.Quantity,
-                    SerialItems = getConvertedSerialItems(dto.SerialItems)
+                    SerialItems = dto.SerialItems?.let { it } ?: emptyList()//getConvertedSerialItems(dto.SerialItems)
             ))
         }
         return SaveTransferInRequestDto(
@@ -208,15 +212,15 @@ class TransferInBaseViewModel(
         )
     }
 
-    private fun getConvertedSerialItems(list: List<TransferSerialItemListDto>?): List<TransferInSerialItemDto> {
-        val newList=ArrayList<TransferInSerialItemDto>()
-        if(list!=null && list.isNotEmpty()){
-            list.map {
-                newList.add(it.getConvertedTransferInSerialItemDto())
-            }
-        }
-        return newList
-    }
+//    private fun getConvertedSerialItems(list: List<TransferSerialItemListDto>?): List<TransferInSerialItemDto> {
+//        val newList=ArrayList<TransferInSerialItemDto>()
+//        if(list!=null && list.isNotEmpty()){
+//            list.map {
+//                newList.add(it.getConvertedTransferInSerialItemDto())
+//            }
+//        }
+//        return newList
+//    }
 
     private fun getItemList() = transfersInItemsList
 

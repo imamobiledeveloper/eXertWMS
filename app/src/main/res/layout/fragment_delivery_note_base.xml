@@ -16,259 +16,269 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/deliveryNoteLayout"
+        <ScrollView
+            android:id="@+id/deliveryNoteScrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_15dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/updateButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/branchTV"
-                style="@style/TextViewBold16Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/branch"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/branchSpinnerLayout"
+                android:id="@+id/deliveryNoteLayout"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="@dimen/margin_10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/branchTV">
-
-                <Spinner
-                    android:id="@+id/branchSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#00FFFFFF"
-                    android:dropDownWidth="match_parent"
-                    android:overlapAnchor="false"
-                    android:popupBackground="@drawable/edittext_rectangle_white_bg"
-                    android:popupElevation="15dp"
-                    android:theme="@style/Spinner"
-                    app:layout_constraintBottom_toBottomOf="@+id/branchSpinnerTV"
-                    app:layout_constraintTop_toTopOf="@+id/branchSpinnerTV" />
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/branchSpinnerTV"
-                    style="@style/TextViewLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edittext_rectangle_white_bg"
-                    android:drawablePadding="@dimen/margin_10dp"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:text="@string/select_branch"
-                    android:textAlignment="gravity"
-                    app:drawableEndCompat="@drawable/ic_arrow_down"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/customerNameTV"
-                style="@style/TextViewBold16Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:gravity="center_vertical"
-                android:text="@string/customer_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/branchSpinnerLayout" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/customerNameSpinnerLayout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="@dimen/margin_10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/customerNameTV">
-
-                <Spinner
-                    android:id="@+id/customerNameSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#00FFFFFF"
-                    android:dropDownWidth="match_parent"
-                    android:overlapAnchor="false"
-                    android:popupBackground="@drawable/edittext_rectangle_white_bg"
-                    android:popupElevation="15dp"
-                    android:theme="@style/Spinner"
-                    app:layout_constraintBottom_toBottomOf="@+id/customerNameSpinnerTV"
-                    app:layout_constraintTop_toTopOf="@+id/customerNameSpinnerTV" />
-
-                <TextView
-                    android:id="@+id/customerNameSpinnerTV"
-                    style="@style/TextViewLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edittext_rectangle_white_bg"
-                    android:drawablePadding="@dimen/margin_10dp"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:text="@string/select_customer_name"
-                    android:textAlignment="gravity"
-                    app:drawableEndCompat="@drawable/ic_arrow_down"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/salesInvoiceNoTV"
-                style="@style/TextViewBold16Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16dp"
-                android:gravity="center_vertical"
-                android:text="@string/sales_invoice_no"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/customerNameSpinnerLayout" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/salesInvoiceNoSpinnerLayout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="@dimen/margin_10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/salesInvoiceNoTV">
-
-                <Spinner
-                    android:id="@+id/salesInvoiceNoSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#00FFFFFF"
-                    android:dropDownWidth="match_parent"
-                    android:overlapAnchor="false"
-                    android:popupBackground="@drawable/edittext_rectangle_white_bg"
-                    android:popupElevation="15dp"
-                    android:theme="@style/Spinner"
-                    app:layout_constraintBottom_toBottomOf="@+id/salesInvoiceNoSpinnerTV"
-                    app:layout_constraintTop_toTopOf="@+id/salesInvoiceNoSpinnerTV" />
-
-                <TextView
-                    android:id="@+id/salesInvoiceNoSpinnerTV"
-                    style="@style/TextViewLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edittext_rectangle_white_bg"
-                    android:drawablePadding="@dimen/margin_10dp"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:text="@string/select_sales_invoice_no"
-                    android:textAlignment="gravity"
-                    app:drawableEndCompat="@drawable/ic_arrow_down"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/itemsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/margin_20dp"
-                android:layout_marginBottom="@dimen/margin_15dp"
-                app:layout_constraintBottom_toTopOf="@+id/updateButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/salesInvoiceNoSpinnerLayout">
-
-                <TextView
-                    android:id="@+id/quantityTV"
-                    style="@style/TextViewHeaderBlueLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="26dp"
-                    android:layout_marginEnd="70dp"
-                    android:text="@string/quantity"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/itemListTV"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/itemListTV"
-                    style="@style/TextViewHeaderBlueLabel"
+                    android:id="@+id/branchTV"
+                    style="@style/TextViewBold16Label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/items_list"
+                    android:text="@string/branch"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/quantityTV"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/itemsListRecyclerView"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/branchSpinnerLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/edittext_rectangle_less_padding_bg"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/itemListTV"
-                    tools:itemCount="10"
-                    tools:listitem="@layout/stock_adjustment_item_name_list_item_layout" />
+                    app:layout_constraintTop_toBottomOf="@+id/branchTV">
+
+                    <Spinner
+                        android:id="@+id/branchSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#00FFFFFF"
+                        android:dropDownWidth="match_parent"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@drawable/edittext_rectangle_white_bg"
+                        android:popupElevation="15dp"
+                        android:theme="@style/Spinner"
+                        app:layout_constraintBottom_toBottomOf="@+id/branchSpinnerTV"
+                        app:layout_constraintTop_toTopOf="@+id/branchSpinnerTV" />
+
+                    <TextView
+                        android:id="@+id/branchSpinnerTV"
+                        style="@style/TextViewLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edittext_rectangle_white_bg"
+                        android:drawablePadding="@dimen/margin_10dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/select_branch"
+                        android:textAlignment="gravity"
+                        app:drawableEndCompat="@drawable/ic_arrow_down"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/customerNameTV"
+                    style="@style/TextViewBold16Label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/customer_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/branchSpinnerLayout" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/customerNameSpinnerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/customerNameTV">
+
+                    <Spinner
+                        android:id="@+id/customerNameSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#00FFFFFF"
+                        android:dropDownWidth="match_parent"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@drawable/edittext_rectangle_white_bg"
+                        android:popupElevation="15dp"
+                        android:theme="@style/Spinner"
+                        app:layout_constraintBottom_toBottomOf="@+id/customerNameSpinnerTV"
+                        app:layout_constraintTop_toTopOf="@+id/customerNameSpinnerTV" />
+
+                    <TextView
+                        android:id="@+id/customerNameSpinnerTV"
+                        style="@style/TextViewLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edittext_rectangle_white_bg"
+                        android:drawablePadding="@dimen/margin_10dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/select_customer_name"
+                        android:textAlignment="gravity"
+                        app:drawableEndCompat="@drawable/ic_arrow_down"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/salesInvoiceNoTV"
+                    style="@style/TextViewBold16Label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/sales_invoice_no"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/customerNameSpinnerLayout" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/salesInvoiceNoSpinnerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/salesInvoiceNoTV">
+
+                    <Spinner
+                        android:id="@+id/salesInvoiceNoSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#00FFFFFF"
+                        android:dropDownWidth="match_parent"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@drawable/edittext_rectangle_white_bg"
+                        android:popupElevation="15dp"
+                        android:theme="@style/Spinner"
+                        app:layout_constraintBottom_toBottomOf="@+id/salesInvoiceNoSpinnerTV"
+                        app:layout_constraintTop_toTopOf="@+id/salesInvoiceNoSpinnerTV" />
+
+                    <TextView
+                        android:id="@+id/salesInvoiceNoSpinnerTV"
+                        style="@style/TextViewLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edittext_rectangle_white_bg"
+                        android:drawablePadding="@dimen/margin_10dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/select_sales_invoice_no"
+                        android:textAlignment="gravity"
+                        app:drawableEndCompat="@drawable/ic_arrow_down"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/itemsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/margin_20dp"
+                    android:layout_marginBottom="@dimen/margin_15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/salesInvoiceNoSpinnerLayout">
+
+                    <TextView
+                        android:id="@+id/quantityTV"
+                        style="@style/TextViewHeaderBlueLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="26dp"
+                        android:layout_marginEnd="70dp"
+                        android:text="@string/quantity"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/itemListTV"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/itemListTV"
+                        style="@style/TextViewHeaderBlueLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/items_list"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/quantityTV"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/itemsListRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/edittext_rectangle_less_padding_bg"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/itemListTV"
+                        tools:itemCount="10"
+                        android:visibility="gone"
+                        tools:listitem="@layout/stock_adjustment_item_name_list_item_layout" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/updateButton"
-                style="@style/ButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:text="@string/update"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/updateButton"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="@string/update"
+            android:layout_margin="@dimen/margin_16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:id="@+id/coordinateLayout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/updateButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_16dp"
+            app:layout_constraintBottom_toTopOf="@+id/updateButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/blue_light"
-                android:indeterminate="true"
-                android:indeterminateTint="@color/blue_50"
-                android:indeterminateTintMode="src_atop"
-                android:minWidth="40dp"
-                android:minHeight="40dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blue_light"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/blue_50"
+            android:indeterminateTintMode="src_atop"
+            android:minWidth="40dp"
+            android:minHeight="40dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

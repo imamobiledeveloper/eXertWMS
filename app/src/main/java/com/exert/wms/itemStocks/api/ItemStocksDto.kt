@@ -2,7 +2,7 @@ package com.exert.wms.itemStocks.api
 
 import android.os.Parcelable
 import androidx.annotation.Keep
-import com.exert.wms.transfer.api.TransferSerialItemListDto
+import com.exert.wms.SerialItemsDto
 import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
@@ -47,7 +47,7 @@ data class ItemsDto(
     val SNO: Long = 0,
     val IsSerialItem: Int = 0,
     val wStockDetails: List<WarehouseStockDetails>?,
-    var convertedStockDetails: List<TransferSerialItemListDto>? = emptyList(),
+    var convertedStockDetails: List<SerialItemsDto>? = emptyList(),
     var Warehouse: String? = ""
 ) : Serializable, Parcelable {
     companion object

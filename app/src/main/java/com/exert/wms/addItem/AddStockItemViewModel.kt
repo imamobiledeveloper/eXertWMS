@@ -32,7 +32,7 @@ class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseVi
         serialNum: String
     ): Boolean {
         return if (manufacture.isEmpty()) {
-            _errorMessage.postValue(stringProvider.getString(R.string.error_manufaturer_empty_message))
+            _errorMessage.postValue(stringProvider.getString(R.string.error_manufacturer_empty_message))
             false
         } else if (warranty.isNullOrEmpty() || warranty == stringProvider.getString(R.string.select_warranty_period)) {
             _errorMessage.postValue(stringProvider.getString(R.string.error_warranty_empty_message))
@@ -55,7 +55,7 @@ class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseVi
                 SerialNumber = serialNum,
                 ManufactureDate = getFormattedDateFromDate(manufacture),
                 WarrantyPeriod = getWarrantyNumber(warranty),
-                0
+                1.0
             )
             _serialItem.postValue(item)
         }

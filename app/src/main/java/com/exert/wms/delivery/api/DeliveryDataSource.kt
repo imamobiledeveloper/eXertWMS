@@ -22,10 +22,18 @@ class DeliveryDataSource(
         }
     }
 
-    fun getSalesOrdersList(requestDto: SalesOrdersRequestDto): Flow<SalesOrdersListResponseDto> {
+    fun getSalesOrdersList(requestDto: SalesOrdersRequestDto): Flow<PurchaseOrdersListResponseDto> {
         return flow {
             emit(
                 deliveryDataSourceRemote.getSalesOrdersList(requestDto)
+            )
+        }
+    }
+
+    fun getSalesInvoiceNosList(requestDto: SalesInvoiceRequestDto): Flow<SalesOrdersListResponseDto> {
+        return flow {
+            emit(
+                deliveryDataSourceRemote.getSalesInvoiceNosList(requestDto)
             )
         }
     }
@@ -34,6 +42,14 @@ class DeliveryDataSource(
         return flow {
             emit(
                 deliveryDataSourceRemote.getDeliveryNotesItemsList(requestDto)
+            )
+        }
+    }
+
+    fun getDeliveryReceiptItemsList(requestDto: DeliveryReceiptItemsListWithOutItemsRequestDto): Flow<DeliveryReceiptItemsResponseDto> {
+        return flow {
+            emit(
+                deliveryDataSourceRemote.getDeliveryReceiptItemsList(requestDto)
             )
         }
     }

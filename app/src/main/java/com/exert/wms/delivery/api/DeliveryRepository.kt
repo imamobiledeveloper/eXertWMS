@@ -12,11 +12,18 @@ class DeliveryRepository(private val transferDataSource: DeliveryDataSource) {
         return transferDataSource.saveDeliveryNoteItems(requestDto)
     }
 
-    fun getSalesOrdersList(requestDto: SalesOrdersRequestDto): Flow<SalesOrdersListResponseDto> {
+    fun getSalesInvoiceNosList(requestDto: SalesInvoiceRequestDto): Flow<SalesOrdersListResponseDto> {
+        return transferDataSource.getSalesInvoiceNosList(requestDto)
+    }
+
+    fun getPurchaseOrdersList(requestDto: SalesOrdersRequestDto): Flow<PurchaseOrdersListResponseDto> {
         return transferDataSource.getSalesOrdersList(requestDto)
     }
 
-    fun getDeliveryNotesItemsList(requestDto: DeliveryNoteItemsListRequestDto): Flow<DeliveryNoteItemsResponseDto> {
+    fun getDeliveryNotesItemsList(requestDto: DeliveryNoteItemsListWithOutItemsRequestDto): Flow<DeliveryNoteItemsResponseDto> {
         return transferDataSource.getDeliveryNotesItemsList(requestDto)
+    }
+    fun getDeliveryReceiptItemsList(requestDto: DeliveryReceiptItemsListWithOutItemsRequestDto): Flow<DeliveryReceiptItemsResponseDto> {
+        return transferDataSource.getDeliveryReceiptItemsList(requestDto)
     }
 }

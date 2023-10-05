@@ -93,11 +93,11 @@ class StockQuantityAdjustmentActivity :
             showBottomSheetDialog()
         }
 
-        mViewModel.errorGetItemsStatusMessage.observe(this, Observer { status ->
+        mViewModel.errorGetItemsStatusMessage.observe(this) { status ->
             showBriefToastMessage(status, coordinateLayout)
-        })
+        }
 
-        mViewModel.warehouseSerialNosList.observe(this, Observer { list ->
+        mViewModel.warehouseSerialNosList.observe(this) { list ->
             if (list != null) {
                 binding.serialNumbersListRecyclerView.layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -119,31 +119,31 @@ class StockQuantityAdjustmentActivity :
 
                         })
             }
-        })
+        }
 
-        mViewModel.showAddItemButton.observe(this, Observer {
+        mViewModel.showAddItemButton.observe(this) {
             binding.addButton.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        })
+        }
 
-        mViewModel.enableSaveButton.observe(this, Observer {
+        mViewModel.enableSaveButton.observe(this) {
             binding.saveButton.isEnabled = it
-        })
+        }
 
-        mViewModel.checkedSerialItemsList.observe(this, Observer { list ->
+        mViewModel.checkedSerialItemsList.observe(this) { list ->
             val data = Intent()
             data.putExtra(Constants.CHECKED_SERIAL_ITEMS, list)
             setResult(Activity.RESULT_OK, data)
             finish()
-        })
+        }
 
-        mViewModel.errorFieldMessage.observe(this, Observer { msg ->
+        mViewModel.errorFieldMessage.observe(this) { msg ->
             if (msg.isNotEmpty()) {
                 showBriefToastMessage(
                     msg,
                     coordinateLayout
                 )
             }
-        })
+        }
     }
 
     override fun onBackPressed() {

@@ -69,9 +69,9 @@ class DeliveryNoteItemViewModel : BaseViewModel() {
 
     fun getItemDto(): DeliveryNoteItemsDetailsDto? = selectedItemDto
 
-    fun setSelectedDeliveryNoteItemDto(itemDto: DeliveryNoteItemsDetailsDto?) {
-        selectedItemDtoInSerialNoScreen = itemDto
-        itemDto?.let { dto ->
+    fun setSelectedDeliveryNoteItemDto(nItemDto: DeliveryNoteItemsDetailsDto?) {
+        selectedItemDtoInSerialNoScreen = nItemDto
+        nItemDto?.let { dto ->
             val itemDto = getConvertedItemDto(dto)
             _convertedItemsDto.postValue(itemDto)
             if (dto.SerialItems?.isNotEmpty() == true) {
@@ -84,7 +84,6 @@ class DeliveryNoteItemViewModel : BaseViewModel() {
         }
     }
 
-
     private fun getConvertedItemDto(it: DeliveryNoteItemsDetailsDto): ItemsDto =
         ItemsDto(
             ItemName = it.ItemName,
@@ -92,6 +91,7 @@ class DeliveryNoteItemViewModel : BaseViewModel() {
             Manufacturer = it.Manfacturer,
             ItemPartCode = it.ItemCode,
             Stock = it.Quantity,
+            Warehouse=it.Warehouse,
             convertedStockDetails = it.SerialItems,
             wStockDetails = emptyList()
         )

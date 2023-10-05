@@ -1,21 +1,18 @@
 package com.exert.wms.delivery.deliveryReceipt.item
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
 import com.exert.wms.SerialItemsDtoList
+import com.exert.wms.delivery.api.DeliveryReceiptItemsDetailsDto
 import com.exert.wms.itemStocks.api.*
 import com.exert.wms.mvvmbase.BaseViewModel
 import com.exert.wms.stockAdjustment.api.StockItemsDetailsDto
 import com.exert.wms.utils.StringProvider
-import com.exert.wms.warehouse.WarehouseDto
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 class DeliveryReceiptItemViewModel(
     private val stringProvider: StringProvider,
@@ -70,174 +67,48 @@ class DeliveryReceiptItemViewModel(
     private val _itemsList = MutableLiveData<List<StockItemsDetailsDto>?>()
     val itemsList: MutableLiveData<List<StockItemsDetailsDto>?> = _itemsList
 
-    private val _errorAdjustmentType = MutableLiveData<Boolean>()
-    val errorAdjustmentType: LiveData<Boolean> = _errorAdjustmentType
+    private val _errorQuantityType = MutableLiveData<Boolean>()
+    val errorQuantityType: LiveData<Boolean> = _errorQuantityType
 
-    private var itemPartCode: String = ""
-    var itemSerialNo: String = ""
-    private var selectedWarehouse: String = ""
-    private var selectedWarehouseID: Long? = null
+    private val _convertedItemsDto = MutableLiveData<ItemsDto>()
+    val convertedItemsDto: LiveData<ItemsDto> = _convertedItemsDto
 
-    private var warehouseDto: WarehouseDto? = null
-    private var showCheckBoxes: Boolean = false
+    private val _dnSerialItems = MutableLiveData<List<WarehouseSerialItemDetails>>()
+    val dnSerialItems: LiveData<List<WarehouseSerialItemDetails>> = _dnSerialItems
 
-    var stockItemsList: ArrayList<StockItemsDetailsDto> = ArrayList()
-
-    private var adjustmentQuantity: Double = 0.0
-    private var adjustmentTypeValue: String = ""
-    var itemsDto: ItemsDto? = null
-    var stockItemsDetailsDto: StockItemsDetailsDto? = null
+    private var selectedItemDto: DeliveryReceiptItemsDetailsDto? = null
+    private var stockItemsDetailsDto: DeliveryReceiptItemsDetailsDto? = null
 
     private var userCheckedItems: ArrayList<SerialItemsDto> = ArrayList()
     private var userSelectedSerialItemsList: ArrayList<SerialItemsDto> = ArrayList()
     private var userSelectedItemId: Long? = null
-    var alreadySelected: Boolean = true
+    private var alreadySelected: Boolean = true
+    private var showCheckBoxes: Boolean = false
 
-    fun checkItemDetailsEntered(itemPartCode: String, itemSerialNo: String) {
-        if (validateUserDetails(itemPartCode, itemSerialNo, adjustmentTypeValue)) {
-            _navigateToSerialNo.postValue(true)
-        }
-    }
+    var itemsDto: ItemsDto? = null
+    private var selectedItemDtoInSerialNoScreen: DeliveryReceiptItemsDetailsDto? = null
 
     private fun validateUserDetails(
-        itemPartCode: String,
-        itemSerialNo: String,
-        adjustmentType: String
+        quantity: String
     ): Boolean {
-        return if (selectedWarehouse.isEmpty()) {
-            _errorFieldMessage.postValue(stringProvider.getString(R.string.warehouse_empty_message))
+        return if (quantity.isEmpty()) {
+            _errorQuantityType.postValue(true)
             false
-        } else if (adjustmentType.isEmpty()) {
-            _errorAdjustmentType.postValue(true)
-            false
-        } else if (itemPartCode.isEmpty() && itemSerialNo.isEmpty()) {
-            _errorItemPartCode.postValue(true)
-            false
-        } else if (itemsDto == null) {
-            _errorFieldMessage.postValue(stringProvider.getString(R.string.invalid_details_message))
+        } else if (selectedItemDto == null) {
+            _errorFieldMessage.postValue(stringProvider.getString(R.string.item_empty_message))
             false
         } else {
-            _errorItemSelectionMessage.postValue(true)
             true
         }
     }
 
-    fun setItemPartCodeValue(partCode: String) {
-        itemPartCode = partCode
-    }
-
-    fun searchItemWithPartCode() {
-        if (itemPartCode.isNotEmpty() && warehouseDto != null) {
-            getWarehouseSerialNosList(itemPartCode, "", warehouseDto!!.WarehouseID)
-            _errorItemPartCode.postValue(false)
-        } else {
-            _errorItemPartCode.postValue(true)
-        }
-    }
-
-    private fun getWarehouseSerialNosList(
-        itemPartCode: String,
-        itemSerialNo: String,
-        warehouseId: Long
-    ) {
-        showProgressIndicator()
-        val request = WarehouseSerialItemsRequestDto(
-            ItemPartCode = itemPartCode,
-            WarehouseID = warehouseId,
-            ItemSerialNumber = itemSerialNo
-        )
-        coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
-            itemStocksRepo.getWarehouseSerialNosList(request)
-                .collect { dto ->
-                    Log.v("WMS EXERT", "Stock Adjustment: getWarehouseSerialNosList response $dto")
-                    hideProgressIndicator()
-
-                    if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
-                        itemsDto = dto.Items[0]
-                        _itemDto.postValue(dto.Items[0])
-                        _isItemSerialized.postValue(dto.Items[0].IsSerialItem == 1)
-
-                        val warehouseList = dto.Items[0].wStockDetails
-                        if (warehouseList != null && warehouseList.isNotEmpty() && warehouseList[0].wSerialItemDetails != null) {
-                            warehouseList[0].wSerialItemDetails?.let {
-                                _warehouseSerialNosList.postValue(it)
-                            } ?: _errorGetItemsStatusMessage.postValue(
-                                stringProvider.getString(
-                                    R.string.error_warehouse_serials_nos_message
-                                )
-                            )
-
-                        } else {
-                            _errorGetItemsStatusMessage.postValue(
-                                stringProvider.getString(
-                                    R.string.error_warehouse_serials_nos_message
-                                )
-                            )
-                        }
-                    } else {
-                        _errorGetItemsStatusMessage.postValue(
-                            stringProvider.getString(
-                                R.string.error_failed_warehouse_serials_nos_message
-                            )
-                        )
-                    }
-                }
-        }
-
-    }
-
-    fun saveItemStock(itemPartCode: String, itemSerialNo: String) {
-        if (validateUserDetails(itemPartCode, itemSerialNo, adjustmentTypeValue)) {
-            stockItemsDetailsDto = StockItemsDetailsDto(
-                WarehouseID = getWarehouseId(),
-                ItemID = getItemId(),
-                ItemCode = getItemCode(),
-                AdjustmentType = getAdjustmentTypeIntValue(),
-                AdjustmentQty = adjustmentQuantity,
-                SerialItems = userSelectedSerialItemsList,
-                displayName = getItemListName()
+    fun saveItemStock(quantity: String) {
+        if (validateUserDetails(quantity)) {
+            stockItemsDetailsDto = selectedItemDto?.copy(
+                Quantity = quantity.toDouble(),
+                SerialItems = userSelectedSerialItemsList//if(isItemSerialize){ userSelectedSerialItemsList } else emptyList()
             )
             _saveItemStatus.postValue(true)
-        }
-    }
-    private fun getItemListName() = run {
-        itemsDto?.let { it.getItemListName() } ?: ""
-    }
-    private fun getAdjustmentTypeIntValue() =
-        if (adjustmentTypeValue == stringProvider.getString(R.string.positive)) 0 else 1
-
-    private fun getWarehouseId() = run {
-        warehouseDto?.let { it.WarehouseID } ?: 0
-    }
-
-    private fun getItemId() = run {
-        itemsDto?.let { it.ItemID } ?: 0
-    }
-
-    private fun getItemCode() = run {
-        itemsDto?.let { it.ItemCode } ?: ""
-    }
-
-    fun getSavedItemDto() = stockItemsDetailsDto
-
-    fun setSelectedWarehouseDto(warehouseId: Long?, warehouse: WarehouseDto?) {
-        selectedWarehouseID = warehouseId
-        warehouse?.let {
-            warehouseDto = it
-            selectedWarehouse = it.Warehouse
-        }
-    }
-
-    fun setItemSerialNumberValue(serialNo: String) {
-        itemSerialNo = serialNo
-    }
-
-    fun searchItemWithSerialNumber() {
-        if (itemSerialNo.isNotEmpty() && warehouseDto != null) {
-            getWarehouseSerialNosList("", itemSerialNo, warehouseDto!!.WarehouseID)
-            _errorItemSerialNo.postValue(false)
-        } else {
-            _errorItemSerialNo.postValue(true)
         }
     }
 
@@ -247,19 +118,126 @@ class DeliveryReceiptItemViewModel(
                 userSelectedSerialItemsList =
                     serialItemsList.serialItemsDto as ArrayList<SerialItemsDto>
                 userSelectedItemId = dtoList.itemId
-                adjustmentQuantity = getAdjustmentQuantity().toDouble()
                 _quantityString.postValue(getAdjustmentQuantity().toString())
                 _enableSaveButton.postValue(true)
             } else if (serialItemsList.itemId == userSelectedItemId && (serialItemsList.serialItemsDto == null || serialItemsList.serialItemsDto.isEmpty())) {
                 userSelectedSerialItemsList =
                     serialItemsList.serialItemsDto as ArrayList<SerialItemsDto>
-                adjustmentQuantity = getAdjustmentQuantity().toDouble()
                 _quantityString.postValue(getAdjustmentQuantity().toString())
                 _enableSaveButton.postValue(false)
             }
         }
     }
 
+    private fun getWarrantyNumber(warrantyPeriod: String?): String? {
+        warrantyPeriod?.let { str ->
+            if (str.contains("Year") || str.contains("Years")) {
+                return str.filter { it.isDigit() }
+            }
+        }
+        return warrantyPeriod
+    }
+
+    fun getItemDto(): DeliveryReceiptItemsDetailsDto? = selectedItemDto
+
+    private fun getAdjustmentQuantity() =
+        userSelectedSerialItemsList.size
+
+    fun getUserSelectedSerialItemsList(): SerialItemsDtoList =
+        SerialItemsDtoList(userSelectedSerialItemsList, userSelectedItemId)
+
+
+    fun checkAndEnableSaveButton() {
+        _enableSaveButton.postValue(alreadySelected)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        coroutineJob?.cancel()
+    }
+
+    fun setSelectedItemDto(item: DeliveryReceiptItemsDetailsDto?) {
+        item?.let {
+            selectedItemDto = it
+            selectedItemDto?.let {
+                it.OrderedQty = it.QTYOrdered
+            }
+            val dto = getConvertedItemDto(it)
+            itemsDto = dto
+            _itemDto.postValue(dto)
+            enteredQuantity = it.Quantity
+            _quantityString.postValue(it.Quantity.toString())
+            _isItemSerialized.postValue(it.IsSerialItem == 1)
+        }
+    }
+
+    private fun getConvertedItemDto(it: DeliveryReceiptItemsDetailsDto): ItemsDto =
+        ItemsDto(
+            ItemName = it.ItemName,
+            ItemNameAlias = it.ItemNameArabic,
+            Manufacturer = it.Manfacturer,
+            ItemPartCode = it.ItemCode,
+            Stock = it.Quantity,
+            Warehouse = it.Warehouse,
+            convertedStockDetails = emptyList(), //it.SerialItems,
+            wStockDetails = emptyList()
+        )
+
+    fun checkSerialItems() {
+        selectedItemDto?.let {
+            _navigateToSerialNo.postValue(true)
+        } ?: _navigateToSerialNo.postValue(false)
+    }
+
+    fun getSavedItemDto() = stockItemsDetailsDto
+
+    private var enteredQuantity: Double = 0.0
+
+    fun setAdjustmentQuantity(text: String) {
+        if (text.isNotEmpty()) {
+            enteredQuantity = text.toDouble()
+            _enableSaveButton.postValue(enteredQuantity > 0)
+        } else {
+            _enableSaveButton.postValue(false)
+        }
+    }
+
+    fun setSelectedDeliveryReceiptItemDto(
+        rItemDto: DeliveryReceiptItemsDetailsDto?,
+        serialItemsList: SerialItemsDtoList?
+    ) {
+        selectedItemDtoInSerialNoScreen = rItemDto
+        rItemDto?.let { dto ->
+            val itemDto = getConvertedItemDto(dto)
+            _convertedItemsDto.postValue(itemDto)
+            if (dto.SerialItems?.isNotEmpty() == true) {
+                val list = mutableListOf<WarehouseSerialItemDetails>()
+                dto.SerialItems.map { it.getConvertedWarehouseSerialItemDetails() }.let {
+                    list.addAll(it)
+                }
+                _dnSerialItems.postValue(list.toList())
+            } else if (serialItemsList != null && serialItemsList.serialItemsDto?.isNotEmpty() == true) {
+                val list = mutableListOf<WarehouseSerialItemDetails>()
+                serialItemsList.serialItemsDto.map { it.getConvertedWarehouseSerialItemDetails() }
+                    .let {
+                        list.addAll(it)
+                    }
+                _dnSerialItems.postValue(list.toList())
+            }
+        }
+    }
+
+    fun getCheckBoxStateValue() = showCheckBoxes
+
+    fun setCheckedItems(checkedItems: ArrayList<SerialItemsDto>) {
+        userCheckedItems = checkedItems
+        if (userCheckedItems.isNotEmpty()) {
+            setConvertedWarehouseSerialNoList()
+            _enableSaveButton.postValue(true)
+        } else {
+            _enableSaveButton.postValue(false)
+        }
+    }
 
     private fun setConvertedWarehouseSerialNoList() {
         val newList: List<WarehouseSerialItemDetails>? =
@@ -279,153 +257,8 @@ class DeliveryReceiptItemViewModel(
         }
     }
 
-    private fun getWarrantyNumber(warrantyPeriod: String?): String? {
-        warrantyPeriod?.let { str ->
-            if (str.contains("Year") || str.contains("Years")) {
-                return str.filter { it.isDigit() }
-            }
-        }
-        return warrantyPeriod
-    }
-
-    fun getItemDto(): ItemsDto? = itemsDto
-
-    fun getWarehouseStockDetails(): WarehouseStockDetails? {
-        return itemsDto?.wStockDetails?.find { it.WarehouseID == selectedWarehouseID }
-    }
-
-    private fun setCheckBoxState(checkBoxState: Boolean) {
-        showCheckBoxes = checkBoxState
-    }
-
-    private fun getAdjustmentQuantity() =
-        userSelectedSerialItemsList.size
-
-    fun getCheckBoxStateValue() = showCheckBoxes
-
-    fun setWarehouseAndItemDetails(
-        itemsDto: ItemsDto?,
-        warehouseStockDetails: WarehouseStockDetails?,
-        adjustmentType: String,
-        serialItemsList: SerialItemsDtoList?
-    ) {
-        if (adjustmentType.isNotEmpty()) {
-            setAdjustmentType(adjustmentType)
-            if (adjustmentType == stringProvider.getString(R.string.positive)) {// positive adjustment
-                setCheckBoxState(false)
-                _showAddItemButton.value = true
-            } else {//negative type-get serial numbers list
-                setCheckBoxState(true)
-                _showAddItemButton.value = false
-                getSerialNumbersList(itemsDto, warehouseStockDetails, serialItemsList)
-            }
-        }
-    }
-
-    private fun getSerialNumbersList(
-        itemsDto: ItemsDto?,
-        warehouseStockDetails: WarehouseStockDetails?,
-        serialItemsList: SerialItemsDtoList?
-    ) {
-        if (itemsDto != null) {
-            if (warehouseStockDetails?.wSerialItemDetails != null && warehouseStockDetails.wSerialItemDetails.isNotEmpty()) {
-                checkIsListHavingAnySelectedObjects(
-                    itemsDto.ItemID,
-                    warehouseStockDetails.wSerialItemDetails,
-                    serialItemsList
-                )
-            } else if (warehouseStockDetails != null) {
-                if ((itemsDto.ItemPartCode != null || itemsDto.ItemSerialNumber != null) && warehouseStockDetails.WarehouseID > 0) {
-                    getWarehouseSerialNosList(
-                        itemsDto.ItemPartCode!!,
-                        itemsDto.ItemSerialNumber!!,
-                        warehouseStockDetails.WarehouseID
-                    )
-                } else {
-                    _errorFieldMessage.postValue(stringProvider.getString(R.string.error_warehouse_empty_message))
-                }
-            } else {
-                _errorFieldMessage.postValue(stringProvider.getString(R.string.invalid_details_message))
-            }
-
-        }
-    }
-
-    private fun checkIsListHavingAnySelectedObjects(
-        itemId: Long,
-        wSerialItemDetails: List<WarehouseSerialItemDetails>,
-        serialItemsList: SerialItemsDtoList?
-    ) {
-        val alreadySelectedList = getSavedItemDto()
-        if (alreadySelectedList != null && alreadySelectedList.ItemCode == itemId.toString() && alreadySelectedList.SerialItems.isNotEmpty()) {
-            wSerialItemDetails.forEach { warehouse ->
-                alreadySelectedList.SerialItems.find { it.SerialNumber == warehouse.SerialNumber }
-                    .run {
-                        warehouse.selected = true
-                        _enableSaveButton.postValue(true)
-                    }
-            }
-        } else {
-            serialItemsList?.takeIf { it.itemId == itemId && it.serialItemsDto != null && it.serialItemsDto.isNotEmpty() }
-                ?.let { list ->
-                    wSerialItemDetails.forEach { warehouse ->
-                        list.serialItemsDto?.find { it.SerialNumber == warehouse.SerialNumber }
-                            .run {
-                                warehouse.selected = true
-                                alreadySelected = true
-                                _enableSaveButton.postValue(true)
-                            }
-                    }
-                }
-
-        }
-        _warehouseSerialNosList.postValue(wSerialItemDetails)
-    }
-
     fun getSelectedItems(itemID: Long) {
         val dto = SerialItemsDtoList(userCheckedItems, itemId = itemID)
         _checkedSerialItemsList.postValue(dto)
-    }
-
-    fun setCheckedItems(checkedItems: ArrayList<SerialItemsDto>) {
-        userCheckedItems = checkedItems
-        if (userCheckedItems.isNotEmpty()) {
-            if (getAdjustmentType() == stringProvider.getString(R.string.positive)) {
-                setConvertedWarehouseSerialNoList()
-            }
-            _enableSaveButton.postValue(true)
-        } else {
-            _enableSaveButton.postValue(false)
-        }
-    }
-
-    fun setAdjustmentType(adjustment: String) {
-        adjustmentTypeValue = adjustment
-        reSetQuantityAndTotalCost()
-        _errorAdjustmentType.postValue(false)
-    }
-
-    private fun reSetQuantityAndTotalCost() {
-        _quantityString.value = ""
-        _enableSaveButton.postValue(false)
-    }
-
-    fun getAdjustmentType() = adjustmentTypeValue
-
-    fun getUserSelectedSerialItemsList(): SerialItemsDtoList =
-        SerialItemsDtoList(userSelectedSerialItemsList, userSelectedItemId)
-
-    fun clearPreviousSearchedListItems() {
-        userSelectedSerialItemsList.clear()
-        userSelectedItemId = null
-    }
-
-    fun checkAndEnableSaveButton() {
-        _enableSaveButton.postValue(alreadySelected)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        coroutineJob?.cancel()
     }
 }

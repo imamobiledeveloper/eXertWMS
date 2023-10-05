@@ -11,15 +11,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.R
 import com.exert.wms.databinding.FragmentDeliveryReceiptBaseBinding
 import com.exert.wms.delivery.api.DeliveryReceiptItemsDetailsDto
+import com.exert.wms.delivery.deliveryReceipt.item.DeliveryReceiptItemActivity
 import com.exert.wms.home.HomeActivity
 import com.exert.wms.mvvmbase.MVVMFragment
-import com.exert.wms.transfer.transferOut.item.TransferOutItemActivity
 import com.exert.wms.utils.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -31,6 +32,9 @@ class DeliveryReceiptBaseFragment :
     override val mViewModel by lazy {
         getViewModel<DeliveryReceiptBaseViewModel>()
     }
+
+    override val coordinateLayout: CoordinatorLayout
+        get() = binding.coordinateLayout
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
@@ -49,14 +53,6 @@ class DeliveryReceiptBaseFragment :
     }
 
     private fun observeViewModel() {
-        binding.purchaseOrderNoSpinner.selected { parent, position ->
-            binding.purchaseOrderNoSpinnerTV.text = parent?.getItemAtPosition(position).toString()
-            if (position != 0) {
-                binding.purchaseOrderNoSpinnerTV.isActivated = true
-            }
-            mViewModel.selectedFromWarehouse(parent?.getItemAtPosition(position).toString())
-            binding.purchaseOrderNoSpinner.setSelection(mViewModel.getSelectedFromWarehouseIndex())
-        }
         binding.toWarehouseSpinner.selected { parent, position ->
             binding.toWarehouseSpinnerTV.text = parent?.getItemAtPosition(position).toString()
             if (position != 0) {
@@ -70,11 +66,17 @@ class DeliveryReceiptBaseFragment :
             if (position != 0) {
                 binding.vendorNameSpinnerTV.isActivated = true
             }
-            mViewModel.selectedCustomerName(parent?.getItemAtPosition(position).toString())
+            mViewModel.selectedVendorName(parent?.getItemAtPosition(position).toString())
             binding.vendorNameSpinner.setSelection(mViewModel.getSelectedVendorNameIndex())
         }
-        binding.addItemsTV.setOnClickListener {
-            mViewModel.checkWarehouse()
+
+        binding.purchaseOrderNoSpinner.selected { parent, position ->
+            binding.purchaseOrderNoSpinnerTV.text = parent?.getItemAtPosition(position).toString()
+            if (position != 0) {
+                binding.purchaseOrderNoSpinnerTV.isActivated = true
+            }
+            mViewModel.selectedPurchaseOrder(parent?.getItemAtPosition(position).toString())
+            binding.purchaseOrderNoSpinner.setSelection(mViewModel.getSelectedPurchaseOrderIndex())
         }
         binding.updateButton.setOnClickListener {
             mViewModel.saveItems()
@@ -92,10 +94,12 @@ class DeliveryReceiptBaseFragment :
         }
         mViewModel.itemsList.observe(viewLifecycleOwner) { list ->
             if (list != null && list.isNotEmpty()) {
+                binding.itemsListRecyclerView.show()
                 binding.itemsListRecyclerView.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 binding.itemsListRecyclerView.apply {
                     adapter = DeliveryReceiptListAdapter(list) {
+                        navigateToDeliveryReceiptItemScreen(it)
                     }
                     val dividerDrawable = ContextCompat.getDrawable(context, R.drawable.divider)
                     dividerDrawable?.let {
@@ -113,10 +117,7 @@ class DeliveryReceiptBaseFragment :
         mViewModel.errorWarehouse.observe(viewLifecycleOwner) {
             if (it) {
                 val bundle = Bundle()
-//                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
-//                bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedWarehouseId())
-//                bundle.putSerializable(Constants.WAREHOUSE, mViewModel.getWarehouseObject())
-                val intent = Intent(requireContext(), TransferOutItemActivity::class.java)
+                val intent = Intent(requireContext(), DeliveryReceiptItemActivity::class.java)
                 intent.putExtras(bundle)
                 startForResult.launch(intent)
             } else {
@@ -132,14 +133,15 @@ class DeliveryReceiptBaseFragment :
             }
         }
 
-        mViewModel.branchesStringList.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                setWarehouseList(it)
-            }
-        }
         mViewModel.vendorsStringList.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 setVendorsList(it)
+            }
+        }
+
+        mViewModel.salesOrdersStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setSalesOrdersList(it)
             }
         }
 
@@ -165,6 +167,14 @@ class DeliveryReceiptBaseFragment :
         }
     }
 
+    private fun navigateToDeliveryReceiptItemScreen(itemsDto: DeliveryReceiptItemsDetailsDto) {
+        val bundle = Bundle()
+        bundle.putSerializable(Constants.ITEM_DTO, itemsDto)
+        val intent = Intent(requireContext(), DeliveryReceiptItemActivity::class.java)
+        intent.putExtras(bundle)
+        startForResult.launch(intent)
+    }
+
     private fun setVendorsList(stringList: List<String>) {
         val adapter = SpinnerCustomAdapter(
             requireContext(),
@@ -174,6 +184,7 @@ class DeliveryReceiptBaseFragment :
         adapter.setDropDownViewResource(R.layout.spinner_item_layout)
         binding.vendorNameSpinner.adapter = adapter
     }
+
     private fun setWarehouseList(stringList: List<String>) {
         val adapter = SpinnerCustomAdapter(
             requireContext(),
@@ -182,6 +193,14 @@ class DeliveryReceiptBaseFragment :
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_layout)
         binding.toWarehouseSpinner.adapter = adapter
+    }
+
+    private fun setSalesOrdersList(stringList: List<String>) {
+        val adapter = SpinnerCustomAdapter(
+            requireContext(), stringList.toTypedArray(), android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_item_layout)
+        binding.purchaseOrderNoSpinner.adapter = adapter
     }
 
     private val startForResult =
