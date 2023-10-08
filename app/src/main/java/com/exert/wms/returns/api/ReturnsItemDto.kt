@@ -9,44 +9,11 @@ import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
 @Keep
-data class PurchaseItemsDto(
-    val warehouse: String,
-    val itemPartCode: String,
-    val itemSerialNo: String,
-    val itemNameEnglish: String,
-    val itemNameArabic: String,
-    val manufacturer: String,
-    val systemStock: Long,
-    val adjustmentType: String,
-    val adjustmentQuantity: Long,
-    val cost: Double,
-    val adjustmentTotalCost: Double,
-) {
-    companion object
-}
-
-@Parcelize
-@Keep
-data class PurchaseItemsDetailsDto1(
-    val ItemSeqNumber: Int = 0,
-    val WarehouseID: Long = 0,
-    val ItemID: Long = 0,
-    val ItemCode: String,
-    val PurchaseQty: Double,
-    val SalesQty: Double,
-    val SerialItems: List<SerialItemsDto>,
-) : Parcelable {
-    companion object
-
-    fun getItemIDString() = ItemID.toString()
-    fun getPurchaseQtyString() = PurchaseQty.toString()
-    fun getSalesQtyString() = SalesQty.toString()
-}
-
-@Keep
 data class
 PurchaseItemsRequestDto(
-    val StockAdjustmentID: Long = 0,
+    val BranchID: Long = 0,
+    val VendorID: Long = 0,
+    val PurchaseID: Long = 0,
     val ItemsDetails: List<PurchaseItemsDetailsDto>
 ) {
     companion object
@@ -55,7 +22,8 @@ PurchaseItemsRequestDto(
 @Keep
 data class SavePurchaseItemsResponse(
     val Success: Boolean,
-    val SalesList: ArrayList<String> = arrayOf<String>().toCollection(ArrayList())
+    val PurchaseReturnID: String,
+    val ErrorMessage: String
 ) {
     companion object
 }
@@ -145,6 +113,7 @@ PurchaseItemsListResponseDto(
 @Parcelize
 @Keep
 data class PurchaseItemsDetailsDto(
+    val ItemSeqNumber: Int = 0,
     val WarehouseID: Long = 0,
     val Warehouse: String,
     val ItemID: Long = 0,
@@ -186,8 +155,8 @@ data class PurchaseItemsDetailsDto(
     val IsSerialItem: Int,
     val UnitPrice: Double,
     val SQM: Double,
-    val SerialItemList: List<PurchaseSerialItemListDto>?,
-    var userReturningQty: Int = 0
+    var userReturningQty: Double = 0.0,
+    val SerialItems: List<SerialItemsDto>? = emptyList(),
 ) : Parcelable, Serializable {
     companion object
 

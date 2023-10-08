@@ -113,7 +113,7 @@ interface ExertWmsApi {
         @Body requestBody: DeliveryNoteItemsListWithOutItemsRequestDto
     ): DeliveryNoteItemsResponseDto
 
-    @GET("api/DeliveryNote/GetApprovedSalesOrders")
+    @GET("api/PurchaseReturn/GetPostedPurchases")
     suspend fun getPurchaseInvoiceNoList(
         @Query("BranchID") BranchID: Long,
         @Query("VendorID") VendorID: Long
@@ -124,8 +124,8 @@ interface ExertWmsApi {
         @Body requestBody: DeliveryReceiptItemsListWithOutItemsRequestDto
     ): DeliveryReceiptItemsResponseDto
 
-    @POST("api/StockAdjustment/SavePurchaseItems")
-    suspend fun savePurchaseItems(
+    @POST("api/PurchaseReturn/SavePurchaseReturn")
+    suspend fun savePurchaseReturn(
         @Body requestBody: PurchaseItemsRequestDto
     ): SavePurchaseItemsResponse
 
@@ -138,9 +138,4 @@ interface ExertWmsApi {
     suspend fun getPurchaseItemsList(
         @Query("PurchaseID") PurchaseID: Long,
     ): PurchaseItemsListResponseDto
-
-    @POST("api/PurchaseReturn/SavePurchaseReturn")
-    suspend fun savePurchaseReturn(
-        @Body requestBody: SalesItemsRequestDto
-    ): SaveSalesItemsResponse
 }

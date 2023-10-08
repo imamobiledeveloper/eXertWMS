@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,9 @@ class PurchaseReturnBaseFragment :
     override val mViewModel by lazy {
         getViewModel<PurchaseReturnBaseViewModel>()
     }
+
+    override val coordinateLayout: CoordinatorLayout
+        get() = binding.coordinateLayout
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
@@ -91,6 +95,7 @@ class PurchaseReturnBaseFragment :
         }
         mViewModel.itemsList.observe(viewLifecycleOwner) { list ->
             if (list != null && list.isNotEmpty()) {
+                binding.itemsListRecyclerView.show()
                 binding.itemsListRecyclerView.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 binding.itemsListRecyclerView.apply {
@@ -159,18 +164,16 @@ class PurchaseReturnBaseFragment :
         }
         mViewModel.pInvoiceStringList.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                setSalesOrdersList(it)
+                setPurchaseInvoicesList(it)
             }
         }
     }
 
-    private fun navigateToPurchaseReturnItemScreen(itemDto: PurchaseItemsDetailsDto) {
+    private fun navigateToPurchaseReturnItemScreen(itemsDto: PurchaseItemsDetailsDto) {
         val bundle = Bundle()
-//        bundle.putSerializable(Constants.ITEM_DTO, itemDto)
-//        requireActivity().startActivity<DeliveryNoteItemActivity>(bundle)
-
+        bundle.putSerializable(Constants.ITEM_DTO, itemsDto)
         val intent = Intent(requireContext(), PurchaseReturnItemActivity::class.java)
-        bundle.putSerializable(Constants.ITEM_DTO, itemDto)
+        intent.putExtras(bundle)
         startForResult.launch(intent)
 
     }
@@ -185,7 +188,7 @@ class PurchaseReturnBaseFragment :
         binding.branchSpinner.adapter = adapter
     }
 
-    private fun setSalesOrdersList(stringList: List<String>) {
+    private fun setPurchaseInvoicesList(stringList: List<String>) {
         val adapter = SpinnerCustomAdapter(
             requireContext(), stringList.toTypedArray(), android.R.layout.simple_spinner_item
         )

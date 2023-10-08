@@ -114,7 +114,7 @@ class PurchaseReturnBaseViewModel(
     }
 
     fun selectedBranch(branchName: String) {
-        if (branchName != stringProvider.getString(R.string.select_branch)) {
+        if (branchName.isNotEmpty() && branchName != stringProvider.getString(R.string.select_branch)) {
             resetItemsList()
             selectedBranch = branchName
             checkDetails()
@@ -122,11 +122,10 @@ class PurchaseReturnBaseViewModel(
     }
 
     fun selectedVendorName(vendorName: String) {
-        if (vendorName != stringProvider.getString(R.string.select_vendor_name)) {
+        if (vendorName.isNotEmpty() && vendorName != stringProvider.getString(R.string.select_vendor_name)) {
             resetItemsList()
             selectedVendor = vendorName
             checkDetails()
-//            getPurchaseItemsList()
         }
     }
 
@@ -189,14 +188,13 @@ class PurchaseReturnBaseViewModel(
         }
     }
 
-    private fun updatedItems(stockList: ArrayList<PurchaseItemsDetailsDto>) {
+    private fun updatedItems(itemList: ArrayList<PurchaseItemsDetailsDto>) {
         showProgressIndicator()
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
-            val requestDto =
-                PurchaseItemsRequestDto(StockAdjustmentID = 0, ItemsDetails = stockList)
+            val requestDto = processRequestDto(itemList)
             returnsRepo.savePurchaseItems(requestDto)
                 .collect { response ->
-                    Log.v("WMS EXERT", "saveDeliveryNoteItems response $response")
+                    Log.v("WMS EXERT", "savePurchaseItems response $response")
                     hideProgressIndicator()
                     if (response.Success) {
                         _enableUpdateButton.postValue(false)
@@ -208,9 +206,19 @@ class PurchaseReturnBaseViewModel(
         }
     }
 
+    private fun processRequestDto(itemList: ArrayList<PurchaseItemsDetailsDto>): PurchaseItemsRequestDto {
+        return PurchaseItemsRequestDto(
+            BranchID = getSelectedBranchId(),
+            VendorID = getSelectedVendorId(),
+            PurchaseID = getSelectedPInvoiceId(),
+            ItemsDetails = itemList
+        )
+    }
+
     private fun checkAndEnableUpdateButton() {
         if (stockItemsList.size > 0) {
-            _enableUpdateButton.postValue(true)
+            val allReturnQtyNotEmpty = stockItemsList.any { it.userReturningQty > 0 }
+            _enableUpdateButton.postValue(allReturnQtyNotEmpty)
         } else {
             _enableUpdateButton.postValue(false)
         }
@@ -249,15 +257,24 @@ class PurchaseReturnBaseViewModel(
     }
 
     fun setPurchaseReturnItemsDetails(item: PurchaseItemsDetailsDto?) {
-//        item?.let { dto ->
-//            val itemDto = dto.copy(ItemSeqNumber = (getItemListSize() + 1))
-//            addItemToList(itemDto)
-//
-//            getItemList().takeIf { it.isNotEmpty() }?.let { list ->
-//                _itemsList.postValue(list)
-//            }
-//            checkAndEnableUpdateButton()
-//        }
+        item?.let { dto ->
+            val itemDto = dto.copy(ItemSeqNumber = (getItemListSize() + 1))
+            updateItemToList(itemDto)
+
+            getItemList().takeIf { it.isNotEmpty() }?.let { list ->
+                _itemsList.postValue(list)
+            }
+            checkAndEnableUpdateButton()
+        }
+    }
+
+    private fun updateItemToList(item: PurchaseItemsDetailsDto) {
+        val indexOfObjectToUpdate =
+            stockItemsList.indexOfFirst { it.ItemID == item.ItemID && it.ItemCode == item.ItemCode }
+        if (indexOfObjectToUpdate != -1) {
+            // Replace the object with the updated object
+            stockItemsList[indexOfObjectToUpdate] = item
+        }
     }
 
     override fun onCleared() {
@@ -270,7 +287,7 @@ class PurchaseReturnBaseViewModel(
     }
 
     fun selectedPurchaseInvoiceNo(invoice: String) {
-        if (invoice != stringProvider.getString(R.string.select_purchase_invoice_no)) {
+        if (invoice.isNotEmpty() && invoice != stringProvider.getString(R.string.select_purchase_invoice_no)) {
             resetItemsList()
             selectedPInvoiceNo = invoice
             getPurchaseItemsList()
@@ -285,7 +302,7 @@ class PurchaseReturnBaseViewModel(
 
     private fun getPurchaseItemsList() {
         showProgressIndicator()
-        val request = PurchaseItemsListItemsRequestDto(PurchaseID = 1)//getSelectedPInvoiceId())
+        val request = PurchaseItemsListItemsRequestDto(PurchaseID = getSelectedPInvoiceId())//1)//getSelectedPInvoiceId())
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
             returnsRepo.getPurchaseItemsList(request)
                 .collect { dto ->
@@ -293,13 +310,22 @@ class PurchaseReturnBaseViewModel(
                     hideProgressIndicator()
                     if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
                         purchaseItemsList = dto.Items
+                        stockItemsList.addAll(dto.Items)
                         _itemsList.postValue(dto.Items)
-                        _enableUpdateButton.postValue(true)
+//                        _enableUpdateButton.postValue(true)
                     } else {
-                        _errorFieldMessage.postValue(stringProvider.getString(R.string.delivery_notes_items_list_empty_message))
+                        _errorFieldMessage.postValue(stringProvider.getString(R.string.purchase_returns_items_list_empty_message))
                     }
                 }
         }
     }
 
+    override fun handleException(throwable: Throwable) {
+        hideProgressIndicator()
+        _errorFieldMessage.postValue(
+            if (throwable.message?.isNotEmpty() == true) throwable.message else stringProvider.getString(
+                R.string.error_api_access_message
+            )
+        )
+    }
 }

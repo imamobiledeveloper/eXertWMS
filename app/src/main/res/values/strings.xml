@@ -25,6 +25,7 @@
     <string name="emptyString" />
     <string name="item_part_code">Item Part Code</string>
     <string name="item_part_code_hint">Enter Item Part Code</string>
+    <string name="retuning_quantity_hint">Enter Returning Quantity</string>
     <string name="error_item_part_code">Please select Item Part Code</string>
     <string name="item_serial_no">Item Serial Number</string>
     <string name="item_serial_no_hint">Enter Item Serial Number</string>
@@ -145,6 +146,7 @@
     <string name="empty" />
     <string name="quantity">Qty</string>
     <string name="quantity_full">Quantity</string>
+    <string name="returning_quantity">Returning Quantity</string>
     <string name="select_location">Select Location</string>
     <string name="error_quantity_message">Please enter Quantity</string>
     <string name="error_stock_reconciliation_add_more">You cannot add more than difference of quantity and system stock</string>
@@ -182,6 +184,7 @@
     <string name="returning_qty">Returning Qty</string>
     <string name="error_returning_qty">Returning quantity should be equal or less than purchase quantity</string>
     <string name="item_empty_message">"Please select Item from the list"</string>
+    <string name="return_qty_empty_message">"Please enter Return quantity"</string>
     <string name="alert">Alert</string>
     <string name="cancel">Cancel</string>
     <string name="enter_to_sales_invoice_no">Enter Sales Invoice No.</string>
@@ -194,6 +197,7 @@
     <string name="delivery_notes_items_list_empty_message">Delivery notes items are not found</string>
     <string name="delivery_receipt_items_list_empty_message">Delivery receipt items are not found</string>
     <string name="purchase_orders_list_empty_message">Purchase orders are not available</string>
+    <string name="purchase_returns_items_list_empty_message">Purchase returns items are not available</string>
     <string name="quantity_empty_message">Quantity should not be empty</string>
 
     <string-array name="features_list">

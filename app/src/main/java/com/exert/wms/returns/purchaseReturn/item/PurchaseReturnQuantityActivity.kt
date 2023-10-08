@@ -10,12 +10,11 @@ import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
 import com.exert.wms.SerialItemsDtoList
+import com.exert.wms.addItem.AddStockItemDialogFragment
 import com.exert.wms.databinding.ActivityPurchaseReturnQuantityBinding
-import com.exert.wms.itemStocks.api.ItemsDto
-import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListAdapter
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.addItem.AddStockItemDialogFragment
+import com.exert.wms.returns.api.PurchaseItemsDetailsDto
 import com.exert.wms.stockAdjustment.item.OnItemAddListener
 import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 import com.exert.wms.utils.Constants
@@ -39,11 +38,9 @@ class PurchaseReturnQuantityActivity :
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 
-    var itemDto: ItemsDto? = null
     var serialItemsList: SerialItemsDtoList? = null
-    var adjustmentType: String = ""
-    private var warehouseStockDetails: WarehouseStockDetails? = null
     private val checkedItems: ArrayList<SerialItemsDto> = ArrayList()
+    var prItemDto: PurchaseItemsDetailsDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,11 +49,15 @@ class PurchaseReturnQuantityActivity :
 
         supportActionBar?.setTitle(title)
         observeViewModel()
+
+        binding.saveButton.setOnClickListener {
+            prItemDto?.ItemID?.let { it1 -> mViewModel.getSelectedItems(it1) }
+        }
     }
 
     private fun observeViewModel() {
-        adjustmentType = intent.getStringExtra(Constants.ADJUSTMENT_TYPE).toString()
-        itemDto = intent.getSerializable(Constants.ITEM_DTO, ItemsDto::class.java)
+        prItemDto =
+            intent.getSerializable(Constants.ITEM_DTO, PurchaseItemsDetailsDto::class.java)
         serialItemsList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(
                 Constants.USER_SELECTED_WAREHOUSE_LIST,
@@ -65,33 +66,17 @@ class PurchaseReturnQuantityActivity :
         } else {
             intent.getParcelableExtra(Constants.USER_SELECTED_WAREHOUSE_LIST)
         }
-        warehouseStockDetails =
-            intent.getSerializable(
-                Constants.WAREHOUSE_STOCK_DETAILS,
-                WarehouseStockDetails::class.java
-            )
-        mViewModel.setWarehouseAndItemDetails(
-            itemDto,
-            warehouseStockDetails,
-            adjustmentType,
+        mViewModel.setSelectedDeliveryNoteItemDto(
+            prItemDto,
             serialItemsList
         )
+        serialItemsList?.serialItemsDto?.let { checkedItems.addAll(it) }
+        mViewModel.setCheckedItems(checkedItems)
 
-        itemDto?.let { dto ->
+        mViewModel.convertedItemsDto.observe(this) { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
         }
-        warehouseStockDetails?.let {
-            binding.itemNameManufactureLayout.itemManufactureEditText.text = it.WarehouseDescription
-        }
-
-        binding.saveButton.setOnClickListener {
-            itemDto?.ItemID?.let { it1 -> mViewModel.getSelectedItems(it1) }
-        }
-
-//        binding.addButton.setOnClickListener {
-//            showBottomSheetDialog()
-//        }
 
         mViewModel.errorGetItemsStatusMessage.observe(this) { status ->
             showBriefToastMessage(status, coordinateLayout)
@@ -142,6 +127,30 @@ class PurchaseReturnQuantityActivity :
                     msg,
                     coordinateLayout
                 )
+            }
+        }
+
+        mViewModel.dnSerialItems.observe(this) { list ->
+            if (list != null) {
+                binding.serialNumbersListRecyclerView.layoutManager =
+                    LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                binding.serialNumbersListRecyclerView.adapter =
+                    SerialNumbersListAdapter(
+                        list,
+                        mViewModel.getCheckBoxStateValue(),
+                        object : OnItemCheckListener {
+                            override fun onItemCheck(item: SerialItemsDto) {
+                                checkedItems.add(item)
+                                mViewModel.setCheckedItems(checkedItems)
+                            }
+
+                            override fun onItemUncheck(item: SerialItemsDto) {
+                                checkedItems.remove(item)
+                                mViewModel.setCheckedItems(checkedItems)
+                                mViewModel.checkAndEnableSaveButton()
+                            }
+
+                        })
             }
         }
     }

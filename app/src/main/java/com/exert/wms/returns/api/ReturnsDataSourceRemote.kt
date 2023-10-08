@@ -5,7 +5,7 @@ import com.exert.wms.mvvmbase.network.ExertWmsApi
 class ReturnsDataSourceRemote(private val exertWmsApi: ExertWmsApi) {
 
     suspend fun savePurchaseItems(requestDto: PurchaseItemsRequestDto): SavePurchaseItemsResponse {
-        return exertWmsApi.savePurchaseItems(requestDto)
+        return exertWmsApi.savePurchaseReturn(requestDto)
     }
 
     suspend fun saveSalesItems(requestDto: SalesItemsRequestDto): SaveSalesItemsResponse {

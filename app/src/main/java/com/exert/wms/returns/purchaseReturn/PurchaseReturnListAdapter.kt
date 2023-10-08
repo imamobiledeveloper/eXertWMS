@@ -3,6 +3,7 @@ package com.exert.wms.returns.purchaseReturn
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.exert.wms.databinding.ReturnPurchaseSaleListItemLayoutBinding
 import com.exert.wms.returns.api.PurchaseItemsDetailsDto
@@ -34,19 +35,19 @@ class PurchaseReturnListAdapter(
         private val holderBinding: ReturnPurchaseSaleListItemLayoutBinding,
         private val onFeatureTextClick: (PurchaseItemsDetailsDto) -> Unit?
     ) : RecyclerView.ViewHolder(holderBinding.root) {
-        private val itemName: TextView = holderBinding.itemNameTV
+        private val stockItemListItemLayout: ConstraintLayout =
+            holderBinding.stockItemListItemLayout
 
         fun bind(item: PurchaseItemsDetailsDto, position: Int) {
             holderBinding.whiteBg = position % 2 == 0
-//            holderBinding.itemDto = item
-            holderBinding.setGreen = true //item.AdjustmentType == 0
+            holderBinding.setGreen = true
 
             holderBinding.purchaseCountTV.text = item.getPurchaseQtyString()
             holderBinding.returningCountTV.text = item.getUserReturningQtyString()
             holderBinding.itemNameTV.text = item.getItemListName()
             holderBinding.executePendingBindings()
 
-            itemName.setOnClickListener {
+            stockItemListItemLayout.setOnClickListener {
                 onFeatureTextClick(item)
             }
         }
