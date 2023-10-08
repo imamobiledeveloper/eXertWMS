@@ -117,7 +117,7 @@ DeliveryNoteItemsResponseDto(
 data class
 DeliveryNoteItemsListWithOutItemsRequestDto(
     val BranchID: Long = 0,
-    val CustomerID: Int = 0,
+    val CustomerID: Long = 0,
     val SalesOrderIDs: List<SalesOrderIDDto>,
 ) {
     companion object
@@ -127,7 +127,7 @@ DeliveryNoteItemsListWithOutItemsRequestDto(
 data class
 DeliveryNoteItemsListRequestDto(
     val BranchID: Long = 0,
-    val CustomerID: Int = 0,
+    val CustomerID: Long = 0,
     val SalesOrderIDs: List<SalesOrderIDDto>,
     val ItemsDetails: List<DeliveryNoteItemDto>
 ) {

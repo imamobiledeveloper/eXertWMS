@@ -138,7 +138,7 @@ class DeliveryNoteBaseViewModel(
         showProgressIndicator()
         val request = DeliveryNoteItemsListWithOutItemsRequestDto(
             BranchID = getSelectedBranchId(),
-            CustomerID = getSelectedCustomerNameIndex(),
+            CustomerID = getSelectedCustomerId(),
             SalesOrderIDs = listOf(SalesOrderIDDto(SalesOrderID = getSelectedSalesOrdersId()))
         )
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
@@ -209,7 +209,7 @@ class DeliveryNoteBaseViewModel(
         }
         return DeliveryNoteItemsListRequestDto(
             BranchID = getSelectedBranchId(),
-            CustomerID = getSelectedCustomerNameIndex(),
+            CustomerID = getSelectedCustomerId(),
             SalesOrderIDs = listOf(SalesOrderIDDto(SalesOrderID = getSelectedSalesOrdersId())),
             ItemsDetails = itemsDetailsList
         )

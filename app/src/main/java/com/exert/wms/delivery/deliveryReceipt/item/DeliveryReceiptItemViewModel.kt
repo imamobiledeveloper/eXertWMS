@@ -88,6 +88,8 @@ class DeliveryReceiptItemViewModel(
     var itemsDto: ItemsDto? = null
     private var selectedItemDtoInSerialNoScreen: DeliveryReceiptItemsDetailsDto? = null
 
+    private var enteredQuantity: Double = 0.0
+
     private fun validateUserDetails(
         quantity: String
     ): Boolean {
@@ -157,17 +159,17 @@ class DeliveryReceiptItemViewModel(
     }
 
     fun setSelectedItemDto(item: DeliveryReceiptItemsDetailsDto?) {
-        item?.let {
-            selectedItemDto = it
+        item?.let { drDto ->
+            selectedItemDto = drDto
             selectedItemDto?.let {
-                it.OrderedQty = it.QTYOrdered
+                drDto.OrderedQty = it.QTYOrdered
             }
-            val dto = getConvertedItemDto(it)
+            val dto = getConvertedItemDto(drDto)
             itemsDto = dto
             _itemDto.postValue(dto)
-            enteredQuantity = it.Quantity
-            _quantityString.postValue(it.Quantity.toString())
-            _isItemSerialized.postValue(it.IsSerialItem == 1)
+            enteredQuantity = drDto.Quantity
+            _quantityString.postValue(drDto.Quantity.toString())
+            _isItemSerialized.postValue(drDto.IsSerialItem == 1)
         }
     }
 
@@ -191,8 +193,6 @@ class DeliveryReceiptItemViewModel(
 
     fun getSavedItemDto() = stockItemsDetailsDto
 
-    private var enteredQuantity: Double = 0.0
-
     fun setAdjustmentQuantity(text: String) {
         if (text.isNotEmpty()) {
             enteredQuantity = text.toDouble()
@@ -215,13 +215,6 @@ class DeliveryReceiptItemViewModel(
                 dto.SerialItems.map { it.getConvertedWarehouseSerialItemDetails() }.let {
                     list.addAll(it)
                 }
-                _dnSerialItems.postValue(list.toList())
-            } else if (serialItemsList != null && serialItemsList.serialItemsDto?.isNotEmpty() == true) {
-                val list = mutableListOf<WarehouseSerialItemDetails>()
-                serialItemsList.serialItemsDto.map { it.getConvertedWarehouseSerialItemDetails() }
-                    .let {
-                        list.addAll(it)
-                    }
                 _dnSerialItems.postValue(list.toList())
             }
         }

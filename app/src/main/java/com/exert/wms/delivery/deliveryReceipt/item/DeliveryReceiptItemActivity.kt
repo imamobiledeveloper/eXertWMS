@@ -143,8 +143,8 @@ class DeliveryReceiptItemActivity :
         }
 
         mViewModel.isItemSerialized.observe(this) { isItSerialized ->
-            binding.quantityEditText.isEnabled = !isItSerialized//false //!isItSerialized
-            binding.quantityEditTextLayout.isEndIconVisible = isItSerialized//true//isItSerialized
+            binding.quantityEditText.isEnabled = !isItSerialized
+            binding.quantityEditTextLayout.isEndIconVisible = isItSerialized
         }
 
         mViewModel.quantityString.observe(this) { value ->

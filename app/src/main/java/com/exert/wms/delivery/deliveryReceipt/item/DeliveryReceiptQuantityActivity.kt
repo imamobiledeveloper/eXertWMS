@@ -72,6 +72,9 @@ class DeliveryReceiptQuantityActivity : BaseActivity<DeliveryReceiptItemViewMode
         }
         mViewModel.setSelectedDeliveryReceiptItemDto(drItemDto,serialItemsList)
 
+        serialItemsList?.serialItemsDto?.let { checkedItems.addAll(it) }
+        mViewModel.setCheckedItems(checkedItems)
+
         mViewModel.errorFieldMessage.observe(this) { msg ->
             if (msg.isNotEmpty()) {
                 showBriefToastMessage(
