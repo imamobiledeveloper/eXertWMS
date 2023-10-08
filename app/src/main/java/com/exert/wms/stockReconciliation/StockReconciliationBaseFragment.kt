@@ -82,14 +82,15 @@ class StockReconciliationBaseFragment :
             binding.updateButton.isEnabled = it
         })
 
-        mViewModel.warehouseStringList.observe(viewLifecycleOwner, Observer {
+        mViewModel.warehouseStringList.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 setWarehouseList(it)
             }
-        })
+        }
 
-        mViewModel.itemsList.observe(viewLifecycleOwner, Observer { list ->
+        mViewModel.itemsList.observe(viewLifecycleOwner) { list ->
             if (list != null && list.isNotEmpty()) {
+                binding.itemsListRecyclerView.show()
                 binding.itemsListRecyclerView.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 binding.itemsListRecyclerView.apply {
@@ -108,8 +109,8 @@ class StockReconciliationBaseFragment :
             } else {
                 binding.itemsListRecyclerView.hide()
             }
-        })
-        mViewModel.errorWarehouse.observe(viewLifecycleOwner, Observer {
+        }
+        mViewModel.errorWarehouse.observe(viewLifecycleOwner) {
             if (it) {
                 val bundle = Bundle()
                 bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
@@ -123,15 +124,15 @@ class StockReconciliationBaseFragment :
                     coordinateLayout
                 )
             }
-        })
-        mViewModel.errorFieldMessage.observe(viewLifecycleOwner, Observer { msg ->
+        }
+        mViewModel.errorFieldMessage.observe(viewLifecycleOwner) { msg ->
             if (msg.isNotEmpty()) {
                 showBriefToastMessage(
                     msg,
                     coordinateLayout
                 )
             }
-        })
+        }
 
         mViewModel.saveItemStatus.observe(viewLifecycleOwner) {
             if (it) {

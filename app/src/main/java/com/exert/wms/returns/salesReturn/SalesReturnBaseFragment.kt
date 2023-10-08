@@ -83,6 +83,7 @@ class SalesReturnBaseFragment :
         }
         mViewModel.itemsList.observe(viewLifecycleOwner) { list ->
             if (list != null && list.isNotEmpty()) {
+                binding.itemsListRecyclerView.show()
                 binding.itemsListRecyclerView.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 binding.itemsListRecyclerView.apply {

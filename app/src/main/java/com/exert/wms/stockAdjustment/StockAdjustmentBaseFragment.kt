@@ -83,6 +83,7 @@ class StockAdjustmentBaseFragment :
         })
         mViewModel.itemsList.observe(viewLifecycleOwner, Observer { list ->
             if (list != null && list.isNotEmpty()) {
+                binding.itemsListRecyclerView.show()
                 binding.itemsListRecyclerView.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 binding.itemsListRecyclerView.apply {

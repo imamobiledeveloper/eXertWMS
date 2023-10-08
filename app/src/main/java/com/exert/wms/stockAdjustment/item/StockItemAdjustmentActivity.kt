@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.Observer
 import com.exert.wms.*
 import com.exert.wms.databinding.ActivityStockItemAdjustmentBinding
 import com.exert.wms.mvvmbase.BaseActivity

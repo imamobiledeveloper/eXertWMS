@@ -70,12 +70,15 @@ class StockQuantityAdjustmentActivity :
                 Constants.WAREHOUSE_STOCK_DETAILS,
                 WarehouseStockDetails::class.java
             )
+
         mViewModel.setWarehouseAndItemDetails(
             itemDto,
             warehouseStockDetails,
             adjustmentType,
             serialItemsList
         )
+        serialItemsList?.serialItemsDto?.let { checkedItems.addAll(it) }
+        mViewModel.setCheckedItems(checkedItems)
 
         itemDto?.let { dto ->
             binding.itemDto = dto
