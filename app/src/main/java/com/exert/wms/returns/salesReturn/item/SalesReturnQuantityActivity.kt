@@ -10,15 +10,14 @@ import com.exert.wms.BR
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
 import com.exert.wms.SerialItemsDtoList
-import com.exert.wms.addItem.AddStockItemDialogFragment
 import com.exert.wms.databinding.ActivitySalesReturnQuantityBinding
-import com.exert.wms.itemStocks.api.ItemsDto
-import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListAdapter
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.stockAdjustment.item.OnItemAddListener
+import com.exert.wms.returns.api.SalesItemsDetailsDto
 import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 import com.exert.wms.utils.Constants
+import com.exert.wms.utils.hide
+import com.exert.wms.utils.show
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class SalesReturnQuantityActivity :
@@ -28,7 +27,7 @@ class SalesReturnQuantityActivity :
 
     override val showHomeButton: Int = 1
 
-    override fun getLayoutID(): Int = R.layout.activity_purchase_return_quantity
+    override fun getLayoutID(): Int = R.layout.activity_sales_return_quantity
 
     override val mViewModel by lazy {
         getViewModel<SalesReturnItemViewModel>()
@@ -39,11 +38,9 @@ class SalesReturnQuantityActivity :
     override val coordinateLayout: CoordinatorLayout
         get() = binding.coordinateLayout
 
-    var itemDto: ItemsDto? = null
     var serialItemsList: SerialItemsDtoList? = null
-    var adjustmentType: String = ""
-    private var warehouseStockDetails: WarehouseStockDetails? = null
     private val checkedItems: ArrayList<SerialItemsDto> = ArrayList()
+    var prItemDto: SalesItemsDetailsDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,11 +49,15 @@ class SalesReturnQuantityActivity :
 
         supportActionBar?.setTitle(title)
         observeViewModel()
+
+        binding.saveButton.setOnClickListener {
+            prItemDto?.ItemID?.let { it1 -> mViewModel.getSelectedItems(it1) }
+        }
     }
 
     private fun observeViewModel() {
-        adjustmentType = intent.getStringExtra(Constants.ADJUSTMENT_TYPE).toString()
-        itemDto = intent.getSerializable(Constants.ITEM_DTO, ItemsDto::class.java)
+        prItemDto =
+            intent.getSerializable(Constants.ITEM_DTO, SalesItemsDetailsDto::class.java)
         serialItemsList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(
                 Constants.USER_SELECTED_WAREHOUSE_LIST,
@@ -65,38 +66,25 @@ class SalesReturnQuantityActivity :
         } else {
             intent.getParcelableExtra(Constants.USER_SELECTED_WAREHOUSE_LIST)
         }
-        warehouseStockDetails =
-            intent.getSerializable(
-                Constants.WAREHOUSE_STOCK_DETAILS,
-                WarehouseStockDetails::class.java
-            )
-        mViewModel.setWarehouseAndItemDetails(
-            itemDto,
-            warehouseStockDetails,
-            adjustmentType,
+        mViewModel.setSelectedSalesReturnItemDto(
+            prItemDto,
             serialItemsList
         )
+        serialItemsList?.serialItemsDto?.let { checkedItems.addAll(it) }
+        mViewModel.setUserSelectedItems(checkedItems)
 
-        itemDto?.let { dto ->
+        mViewModel.convertedItemsDto.observe(this) { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
         }
-        warehouseStockDetails?.let {
-            binding.itemNameManufactureLayout.itemManufactureEditText.text = it.WarehouseDescription
+
+        mViewModel.isLoadingData.observe(this) { status ->
+            if (status) {
+                binding.progressBar.show()
+            } else {
+                binding.progressBar.hide()
+            }
         }
-
-        binding.saveButton.setOnClickListener {
-            itemDto?.ItemID?.let { it1 -> mViewModel.getSelectedItems(it1) }
-        }
-
-//        binding.addButton.setOnClickListener {
-//            showBottomSheetDialog()
-//        }
-
-        mViewModel.errorGetItemsStatusMessage.observe(this) { status ->
-            showBriefToastMessage(status, coordinateLayout)
-        }
-
         mViewModel.warehouseSerialNosList.observe(this) { list ->
             if (list != null) {
                 binding.serialNumbersListRecyclerView.layoutManager =
@@ -112,18 +100,13 @@ class SalesReturnQuantityActivity :
                             }
 
                             override fun onItemUncheck(item: SerialItemsDto) {
-                                checkedItems.remove(item)
+                                checkedItems.removeIf { it.SerialNumber == item.SerialNumber }
                                 mViewModel.setCheckedItems(checkedItems)
-                                mViewModel.checkAndEnableSaveButton()
                             }
 
                         })
             }
         }
-
-//        mViewModel.showAddItemButton.observe(this, Observer {
-//            binding.addButton.visibility = if (it) View.VISIBLE else View.INVISIBLE
-//        })
 
         mViewModel.enableSaveButton.observe(this) {
             binding.saveButton.isEnabled = it
@@ -149,19 +132,6 @@ class SalesReturnQuantityActivity :
     override fun onBackPressed() {
         mViewModel.alreadySelected = false
         super.onBackPressed()
-    }
-
-    private fun showBottomSheetDialog() {
-        val dialog = AddStockItemDialogFragment(object : OnItemAddListener {
-            override fun onAddItem(item: SerialItemsDto) {
-                if (item?.ManufactureDate != null) {
-                    checkedItems.add(item)
-                    mViewModel.setCheckedItems(checkedItems)
-                }
-            }
-
-        })
-        dialog.show(this.supportFragmentManager, "AddStockItemDialogFragment")
     }
 
     override fun onBindData(binding: ActivitySalesReturnQuantityBinding) {

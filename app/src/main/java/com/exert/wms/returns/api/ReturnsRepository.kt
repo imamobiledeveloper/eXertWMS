@@ -19,4 +19,11 @@ class ReturnsRepository(private val transferDataSource: ReturnsDataSource) {
     fun getPurchaseItemsList(requestDto: PurchaseItemsListItemsRequestDto): Flow<PurchaseItemsListResponseDto> {
         return transferDataSource.getPurchaseItemsList(requestDto)
     }
+
+    fun getSalesInvoiceNoList(requestDto: SalesReturnInvoiceRequestDto): Flow<SalesReturnInvoiceListResponseDto> {
+        return transferDataSource.getSalesInvoiceNoList(requestDto)
+    }
+    fun getSalesItemsList(requestDto: SalesItemsListItemsRequestDto): Flow<SalesItemsListResponseDto> {
+        return transferDataSource.getSalesItemsList(requestDto)
+    }
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
-import com.exert.wms.itemStocks.api.ItemsDto
+import com.exert.wms.SerialItemsDto
 import com.exert.wms.mvvmbase.BaseViewModel
 import com.exert.wms.returns.api.*
 import com.exert.wms.utils.StringProvider
@@ -35,9 +35,6 @@ class PurchaseReturnBaseViewModel(
     private val _saveItemStatus = MutableLiveData<Boolean>()
     val saveItemStatus: LiveData<Boolean> = _saveItemStatus
 
-    private val _errorBranch = MutableLiveData<Boolean>()
-    val errorBranch: LiveData<Boolean> = _errorBranch
-
     private val _branchesStringList = MutableLiveData<List<String>>()
     val branchesStringList: LiveData<List<String>> = _branchesStringList
 
@@ -51,7 +48,6 @@ class PurchaseReturnBaseViewModel(
     private var selectedVendor: String = ""
     private var selectedPInvoiceNo: String = ""
     var stockItemsList: ArrayList<PurchaseItemsDetailsDto> = ArrayList()
-    var itemsDto: ItemsDto? = null
 
     var branchesList: List<BranchDto>? = null
     var vendorsList: List<VendorDto>? = null
@@ -78,7 +74,6 @@ class PurchaseReturnBaseViewModel(
                 hideProgressIndicator()
                 processBranchesList(result.first)
                 processVendorsList(result.second)
-
             }
         }
     }
@@ -207,12 +202,45 @@ class PurchaseReturnBaseViewModel(
     }
 
     private fun processRequestDto(itemList: ArrayList<PurchaseItemsDetailsDto>): PurchaseItemsRequestDto {
+        val list = ArrayList<PurchaseSaveItemsDetailsDto>()
+        itemList.map {
+            val dto = PurchaseSaveItemsDetailsDto(
+                ItemSeqNumber = it.ItemSeqNumber,
+                ItemID = it.ItemID,
+                WarehouseID = it.WarehouseID,
+                UnitID = it.UnitID,
+                CategoryID = it.CategoryID,
+                Quantity = it.Quantity,
+                OrderedQty = it.OrderedQty,
+                Price = it.Price,
+                DiscountAmount = it.DiscountAmount,
+                DiscountPercentage = it.DiscountPercentage,
+                Factor = it.Factor,
+                ExchangeRate = it.ExchangeRate,
+                ItemDiscountPercentage = it.ItemDiscountPercentage,
+                ItemDiscount = it.ItemDiscount,
+                VendorDiscountPercentage = it.VendorDiscountPercentage,
+                VendorDiscount = it.VendorDiscount,
+                UnitPrice = it.UnitPrice,
+                LCYPrice = it.LCYPrice,
+                VATPercentage = it.VATPercentage,
+                VATAmount = it.VATAmount,
+                PurchaseItemID = it.PurchaseItemID,
+                TrackingTypes = it.TrackingTypes,
+                SerialItems = getSelectedItems(it.SerialItems)
+            )
+            list.add(dto)
+        }
         return PurchaseItemsRequestDto(
             BranchID = getSelectedBranchId(),
             VendorID = getSelectedVendorId(),
             PurchaseID = getSelectedPInvoiceId(),
-            ItemsDetails = itemList
+            ItemsDetails = list
         )
+    }
+
+    private fun getSelectedItems(serialItems: List<SerialItemsDto>?): List<SerialItemsDto> {
+        return serialItems?.filter { it.selected } ?: emptyList()
     }
 
     private fun checkAndEnableUpdateButton() {
@@ -224,29 +252,11 @@ class PurchaseReturnBaseViewModel(
         }
     }
 
-    private fun addItemToList(item: PurchaseItemsDetailsDto) {
-        stockItemsList.add(item)
-    }
-
     private fun getItemList() = stockItemsList
 
     private fun getItemListSize() = getItemList().takeIf { it.isNotEmpty() }?.let { list ->
         list.size
     } ?: 0
-
-    fun checkWarehouse() {
-        if (selectedBranch.isNotEmpty() && selectedBranch != stringProvider.getString(
-                R.string.select_branch
-            )
-            && selectedVendor.isNotEmpty() && selectedVendor != stringProvider.getString(
-                R.string.select_vendor_name
-            )
-        ) {
-            _errorBranch.postValue(true)
-        } else {
-            _errorBranch.postValue(false)
-        }
-    }
 
     fun getSelectedBranchIndex(): Int {
         return _branchesStringList.value?.indexOf(selectedBranch) ?: 0
@@ -302,7 +312,8 @@ class PurchaseReturnBaseViewModel(
 
     private fun getPurchaseItemsList() {
         showProgressIndicator()
-        val request = PurchaseItemsListItemsRequestDto(PurchaseID = getSelectedPInvoiceId())//1)//getSelectedPInvoiceId())
+        val request =
+            PurchaseItemsListItemsRequestDto(PurchaseID = getSelectedPInvoiceId())//1)//getSelectedPInvoiceId())
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
             returnsRepo.getPurchaseItemsList(request)
                 .collect { dto ->
@@ -312,7 +323,6 @@ class PurchaseReturnBaseViewModel(
                         purchaseItemsList = dto.Items
                         stockItemsList.addAll(dto.Items)
                         _itemsList.postValue(dto.Items)
-//                        _enableUpdateButton.postValue(true)
                     } else {
                         _errorFieldMessage.postValue(stringProvider.getString(R.string.purchase_returns_items_list_empty_message))
                     }

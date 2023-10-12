@@ -89,12 +89,12 @@ val viewModelModule = module {
         PurchaseReturnBaseViewModel(get(), get(), get())
     }
     viewModel {
-        PurchaseReturnItemViewModel(get(), get())
+        PurchaseReturnItemViewModel(get())
     }
     viewModel {
         SalesReturnBaseViewModel(get(), get(), get())
     }
     viewModel {
-        SalesReturnItemViewModel(get(), get())
+        SalesReturnItemViewModel(get())
     }
 }

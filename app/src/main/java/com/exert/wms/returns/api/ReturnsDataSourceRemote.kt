@@ -19,4 +19,12 @@ class ReturnsDataSourceRemote(private val exertWmsApi: ExertWmsApi) {
     suspend fun getPurchaseItemsList(requestDto: PurchaseItemsListItemsRequestDto): PurchaseItemsListResponseDto {
         return exertWmsApi.getPurchaseItemsList(PurchaseID=requestDto.PurchaseID)
     }
+
+    suspend fun getSalesInvoiceNoList(requestDto: SalesReturnInvoiceRequestDto): SalesReturnInvoiceListResponseDto {
+        return exertWmsApi.getSalesInvoiceNoList(BranchID=requestDto.BranchID, CustomerID =requestDto.CustomerID)
+    }
+
+    suspend fun getSalesItemsList(requestDto: SalesItemsListItemsRequestDto): SalesItemsListResponseDto {
+        return exertWmsApi.getSalesItemsList(SalesID =requestDto.SalesID)
+    }
 }

@@ -115,22 +115,6 @@ class PurchaseReturnBaseFragment :
                 binding.itemsListRecyclerView.hide()
             }
         }
-        mViewModel.errorBranch.observe(viewLifecycleOwner) {
-            if (it) {
-                val bundle = Bundle()
-//                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
-//                bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedWarehouseId())
-//                bundle.putSerializable(Constants.WAREHOUSE, mViewModel.getWarehouseObject())
-//                val intent = Intent(requireContext(), DeliveryNoteItemActivity::class.java)
-//                intent.putExtras(bundle)
-//                startForResult.launch(intent)
-            } else {
-                showBriefToastMessage(
-                    getString(R.string.branch_empty_message),
-                    coordinateLayout
-                )
-            }
-        }
 
         mViewModel.saveItemStatus.observe(viewLifecycleOwner) {
             if (it) {
@@ -175,7 +159,6 @@ class PurchaseReturnBaseFragment :
         val intent = Intent(requireContext(), PurchaseReturnItemActivity::class.java)
         intent.putExtras(bundle)
         startForResult.launch(intent)
-
     }
 
     private fun setWarehouseList(stringList: List<String>) {

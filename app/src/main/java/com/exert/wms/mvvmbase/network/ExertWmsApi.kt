@@ -86,21 +86,10 @@ interface ExertWmsApi {
         @Query("ExternalTransferID") ExternalTransferID: Long
     ): TransferInItemsResponseDto
 
-    @POST("api/DeliveryReceipt/SaveDeliveryReceipt")
-    suspend fun saveDeliveryReceiptItems(
-        @Body requestBody: DeliveryReceiptItemsRequestDto
-    ): SaveDeliveryReceiptItemsResponse
-
     @POST("api/DeliveryNote/SaveDeliveryNote")
     suspend fun saveDeliveryNoteItems(
         @Body requestBody: DeliveryNoteItemsListRequestDto
     ): SaveDeliveryNoteItemsResponse
-
-    @GET("api/DeliveryReceipt/GetApprovedPurchaseOrders")
-    suspend fun getSalesOrdersList(
-        @Query("VendorID") VendorID: Long,
-        @Query("BranchID") BranchID: Long
-    ): PurchaseOrdersListResponseDto
 
     @GET("api/DeliveryNote/GetApprovedSalesOrders")
     suspend fun getSalesInvoiceNosList(
@@ -113,29 +102,51 @@ interface ExertWmsApi {
         @Body requestBody: DeliveryNoteItemsListWithOutItemsRequestDto
     ): DeliveryNoteItemsResponseDto
 
-    @GET("api/PurchaseReturn/GetPostedPurchases")
-    suspend fun getPurchaseInvoiceNoList(
-        @Query("BranchID") BranchID: Long,
-        @Query("VendorID") VendorID: Long
-    ): PurchaseReturnInvoiceListResponseDto
+    @GET("api/DeliveryReceipt/GetApprovedPurchaseOrders")
+    suspend fun getSalesOrdersList(
+        @Query("VendorID") VendorID: Long,
+        @Query("BranchID") BranchID: Long
+    ): PurchaseOrdersListResponseDto
 
     @POST("api/DeliveryReceipt/GetMultiplePurchaseOrderItems")
     suspend fun getDeliveryReceiptItemsList(
         @Body requestBody: DeliveryReceiptItemsListWithOutItemsRequestDto
     ): DeliveryReceiptItemsResponseDto
 
+    @POST("api/DeliveryReceipt/SaveDeliveryReceipt")
+    suspend fun saveDeliveryReceiptItems(
+        @Body requestBody: DeliveryReceiptItemsRequestDto
+    ): SaveDeliveryReceiptItemsResponse
+
+    @GET("api/PurchaseReturn/GetPostedPurchases")
+    suspend fun getPurchaseInvoiceNoList(
+        @Query("BranchID") BranchID: Long,
+        @Query("VendorID") VendorID: Long
+    ): PurchaseReturnInvoiceListResponseDto
+
     @POST("api/PurchaseReturn/SavePurchaseReturn")
     suspend fun savePurchaseReturn(
         @Body requestBody: PurchaseItemsRequestDto
     ): SavePurchaseItemsResponse
 
-    @POST("api/StockAdjustment/SaveSalesItems")
-    suspend fun saveSalesItems(
-        @Body requestBody: SalesItemsRequestDto
-    ): SaveSalesItemsResponse
-
     @GET("api/PurchaseReturn/GetPurchaseItems")
     suspend fun getPurchaseItemsList(
         @Query("PurchaseID") PurchaseID: Long,
     ): PurchaseItemsListResponseDto
+
+    @GET("api/SalesReturn/GetPostedSales")
+    suspend fun getSalesInvoiceNoList(
+        @Query("BranchID") BranchID: Long,
+        @Query("CustomerID") CustomerID: Long
+    ): SalesReturnInvoiceListResponseDto
+
+    @GET("api/SalesReturn/GetSalesItems")
+    suspend fun getSalesItemsList(
+        @Query("SalesID") SalesID: Long,
+    ): SalesItemsListResponseDto
+
+    @POST("api/SalesReturn/SaveSalesReturn")
+    suspend fun saveSalesItems(
+        @Body requestBody: SalesItemsRequestDto
+    ): SaveSalesItemsResponse
 }

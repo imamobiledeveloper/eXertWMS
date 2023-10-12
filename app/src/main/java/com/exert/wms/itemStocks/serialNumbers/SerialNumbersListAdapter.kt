@@ -65,6 +65,7 @@ class SerialNumbersListAdapter(
             checkBox.setOnCheckedChangeListener { _, checked ->
                 serialItem.selected = checked
                 val serialItemsDto=getSerialItemsDto(serialItem)
+                serialItemsDto.selected=checked
                 if(checked){
                     onItemCheckListener.onItemCheck(serialItemsDto)
                 }else{

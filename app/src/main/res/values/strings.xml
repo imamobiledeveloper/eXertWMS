@@ -25,7 +25,7 @@
     <string name="emptyString" />
     <string name="item_part_code">Item Part Code</string>
     <string name="item_part_code_hint">Enter Item Part Code</string>
-    <string name="retuning_quantity_hint">Enter Returning Quantity</string>
+    <string name="retuning_quantity_hint">Enter/Select Returning Quantity</string>
     <string name="error_item_part_code">Please select Item Part Code</string>
     <string name="item_serial_no">Item Serial Number</string>
     <string name="item_serial_no_hint">Enter Item Serial Number</string>
@@ -182,7 +182,8 @@
     <string name="sold_quantity">Sold Quantity</string>
     <string name="purchase_qty">Purchase Qty</string>
     <string name="returning_qty">Returning Qty</string>
-    <string name="error_returning_qty">Returning quantity should be equal or less than purchase quantity</string>
+    <string name="error_returning_qty">Returning quantity should be equal or less than Purchase quantity</string>
+    <string name="error_sales_returning_qty">Returning quantity should be equal or less than Sold quantity</string>
     <string name="item_empty_message">"Please select Item from the list"</string>
     <string name="return_qty_empty_message">"Please enter Return quantity"</string>
     <string name="alert">Alert</string>
@@ -198,6 +199,7 @@
     <string name="delivery_receipt_items_list_empty_message">Delivery receipt items are not found</string>
     <string name="purchase_orders_list_empty_message">Purchase orders are not available</string>
     <string name="purchase_returns_items_list_empty_message">Purchase returns items are not available</string>
+    <string name="sales_returns_items_list_empty_message">Sales returns items are not available</string>
     <string name="quantity_empty_message">Quantity should not be empty</string>
 
     <string-array name="features_list">

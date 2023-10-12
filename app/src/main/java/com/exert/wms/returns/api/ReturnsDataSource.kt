@@ -38,4 +38,21 @@ class ReturnsDataSource(
         }
     }
 
+    fun getSalesInvoiceNoList(requestDto: SalesReturnInvoiceRequestDto): Flow<SalesReturnInvoiceListResponseDto> {
+        return flow {
+            emit(
+                deliveryDataSourceRemote.getSalesInvoiceNoList(requestDto)
+            )
+        }
+    }
+
+    fun getSalesItemsList(requestDto: SalesItemsListItemsRequestDto): Flow<SalesItemsListResponseDto> {
+        return flow {
+            emit(
+                deliveryDataSourceRemote.getSalesItemsList(requestDto)
+            )
+        }
+    }
+
+
 }

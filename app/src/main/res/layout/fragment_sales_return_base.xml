@@ -137,7 +137,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/purchaseInvoiceNoTV"
+                    android:id="@+id/salesInvoiceNoTV"
                     style="@style/TextViewBold16Label"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -151,53 +151,38 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/salesInvoiceNoLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/purchaseInvoiceNoTV">
+                    app:layout_constraintTop_toBottomOf="@+id/salesInvoiceNoTV">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/salesInvoiceNoEditTextLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:minHeight="50dp"
-                        app:boxBackgroundMode="none"
-                        app:endIconCheckable="true"
-                        app:endIconDrawable="@drawable/ic_right_arrow1"
-                        app:endIconMode="custom"
-                        app:endIconTint="@color/blue_dark"
-                        app:errorTextAppearance="@style/EdittextError"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/salesInvoiceNoEditText"
-                            style="@style/EditTextEnabledStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:drawablePadding="8dp"
-                            android:ellipsize="end"
-                            android:enabled="false"
-                            android:gravity="center_vertical"
-                            android:imeOptions="actionNext"
-                            android:inputType="numberDecimal"
-                            android:maxLength="20"
-                            android:singleLine="true" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <Spinner
+                        android:id="@+id/salesInvoiceNoSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#00FFFFFF"
+                        android:dropDownWidth="match_parent"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@drawable/edittext_rectangle_white_bg"
+                        android:popupElevation="15dp"
+                        android:theme="@style/Spinner"
+                        app:layout_constraintBottom_toBottomOf="@+id/salesInvoiceNoSpinnerTV"
+                        app:layout_constraintTop_toTopOf="@+id/salesInvoiceNoSpinnerTV" />
 
                     <TextView
-                        android:id="@+id/salesInvoiceHintTV"
-                        style="@style/TextViewHintLabel"
+                        android:id="@+id/salesInvoiceNoSpinnerTV"
+                        style="@style/TextViewLabel"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="@dimen/margin_10dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edittext_rectangle_white_bg"
                         android:drawablePadding="@dimen/margin_10dp"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
-                        android:text="@string/enter_to_sales_invoice_no"
+                        android:singleLine="true"
+                        android:text="@string/select_purchase_invoice_no"
                         android:textAlignment="gravity"
+                        app:drawableEndCompat="@drawable/ic_arrow_down"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -269,7 +254,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/itemsListLabelsLayout"
                         tools:itemCount="10"
                         android:visibility="gone"
-                        tools:listitem="@layout/return_purchase_sale_list_item_layout" />
+                        tools:listitem="@layout/return_purchase_list_item_layout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

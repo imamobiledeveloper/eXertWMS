@@ -254,7 +254,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/itemsListLabelsLayout"
                         tools:itemCount="10"
                         android:visibility="gone"
-                        tools:listitem="@layout/return_purchase_sale_list_item_layout" />
+                        tools:listitem="@layout/return_purchase_list_item_layout" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,9 @@ class SalesReturnBaseFragment :
     override val mViewModel by lazy {
         getViewModel<SalesReturnBaseViewModel>()
     }
+
+    override val coordinateLayout: CoordinatorLayout
+        get() = binding.coordinateLayout
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
@@ -66,7 +70,14 @@ class SalesReturnBaseFragment :
             mViewModel.selectedCustomerName(parent?.getItemAtPosition(position).toString())
             binding.customerNameSpinner.setSelection(mViewModel.getSelectedCustomerNameIndex())
         }
-
+        binding.salesInvoiceNoSpinner.selected { parent, position ->
+            binding.salesInvoiceNoSpinnerTV.text = parent?.getItemAtPosition(position).toString()
+            if (position != 0) {
+                binding.salesInvoiceNoSpinnerTV.isActivated = true
+            }
+            mViewModel.selectedSalesInvoiceNo(parent?.getItemAtPosition(position).toString())
+            binding.salesInvoiceNoSpinner.setSelection(mViewModel.getSelectedSalesInvoiceNoIndex())
+        }
         binding.updateButton.setOnClickListener {
             mViewModel.saveItems()
         }
@@ -88,6 +99,7 @@ class SalesReturnBaseFragment :
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 binding.itemsListRecyclerView.apply {
                     adapter = SalesReturnListAdapter(list) {
+                        navigateToSalesReturnItemScreen(it)
                     }
                     val dividerDrawable = ContextCompat.getDrawable(context, R.drawable.divider)
                     dividerDrawable?.let {
@@ -100,27 +112,6 @@ class SalesReturnBaseFragment :
                 }
             } else {
                 binding.itemsListRecyclerView.hide()
-            }
-        }
-        mViewModel.errorBranch.observe(viewLifecycleOwner) {
-            if (it) {
-                val bundle = Bundle()
-//                bundle.putSerializable(Constants.ITEM_DTO, mViewModel.getItemDto())
-//                bundle.putLong(Constants.ITEM_WAREHOUSE_ID, mViewModel.getSelectedWarehouseId())
-//                bundle.putSerializable(Constants.WAREHOUSE, mViewModel.getWarehouseObject())
-                val intent = Intent(requireContext(), SalesReturnItemActivity::class.java)
-                intent.putExtras(bundle)
-                startForResult.launch(intent)
-            } else {
-                showBriefToastMessage(
-                    getString(R.string.branch_empty_message),
-                    coordinateLayout
-                )
-            }
-        }
-        mViewModel.warehouseStringList.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                setWarehouseList(it)
             }
         }
 
@@ -144,6 +135,29 @@ class SalesReturnBaseFragment :
                 )
             }
         }
+        mViewModel.branchesStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setWarehouseList(it)
+            }
+        }
+        mViewModel.customersStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setCustomersList(it)
+            }
+        }
+        mViewModel.pInvoiceStringList.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                setPurchaseInvoicesList(it)
+            }
+        }
+    }
+
+    private fun navigateToSalesReturnItemScreen(itemsDto: SalesItemsDetailsDto) {
+        val bundle = Bundle()
+        bundle.putSerializable(Constants.ITEM_DTO, itemsDto)
+        val intent = Intent(requireContext(), SalesReturnItemActivity::class.java)
+        intent.putExtras(bundle)
+        startForResult.launch(intent)
     }
 
     private fun setWarehouseList(stringList: List<String>) {
@@ -154,6 +168,24 @@ class SalesReturnBaseFragment :
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_layout)
         binding.branchSpinner.adapter = adapter
+    }
+
+    private fun setPurchaseInvoicesList(stringList: List<String>) {
+        val adapter = SpinnerCustomAdapter(
+            requireContext(), stringList.toTypedArray(), android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_item_layout)
+        binding.salesInvoiceNoSpinner.adapter = adapter
+    }
+
+    private fun setCustomersList(stringList: List<String>) {
+        val adapter = SpinnerCustomAdapter(
+            requireContext(),
+            stringList.toTypedArray(),
+            android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_item_layout)
+        binding.customerNameSpinner.adapter = adapter
     }
 
     private val startForResult =

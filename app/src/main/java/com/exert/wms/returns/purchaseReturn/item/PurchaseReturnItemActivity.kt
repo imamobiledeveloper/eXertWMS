@@ -21,7 +21,6 @@ import com.exert.wms.returns.api.PurchaseItemsDetailsDto
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
-import com.exert.wms.utils.toEditable
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class PurchaseReturnItemActivity :
@@ -232,19 +231,6 @@ class PurchaseReturnItemActivity :
                 }
             }
         }
-
-    private fun clearFields() {
-        binding.itemNameManufactureLayout.itemNameEnglishEditText.text =
-            getString(R.string.empty).toEditable()
-        binding.itemNameManufactureLayout.itemNameArabicEditText.text =
-            getString(R.string.empty).toEditable()
-        binding.itemNameManufactureLayout.itemStockEditText.text =
-            getString(R.string.empty).toEditable()
-        binding.itemNameManufactureLayout.itemManufactureEditText.text =
-            getString(R.string.empty).toEditable()
-        binding.returningQuantityEditText.text = getString(R.string.empty).toEditable()
-
-    }
 
     override fun onBindData(binding: ActivityPurchaseReturnItemBinding) {
         binding.viewModel = mViewModel

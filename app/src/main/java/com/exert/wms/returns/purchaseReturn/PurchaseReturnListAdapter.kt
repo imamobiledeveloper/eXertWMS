@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.exert.wms.databinding.ReturnPurchaseSaleListItemLayoutBinding
+import com.exert.wms.databinding.ReturnPurchaseListItemLayoutBinding
 import com.exert.wms.returns.api.PurchaseItemsDetailsDto
 
 class PurchaseReturnListAdapter(
@@ -15,7 +15,7 @@ class PurchaseReturnListAdapter(
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val viewHolderBinding = ReturnPurchaseSaleListItemLayoutBinding.inflate(
+        val viewHolderBinding = ReturnPurchaseListItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -32,7 +32,7 @@ class PurchaseReturnListAdapter(
     }
 
     inner class ItemsListViewHolder(
-        private val holderBinding: ReturnPurchaseSaleListItemLayoutBinding,
+        private val holderBinding: ReturnPurchaseListItemLayoutBinding,
         private val onFeatureTextClick: (PurchaseItemsDetailsDto) -> Unit?
     ) : RecyclerView.ViewHolder(holderBinding.root) {
         private val stockItemListItemLayout: ConstraintLayout =

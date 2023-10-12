@@ -5,25 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
 import com.exert.wms.SerialItemsDtoList
-import com.exert.wms.itemStocks.api.ItemStocksRepository
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
 import com.exert.wms.mvvmbase.BaseViewModel
 import com.exert.wms.returns.api.PurchaseItemsDetailsDto
-import com.exert.wms.stockAdjustment.api.StockItemsDetailsDto
 import com.exert.wms.utils.StringProvider
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
 class PurchaseReturnItemViewModel(
-    private val stringProvider: StringProvider,
-    private val itemStocksRepo: ItemStocksRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val stringProvider: StringProvider
 ) : BaseViewModel() {
     private var coroutineJob: Job? = null
 
-    private val _enableSaveButton = MutableLiveData<Boolean>().apply { false }
+    private val _enableSaveButton = MutableLiveData<Boolean>()
     val enableSaveButton: LiveData<Boolean> = _enableSaveButton
 
     private val _itemDto = MutableLiveData<ItemsDto>()
@@ -35,18 +29,6 @@ class PurchaseReturnItemViewModel(
     private val _navigateToSerialNo = MutableLiveData<Boolean>()
     val navigateToSerialNo: LiveData<Boolean> = _navigateToSerialNo
 
-    private val _errorItemPartCode = MutableLiveData<Boolean>()
-    val errorItemPartCode: LiveData<Boolean> = _errorItemPartCode
-
-    private val _errorItemSerialNo = MutableLiveData<Boolean>()
-    val errorItemSerialNo: LiveData<Boolean> = _errorItemSerialNo
-
-    private val _errorGetItemsStatusMessage = MutableLiveData<String>()
-    val errorGetItemsStatusMessage: LiveData<String> = _errorGetItemsStatusMessage
-
-    private val _errorItemSelectionMessage = MutableLiveData<Boolean>()
-    val errorItemSelectionMessage: LiveData<Boolean> = _errorItemSelectionMessage
-
     private val _warehouseSerialNosList = MutableLiveData<List<WarehouseSerialItemDetails>?>()
     val warehouseSerialNosList: LiveData<List<WarehouseSerialItemDetails>?> =
         _warehouseSerialNosList
@@ -57,17 +39,11 @@ class PurchaseReturnItemViewModel(
     private val _saveItemStatus = MutableLiveData<Boolean>()
     val saveItemStatus: LiveData<Boolean> = _saveItemStatus
 
-    private val _showAddItemButton = MutableLiveData<Boolean>()
-    val showAddItemButton: LiveData<Boolean> = _showAddItemButton
-
     private val _checkedSerialItemsList = MutableLiveData<SerialItemsDtoList>()
     val checkedSerialItemsList: LiveData<SerialItemsDtoList> = _checkedSerialItemsList
 
-    private val _returningQuantityString = MutableLiveData<String>()//.apply { postValue("") }
+    private val _returningQuantityString = MutableLiveData<String>()
     val returningQuantityString: LiveData<String> = _returningQuantityString
-
-    private val _itemsList = MutableLiveData<List<StockItemsDetailsDto>?>()
-    val itemsList: MutableLiveData<List<StockItemsDetailsDto>?> = _itemsList
 
     private val _errorReturningQty = MutableLiveData<Boolean>()
     val errorReturningQty: LiveData<Boolean> = _errorReturningQty
@@ -78,20 +54,18 @@ class PurchaseReturnItemViewModel(
     private var selectedItemDtoInSerialNoScreen: PurchaseItemsDetailsDto? = null
     private var showCheckBoxes: Boolean = false
 
-    var stockItemsList: ArrayList<StockItemsDetailsDto> = ArrayList()
     var itemsDto: ItemsDto? = null
     var stockItemsDetailsDto: PurchaseItemsDetailsDto? = null
 
     private var userCheckedItems: ArrayList<SerialItemsDto> = ArrayList()
+    private var previousUserCheckedItems: ArrayList<SerialItemsDto> = ArrayList()
     private var userSelectedSerialItemsList: ArrayList<SerialItemsDto> = ArrayList()
     private var userSelectedItemId: Long? = null
     var alreadySelected: Boolean = true
+    var originalSerialItemsList: List<SerialItemsDto>? = null
 
-    private val _dnSerialItems = MutableLiveData<List<WarehouseSerialItemDetails>>()
-    val dnSerialItems: LiveData<List<WarehouseSerialItemDetails>> = _dnSerialItems
     private var selectedItemDto: PurchaseItemsDetailsDto? = null
     private var enteredQuantity: Double = 0.0
-
 
     private fun validateUserDetails(
         returningQty: String
@@ -118,11 +92,15 @@ class PurchaseReturnItemViewModel(
             val dto = getConvertedItemDto(pDto)
             itemsDto = dto
             _itemDto.postValue(dto)
+            userSelectedSerialItemsList = getAlreadySelectedItemsList(pDto.SerialItems)
             enteredQuantity = pDto.userReturningQty
             _returningQuantityString.postValue(if (pDto.userReturningQty > 0) pDto.getUserReturningQtyString() else "")
             _isItemSerialized.postValue(pDto.IsSerialItem == 1)
         }
     }
+
+    private fun getAlreadySelectedItemsList(serialItems: List<SerialItemsDto>?): java.util.ArrayList<SerialItemsDto> =
+        (serialItems?.filter { it.selected } ?: emptyList()) as java.util.ArrayList<SerialItemsDto>
 
     private fun getConvertedItemDto(it: PurchaseItemsDetailsDto): ItemsDto =
         ItemsDto(
@@ -171,29 +149,32 @@ class PurchaseReturnItemViewModel(
     fun getCheckBoxStateValue() = showCheckBoxes
 
     fun getSelectedItems(itemID: Long) {
-        val newList =
-            userCheckedItems.map { it.copy(ManufactureDate = it.getFormattedManufactureDate()) }
-        userCheckedItems.clear()
-        userCheckedItems.addAll(newList)
         val dto = SerialItemsDtoList(userCheckedItems, itemId = itemID)
         _checkedSerialItemsList.postValue(dto)
     }
 
     fun setCheckedItems(checkedItems: ArrayList<SerialItemsDto>) {
         userCheckedItems = checkedItems
-        if (userCheckedItems.isNotEmpty()) {
-            _enableSaveButton.postValue(true)
-        } else {
-            _enableSaveButton.postValue(false)
+        val areEqual = compareListsById(previousUserCheckedItems, userCheckedItems)
+        _enableSaveButton.postValue(!areEqual)
+    }
+
+    private fun compareListsById(
+        list1: List<SerialItemsDto>,
+        list2: List<SerialItemsDto>
+    ): Boolean {
+        if (list1.size != list2.size) {
+            return false
         }
+
+        val set1 = list1.map { it.SerialNumber }.toSet()
+        val set2 = list2.map { it.SerialNumber }.toSet()
+
+        return set1 == set2
     }
 
     fun getUserSelectedSerialItemsList(): SerialItemsDtoList =
         SerialItemsDtoList(userSelectedSerialItemsList, userSelectedItemId)
-
-    fun checkAndEnableSaveButton() {
-        _enableSaveButton.postValue(alreadySelected)
-    }
 
     override fun onCleared() {
         super.onCleared()
@@ -216,13 +197,26 @@ class PurchaseReturnItemViewModel(
             stockItemsDetailsDto = selectedItemDto?.copy(
                 Quantity = quantity.toDouble(),
                 userReturningQty = quantity.toDouble(),
-                SerialItems = userSelectedSerialItemsList//if(isItemSerialize){ userSelectedSerialItemsList } else emptyList()
+                SerialItems = getSerialItemsWithUserSelection() ?: emptyList()
             )
             _saveItemStatus.postValue(true)
         }
     }
 
-    fun setSelectedDeliveryNoteItemDto(
+    private fun getSerialItemsWithUserSelection(): List<SerialItemsDto>? {
+        val mainList = selectedItemDto?.SerialItems
+        mainList?.forEach { it.selected = false }
+        userSelectedSerialItemsList.forEach { userItem ->
+            if (mainList != null) {
+                mainList.find { it.SerialNumber == userItem.SerialNumber }?.let { mainItem ->
+                    mainItem.selected = true
+                }
+            }
+        }
+        return mainList
+    }
+
+    fun setSelectedPurchaseReturnItemDto(
         prItemDto: PurchaseItemsDetailsDto?,
         serialItemsList: SerialItemsDtoList?
     ) {
@@ -231,6 +225,7 @@ class PurchaseReturnItemViewModel(
         prItemDto?.let { dto ->
             val itemDto = getConvertedItemDto(dto)
             _convertedItemsDto.postValue(itemDto)
+            originalSerialItemsList = serialItemsList?.serialItemsDto
             checkIsListHavingAnySelectedObjects(dto, serialItemsList)
         }
     }
@@ -246,6 +241,7 @@ class PurchaseReturnItemViewModel(
                     serialItemsList?.takeIf { it.itemId == itemsDto.ItemID && it.serialItemsDto != null && it.serialItemsDto.isNotEmpty() }
                         ?.let { list ->
                             convertedList.forEach { warehouse ->
+                                warehouse.selected = false
                                 list.serialItemsDto?.find { it.SerialNumber == warehouse.SerialNumber }
                                     ?.let {
                                         warehouse.selected = true
@@ -258,5 +254,11 @@ class PurchaseReturnItemViewModel(
                 }
         }
         _warehouseSerialNosList.postValue(list.toList())
+    }
+
+    fun setUserSelectedItems(checkedItems: java.util.ArrayList<SerialItemsDto>) {
+        userCheckedItems = checkedItems
+        previousUserCheckedItems.addAll(checkedItems)
+        setCheckedItems(checkedItems)
     }
 }

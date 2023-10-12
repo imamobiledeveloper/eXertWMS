@@ -3,8 +3,6 @@ package com.exert.wms.returns.api
 import android.os.Parcelable
 import androidx.annotation.Keep
 import com.exert.wms.SerialItemsDto
-import com.exert.wms.itemStocks.api.WarehouseSerialItemDetails
-import com.exert.wms.transfer.api.TransferInSerialItemDto
 import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
@@ -14,55 +12,10 @@ PurchaseItemsRequestDto(
     val BranchID: Long = 0,
     val VendorID: Long = 0,
     val PurchaseID: Long = 0,
-    val ItemsDetails: List<PurchaseItemsDetailsDto>
+    val ItemsDetails: List<PurchaseSaveItemsDetailsDto>
 ) {
     companion object
 }
-
-@Keep
-data class SavePurchaseItemsResponse(
-    val Success: Boolean,
-    val PurchaseReturnID: String,
-    val ErrorMessage: String
-) {
-    companion object
-}
-
-@Parcelize
-@Keep
-data class SalesItemsDetailsDto(
-    val ItemSeqNumber: Int = 0,
-    val WarehouseID: Long = 0,
-    val ItemID: Long = 0,
-    val ItemCode: String,
-    val PurchaseQty: Double,
-    val SalesQty: Double,
-    val SerialItems: List<SerialItemsDto>,
-) : Parcelable {
-    companion object
-
-    fun getItemIDString() = ItemID.toString()
-    fun getPurchaseQtyString() = PurchaseQty.toString()
-    fun getSalesQtyString() = SalesQty.toString()
-}
-
-@Keep
-data class
-SalesItemsRequestDto(
-    val StockAdjustmentID: Long = 0,
-    val ItemsDetails: List<SalesItemsDetailsDto>
-) {
-    companion object
-}
-
-@Keep
-data class SaveSalesItemsResponse(
-    val Success: Boolean,
-    val SalesList: ArrayList<String> = arrayOf<String>().toCollection(ArrayList())
-) {
-    companion object
-}
-
 
 @Keep
 data class
@@ -99,7 +52,6 @@ PurchaseItemsListItemsRequestDto(
     companion object
 }
 
-
 @Keep
 data class
 PurchaseItemsListResponseDto(
@@ -108,7 +60,6 @@ PurchaseItemsListResponseDto(
 ) {
     companion object
 }
-
 
 @Parcelize
 @Keep
@@ -149,7 +100,7 @@ data class PurchaseItemsDetailsDto(
     val VATPercentage: Double,
     val VATAmount: Double,
     val CategoryCode: Double,
-    val CategoryID: Double,
+    val CategoryID: Int,
     val PurchaseItemID: Int,
     val TrackingTypes: Int,
     val IsSerialItem: Int,
@@ -160,12 +111,41 @@ data class PurchaseItemsDetailsDto(
 ) : Parcelable, Serializable {
     companion object
 
-    fun getQuantityString() = Quantity.toString()
-
     fun getItemListName() = "$ItemCode - $ItemName"
 
     fun getPurchaseQtyString() = OrderedQty.toString()
     fun getUserReturningQtyString() = userReturningQty.toString()
+}
+
+@Parcelize
+@Keep
+data class PurchaseSaveItemsDetailsDto(
+    val ItemSeqNumber: Int = 0,
+    val ItemID: Long = 0,
+    val WarehouseID: Long = 0,
+    val UnitID: Int = 0,
+    val CategoryID: Int,
+    val Quantity: Double,
+    val OrderedQty: Double,
+    val Price: Double,
+    val DiscountAmount: Double,
+    val DiscountPercentage: Double,
+    val Factor: Double,
+    val ExchangeRate: Double,
+    val ItemDiscountPercentage: Double,
+    val ItemDiscount: Double,
+    val VendorDiscountPercentage: Double,
+    val VendorDiscount: Double,
+    val UnitPrice: Double,
+    val LCYPrice: Double,
+    val VATPercentage: Double,
+    val VATAmount: Double,
+    val PurchaseItemID: Int,
+    val TrackingTypes: Int,
+    val SerialItems: List<SerialItemsDto>? = emptyList()
+
+) : Parcelable, Serializable {
+    companion object
 }
 
 @Parcelize
@@ -180,26 +160,166 @@ data class PurchaseSerialItemListDto(
     val ActualQuantity: String? = null,
     val TrackingType: String? = null,
     val IsChecked: String? = null,
-//    val SerialNumber: String? = "",
-//    val ManufactureDate: String? = "",
-//    val WarrantyPeriod: String? = "",
     val Quantity: Double? = 0.0,
 ) : Parcelable, Serializable {
     companion object
+}
 
-    //    fun getConvertedTransferInSerialItemDto()=  TransferInSerialItemDto(SerialNumber=SerialNumber?.takeIf { it.isNotEmpty() }?.let { it.toLong() } ?: 0, ManufactureDate = ManufactureDate, WarrantyPeriod =WarrantyPeriod ,Quantity= Quantity?.toInt()
-//        ?: 0)
-    fun getConvertedTransferInSerialItemDto() = TransferInSerialItemDto(
-        SerialNumber = SerialNumber,
-        ManufactureDate = MFGDate,
-        WarrantyPeriod = WarrantyDays,
-        Quantity = Quantity
-    )
+@Keep
+data class SavePurchaseItemsResponse(
+    val Success: Boolean,
+    val PurchaseReturnID: String,
+    val ErrorMessage: String
+) {
+    companion object
+}
 
-    fun getConvertedWarehouseSerialItemDetails() = WarehouseSerialItemDetails(
-        WarehouseID = 0, SerialNumber = SerialNumber, MFGDate = MFGDate,
-        WarentyDays = WarrantyDays, selected = false
-    )
-//    fun getConvertedWarehouseSerialItemDetails()= WarehouseSerialItemDetails(WarehouseID=0,SerialNumber=SerialNumber,MFGDate=ManufactureDate,
-//        WarentyDays=WarrantyPeriod,selected = false)
+@Parcelize
+@Keep
+data class SalesItemsDetailsDto(
+    val ItemSeqNumber: Int = 0,
+    val WarehouseID: Long = 0,
+    val Warehouse: String,
+    val ItemID: Long = 0,
+    val ItemCode: String,
+    val ItemName: String,
+    val ItemNameArabic: String,
+    val Manfacturer: String,
+    val UnitID: Int = 0,
+    val UnitName: String,
+    val Quantity: Double,
+    val BonusQuantity: Double,
+    val InvoicedQty: Double,
+    val ReturnedQty: Double,
+    val BonusInvoiced: Double,
+    val BonusReturned: Double,
+    val SampleQty: Double,
+    val Price: Double,
+    val SalesPrice: Double,
+    val TotalCost: Double,
+    val DiscountAmount: Double,
+    val DiscountPercentage: Double,
+    val ItemDiscountPercentage: Double,
+    val ItemDiscount: Double,
+    val TotalDiscount: Double,
+    val NetTotal: Double,
+    val VATPercentage: Double,
+    val VATAmount: Double,
+    val TotalAverageCost: Double,
+    val BonusPercentageQuantity: Double,
+    val TrackingTypes: Int,
+    val Factor: Double,
+    val ExchangeRate: Double,
+    val LCYPrice: Double,
+    val UnitPrice: Double,
+    val CategoryCode: Double,
+    val CategoryID: Int,
+    val Packing: Double,
+    val SalesItemID: Int,
+    val IsSerialItem: Int,
+    val SerialItems: List<SerialItemsDto>? = emptyList(),
+    var userReturningQty: Double = 0.0,
+
+    ) : Parcelable, Serializable {
+    companion object
+
+    fun getItemListName() = "$ItemCode - $ItemName"
+
+    fun getSoldQtyString() = InvoicedQty.toString()
+    fun getUserReturningQtyString() = userReturningQty.toString()
+}
+
+@Keep
+data class
+SalesReturnInvoiceRequestDto(
+    val BranchID: Long = 0,
+    val CustomerID: Long = 0,
+) {
+    companion object
+}
+
+
+@Keep
+data class
+SalesReturnInvoiceListResponseDto(
+    val success: Boolean,
+    val SalesList: List<SalesDto>?
+) {
+    companion object
+}
+
+@Keep
+data class
+SalesDto(
+    val SalesID: Long = 0,
+    val SalesNumber: String = "",
+) {
+    companion object
+}
+
+@Keep
+data class
+SalesItemsListItemsRequestDto(
+    val SalesID: Long = 0
+) {
+    companion object
+}
+
+@Keep
+data class
+SalesItemsListResponseDto(
+    val success: Boolean,
+    val Items: List<SalesItemsDetailsDto>?
+) {
+    companion object
+}
+
+@Parcelize
+@Keep
+data class SalesSaveItemsDetailsDto(
+    val ItemSeqNumber: Int = 0,
+    val ItemID: Long = 0,
+    val WarehouseID: Long = 0,
+    val UnitID: Int = 0,
+    val CategoryID: Int,
+    val Quantity: Double,
+    val Price: Double,
+    val Factor: Double,
+    val ExchangeRate: Double,
+    val LCYPrice: Double,
+    val DiscountAmount: Double,
+    val DiscountPercentage: Double,
+    val BonusPercentageQuantity: Double,
+    val ItemDiscountPercentage: Double,
+    val ItemDiscount: Double,
+    val UnitPrice: Double,
+    val VATPercentage: Double,
+    val VATAmount: Double,
+    val SalesItemID: Int,
+    val TrackingTypes: Int,
+    val SerialItems: List<SerialItemsDto>? = emptyList()
+
+) : Parcelable, Serializable {
+    companion object
+}
+
+
+@Keep
+data class
+SalesItemsRequestDto(
+    val BranchID: Long = 0,
+    val CustomerID: Long = 0,
+    val SalesID: Long = 0,
+    val ItemsDetails: List<SalesSaveItemsDetailsDto>
+) {
+    companion object
+}
+
+@Keep
+data class SaveSalesItemsResponse(
+    val Success: Boolean,
+    val SalesReturnID: String,
+    val ErrorMessage: String
+) {
+    companion object
 }

@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.exert.wms.returns.salesReturn.item.SalesReturnItemViewModel" />
@@ -64,7 +66,7 @@
                         style="@style/TextViewBold14Label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/quantity_full"
+                        android:text="@string/returning_quantity"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -73,7 +75,6 @@
                         android:id="@+id/returningQuantityEditTextLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
                         android:minHeight="50dp"
                         app:boxBackgroundMode="none"
                         app:endIconCheckable="true"
@@ -101,6 +102,19 @@
                             android:text="@{viewModel.returningQuantityString}" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/returningQuantityHintTV"
+                        style="@style/TextViewHintLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/retuning_quantity_hint"
+                        android:visibility="@{(viewModel.returningQuantityString == @string/empty || viewModel.returningQuantityString == null) ? View. VISIBLE : View.GONE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/returningQuantityLabel"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
