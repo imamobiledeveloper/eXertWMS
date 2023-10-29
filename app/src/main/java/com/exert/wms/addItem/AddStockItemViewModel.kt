@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.exert.wms.R
 import com.exert.wms.SerialItemsDto
+import com.exert.wms.itemStocks.api.ItemsBarCodeDto
 import com.exert.wms.mvvmbase.BaseViewModel
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.StringProvider
@@ -18,6 +19,9 @@ class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseVi
 
     private val _serialItem = MutableLiveData<SerialItemsDto>()
     val serialItem: LiveData<SerialItemsDto> = _serialItem
+
+    private val _serialNoBarCodeData = MutableLiveData<String>()
+    val serialNoBarCodeData: LiveData<String> = _serialNoBarCodeData
 
     private var warrantyPeriod: String = ""
     private var warrantyPeriodList: List<String>? = null
@@ -126,5 +130,9 @@ class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseVi
             return String.format("%02d", month)
         }
         return month.toString()
+    }
+
+    fun setBarCodeData(barCode: String) {
+        _serialNoBarCodeData.postValue(barCode)
     }
 }

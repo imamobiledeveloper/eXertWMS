@@ -1,6 +1,7 @@
 package com.exert.wms.addItem
 
 import android.app.DatePickerDialog
+import android.content.IntentFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,16 +9,20 @@ import android.widget.AdapterView
 import android.widget.Spinner
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.exert.wms.R
+import com.exert.wms.ScanBarcodeBroadcastListener
+import com.exert.wms.ScanBarcodeDataReceiver
 import com.exert.wms.databinding.FragmentAddStockItemDialogLayoutBinding
 import com.exert.wms.mvvmbase.MVVMBottomSheetDialogFragment
 import com.exert.wms.stockAdjustment.item.OnItemAddListener
+import com.exert.wms.utils.Constants
 import com.exert.wms.utils.SpinnerCustomAdapter
 import com.exert.wms.utils.toEditable
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.util.*
 
 class AddStockItemDialogFragment(listener: OnItemAddListener) :
-    MVVMBottomSheetDialogFragment<AddStockItemViewModel, FragmentAddStockItemDialogLayoutBinding>() {
+    MVVMBottomSheetDialogFragment<AddStockItemViewModel, FragmentAddStockItemDialogLayoutBinding>(),
+    ScanBarcodeBroadcastListener {
 
     override val mViewModel by lazy {
         getViewModel<AddStockItemViewModel>()
@@ -33,8 +38,7 @@ class AddStockItemDialogFragment(listener: OnItemAddListener) :
     }
 
     override fun getFragmentBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
+        inflater: LayoutInflater, container: ViewGroup?
     ): FragmentAddStockItemDialogLayoutBinding {
         return FragmentAddStockItemDialogLayoutBinding.inflate(inflater, container, false)
     }
@@ -61,10 +65,7 @@ class AddStockItemDialogFragment(listener: OnItemAddListener) :
                 day = mViewModel.getSelectedDayOfMonth()
             }
             val datePicker = DatePickerDialog(
-                requireContext(), dateSetListener,
-                year,
-                month,
-                day
+                requireContext(), dateSetListener, year, month, day
             )
 
             datePicker.datePicker.maxDate = cal.timeInMillis
@@ -76,10 +77,7 @@ class AddStockItemDialogFragment(listener: OnItemAddListener) :
             setWarrantyList(spinner)
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    p1: View?,
-                    position: Int,
-                    p3: Long
+                    parent: AdapterView<*>?, p1: View?, position: Int, p3: Long
                 ) {
                     binding.warrantyPeriodSpinnerTV.text =
                         parent?.getItemAtPosition(position).toString()
@@ -98,6 +96,10 @@ class AddStockItemDialogFragment(listener: OnItemAddListener) :
             dismiss()
         }
 
+        binding.scanSerialNoIV.setOnClickListener {
+            triggerScanner(requireActivity())
+        }
+
         binding.addStockItemButton.setOnClickListener {
             mViewModel.addItemDetails(
                 binding.manufactureDateEditText.text.toString(),
@@ -109,8 +111,7 @@ class AddStockItemDialogFragment(listener: OnItemAddListener) :
         mViewModel.errorMessage.observe(viewLifecycleOwner) { msg ->
             if (msg.isNotEmpty()) {
                 showBriefToastMessage(
-                    msg,
-                    coordinateLayout
+                    msg, coordinateLayout
                 )
             }
         }
@@ -121,6 +122,10 @@ class AddStockItemDialogFragment(listener: OnItemAddListener) :
             }
             dismiss()
         }
+
+        mViewModel.serialNoBarCodeData.observe(viewLifecycleOwner) { code ->
+            binding.serialNoEditText.setText(code)
+        }
     }
 
     private fun setWarrantyList(warrantyPeriodSpinner: Spinner) {
@@ -130,11 +135,32 @@ class AddStockItemDialogFragment(listener: OnItemAddListener) :
 
         mViewModel.setWarrantyPeriodList(warrantyList)
         val adapter = SpinnerCustomAdapter(
-            requireContext(),
-            warrantyList.toTypedArray(),
-            android.R.layout.simple_spinner_item
+            requireContext(), warrantyList.toTypedArray(), android.R.layout.simple_spinner_item
         )
         adapter.setDropDownViewResource(R.layout.spinner_item_layout)
         warrantyPeriodSpinner.adapter = adapter
     }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().registerReceiver(
+            barcodeDataReceiver, IntentFilter(Constants.ACTION_BARCODE_DATA)
+        )
+        claimScanner(requireActivity())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireActivity().unregisterReceiver(barcodeDataReceiver)
+        releaseScanner(requireActivity())
+    }
+
+    private val barcodeDataReceiver = ScanBarcodeDataReceiver(this)
+
+    override fun onDataReceived(data: String?) {
+        data?.let {
+            mViewModel.setBarCodeData(it)
+        } ?: showBriefToastMessage(getString(R.string.error_barcode_message), coordinateLayout)
+    }
+
 }

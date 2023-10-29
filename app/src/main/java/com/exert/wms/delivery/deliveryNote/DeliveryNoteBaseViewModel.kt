@@ -127,7 +127,7 @@ class DeliveryNoteBaseViewModel(
     }
 
     fun selectedSalesInvoiceNo(salesInvoiceNo: String) {
-        if (salesInvoiceNo != stringProvider.getString(R.string.select_sales_invoice_no)) {
+        if (salesInvoiceNo.isNotEmpty() && salesInvoiceNo != stringProvider.getString(R.string.select_sales_invoice_no)) {
             resetItemsList()
             selectedSalesInvoiceNo = salesInvoiceNo
             getDeliveryNotesItemsList()

@@ -1,6 +1,8 @@
 package com.exert.wms.mvvmbase
 
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.ViewDataBinding
 import com.exert.wms.R
+import com.exert.wms.utils.Constants
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -68,4 +71,39 @@ abstract class MVVMBottomSheetDialogFragment<VM : BaseViewModel, VB : ViewDataBi
         baseActivity.showBriefToastMessage(message, coordinatorLayout, bgColor)
     }
 
+    fun triggerScanner(context: Context) {
+        context.sendBroadcast(
+            Intent(Constants.EXTRA_CONTROL)
+                .setPackage(Constants.EXTRA_SCANNER_APP_PACKAGE)
+                .putExtra(Constants.EXTRA_SCAN, true)
+        )
+    }
+
+    fun claimScanner(context: Context) {
+        val properties = Bundle()
+        properties.putBoolean(Constants.DPR_DATA_INTENT_KEY, true)
+        properties.putString(Constants.ACTION_BARCODE_DATA_KEY, Constants.ACTION_BARCODE_DATA)
+        context.sendBroadcast(
+            Intent(Constants.ACTION_CLAIM_SCANNER)
+                .putExtra(Constants.EXTRA_SCANNER, Constants.EXTRA_SCANNER_VALUE)
+                .putExtra(Constants.EXTRA_PROFILE, Constants.EXTRA_PROFILE_VALUE)
+                .putExtra(Constants.EXTRA_PROPERTIES, properties)
+        )
+    }
+
+    fun releaseScanner(context: Context) {
+        context.sendBroadcast(Intent(Constants.ACTION_RELEASE_SCANNER))
+    }
+
+    private fun bytesToHexString(arr: ByteArray?): String {
+        var s = "[]"
+        if (arr != null) {
+            s = "["
+            for (i in arr.indices) {
+                s += "0x" + Integer.toHexString(arr[i].toInt()) + ", "
+            }
+            s = s.substring(0, s.length - 2) + "]"
+        }
+        return s
+    }
 }

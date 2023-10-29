@@ -197,11 +197,20 @@ class DeliveryReceiptBaseViewModel(
     }
 
     private fun checkAndEnableUpdateButton() {
-        if (stockItemsList.size > 0) {
+        if (stockItemsList.size > 0 && checkAnySerialItemAdded()) {
             _enableUpdateButton.postValue(true)
         } else {
             _enableUpdateButton.postValue(false)
         }
+    }
+
+    private fun checkAnySerialItemAdded(): Boolean {
+        if(stockItemsList.size> 0){
+            stockItemsList.filter { it.IsSerialItem == 1 }.let { serialList ->
+                return serialList.any { it.SerialItems?.isNotEmpty() == true }
+            }
+        }
+        return false
     }
 
     private fun updateItemToList(item: DeliveryReceiptItemsDetailsDto) {
@@ -299,7 +308,7 @@ class DeliveryReceiptBaseViewModel(
     }
 
     fun selectedPurchaseOrder(pOrderNo: String) {
-        if (pOrderNo != stringProvider.getString(R.string.select_purchase_order_no)) {
+        if (pOrderNo.isNotEmpty() && pOrderNo != stringProvider.getString(R.string.select_purchase_order_no)) {
             resetItemsList()
             selectedPurchaseOrderNo = pOrderNo
             getDeliveryReceiptItemsList()
@@ -326,26 +335,12 @@ class DeliveryReceiptBaseViewModel(
                         deliveryReceiptItemsList = dto.Items
                         stockItemsList.addAll(dto.Items)
                         _itemsList.postValue(dto.Items)
-                        _enableUpdateButton.postValue(true)
                     } else {
                         _errorFieldMessage.postValue(stringProvider.getString(R.string.delivery_receipt_items_list_empty_message))
                     }
                 }
         }
     }
-
-
-//    private fun getSelectedBranchId(): Long {
-//        return warehousesList?.filter { it.Warehouse == selectedToWarehouse }.run {
-//            this?.get(0)?.WarehouseID
-//        } ?: 0
-//    }
-//
-//    private fun getSelectedVendorId(): Long {
-//        return vendorsList?.filter { it.Vendor == selectedVendor }.run {
-//            this?.get(0)?.ID
-//        } ?: 0
-//    }
 
     override fun handleException(throwable: Throwable) {
         hideProgressIndicator()

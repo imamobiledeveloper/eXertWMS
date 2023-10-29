@@ -16,184 +16,197 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/stockAdjustmentScrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/updateButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="@dimen/margin_15dp">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/warehouseAddItemLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/addItemsTV"
-                    style="@style/TextViewWithDrawableStyle"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/warehouseAddItemLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="@string/add_item"
-                    android:layout_marginEnd="4dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:drawablePadding="@dimen/margin_8dp"
-                    android:background="@drawable/button_green_bg_selector"
-                    android:textColor="@color/white"
-                    app:drawableStartCompat="@drawable/ic_add_circle_white"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/warehouseTV"
-                    style="@style/TextViewBold16Label"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="15dp"
-                    android:drawablePadding="@dimen/margin_15dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/warehouse"
-                    app:layout_constraintBottom_toBottomOf="@+id/addItemsTV"
-                    app:layout_constraintEnd_toStartOf="@+id/addItemsTV"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/addItemsTV"
+                        style="@style/TextViewWithDrawableStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/button_green_bg_selector"
+                        android:drawablePadding="@dimen/margin_8dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="@string/add_item"
+                        android:textColor="@color/white"
+                        app:drawableStartCompat="@drawable/ic_add_circle_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/warehouseTV"
+                        style="@style/TextViewBold16Label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:drawablePadding="@dimen/margin_15dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/warehouse"
+                        app:layout_constraintBottom_toBottomOf="@+id/addItemsTV"
+                        app:layout_constraintEnd_toStartOf="@+id/addItemsTV"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/warehouseSpinnerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/warehouseAddItemLayout">
+
+                    <Spinner
+                        android:id="@+id/warehouseSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#00FFFFFF"
+                        android:dropDownWidth="match_parent"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@drawable/edittext_rectangle_white_bg"
+                        android:popupElevation="15dp"
+                        android:theme="@style/Spinner"
+                        app:layout_constraintBottom_toBottomOf="@+id/warehouseSpinnerTV"
+                        app:layout_constraintTop_toTopOf="@+id/warehouseSpinnerTV" />
+
+                    <TextView
+                        android:id="@+id/warehouseSpinnerTV"
+                        style="@style/TextViewLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edittext_rectangle_white_bg"
+                        android:drawablePadding="@dimen/margin_10dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/select_warehouse"
+                        android:textAlignment="gravity"
+                        app:drawableEndCompat="@drawable/ic_arrow_down"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/itemsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/margin_15dp"
+                    android:layout_marginBottom="@dimen/margin_15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/warehouseSpinnerLayout">
+
+                    <TextView
+                        android:id="@+id/quantityTV"
+                        style="@style/TextViewHeaderBlueLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="26dp"
+                        android:layout_marginEnd="26dp"
+                        android:text="@string/quantity"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/itemListTV"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/itemListTV"
+                        style="@style/TextViewHeaderBlueLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/items_list"
+                        app:layout_constraintEnd_toStartOf="@+id/quantityTV"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/itemsListRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/edittext_rectangle_less_padding_bg"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/itemListTV"
+                        tools:itemCount="10"
+                        tools:listitem="@layout/stock_adjustment_item_name_list_item_layout" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/warehouseSpinnerLayout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="@dimen/margin_10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/warehouseAddItemLayout">
+        </androidx.core.widget.NestedScrollView>
 
-                <Spinner
-                    android:id="@+id/warehouseSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#00FFFFFF"
-                    android:dropDownWidth="match_parent"
-                    android:overlapAnchor="false"
-                    android:popupBackground="@drawable/edittext_rectangle_white_bg"
-                    android:popupElevation="15dp"
-                    android:theme="@style/Spinner"
-                    app:layout_constraintBottom_toBottomOf="@+id/warehouseSpinnerTV"
-                    app:layout_constraintTop_toTopOf="@+id/warehouseSpinnerTV"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/updateButton"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:layout_margin="@dimen/margin_16dp"
+            android:enabled="false"
+            android:text="@string/update"
+            android:textAllCaps="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/warehouseSpinnerTV"
-                    style="@style/TextViewLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edittext_rectangle_white_bg"
-                    android:drawablePadding="@dimen/margin_10dp"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:text="@string/select_warehouse"
-                    android:textAlignment="gravity"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:drawableEndCompat="@drawable/ic_arrow_down" />
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/updateButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blue_light"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/blue_50"
+            android:indeterminateTintMode="src_atop"
+            android:minWidth="40dp"
+            android:minHeight="40dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/itemsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/margin_15dp"
-                android:layout_marginBottom="@dimen/margin_15dp"
-                app:layout_constraintBottom_toTopOf="@+id/updateButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/warehouseSpinnerLayout">
-
-                <TextView
-                    android:id="@+id/quantityTV"
-                    style="@style/TextViewHeaderBlueLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/quantity"
-                    android:layout_marginStart="26dp"
-                    android:layout_marginEnd="26dp"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@+id/itemListTV"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/itemListTV"
-                    style="@style/TextViewHeaderBlueLabel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/items_list"
-                    app:layout_constraintEnd_toStartOf="@+id/quantityTV"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/itemsListRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/edittext_rectangle_less_padding_bg"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/itemListTV"
-                    tools:itemCount="10"
-                    android:visibility="gone"
-                    tools:listitem="@layout/stock_adjustment_item_name_list_item_layout" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/updateButton"
-                style="@style/ButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAllCaps="true"
-                android:clickable="true"
-                android:enabled="false"
-                android:text="@string/update"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:id="@+id/coordinateLayout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/updateButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/blue_light"
-                android:indeterminate="true"
-                android:indeterminateTint="@color/blue_50"
-                android:indeterminateTintMode="src_atop"
-                android:minWidth="40dp"
-                android:minHeight="40dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

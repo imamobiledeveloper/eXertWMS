@@ -16,8 +16,6 @@ import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.itemStocks.api.WarehouseStockDetails
 import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListAdapter
 import com.exert.wms.mvvmbase.BaseActivity
-import com.exert.wms.addItem.AddStockItemDialogFragment
-import com.exert.wms.stockAdjustment.item.OnItemAddListener
 import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 import com.exert.wms.utils.Constants
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -89,10 +87,6 @@ class TransferOutQuantityActivity :
             itemDto?.ItemID?.let { it1 -> mViewModel.getSelectedItems(it1) }
         }
 
-//        binding.addButton.setOnClickListener {
-//            showBottomSheetDialog()
-//        }
-
         mViewModel.errorGetItemsStatusMessage.observe(this, Observer { status ->
             showBriefToastMessage(status, coordinateLayout)
         })
@@ -121,10 +115,6 @@ class TransferOutQuantityActivity :
             }
         })
 
-//        mViewModel.showAddItemButton.observe(this, Observer {
-//            binding.addButton.visibility = if (it) View.VISIBLE else View.INVISIBLE
-//        })
-
         mViewModel.enableSaveButton.observe(this) {
             binding.saveButton.isEnabled = it
         }
@@ -149,19 +139,6 @@ class TransferOutQuantityActivity :
     override fun onBackPressed() {
         mViewModel.alreadySelected = false
         super.onBackPressed()
-    }
-
-    private fun showBottomSheetDialog() {
-        val dialog = AddStockItemDialogFragment(object : OnItemAddListener {
-            override fun onAddItem(item: SerialItemsDto) {
-                if (item?.ManufactureDate != null) {
-                    checkedItems.add(item)
-                    mViewModel.setCheckedItems(checkedItems)
-                }
-            }
-
-        })
-        dialog.show(this.supportFragmentManager, "AddStockItemDialogFragment")
     }
 
     override fun onBindData(binding: ActivityTransferOutQuantityBinding) {

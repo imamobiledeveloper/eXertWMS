@@ -108,7 +108,7 @@ class TransferInBaseViewModel(
     }
 
     fun selectedTransferOutNo(transferNo: String) {
-        if (transferNo != stringProvider.getString(R.string.select_transfer_out_no)) {
+        if (transferNo.isNotEmpty() && transferNo != stringProvider.getString(R.string.select_transfer_out_no)) {
             resetItemsList()
             selectedTransferNo = transferNo
             getTransferInItems(getSelectedTransferNoId())

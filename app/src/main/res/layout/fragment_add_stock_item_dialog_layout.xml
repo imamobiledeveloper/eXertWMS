@@ -43,122 +43,144 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/margin_20dp"
+                app:layout_constraintBottom_toTopOf="@+id/addStockItemButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/addStockItemButton"
                 app:layout_constraintTop_toBottomOf="@+id/addItemTitleTV">
 
-            <TextView
-                android:id="@+id/manufactureDateTV"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                style="@style/TextViewBold14Label"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="5dp"
-                android:gravity="center_vertical"
-                android:text="@string/manufacture_date"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/manufactureDateEditText"
-                style="@style/EditTextEnabledStyle"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:drawableEnd="@drawable/ic_calendar"
-                android:editable="false"
-                android:hint="@string/dd_mm_yyyy"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/manufactureDateTV" />
-
-            <TextView
-                android:id="@+id/warrantyPeriodTV"
-                style="@style/TextViewBold14Label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="5dp"
-                android:gravity="center_vertical"
-                android:text="@string/warranty_period"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/manufactureDateEditText" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/warrantyPeriodSpinnerLayout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="@dimen/margin_10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/warrantyPeriodTV">
-
-                <Spinner
-                    android:id="@+id/warrantyPeriodSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:dropDownWidth="match_parent"
-                    android:overlapAnchor="false"
-                    android:popupBackground="@drawable/edittext_rectangle_white_bg"
-                    android:popupElevation="15dp"
-                    android:theme="@style/Spinner"
-                    app:layout_constraintBottom_toBottomOf="@+id/warrantyPeriodSpinnerTV"
-                    app:layout_constraintTop_toTopOf="@+id/warrantyPeriodSpinnerTV" />
-
                 <TextView
-                    android:id="@+id/warrantyPeriodSpinnerTV"
-                    style="@style/TextViewLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edittext_rectangle_white_bg"
-                    android:drawablePadding="@dimen/margin_10dp"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:text="@string/select_warranty_period"
-                    android:textAlignment="gravity"
-                    app:drawableEndCompat="@drawable/ic_arrow_down"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/serialNoLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/warrantyPeriodSpinnerLayout">
-
-                <TextView
-                    android:id="@+id/serialNoLabel"
+                    android:id="@+id/manufactureDateTV"
                     style="@style/TextViewBold14Label"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/serial_no"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/manufacture_date"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/serialNoEditText"
+                    android:id="@+id/manufactureDateEditText"
                     style="@style/EditTextEnabledStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:hint="@string/add_serial_no"
-                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890 "
-                    android:inputType="text"
-                    android:maxLength="50"
+                    android:layout_height="50dp"
+                    android:drawableEnd="@drawable/ic_calendar"
+                    android:editable="false"
+                    android:hint="@string/dd_mm_yyyy"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/serialNoLabel" />
+                    app:layout_constraintTop_toBottomOf="@+id/manufactureDateTV" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/warrantyPeriodTV"
+                    style="@style/TextViewBold14Label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/warranty_period"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/manufactureDateEditText" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/warrantyPeriodSpinnerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/warrantyPeriodTV">
+
+                    <Spinner
+                        android:id="@+id/warrantyPeriodSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:dropDownWidth="match_parent"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@drawable/edittext_rectangle_white_bg"
+                        android:popupElevation="15dp"
+                        android:theme="@style/Spinner"
+                        app:layout_constraintBottom_toBottomOf="@+id/warrantyPeriodSpinnerTV"
+                        app:layout_constraintTop_toTopOf="@+id/warrantyPeriodSpinnerTV" />
+
+                    <TextView
+                        android:id="@+id/warrantyPeriodSpinnerTV"
+                        style="@style/TextViewLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edittext_rectangle_white_bg"
+                        android:drawablePadding="@dimen/margin_10dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/select_warranty_period"
+                        android:textAlignment="gravity"
+                        app:drawableEndCompat="@drawable/ic_arrow_down"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/serialNoLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/warrantyPeriodSpinnerLayout">
+
+                    <TextView
+                        android:id="@+id/serialNoLabel"
+                        style="@style/TextViewBold14Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/serial_no"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/itemPartCodeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/serialNoLabel">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/scanSerialNoIV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            app:layout_constraintBottom_toBottomOf="@+id/serialNoEditText"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/serialNoEditText"
+                            app:srcCompat="@drawable/ic_qr" />
+
+                        <EditText
+                            android:id="@+id/serialNoEditText"
+                            style="@style/EditTextEnabledStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="56dp"
+                            android:layout_marginStart="12dp"
+                            android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
+                            android:hint="@string/add_serial_no"
+                            android:inputType="text"
+                            android:maxLength="50"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/scanSerialNoIV"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -167,9 +189,9 @@
                 style="@style/ButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:text="@string/add"
                 android:textAllCaps="true"
-                android:clickable="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/itemDetailsLayout" />
