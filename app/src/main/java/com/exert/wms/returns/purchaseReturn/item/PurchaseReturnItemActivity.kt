@@ -200,6 +200,10 @@ class PurchaseReturnItemActivity :
         mViewModel.enableSaveButton.observe(this) {
             binding.saveButton.isEnabled = it
         }
+
+        mViewModel.returnedQuantityString.observe(this) { value ->
+            binding.returnedQuantityEditText.setText(value)
+        }
     }
 
     private fun showAlertDialog() {

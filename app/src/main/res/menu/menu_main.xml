@@ -18,10 +18,10 @@
             android:icon="@drawable/ic_menu_stock_adjustment"
             android:title="@string/stock_adjustment" />
 
-        <item
-            android:id="@+id/nav_stock_reconciliation"
-            android:icon="@drawable/ic_menu_stock_reconcilication"
-            android:title="@string/stock_reconciliation" />
+<!--        <item-->
+<!--            android:id="@+id/nav_stock_reconciliation"-->
+<!--            android:icon="@drawable/ic_menu_stock_reconcilication"-->
+<!--            android:title="@string/stock_reconciliation" />-->
 
         <item
             android:id="@+id/nav_transfer_out"
@@ -36,12 +36,12 @@
         <item
             android:id="@+id/nav_delivery_receipt"
             android:icon="@drawable/ic_menu_delivery_receipt"
-            android:title="@string/delivery_receipt" />
+            android:title="@string/goods_received" />
 
         <item
             android:id="@+id/nav_delivery_note"
             android:icon="@drawable/ic_menu_delivery_note"
-            android:title="@string/delivery_note" />
+            android:title="@string/material_delivery" />
         <item
             android:id="@+id/nav_purchase_return"
             android:icon="@drawable/ic_menu_purchase_return"

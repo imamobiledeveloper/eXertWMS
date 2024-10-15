@@ -127,7 +127,7 @@ class DeliveryNoteBaseViewModel(
     }
 
     fun selectedSalesInvoiceNo(salesInvoiceNo: String) {
-        if (salesInvoiceNo.isNotEmpty() && salesInvoiceNo != stringProvider.getString(R.string.select_sales_invoice_no)) {
+        if (salesInvoiceNo.isNotEmpty() && salesInvoiceNo != stringProvider.getString(R.string.select_sales_order_confirmation_no)) {
             resetItemsList()
             selectedSalesInvoiceNo = salesInvoiceNo
             getDeliveryNotesItemsList()
@@ -260,7 +260,7 @@ class DeliveryNoteBaseViewModel(
                         val stringList = dto.SalesOrders.map { it.SalesOrderNumber }.toMutableList()
                         stringList.add(
                             0,
-                            stringProvider.getString(R.string.select_sales_invoice_no)
+                            stringProvider.getString(R.string.select_sales_order_confirmation_no)
                         )
                         _salesOrdersStringList.postValue(stringList)
                     } else {

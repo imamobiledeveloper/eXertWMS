@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 class DeliveryNoteItemActivity :
     BaseActivity<DeliveryNoteItemViewModel, ActivityDeliveryNoteItemBinding>() {
 
-    override val title = R.string.item_delivery_note
+    override val title = R.string.item_material_delivery
 
     override val showHomeButton: Int = 1
 

@@ -190,6 +190,9 @@ class SalesReturnItemActivity :
                 View.GONE
             )
         }
+        mViewModel.returnedQuantityString.observe(this) { value ->
+            binding.returnedQuantityEditText.setText(value)
+        }
         mViewModel.errorReturningQty.observe(this) { show ->
             if (show) {
                 showAlertDialog()

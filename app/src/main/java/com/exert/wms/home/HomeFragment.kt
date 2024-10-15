@@ -65,7 +65,7 @@ class HomeFragment : MVVMFragment<HomeViewModel, FragmentHomeBinding>() {
             featuresList[6] -> (activity as HomeActivity).setSelectedItem(7)
             featuresList[7] -> (activity as HomeActivity).setSelectedItem(8)
             featuresList[8] -> (activity as HomeActivity).setSelectedItem(9)
-            else -> (activity as HomeActivity).setSelectedItem(1)
+            else ->  (activity as HomeActivity).logOut()//(activity as HomeActivity).setSelectedItem(1)
 
         }
     }

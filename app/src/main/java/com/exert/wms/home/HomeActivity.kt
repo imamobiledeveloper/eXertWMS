@@ -125,12 +125,12 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
                         .replace(R.id.homeFragmentContainerView, StockAdjustmentBaseFragment())
                         .commit()
                 }
-                R.id.nav_stock_reconciliation -> {
-                    showNavigationButton=1
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.homeFragmentContainerView, StockReconciliationBaseFragment())
-                        .commit()
-                }
+//                R.id.nav_stock_reconciliation -> {
+//                    showNavigationButton=1
+//                    supportFragmentManager.beginTransaction()
+//                        .replace(R.id.homeFragmentContainerView, StockReconciliationBaseFragment())
+//                        .commit()
+//                }
                 R.id.nav_transfer_out -> {
                     showNavigationButton=1
                     supportFragmentManager.beginTransaction()

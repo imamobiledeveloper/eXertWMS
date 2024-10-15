@@ -24,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 class DeliveryReceiptItemActivity :
     BaseActivity<DeliveryReceiptItemViewModel, ActivityDeliveryReceiptItemBinding>() {
 
-    override val title = R.string.item_delivery_receipt
+    override val title = R.string.item_goods_received
 
     override val showHomeButton: Int = 1
 

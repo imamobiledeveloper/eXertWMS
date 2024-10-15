@@ -143,7 +143,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_16dp"
                     android:gravity="center_vertical"
-                    android:text="@string/sales_invoice_no"
+                    android:text="@string/sales_order_confirmation_no"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/customerNameSpinnerLayout" />
@@ -180,7 +180,7 @@
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:text="@string/select_sales_invoice_no"
+                        android:text="@string/select_sales_order_confirmation_no"
                         android:textAlignment="gravity"
                         app:drawableEndCompat="@drawable/ic_arrow_down"
                         app:layout_constraintEnd_toEndOf="parent"

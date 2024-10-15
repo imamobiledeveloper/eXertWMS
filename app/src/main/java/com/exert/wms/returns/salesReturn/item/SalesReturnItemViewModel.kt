@@ -47,6 +47,9 @@ class SalesReturnItemViewModel(
     private val _checkedSerialItemsList = MutableLiveData<SerialItemsDtoList>()
     val checkedSerialItemsList: LiveData<SerialItemsDtoList> = _checkedSerialItemsList
 
+    private val _returnedQuantityString = MutableLiveData<String>().apply { value = stringProvider.getString(R.string.zero)}
+    val returnedQuantityString: LiveData<String> = _returnedQuantityString
+
     private val _returningQuantityString = MutableLiveData<String>()
     val returningQuantityString: LiveData<String> = _returningQuantityString
 
@@ -99,6 +102,7 @@ class SalesReturnItemViewModel(
             _itemDto.postValue(dto)
             enteredQuantity = pDto.userReturningQty
             userSelectedSerialItemsList = getAlreadySelectedItemsList(pDto.SerialItems)
+            _returnedQuantityString.postValue(pDto.ReturnedQty.toString())
             _returningQuantityString.postValue(if (pDto.userReturningQty > 0) pDto.getUserReturningQtyString() else "")
             _isItemSerialized.postValue(pDto.IsSerialItem == 1)
         }

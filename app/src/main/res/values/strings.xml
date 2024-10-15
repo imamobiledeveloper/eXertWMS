@@ -62,7 +62,9 @@
     <string name="item_transfer_in">Item TransferIn</string>
     <string name="item_transfer_out">Item TransferOut</string>
     <string name="item_delivery_receipt">Item Delivery Receipt</string>
-    <string name="item_delivery_note">Item Delivery Note</string>
+    <string name="item_goods_received">Item Goods Received</string>
+    <string name="item_delivery_note">Item Material Delivery</string>
+    <string name="item_material_delivery">Item Delivery Note</string>
     <string name="item_reconciliation">Item Reconciliation</string>
     <string name="item_purchase_return">Item Purchase Return</string>
     <string name="item_sales_return">Item Sales Return</string>
@@ -73,6 +75,7 @@
     <string name="select_from_warehouse">Select From Warehouse</string>
     <string name="select_transfer_out_no">Select Transfer Out Number</string>
     <string name="select_sales_invoice_no">Select Sales Invoice Number</string>
+    <string name="select_sales_order_confirmation_no">Select Sales Order Confirmation Number</string>
     <string name="select_purchase_invoice_no">Select Purchase Invoice Number</string>
     <string name="select_warranty_period">Select Warranty Period</string>
     <string name="update">Update</string>
@@ -84,7 +87,7 @@
     <string name="item_saved_message">Item is saved successfully</string>
     <string name="cost">Cost</string>
     <string name="location_empty_message">"Please select Location from the list"</string>
-    <string name="delivery_note_item_empty_message">"Please select Delivery note item from the list"</string>
+    <string name="delivery_note_item_empty_message">"Please select Material delivery item from the list"</string>
     <string name="warehouse_empty_message">"Please select Warehouse from the list"</string>
     <string name="warehouse_from_to_empty_message">"Please select FromWarehouse and ToWarehouse from the list"</string>
     <string name="warehouse_list_empty_message">"Warehouse are not available"</string>
@@ -136,7 +139,9 @@
     <string name="transfer_out">Transfer Out</string>
     <string name="transfer_in">Transfer In</string>
     <string name="delivery_receipt">Delivery Receipt</string>
+    <string name="goods_received">Goods Received</string>
     <string name="delivery_note">Delivery Note</string>
+    <string name="material_delivery">Material Delivery</string>
     <string name="purchase_return">Purchase Return</string>
     <string name="sales_return">Sales Return</string>
     <string name="transactions">Transactions</string>
@@ -146,6 +151,7 @@
     <string name="empty" />
     <string name="quantity">Qty</string>
     <string name="quantity_full">Quantity</string>
+    <string name="returned_quantity">Returned Quantity</string>
     <string name="returning_quantity">Returning Quantity</string>
     <string name="select_location">Select Location</string>
     <string name="error_quantity_message">Please enter Quantity</string>
@@ -158,8 +164,8 @@
     <string name="success_save_transfer_in">Updated Transfer In items successfully</string>
     <string name="error_save_transfer_out_items">Failed to update Transfer out items. Please try again!</string>
     <string name="success_save_transfer_out">Updated Transfer Out items successfully</string>
-    <string name="error_save_delivery_receipt_items">Failed to update Delivery receipt items. Please try again!</string>
-    <string name="error_save_delivery_notes_items">Failed to update Delivery notes items. Please try again!</string>
+    <string name="error_save_delivery_receipt_items">Failed to update Goods received items. Please try again!</string>
+    <string name="error_save_delivery_notes_items">Failed to update Material delivery items. Please try again!</string>
     <string name="error_save_purchase_return_items">Failed to update Purchase return items. Please try again!</string>
     <string name="error_save_sales_return_items">Failed to update Sales return items. Please try again!</string>
     <string name="purchase_order_no">Purchase Order No.</string>
@@ -168,14 +174,15 @@
     <string name="manufacturing_date">Manufacturing Date</string>
     <string name="select_branch">Select Branch</string>
     <string name="select_vendor_name">Select Vendor Name</string>
-    <string name="sales_invoice_no">Sales Invoice No.</string>
+    <string name="sales_invoice_no">Sales Invoice No</string>
+    <string name="sales_order_confirmation_no">Sales Order Confirmation No</string>
     <string name="purchase_invoice_no">Purchase Invoice No.</string>
     <string name="enter_to_select">Enter to select</string>
     <string name="customer_name">Customer Name</string>
     <string name="branch">Branch</string>
     <string name="branch_empty_message">"Please select Branch from the list"</string>
-    <string name="success_save_delivery_receipt">Updated Delivery receipt items successfully</string>
-    <string name="success_save_delivery_note">Updated Delivery note items successfully</string>
+    <string name="success_save_delivery_receipt">Updated Goods received items successfully</string>
+    <string name="success_save_delivery_note">Updated Material delivery items successfully</string>
     <string name="success_save_purchase_return">Updated Purchase return items successfully</string>
     <string name="success_save_sales_return">Updated Sales return items successfully</string>
     <string name="purchase_quantity">Purchase Quantity</string>
@@ -195,24 +202,26 @@
     <string name="from_and_to_warehouse_should_not_be_same">From warehouse and To warehouses should not be same</string>
     <string name="transfer_out_numbers_list_empty_message">Transfer out numbers are not found</string>
     <string name="transfer_in_items_list_empty_message">Transfer out numbers are not found</string>
-    <string name="delivery_notes_items_list_empty_message">Delivery notes items are not found</string>
-    <string name="delivery_receipt_items_list_empty_message">Delivery receipt items are not found</string>
+    <string name="delivery_notes_items_list_empty_message">Material delivery items are not found</string>
+    <string name="delivery_receipt_items_list_empty_message">Goods received items are not found</string>
     <string name="purchase_orders_list_empty_message">Purchase orders are not available</string>
     <string name="purchase_returns_items_list_empty_message">Purchase returns items are not available</string>
     <string name="sales_returns_items_list_empty_message">Sales returns items are not available</string>
     <string name="quantity_empty_message">Quantity should not be empty</string>
+    <string name="zero">0.0</string>
 
     <string-array name="features_list">
         <item>Item Stocks</item>
         <item>Stock Adjustment</item>
-        <item>Stock Reconciliation</item>
+<!--        <item>Stock Reconciliation</item>-->
         <item>Transfer Out</item>
         <item>Transfer In</item>
-        <item>Delivery Receipt</item>
-        <item>Delivery Note</item>
+        <item>Goods Received</item>
+        <item>Material Delivery</item>
         <item>Purchase Return</item>
         <item>Sales Return</item>
         <item>Transactions</item>
+        <item>Logout</item>
     </string-array>
 
     <string-array name="warranty_period_list">

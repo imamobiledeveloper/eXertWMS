@@ -27,7 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 class DeliveryReceiptBaseFragment :
     MVVMFragment<DeliveryReceiptBaseViewModel, FragmentDeliveryReceiptBaseBinding>() {
 
-    override val title = R.string.delivery_receipt
+    override val title = R.string.goods_received
 
     override val mViewModel by lazy {
         getViewModel<DeliveryReceiptBaseViewModel>()

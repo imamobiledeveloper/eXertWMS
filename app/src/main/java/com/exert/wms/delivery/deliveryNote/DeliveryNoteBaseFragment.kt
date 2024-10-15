@@ -23,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 class DeliveryNoteBaseFragment :
     MVVMFragment<DeliveryNoteBaseViewModel, FragmentDeliveryNoteBaseBinding>() {
 
-    override val title = R.string.delivery_note
+    override val title = R.string.material_delivery
 
     override val mViewModel by lazy {
         getViewModel<DeliveryNoteBaseViewModel>()
