@@ -74,6 +74,7 @@ class SalesReturnItemViewModel(
 
     private var selectedItemDto: SalesItemsDetailsDto? = null
     private var enteredQuantity: Double = 0.0
+    private var actualOrPreviousQuantity: Double = 0.0
 
     private fun validateUserDetails(
         returningQty: String
@@ -101,6 +102,8 @@ class SalesReturnItemViewModel(
             itemsDto = dto
             _itemDto.postValue(dto)
             enteredQuantity = pDto.userReturningQty
+            actualOrPreviousQuantity = enteredQuantity
+            userSelectedItemId = pDto.ItemID
             userSelectedSerialItemsList = getAlreadySelectedItemsList(pDto.SerialItems)
             _returnedQuantityString.postValue(pDto.ReturnedQty.toString())
             _returningQuantityString.postValue(if (pDto.userReturningQty > 0) pDto.getUserReturningQtyString() else "")
@@ -130,18 +133,42 @@ class SalesReturnItemViewModel(
     }
 
     fun setSelectedSerialItemsList(dtoList: SerialItemsDtoList?) {
-        dtoList?.takeIf { it.serialItemsDto != null }?.let { serialItemsList ->
-            if (serialItemsList.serialItemsDto?.isNotEmpty() == true && serialItemsList.itemId != null) {
+            dtoList?.serialItemsDto?.let { serialItemsList ->
+            if (dtoList.serialItemsDto?.isNotEmpty() == true && dtoList.itemId != null) {
                 userSelectedSerialItemsList =
-                    serialItemsList.serialItemsDto as ArrayList<SerialItemsDto>
+                    dtoList.serialItemsDto as ArrayList<SerialItemsDto>
                 userSelectedItemId = dtoList.itemId
-                _returningQuantityString.postValue(getAdjustmentQuantity().toString())
+                _returningQuantityString.postValue (getAdjustmentQuantity().toString())
                 _enableSaveButton.postValue(true)
-            } else if (serialItemsList.itemId == userSelectedItemId && (serialItemsList.serialItemsDto == null || serialItemsList.serialItemsDto.isEmpty())) {
+            } else if (dtoList.itemId == userSelectedItemId && (dtoList.serialItemsDto == null || dtoList.serialItemsDto.isEmpty())) {
+                _returningQuantityString.postValue("0")
+                val isItDifferent= checkUserPreviousSelectedAndCurrentSelectedDifferenceItems(dtoList.itemId, dtoList.serialItemsDto)
+                userSelectedItemId = dtoList?.itemId
                 userSelectedSerialItemsList =
-                    serialItemsList.serialItemsDto as ArrayList<SerialItemsDto>
-                _returningQuantityString.postValue(getAdjustmentQuantity().toString())
-                _enableSaveButton.postValue(false)
+                    dtoList.serialItemsDto as ArrayList<SerialItemsDto>
+                _enableSaveButton.postValue(isItDifferent)
+                checkAndEnableSaveButton()
+            }
+        } ?: updateList(dtoList)
+    }
+
+    private fun checkUserPreviousSelectedAndCurrentSelectedDifferenceItems(
+        itemId: Long?,
+        serialItemsDto: List<SerialItemsDto>?
+    ): Boolean {
+        return itemId?.let { id ->
+                id.takeIf { it == userSelectedItemId}?.let {
+                    userSelectedSerialItemsList != serialItemsDto
+                } ?: false
+            } ?: false
+    }
+
+    private fun updateList(dtoList: SerialItemsDtoList?) {
+        dtoList?.let {
+            if (it.itemId == userSelectedItemId){
+                userSelectedSerialItemsList = it.serialItemsDto as ArrayList<SerialItemsDto>
+                _returningQuantityString.value = (getAdjustmentQuantity().toString())
+                _enableSaveButton.postValue(true)
             }
         }
     }
@@ -195,7 +222,7 @@ class SalesReturnItemViewModel(
     fun setAdjustmentQuantity(text: String) {
         if (text.isNotEmpty()) {
             enteredQuantity = text.toDouble()
-            _enableSaveButton.postValue(enteredQuantity > 0)
+            checkAndEnableSaveButton()
         } else {
             _enableSaveButton.postValue(false)
         }
@@ -214,10 +241,14 @@ class SalesReturnItemViewModel(
 
     private fun getSerialItemsWithUserSelection(): List<SerialItemsDto>? {
         val mainList = selectedItemDto?.SerialItems
-        userSelectedSerialItemsList.forEach { userItem ->
-            if (mainList != null) {
-                mainList.find { it.SerialNumber == userItem.SerialNumber }?.let { mainItem ->
-                    mainItem.selected = true
+        if(userSelectedSerialItemsList.isNullOrEmpty()){
+            mainList?.forEach { it.selected = false }
+        }else {
+            userSelectedSerialItemsList.forEach { userItem ->
+                if (mainList != null) {
+                    mainList.find { it.SerialNumber == userItem.SerialNumber }?.let { mainItem ->
+                        mainItem.selected = userItem.selected
+                    }
                 }
             }
         }
@@ -250,18 +281,21 @@ class SalesReturnItemViewModel(
         itemsDto.SerialItems?.let { wSerialItemDetails ->
             wSerialItemDetails.map { it.getConvertedWarehouseSerialItemDetails() }
                 .let { convertedList ->
-                    serialItemsList?.takeIf { it.itemId == itemsDto.ItemID && it.serialItemsDto != null && it.serialItemsDto.isNotEmpty() }
-                        ?.let { list ->
+                    serialItemsList?.takeIf { it.itemId == itemsDto.ItemID}?.let { sList ->
+                        if(sList.serialItemsDto != null && sList.serialItemsDto.isNotEmpty()){
                             convertedList.forEach { warehouse ->
                                 warehouse.selected = false
-                                list.serialItemsDto?.find { it.SerialNumber == warehouse.SerialNumber }
+                                sList.serialItemsDto?.find { it.SerialNumber == warehouse.SerialNumber }
                                     ?.let {
                                         warehouse.selected = true
                                         alreadySelected = true
                                         _enableSaveButton.postValue(true)
                                     }
                             }
+                        }else{ // if serialItemsList is null or empty
+                            convertedList?.forEach { it.selected = false }
                         }
+                    }
                     list.addAll(convertedList)
                 }
         }
@@ -273,4 +307,15 @@ class SalesReturnItemViewModel(
         previousUserCheckedItems.addAll(checkedItems)
         setCheckedItems(checkedItems)
     }
+
+    private fun checkAndEnableSaveButton(){
+        if(actualOrPreviousQuantity!= enteredQuantity){
+            _enableSaveButton.postValue(true)
+        }else if(actualOrPreviousQuantity != getAdjustmentQuantity().toDouble()){
+            _enableSaveButton.postValue(true)
+        }else{
+            _enableSaveButton.postValue(false)
+        }
+    }
+
 }

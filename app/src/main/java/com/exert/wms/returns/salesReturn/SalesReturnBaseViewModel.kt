@@ -61,16 +61,13 @@ class SalesReturnBaseViewModel(
 
     private fun getBranchesAndCustomerList() {
         showProgressIndicator()
-        coroutineJob = viewModelScope.launch(dispatcher + CoroutineExceptionHandler { _, _ ->
-            hideProgressIndicator()
-        }) {
+        coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
             combine(
                 getBranchesList(),
                 getCustomersList()
             ) { wList, cList ->
                 Pair(wList, cList)
             }.collect { result ->
-                hideProgressIndicator()
                 Log.v("WMS EXERT", "getBranchesAndCustomerList response $result")
                 hideProgressIndicator()
                 processBranchesList(result.first)
@@ -108,7 +105,6 @@ class SalesReturnBaseViewModel(
     private fun getCustomersList(): Flow<CustomersListDto> {
         return warehouseRepo.getCustomersList()
     }
-
 
     fun selectedBranch(branchName: String) {
         if (branchName.isNotEmpty() && branchName != stringProvider.getString(R.string.select_branch)) {
@@ -310,7 +306,7 @@ class SalesReturnBaseViewModel(
     private fun getSalesItemsList() {
         showProgressIndicator()
         val request =
-            SalesItemsListItemsRequestDto(SalesID = getSelectedSInvoiceId())//1)//getSelectedPInvoiceId())
+            SalesItemsListItemsRequestDto(SalesID = getSelectedSInvoiceId())
         coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
             returnsRepo.getSalesItemsList(request)
                 .collect { dto ->
