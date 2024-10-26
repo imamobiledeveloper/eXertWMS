@@ -102,7 +102,7 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewDataBinding> : ExertBas
     override fun onResume() {
         super.onResume()
         sessionExpirationDialog =
-            SessionExpirationObject.observable.debounce(1, TimeUnit.MINUTES).subscribe {
+            SessionExpirationObject.observable.debounce(1, TimeUnit.SECONDS).subscribe {
                 SessionExpirationDialog.newInstance()
                     .show(this.supportFragmentManager, SessionExpirationDialog::class.java.name)
             }

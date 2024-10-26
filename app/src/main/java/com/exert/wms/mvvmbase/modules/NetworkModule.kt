@@ -35,7 +35,7 @@ val networkModule = module(override = true) {
             context = get(),
             authInterceptor = get(),
             headerInterceptor = HeaderInterceptor(),
-
+            sessionExpirationInterceptor =  get()
             )
     }
     single(named("exertTokenRetrofit")) {
@@ -54,7 +54,8 @@ val networkModule = module(override = true) {
             loginInterceptor = get(),
             context = get(),
             authInterceptor = get(),
-            headerInterceptor = HeaderInterceptor()
+            headerInterceptor = HeaderInterceptor(),
+            sessionExpirationInterceptor = get()
         )
     }
 
@@ -70,7 +71,8 @@ fun provideLoginOkHttpClient(
     loginInterceptor: HttpLoggingInterceptor,
     context: Context,
     authInterceptor: AuthInterceptor,
-    headerInterceptor: Interceptor
+    headerInterceptor: Interceptor,
+    sessionExpirationInterceptor: SessionExpirationInterceptor
 ): OkHttpClient {
 //    val clientTrustManager = CustomTrustManager(context, "")
 
@@ -79,6 +81,7 @@ fun provideLoginOkHttpClient(
         .connectTimeout(Constants.CONNECTION_TIMEOUT, TimeUnit.SECONDS)
         .addInterceptor(headerInterceptor)
         .addInterceptor(authInterceptor)
+        .addInterceptor(sessionExpirationInterceptor)
         .addInterceptor(loginInterceptor)
 //        .sslSocketFactory(clientTrustManager.)
         .build()
@@ -117,8 +120,8 @@ fun provideLoginOkHttpClient(
     loginInterceptor: HttpLoggingInterceptor,
     context: Context,
     authInterceptor: AuthInterceptor,
-    sessionExpirationInterceptor: SessionExpirationInterceptor,
-    headerInterceptor: Interceptor
+    headerInterceptor: Interceptor,
+//    sessionExpirationInterceptor: SessionExpirationInterceptor
 ): OkHttpClient {
 //    val clientTrustManager = CustomTrustManager(context, "")
 
@@ -127,7 +130,7 @@ fun provideLoginOkHttpClient(
         .connectTimeout(Constants.CONNECTION_TIMEOUT, TimeUnit.SECONDS)
         .addInterceptor(headerInterceptor)
         .addInterceptor(authInterceptor)
-        .addInterceptor(sessionExpirationInterceptor)
+//        .addInterceptor(sessionExpirationInterceptor)
         .addInterceptor(loginInterceptor)
 //        .sslSocketFactory(clientTrustManager.)
         .build()
