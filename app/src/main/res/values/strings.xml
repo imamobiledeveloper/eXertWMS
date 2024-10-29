@@ -102,7 +102,7 @@
     <string name="session_expired">Session Expired</string>
     <string name="session_expired_message">Sorry, Your session has been expired. Please login again!</string>
     <string name="ok">OK</string>
-    <string name="empty_items_list">Items are empty</string>
+    <string name="empty_items_list">Item is not available</string>
     <string name="item_details">Item Details</string>
     <string name="check_serial_items_empty_message">Please select Items to save</string>
     <string name="serial_items_empty_message">Serial items are empty</string>
