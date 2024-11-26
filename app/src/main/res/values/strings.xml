@@ -189,10 +189,12 @@
     <string name="sold_quantity">Sold Quantity</string>
     <string name="purchase_qty">Purchase Qty</string>
     <string name="returning_qty">Returning Qty</string>
-    <string name="error_returning_qty">Returning quantity should be equal or less than Purchase quantity</string>
+    <string name="error_returning_qty">Returning quantity should be equal or less than Purchase balance quantity</string>
+    <string name="error_balance_returning_qty">Returning quantity should be equal or less than Material delivery balance quantity</string>
     <string name="error_sales_returning_qty">Returning quantity should be equal or less than Sold quantity</string>
     <string name="item_empty_message">"Please select Item from the list"</string>
     <string name="return_qty_empty_message">"Please enter Return quantity"</string>
+    <string name="qty_empty_message">"Please enter the Quantity"</string>
     <string name="alert">Alert</string>
     <string name="cancel">Cancel</string>
     <string name="enter_to_sales_invoice_no">Enter Sales Invoice No.</string>

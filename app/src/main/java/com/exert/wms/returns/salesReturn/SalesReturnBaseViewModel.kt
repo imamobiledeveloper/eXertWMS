@@ -202,30 +202,32 @@ class SalesReturnBaseViewModel(
     private fun processRequestDto(itemList: ArrayList<SalesItemsDetailsDto>): SalesItemsRequestDto {
         val list = ArrayList<SalesSaveItemsDetailsDto>()
         itemList.map {
-            val dto = SalesSaveItemsDetailsDto(
-                ItemSeqNumber = it.ItemSeqNumber,
-                ItemID = it.ItemID,
-                WarehouseID = it.WarehouseID,
-                UnitID = it.UnitID,
-                CategoryID = it.CategoryID,
-                Quantity = it.userReturningQty,
-                Price = it.Price,
-                Factor = it.Factor,
-                ExchangeRate = it.ExchangeRate,
-                LCYPrice = it.LCYPrice,
-                DiscountAmount = it.DiscountAmount,
-                DiscountPercentage = it.DiscountPercentage,
-                BonusPercentageQuantity = it.BonusPercentageQuantity,
-                ItemDiscountPercentage = it.ItemDiscountPercentage,
-                ItemDiscount = it.ItemDiscount,
-                UnitPrice = it.UnitPrice,
-                VATPercentage = it.VATPercentage,
-                VATAmount = it.VATAmount,
-                SalesItemID = it.SalesItemID,
-                TrackingTypes = it.TrackingTypes,
-                SerialItems = getSelectedItems(it.SerialItems)
-            )
-            list.add(dto)
+            if (it.userReturningQty > 0) {
+                val dto = SalesSaveItemsDetailsDto(
+                    ItemSeqNumber = it.ItemSeqNumber,
+                    ItemID = it.ItemID,
+                    WarehouseID = it.WarehouseID,
+                    UnitID = it.UnitID,
+                    CategoryID = it.CategoryID,
+                    Quantity = it.userReturningQty,
+                    Price = it.Price,
+                    Factor = it.Factor,
+                    ExchangeRate = it.ExchangeRate,
+                    LCYPrice = it.LCYPrice,
+                    DiscountAmount = it.DiscountAmount,
+                    DiscountPercentage = it.DiscountPercentage,
+                    BonusPercentageQuantity = it.BonusPercentageQuantity,
+                    ItemDiscountPercentage = it.ItemDiscountPercentage,
+                    ItemDiscount = it.ItemDiscount,
+                    UnitPrice = it.UnitPrice,
+                    VATPercentage = it.VATPercentage,
+                    VATAmount = it.VATAmount,
+                    SalesItemID = it.SalesItemID,
+                    TrackingTypes = it.TrackingTypes,
+                    SerialItems = getSelectedItems(it.SerialItems)
+                )
+                list.add(dto)
+            }
         }
 
         return SalesItemsRequestDto(

@@ -204,32 +204,34 @@ class PurchaseReturnBaseViewModel(
     private fun processRequestDto(itemList: ArrayList<PurchaseItemsDetailsDto>): PurchaseItemsRequestDto {
         val list = ArrayList<PurchaseSaveItemsDetailsDto>()
         itemList.map {
-            val dto = PurchaseSaveItemsDetailsDto(
-                ItemSeqNumber = it.ItemSeqNumber,
-                ItemID = it.ItemID,
-                WarehouseID = it.WarehouseID,
-                UnitID = it.UnitID,
-                CategoryID = it.CategoryID,
-                Quantity = it.Quantity,
-                OrderedQty = it.OrderedQty,
-                Price = it.Price,
-                DiscountAmount = it.DiscountAmount,
-                DiscountPercentage = it.DiscountPercentage,
-                Factor = it.Factor,
-                ExchangeRate = it.ExchangeRate,
-                ItemDiscountPercentage = it.ItemDiscountPercentage,
-                ItemDiscount = it.ItemDiscount,
-                VendorDiscountPercentage = it.VendorDiscountPercentage,
-                VendorDiscount = it.VendorDiscount,
-                UnitPrice = it.UnitPrice,
-                LCYPrice = it.LCYPrice,
-                VATPercentage = it.VATPercentage,
-                VATAmount = it.VATAmount,
-                PurchaseItemID = it.PurchaseItemID,
-                TrackingTypes = it.TrackingTypes,
-                SerialItems = getSelectedItems(it.SerialItems)
-            )
-            list.add(dto)
+            if (it.userReturningQty > 0) {
+                val dto = PurchaseSaveItemsDetailsDto(
+                    ItemSeqNumber = it.ItemSeqNumber,
+                    ItemID = it.ItemID,
+                    WarehouseID = it.WarehouseID,
+                    UnitID = it.UnitID,
+                    CategoryID = it.CategoryID,
+                    Quantity = it.Quantity,
+                    OrderedQty = it.OrderedQty,
+                    Price = it.Price,
+                    DiscountAmount = it.DiscountAmount,
+                    DiscountPercentage = it.DiscountPercentage,
+                    Factor = it.Factor,
+                    ExchangeRate = it.ExchangeRate,
+                    ItemDiscountPercentage = it.ItemDiscountPercentage,
+                    ItemDiscount = it.ItemDiscount,
+                    VendorDiscountPercentage = it.VendorDiscountPercentage,
+                    VendorDiscount = it.VendorDiscount,
+                    UnitPrice = it.UnitPrice,
+                    LCYPrice = it.LCYPrice,
+                    VATPercentage = it.VATPercentage,
+                    VATAmount = it.VATAmount,
+                    PurchaseItemID = it.PurchaseItemID,
+                    TrackingTypes = it.TrackingTypes,
+                    SerialItems = getSelectedItems(it.SerialItems)
+                )
+                list.add(dto)
+            }
         }
         return PurchaseItemsRequestDto(
             BranchID = getSelectedBranchId(),

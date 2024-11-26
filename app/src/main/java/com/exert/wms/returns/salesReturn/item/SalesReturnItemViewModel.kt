@@ -20,7 +20,6 @@ class SalesReturnItemViewModel(
     private val stringProvider: StringProvider,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BaseViewModel() {
-    private var coroutineJob: Job? = null
 
     private val _enableSaveButton = MutableLiveData<Boolean>().apply { false }
     val enableSaveButton: LiveData<Boolean> = _enableSaveButton
@@ -79,10 +78,11 @@ class SalesReturnItemViewModel(
     private fun validateUserDetails(
         returningQty: String
     ): Boolean {
+        val balanceQuantity = selectedItemDto?.ReturnedQty?.let { selectedItemDto?.InvoicedQty?.minus(it) }
         return if (returningQty.isEmpty()) {
             _errorFieldMessage.postValue(stringProvider.getString(R.string.return_qty_empty_message))
             false
-        } else if (returningQty.isNotEmpty() && (returningQty.toDouble() > (selectedItemDto?.InvoicedQty
+        } else if (returningQty.isNotEmpty() && (returningQty.toDouble() > (balanceQuantity
                 ?: 0.0))
         ) {
             _errorReturningQty.postValue(true)
@@ -214,7 +214,6 @@ class SalesReturnItemViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        coroutineJob?.cancel()
     }
 
     fun getSavedItemDto() = stockItemsDetailsDto
@@ -263,13 +262,11 @@ class SalesReturnItemViewModel(
         selectedItemDtoInSerialNoScreen = prItemDto
         prItemDto?.let { dto ->
             showProgressIndicator()
-//            coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
                 val itemDto = getConvertedItemDto(dto)
                 _convertedItemsDto.postValue(itemDto)
                 originalSerialItemsList = serialItemsList?.serialItemsDto
                 checkIsListHavingAnySelectedObjects(dto, serialItemsList)
                 hideProgressIndicator()
-//            }
         }
     }
 

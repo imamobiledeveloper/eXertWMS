@@ -194,7 +194,6 @@ class PurchaseReturnItemActivity :
             if (show) {
                 showAlertDialog()
             }
-
         }
 
         mViewModel.enableSaveButton.observe(this) {
