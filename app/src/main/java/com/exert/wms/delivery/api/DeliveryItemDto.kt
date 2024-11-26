@@ -63,6 +63,7 @@ data class SaveDeliveryReceiptItemsResponse(
 @Parcelize
 @Keep
 data class DeliveryNoteItemsDetailsDto(
+    val ItemSeqNumber: Int = 0,
     val WarehouseID: Long = 0,
     val Warehouse: String,
     val ItemID: Long = 0,
@@ -96,12 +97,15 @@ data class DeliveryNoteItemsDetailsDto(
     val VATPercentage: Double,
     val SQM: Double,
     val SerialItems: List<SerialItemsDto>?,
+    var userReturningQty: Double = 0.0,
 ) : Parcelable, java.io.Serializable {
     companion object
 
     fun getQuantityString() = Quantity.toString()
 
     fun getItemListName() = "$ItemCode - $ItemName"
+
+    fun getUserReturningQtyString() = userReturningQty.toString()
 }
 
 @Keep

@@ -1,5 +1,8 @@
 package com.exert.wms.delivery.deliveryNote.item
 
+import android.app.Activity
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +38,7 @@ class DeliveryNoteQuantityActivity :
 
     var dnItemDto: DeliveryNoteItemsDetailsDto? = null
     var serialItemsList: SerialItemsDtoList? = null
+    private val checkedItems: ArrayList<SerialItemsDto> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,12 +47,40 @@ class DeliveryNoteQuantityActivity :
 
         supportActionBar?.setTitle(title)
         observeViewModel()
+
+        binding.saveButton.setOnClickListener {
+            dnItemDto?.ItemID?.let { it1 -> mViewModel.getSelectedItems(it1) }
+        }
     }
 
     private fun observeViewModel() {
         dnItemDto =
             intent.getSerializable(Constants.ITEM_DTO, DeliveryNoteItemsDetailsDto::class.java)
-        mViewModel.setSelectedDeliveryNoteItemDto(dnItemDto)
+        serialItemsList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(
+                Constants.USER_SELECTED_WAREHOUSE_LIST,
+                SerialItemsDtoList::class.java
+            )
+        } else {
+            intent.getParcelableExtra(Constants.USER_SELECTED_WAREHOUSE_LIST)
+        }
+        mViewModel.setSelectedDeliveryNoteItemDto(
+            dnItemDto,
+            serialItemsList
+        )
+        serialItemsList?.serialItemsDto?.let { checkedItems.addAll(it) }
+        mViewModel.setUserSelectedItems(checkedItems)
+
+        mViewModel.enableSaveButton.observe(this) {
+            binding.saveButton.isEnabled = it
+        }
+
+        mViewModel.checkedSerialItemsList.observe(this) { list ->
+            val data = Intent()
+            data.putExtra(Constants.CHECKED_SERIAL_ITEMS, list)
+            setResult(Activity.RESULT_OK, data)
+            finish()
+        }
 
         mViewModel.errorFieldMessage.observe(this) { msg ->
             if (msg.isNotEmpty()) {
@@ -64,20 +96,33 @@ class DeliveryNoteQuantityActivity :
             binding.executePendingBindings()
         }
 
-        mViewModel.dnSerialItems.observe(this) { list ->
+        mViewModel.warehouseSerialNosList.observe(this) { list ->
             if (list != null) {
                 binding.serialNumbersListRecyclerView.layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                 binding.serialNumbersListRecyclerView.adapter =
                     SerialNumbersListAdapter(
                         list,
-                        checkBoxState = false,
+                        mViewModel.getCheckBoxStateValue(),
                         object : OnItemCheckListener {
-                            override fun onItemCheck(item: SerialItemsDto) {}
-                            override fun onItemUncheck(item: SerialItemsDto) {}
+                            override fun onItemCheck(item: SerialItemsDto) {
+                                checkedItems.add(item)
+                                mViewModel.setCheckedItems(checkedItems)
+                            }
+
+                            override fun onItemUncheck(item: SerialItemsDto) {
+                                checkedItems.removeIf { it.SerialNumber == item.SerialNumber }
+                                mViewModel.setCheckedItems(checkedItems)
+                            }
+
                         })
             }
         }
+    }
+
+    override fun onBackPressed() {
+        mViewModel.alreadySelected = false
+        super.onBackPressed()
     }
 
     override fun onBindData(binding: ActivityDeliveryNoteQuantityBinding) {

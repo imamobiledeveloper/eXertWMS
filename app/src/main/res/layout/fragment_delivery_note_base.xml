@@ -199,29 +199,49 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/salesInvoiceNoSpinnerLayout">
 
-                    <TextView
-                        android:id="@+id/quantityTV"
-                        style="@style/TextViewHeaderBlueLabel"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/itemsListLabelsLayout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="26dp"
-                        android:layout_marginEnd="70dp"
-                        android:text="@string/quantity"
-                        android:textSize="14sp"
+                        android:weightSum="3"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/itemListTV"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/itemListTV"
-                        style="@style/TextViewHeaderBlueLabel"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/items_list"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/quantityTV"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/itemListTV"
+                            style="@style/TextViewHeaderBlueLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1.4"
+                            android:text="@string/items_list" />
+
+                        <TextView
+                            android:id="@+id/quantityTV"
+                            style="@style/TextViewHeaderBlueLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.6"
+                            android:padding="@dimen/margin_5dp"
+                            android:text="@string/quantity"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/returningQuantityTV"
+                            style="@style/TextViewHeaderBlueLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.6"
+                            android:padding="@dimen/margin_5dp"
+                            android:text="@string/returning_qty"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="5dp"
+                            android:layout_weight="0.3" />
+                    </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/itemsListRecyclerView"
@@ -231,7 +251,7 @@
                         android:background="@drawable/edittext_rectangle_less_padding_bg"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/itemListTV"
+                        app:layout_constraintTop_toBottomOf="@+id/itemsListLabelsLayout"
                         tools:itemCount="10"
                         android:visibility="gone"
                         tools:listitem="@layout/stock_adjustment_item_name_list_item_layout" />

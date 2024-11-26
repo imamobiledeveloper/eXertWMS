@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.exert.wms.delivery.deliveryNote.item.DeliveryNoteItemViewModel" />
@@ -52,12 +54,62 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/returnedQuantityView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/itemNameManufactureLayout">
+
+                    <TextView
+                        android:id="@+id/returnedQuantityLabel"
+                        style="@style/TextViewBold14Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/returned_quantity"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/returnedQuantityEditTextLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="50dp"
+                        app:endIconMode="custom"
+                        app:endIconTint="@color/blue_dark"
+                        app:errorTextAppearance="@style/EdittextError"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/returnedQuantityLabel">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/returnedQuantityEditText"
+                            style="@style/EditTextDisabledStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:drawablePadding="8dp"
+                            android:ellipsize="end"
+                            android:enabled="false"
+                            android:gravity="center_vertical"
+                            android:imeOptions="actionNext"
+                            android:inputType="numberDecimal"
+                            android:maxLength="20"
+                            android:singleLine="true"
+                            android:text="@{viewModel.returnedQuantityString}" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/returnedQuantityView">
 
                     <TextView
                         android:id="@+id/quantityLabel"
@@ -88,7 +140,7 @@
                             android:id="@+id/quantityEditText"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            style="@style/EditTextDisabledStyle"
+                            style="@style/EditTextEnabledStyle"
                             android:drawablePadding="8dp"
                             android:ellipsize="end"
                             android:enabled="false"
@@ -97,15 +149,42 @@
                             android:inputType="numberDecimal"
                             android:maxLength="20"
                             android:singleLine="true"
+                            android:text="@{viewModel.returningQuantityString}"
                             tools:text="123456789012345678901234567890" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/quantityHintTV"
+                        style="@style/TextViewHintLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/retuning_quantity_hint"
+                        android:visibility="@{(viewModel.returningQuantityString == @string/empty || viewModel.returningQuantityString == null) ? View. VISIBLE : View.GONE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/quantityLabel"/>
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/saveButton"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:enabled="false"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinateLayout"

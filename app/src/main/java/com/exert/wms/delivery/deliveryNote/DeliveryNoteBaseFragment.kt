@@ -1,12 +1,16 @@
 package com.exert.wms.delivery.deliveryNote
 
+import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -185,6 +189,26 @@ class DeliveryNoteBaseFragment :
     private fun navigateToDeliveryNoteItemScreen(itemsDto: DeliveryNoteItemsDetailsDto) {
         val bundle = Bundle()
         bundle.putSerializable(Constants.ITEM_DTO, itemsDto)
-        requireActivity().startActivity<DeliveryNoteItemActivity>(bundle)
+        val intent = Intent(requireContext(), DeliveryNoteItemActivity::class.java)
+        intent.putExtras(bundle)
+        startForResult.launch(intent)
     }
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                intent?.let {
+                    val item = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        intent.getParcelableExtra(
+                            Constants.STOCK_ITEMS_DETAILS_DTO,
+                            DeliveryNoteItemsDetailsDto::class.java
+                        )
+                    } else {
+                        intent.getParcelableExtra(Constants.STOCK_ITEMS_DETAILS_DTO)
+                    }
+                    mViewModel.setReturnItemsDetails(item)
+                }
+            }
+        }
 }

@@ -12,7 +12,7 @@ data class SerialItemsDto(
     val SerialNumber: String? = "",
     val ManufactureDate: String? = "",
     val WarrantyPeriod: String? = "",
-    val Quantity: Double = 0.0,
+    var Quantity: Double = 0.0,
     @Transient
     var selected: Boolean = false
 ) : Parcelable {

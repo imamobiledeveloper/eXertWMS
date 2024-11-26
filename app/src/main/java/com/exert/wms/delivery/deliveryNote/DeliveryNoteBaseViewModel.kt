@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
+import com.exert.wms.SerialItemsDto
 import com.exert.wms.delivery.api.*
 import com.exert.wms.mvvmbase.BaseViewModel
 import com.exert.wms.utils.StringProvider
@@ -54,6 +55,8 @@ class DeliveryNoteBaseViewModel(
     var branchesList: List<BranchDto>? = null
     var customersList: List<CustomerDto>? = null
     var deliveryNotesItemsList: List<DeliveryNoteItemsDetailsDto>? = null
+
+    var stockItemsList: ArrayList<DeliveryNoteItemsDetailsDto> = ArrayList()
 
     init {
         getBranchesAndCustomerList()
@@ -148,6 +151,7 @@ class DeliveryNoteBaseViewModel(
                     hideProgressIndicator()
                     if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
                         deliveryNotesItemsList = dto.Items
+                        stockItemsList.addAll(dto.Items)
                         _itemsList.postValue(dto.Items)
                         _enableUpdateButton.postValue(true)
                     } else {
@@ -159,6 +163,7 @@ class DeliveryNoteBaseViewModel(
 
     private fun resetItemsList() {
         deliveryNotesItemsList = null
+        stockItemsList.clear()
         _itemsList.postValue(null)
         _enableUpdateButton.postValue(false)
     }
@@ -194,18 +199,20 @@ class DeliveryNoteBaseViewModel(
     private fun processRequest(list: List<DeliveryNoteItemsDetailsDto>): DeliveryNoteItemsListRequestDto {
         val itemsDetailsList: MutableList<DeliveryNoteItemDto> = mutableListOf()
         list.map { dto ->
-            itemsDetailsList.add(
-                DeliveryNoteItemDto(
-                    ItemSeqNumber = itemsDetailsList.size + 1,
-                    ItemID = dto.ItemID,
-                    WarehouseID = dto.WarehouseID,
-                    UnitID = dto.UnitID,
-                    SalesOrderItemID = dto.SalesOrderItemID,
-                    TrackingTypes = dto.TrackingTypes,
-                    Quantity = dto.Quantity,
-                    SerialItems = dto.SerialItems
+            if (dto.userReturningQty > 0) {
+                itemsDetailsList.add(
+                    DeliveryNoteItemDto(
+                        ItemSeqNumber = itemsDetailsList.size + 1,
+                        ItemID = dto.ItemID,
+                        WarehouseID = dto.WarehouseID,
+                        UnitID = dto.UnitID,
+                        SalesOrderItemID = dto.SalesOrderItemID,
+                        TrackingTypes = dto.TrackingTypes,
+                        Quantity = dto.userReturningQty,//Quantity,
+                        SerialItems = getOnlySelectedSerialItems(dto.SerialItems)
+                    )
                 )
-            )
+            }
         }
         return DeliveryNoteItemsListRequestDto(
             BranchID = getSelectedBranchId(),
@@ -215,7 +222,21 @@ class DeliveryNoteBaseViewModel(
         )
     }
 
-    private fun getItemList() = deliveryNotesItemsList
+    private fun getOnlySelectedSerialItems(serialItems: List<SerialItemsDto>?): List<SerialItemsDto>? {
+        return serialItems?.filter { it.selected }?.map { dto ->
+            dto.copy(Quantity = 1.0)
+        } ?: emptyList()
+    }
+
+    private fun checkAndEnableUpdateButton() {
+        if (stockItemsList.size > 0) {
+            val allReturnQtyNotEmpty = stockItemsList.any { it.userReturningQty > 0 }
+            _enableUpdateButton.postValue(allReturnQtyNotEmpty)
+        } else {
+            _enableUpdateButton.postValue(false)
+        }
+    }
+    private fun getItemList() = stockItemsList//deliveryNotesItemsList
 
     private fun checkDetails() {
         if (selectedBranch.isNotEmpty() && selectedBranch != stringProvider.getString(
@@ -294,5 +315,29 @@ class DeliveryNoteBaseViewModel(
                 R.string.error_api_access_message
             )
         )
+    }
+    fun setReturnItemsDetails(item: DeliveryNoteItemsDetailsDto?) {
+        item?.let { dto ->
+            val itemDto = dto.copy(ItemSeqNumber = (getItemListSize() + 1))
+            updateItemToList(itemDto)
+
+            getItemList().takeIf { it.isNotEmpty() }?.let { list ->
+                _itemsList.postValue(list)
+            }
+            checkAndEnableUpdateButton()
+        }
+    }
+
+    private fun getItemListSize() = getItemList().takeIf { it.isNotEmpty() }?.let { list ->
+        list.size
+    } ?: 0
+
+    private fun updateItemToList(item: DeliveryNoteItemsDetailsDto) {
+        val indexOfObjectToUpdate =
+            stockItemsList.indexOfFirst { it.ItemID == item.ItemID && it.ItemCode == item.ItemCode }
+        if (indexOfObjectToUpdate != -1) {
+            // Replace the object with the updated object
+            stockItemsList[indexOfObjectToUpdate] = item
+        }
     }
 }

@@ -197,7 +197,7 @@ class DeliveryReceiptBaseViewModel(
     }
 
     private fun checkAndEnableUpdateButton() {
-        if (stockItemsList.size > 0 && checkAnySerialItemAdded()) {
+        if (stockItemsList.size > 0 || checkAnySerialItemAdded()) {
             _enableUpdateButton.postValue(true)
         } else {
             _enableUpdateButton.postValue(false)

@@ -83,7 +83,7 @@ val viewModelModule = module {
         DeliveryNoteBaseViewModel(get(), get(), get())
     }
     viewModel {
-        DeliveryNoteItemViewModel()
+        DeliveryNoteItemViewModel(get())
     }
     viewModel {
         PurchaseReturnBaseViewModel(get(), get(), get())
