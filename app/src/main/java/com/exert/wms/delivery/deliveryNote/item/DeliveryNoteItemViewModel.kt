@@ -223,8 +223,7 @@ class DeliveryNoteItemViewModel(private val stringProvider: StringProvider) : Ba
 
     fun saveItemStock(quantity: String) {
         if (validateUserDetails(quantity)) {
-            stockItemsDetailsDto = selectedItemDto?.copy( //selectedItemDtoInSerialNoScreen?.copy(
-                Quantity = quantity.toDouble(),
+            stockItemsDetailsDto = selectedItemDto?.copy(
                 userReturningQty = quantity.toDouble(),
                 SerialItems = getSerialItemsWithUserSelection() ?: emptyList()
             )

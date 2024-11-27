@@ -16,6 +16,8 @@ import com.exert.wms.itemStocks.serialNumbers.SerialNumbersListAdapter
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.stockAdjustment.item.OnItemCheckListener
 import com.exert.wms.utils.Constants
+import com.exert.wms.utils.hide
+import com.exert.wms.utils.show
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class DeliveryNoteQuantityActivity :
@@ -71,29 +73,17 @@ class DeliveryNoteQuantityActivity :
         serialItemsList?.serialItemsDto?.let { checkedItems.addAll(it) }
         mViewModel.setUserSelectedItems(checkedItems)
 
-        mViewModel.enableSaveButton.observe(this) {
-            binding.saveButton.isEnabled = it
-        }
-
-        mViewModel.checkedSerialItemsList.observe(this) { list ->
-            val data = Intent()
-            data.putExtra(Constants.CHECKED_SERIAL_ITEMS, list)
-            setResult(Activity.RESULT_OK, data)
-            finish()
-        }
-
-        mViewModel.errorFieldMessage.observe(this) { msg ->
-            if (msg.isNotEmpty()) {
-                showBriefToastMessage(
-                    msg,
-                    coordinateLayout
-                )
-            }
-        }
-
         mViewModel.convertedItemsDto.observe(this) { dto ->
             binding.itemDto = dto
             binding.executePendingBindings()
+        }
+
+        mViewModel.isLoadingData.observe(this) { status ->
+            if (status) {
+                binding.progressBar.show()
+            } else {
+                binding.progressBar.hide()
+            }
         }
 
         mViewModel.warehouseSerialNosList.observe(this) { list ->
@@ -116,6 +106,26 @@ class DeliveryNoteQuantityActivity :
                             }
 
                         })
+            }
+        }
+
+        mViewModel.enableSaveButton.observe(this) {
+            binding.saveButton.isEnabled = it
+        }
+
+        mViewModel.checkedSerialItemsList.observe(this) { list ->
+            val data = Intent()
+            data.putExtra(Constants.CHECKED_SERIAL_ITEMS, list)
+            setResult(Activity.RESULT_OK, data)
+            finish()
+        }
+
+        mViewModel.errorFieldMessage.observe(this) { msg ->
+            if (msg.isNotEmpty()) {
+                showBriefToastMessage(
+                    msg,
+                    coordinateLayout
+                )
             }
         }
     }

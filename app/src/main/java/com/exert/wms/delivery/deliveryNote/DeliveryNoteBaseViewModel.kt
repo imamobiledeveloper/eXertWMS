@@ -153,7 +153,6 @@ class DeliveryNoteBaseViewModel(
                         deliveryNotesItemsList = dto.Items
                         stockItemsList.addAll(dto.Items)
                         _itemsList.postValue(dto.Items)
-                        _enableUpdateButton.postValue(true)
                     } else {
                         _errorFieldMessage.postValue(stringProvider.getString(R.string.delivery_notes_items_list_empty_message))
                     }

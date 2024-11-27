@@ -220,10 +220,11 @@
                         <TextView
                             android:id="@+id/quantityTV"
                             style="@style/TextViewHeaderBlueLabel"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.6"
+                            android:layout_weight="0.5"
                             android:padding="@dimen/margin_5dp"
+                            android:gravity="center"
                             android:text="@string/quantity"
                             android:textSize="14sp" />
 
@@ -232,8 +233,9 @@
                             style="@style/TextViewHeaderBlueLabel"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.6"
+                            android:layout_weight="0.7"
                             android:padding="@dimen/margin_5dp"
+                            android:gravity="center"
                             android:text="@string/returning_qty"
                             android:textSize="14sp" />
 

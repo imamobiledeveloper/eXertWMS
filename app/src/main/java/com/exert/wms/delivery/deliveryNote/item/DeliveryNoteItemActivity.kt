@@ -21,7 +21,6 @@ import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.utils.Constants
 import com.exert.wms.utils.hide
 import com.exert.wms.utils.show
-import com.exert.wms.utils.toEditable
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class DeliveryNoteItemActivity :
@@ -120,6 +119,28 @@ class DeliveryNoteItemActivity :
             }
         }
 
+        mViewModel.saveItemStatus.observe(this) {
+            if (it) {
+                showBriefToastMessage(
+                    getString(R.string.item_saved_message),
+                    coordinateLayout,
+                    getColor(R.color.blue_50)
+                )
+                val intent = Intent().apply {
+                    val bundle = Bundle()
+                    bundle.putSerializable(
+                        Constants.STOCK_ITEMS_DETAILS_DTO,
+                        mViewModel.getSavedItemDto()
+                    )
+                    putExtras(bundle)
+                }
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            } else {
+                showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
+            }
+        }
+
         mViewModel.navigateToSerialNo.observe(this) {
             if (it) {
                 val bundle = Bundle()
@@ -143,37 +164,33 @@ class DeliveryNoteItemActivity :
             binding.itemDto = dto
             binding.itemNameManufactureLayout.itemStockEditText.setText(dto.Manufacturer)
             binding.executePendingBindings()
+            binding.itemNameManufactureLayout.itemManufactureEditText.setText(
+                itemDto?.QTYReceived.toString() ?: ""
+            )
         }
 
         mViewModel.isItemSerialized.observe(this) { isItSerialized ->
             binding.quantityEditText.isEnabled = !isItSerialized
             binding.quantityEditTextLayout.isEndIconVisible = isItSerialized
+            if (isItSerialized && binding.quantityEditText.text?.isNotEmpty() == true) {
+                setTextViewVisibility(
+                    binding.quantityHintTV,
+                    View.GONE
+                )
+            } else if (!isItSerialized && binding.quantityEditText.text?.isEmpty() == true) {
+                setTextViewVisibility(
+                    binding.quantityHintTV,
+                    View.VISIBLE
+                )
+            }
         }
 
         mViewModel.quantityString.observe(this) { value ->
             binding.quantityEditText.setText(value)
-        }
-
-        mViewModel.saveItemStatus.observe(this) {
-            if (it) {
-                showBriefToastMessage(
-                    getString(R.string.item_saved_message),
-                    coordinateLayout,
-                    getColor(R.color.blue_50)
-                )
-                val intent = Intent().apply {
-                    val bundle = Bundle()
-                    bundle.putSerializable(
-                        Constants.STOCK_ITEMS_DETAILS_DTO,
-                        mViewModel.getSavedItemDto()
-                    )
-                    putExtras(bundle)
-                }
-                setResult(Activity.RESULT_OK, intent)
-                finish()
-            } else {
-                showBriefToastMessage(getString(R.string.error_get_items_message), coordinateLayout)
-            }
+            setTextViewVisibility(
+                binding.quantityHintTV,
+                View.GONE
+            )
         }
 
         mViewModel.returnedQuantityString.observe(this) { value ->
@@ -232,5 +249,8 @@ class DeliveryNoteItemActivity :
         AlertDialogWithCallBack.newInstance(alertDialogDto, onPositiveButtonCallBack = {})
             .show(this.supportFragmentManager, "AlertDialogWithCallBack")
     }
-
+    override fun onBackPressed() {
+        setResult(Activity.RESULT_CANCELED, null)
+        super.onBackPressed()
+    }
 }
