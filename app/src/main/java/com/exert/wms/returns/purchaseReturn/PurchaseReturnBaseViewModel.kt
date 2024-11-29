@@ -228,7 +228,7 @@ class PurchaseReturnBaseViewModel(
                     VATAmount = it.VATAmount,
                     PurchaseItemID = it.PurchaseItemID,
                     TrackingTypes = it.TrackingTypes,
-                    SerialItems = getSelectedItems(it.SerialItems)
+                    SerialItems = getOnlySelectedSerialItems(it.SerialItems) //getSelectedItems(it.SerialItems)//getSelectedItems(it.SerialItems)
                 )
                 list.add(dto)
             }
@@ -239,6 +239,12 @@ class PurchaseReturnBaseViewModel(
             PurchaseID = getSelectedPInvoiceId(),
             ItemsDetails = list
         )
+    }
+
+    private fun getOnlySelectedSerialItems(serialItems: List<SerialItemsDto>?): List<SerialItemsDto>? {
+        return serialItems?.filter { it.selected }?.map { dto ->
+            dto.copy(Quantity = 1.0)
+        } ?: emptyList()
     }
 
     private fun getSelectedItems(serialItems: List<SerialItemsDto>?): List<SerialItemsDto> {

@@ -224,7 +224,7 @@ class SalesReturnBaseViewModel(
                     VATAmount = it.VATAmount,
                     SalesItemID = it.SalesItemID,
                     TrackingTypes = it.TrackingTypes,
-                    SerialItems = getSelectedItems(it.SerialItems)
+                    SerialItems = getOnlySelectedSerialItems(it.SerialItems) //getSelectedItems(it.SerialItems)
                 )
                 list.add(dto)
             }
@@ -236,6 +236,12 @@ class SalesReturnBaseViewModel(
             SalesID = getSelectedSInvoiceId(),
             ItemsDetails = list
         )
+    }
+
+    private fun getOnlySelectedSerialItems(serialItems: List<SerialItemsDto>?): List<SerialItemsDto>? {
+        return serialItems?.filter { it.selected }?.map { dto ->
+            dto.copy(Quantity = 1.0)
+        } ?: emptyList()
     }
 
     private fun getSelectedItems(serialItems: List<SerialItemsDto>?): List<SerialItemsDto> {

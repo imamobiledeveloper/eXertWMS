@@ -164,9 +164,6 @@ class DeliveryNoteItemActivity :
             binding.itemDto = dto
             binding.itemNameManufactureLayout.itemStockEditText.setText(dto.Manufacturer)
             binding.executePendingBindings()
-            binding.itemNameManufactureLayout.itemManufactureEditText.setText(
-                itemDto?.QTYReceived.toString() ?: ""
-            )
         }
 
         mViewModel.isItemSerialized.observe(this) { isItSerialized ->

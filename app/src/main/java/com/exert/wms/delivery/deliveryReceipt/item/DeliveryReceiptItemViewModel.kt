@@ -179,12 +179,11 @@ class DeliveryReceiptItemViewModel(
             _itemDto.postValue(dto)
             enteredQuantity = drDto.Quantity
             _returnedQuantityString.postValue(drDto.QTYReceived.toString())
-            _quantityString.postValue(
-                getMinimumQuantityBasedOnVendorTolerance(
-                    drDto.QTYOrdered,
-                    drDto.QTYReceived
-                )
-            )//drDto.Quantity.toString())
+            val qty = if(drDto.IsSerialItem == 1) "0.0" else getMinimumQuantityBasedOnVendorTolerance(
+                drDto.QTYOrdered,
+                drDto.QTYReceived
+            )
+            _quantityString.postValue(qty)//drDto.Quantity.toString())
             _isItemSerialized.postValue(drDto.IsSerialItem == 1)
         }
     }
@@ -240,15 +239,16 @@ class DeliveryReceiptItemViewModel(
 
     private fun validateQuantity(quantity: Double): Boolean? {
         val orderQuantity = selectedItemDto?.QTYOrdered ?: 0.0
-        // Condition 1: User cannot enter more than orderQuantity
-        if (quantity > orderQuantity) {
-            _errorQuantity.postValue(stringProvider.getString(R.string.error_quantity_is_more_than_ordered_qty_message))
-            return false
-        }
 
         // Condition 2: If percentage == 0.0 and enteredQuantity is one less than orderQuantity
         if (VendorTolerancePercentage == 0.0 && quantity <= orderQuantity - 1) {
             _errorQuantity.postValue(stringProvider.getString(R.string.error_quantity_is_mismatch_message))
+            return false
+        }
+
+        // Condition 1: User cannot enter more than orderQuantity
+        if (quantity > orderQuantity) {
+            _errorQuantity.postValue(stringProvider.getString(R.string.error_quantity_is_more_than_ordered_qty_message))
             return false
         }
 

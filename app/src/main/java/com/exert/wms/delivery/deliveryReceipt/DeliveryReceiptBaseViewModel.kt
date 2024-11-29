@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
+import com.exert.wms.SerialItemsDto
 import com.exert.wms.delivery.api.*
 import com.exert.wms.itemStocks.api.ItemsDto
 import com.exert.wms.mvvmbase.BaseViewModel
@@ -185,7 +186,7 @@ class DeliveryReceiptBaseViewModel(
                     VendorDiscountPercentage = dto.VendorDiscountPercentage,
                     VendorDiscount = dto.VendorDiscount,
                     TrackingTypes = 14,
-                    SerialItems = dto.SerialItems ?: emptyList(),
+                    SerialItems = getOnlySelectedSerialItems(dto.SerialItems)//dto.SerialItems ?: emptyList(),
                 )
             )
         }
@@ -195,6 +196,12 @@ class DeliveryReceiptBaseViewModel(
             PurchaseOrderIDs = listOf(PurchaseOrderIDDto(PurchaseOrderID = getSelectedPurchaseOrdersId())),
             ItemsDetails = itemsDetailsList
         )
+    }
+
+    private fun getOnlySelectedSerialItems(serialItems: List<SerialItemsDto>?): List<SerialItemsDto>? {
+        return serialItems?.filter { it.selected }?.map { dto ->
+            dto.copy(Quantity = 1.0)
+        } ?: emptyList()
     }
 
     private fun checkAndEnableUpdateButton() {
