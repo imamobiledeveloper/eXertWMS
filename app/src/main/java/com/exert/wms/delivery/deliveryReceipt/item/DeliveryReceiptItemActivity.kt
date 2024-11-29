@@ -78,7 +78,8 @@ class DeliveryReceiptItemActivity :
     private fun observeViewModel() {
         itemDto =
             intent.getSerializable(Constants.ITEM_DTO, DeliveryReceiptItemsDetailsDto::class.java)
-        mViewModel.setSelectedItemDto(itemDto)
+        var VendorTolerancePercent= intent.getDoubleExtra(Constants.VENDOR_TOLERANCEPERCENT, 0.0)
+        mViewModel.setSelectedItemDto(itemDto, VendorTolerancePercent)
 
         binding.itemNameManufactureLayout.itemStockLayout.visibility = View.VISIBLE
 
@@ -95,6 +96,17 @@ class DeliveryReceiptItemActivity :
                 showBriefToastMessage(
                     msg,
                     coordinateLayout
+                )
+            }
+        }
+
+        mViewModel.errorQuantity.observe(this) { msg ->
+            if (msg.isNotEmpty()) {
+                binding.quantityEditTextLayout.error = msg
+            }else{
+                disableErrorMessage(
+                    binding.quantityEditTextLayout,
+                    binding.quantityEditText,
                 )
             }
         }
@@ -166,7 +178,17 @@ class DeliveryReceiptItemActivity :
             }
         }
         mViewModel.enableSaveButton.observe(this) {
+            if(it){
+                disableErrorMessage(
+                    binding.quantityEditTextLayout,
+                    binding.quantityEditText,
+                )
+            }
             binding.saveButton.isEnabled = it
+        }
+
+        mViewModel.returnedQuantityString.observe(this) { value ->
+            binding.returnedQuantityEditText.setText(value)
         }
     }
 

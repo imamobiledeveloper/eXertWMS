@@ -117,6 +117,7 @@ class DeliveryReceiptBaseFragment :
         mViewModel.errorWarehouse.observe(viewLifecycleOwner) {
             if (it) {
                 val bundle = Bundle()
+                bundle.putDouble(Constants.VENDOR_TOLERANCEPERCENT, mViewModel.getVendorTolerancePercent())
                 val intent = Intent(requireContext(), DeliveryReceiptItemActivity::class.java)
                 intent.putExtras(bundle)
                 startForResult.launch(intent)
@@ -170,6 +171,7 @@ class DeliveryReceiptBaseFragment :
     private fun navigateToDeliveryReceiptItemScreen(itemsDto: DeliveryReceiptItemsDetailsDto) {
         val bundle = Bundle()
         bundle.putSerializable(Constants.ITEM_DTO, itemsDto)
+        bundle.putDouble(Constants.VENDOR_TOLERANCEPERCENT, mViewModel.getVendorTolerancePercent())
         val intent = Intent(requireContext(), DeliveryReceiptItemActivity::class.java)
         intent.putExtras(bundle)
         startForResult.launch(intent)

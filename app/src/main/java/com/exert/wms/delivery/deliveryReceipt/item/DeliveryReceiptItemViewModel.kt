@@ -13,6 +13,7 @@ import com.exert.wms.utils.StringProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlin.math.ceil
 
 class DeliveryReceiptItemViewModel(
     private val stringProvider: StringProvider,
@@ -32,6 +33,9 @@ class DeliveryReceiptItemViewModel(
 
     private val _navigateToSerialNo = MutableLiveData<Boolean>()
     val navigateToSerialNo: LiveData<Boolean> = _navigateToSerialNo
+
+    private val _errorQuantity = MutableLiveData<String>()
+    val errorQuantity: LiveData<String> = _errorQuantity
 
     private val _errorItemPartCode = MutableLiveData<Boolean>()
     val errorItemPartCode: LiveData<Boolean> = _errorItemPartCode
@@ -76,6 +80,10 @@ class DeliveryReceiptItemViewModel(
     private val _dnSerialItems = MutableLiveData<List<WarehouseSerialItemDetails>>()
     val dnSerialItems: LiveData<List<WarehouseSerialItemDetails>> = _dnSerialItems
 
+    private val _returnedQuantityString =
+        MutableLiveData<String>().apply { value = stringProvider.getString(R.string.zero) }
+    val returnedQuantityString: LiveData<String> = _returnedQuantityString
+
     private var selectedItemDto: DeliveryReceiptItemsDetailsDto? = null
     private var stockItemsDetailsDto: DeliveryReceiptItemsDetailsDto? = null
 
@@ -89,6 +97,7 @@ class DeliveryReceiptItemViewModel(
     private var selectedItemDtoInSerialNoScreen: DeliveryReceiptItemsDetailsDto? = null
 
     private var enteredQuantity: Double = 0.0
+    private var VendorTolerancePercentage: Double = 0.0
 
     private fun validateUserDetails(
         quantity: String
@@ -158,7 +167,8 @@ class DeliveryReceiptItemViewModel(
         coroutineJob?.cancel()
     }
 
-    fun setSelectedItemDto(item: DeliveryReceiptItemsDetailsDto?) {
+    fun setSelectedItemDto(item: DeliveryReceiptItemsDetailsDto?, VendorTolerancePercent: Double) {
+        VendorTolerancePercentage = VendorTolerancePercent
         item?.let { drDto ->
             selectedItemDto = drDto
             selectedItemDto?.let {
@@ -168,9 +178,35 @@ class DeliveryReceiptItemViewModel(
             itemsDto = dto
             _itemDto.postValue(dto)
             enteredQuantity = drDto.Quantity
-            _quantityString.postValue(drDto.Quantity.toString())
+            _returnedQuantityString.postValue(drDto.QTYReceived.toString())
+            _quantityString.postValue(
+                getMinimumQuantityBasedOnVendorTolerance(
+                    drDto.QTYOrdered,
+                    drDto.QTYReceived
+                )
+            )//drDto.Quantity.toString())
             _isItemSerialized.postValue(drDto.IsSerialItem == 1)
         }
+    }
+
+    private fun getMinimumQuantityBasedOnVendorTolerance(
+        qtyOrdered: Double,
+        qtyReceived: Double
+    ): String? {
+        val balanceQty = qtyOrdered - qtyReceived
+        VendorTolerancePercentage
+        if (VendorTolerancePercentage == 0.0) return (roundUp(balanceQty)).toString()
+
+        // Condition 3: If percentage > 0.0, restrict range based on the percentage
+        if (VendorTolerancePercentage > 0.0) {
+            return (roundUp(balanceQty * (VendorTolerancePercentage / 100))).toString()
+        }
+        return ""
+    }
+
+    private fun roundUp(value: Double): Int {
+        // Round up to the next integer if there's a decimal part
+        return ceil(value).toInt()
     }
 
     private fun getConvertedItemDto(it: DeliveryReceiptItemsDetailsDto): ItemsDto =
@@ -181,7 +217,7 @@ class DeliveryReceiptItemViewModel(
             ItemPartCode = it.ItemCode,
             Stock = it.Quantity,
             Warehouse = it.Warehouse,
-            convertedStockDetails = emptyList(), //it.SerialItems,
+            convertedStockDetails = emptyList(),
             wStockDetails = emptyList()
         )
 
@@ -196,10 +232,38 @@ class DeliveryReceiptItemViewModel(
     fun setAdjustmentQuantity(text: String) {
         if (text.isNotEmpty()) {
             enteredQuantity = text.toDouble()
-            _enableSaveButton.postValue(enteredQuantity > 0)
+            _enableSaveButton.postValue(enteredQuantity > 0 && validateQuantity(enteredQuantity) == true)
         } else {
             _enableSaveButton.postValue(false)
         }
+    }
+
+    private fun validateQuantity(quantity: Double): Boolean? {
+        val orderQuantity = selectedItemDto?.QTYOrdered ?: 0.0
+        // Condition 1: User cannot enter more than orderQuantity
+        if (quantity > orderQuantity) {
+            _errorQuantity.postValue(stringProvider.getString(R.string.error_quantity_is_more_than_ordered_qty_message))
+            return false
+        }
+
+        // Condition 2: If percentage == 0.0 and enteredQuantity is one less than orderQuantity
+        if (VendorTolerancePercentage == 0.0 && quantity <= orderQuantity - 1) {
+            _errorQuantity.postValue(stringProvider.getString(R.string.error_quantity_is_mismatch_message))
+            return false
+        }
+
+        // Condition 3: If percentage > 0.0, restrict range based on the percentage
+        if (VendorTolerancePercentage > 0.0) {
+            val restrictedRange =
+                orderQuantity * (VendorTolerancePercentage / 100) // Calculate the restricted percentage of orderQuantity
+            if (quantity <= restrictedRange) {
+                _errorQuantity.postValue(stringProvider.getString(R.string.error_quantity_is_less_than_required_qty_message))
+                return false
+            }
+        }
+
+        // All conditions passed
+        return true
     }
 
     fun setSelectedDeliveryReceiptItemDto(

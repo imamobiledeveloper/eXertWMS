@@ -58,6 +58,7 @@ class DeliveryReceiptBaseViewModel(
 
     var vendorsList: List<VendorDto>? = null
     var deliveryReceiptItemsList: List<DeliveryReceiptItemsDetailsDto>? = null
+    var VendorTolerancePercentage :Double = 0.0
 
     init {
         getWarehousesAndVendorsList()
@@ -333,6 +334,7 @@ class DeliveryReceiptBaseViewModel(
                     hideProgressIndicator()
                     if (dto.success && dto.Items != null && dto.Items.isNotEmpty()) {
                         deliveryReceiptItemsList = dto.Items
+                        VendorTolerancePercentage = dto.VendorTolerancePercent
                         stockItemsList.addAll(dto.Items)
                         _itemsList.postValue(dto.Items)
                     } else {
@@ -349,5 +351,9 @@ class DeliveryReceiptBaseViewModel(
                 R.string.error_api_access_message
             )
         )
+    }
+
+    fun getVendorTolerancePercent(): Double {
+        return VendorTolerancePercentage
     }
 }

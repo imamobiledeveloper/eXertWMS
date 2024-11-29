@@ -246,6 +246,7 @@ PurchaseOrderIDDto(
 data class
 DeliveryReceiptItemsResponseDto(
     val success: Boolean,
+    val VendorTolerancePercent: Double,
     val Items: List<DeliveryReceiptItemsDetailsDto>?
 ) {
     companion object

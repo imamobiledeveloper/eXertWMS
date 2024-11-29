@@ -151,6 +151,7 @@
     <string name="empty" />
     <string name="quantity">Qty</string>
     <string name="quantity_full">Quantity</string>
+    <string name="quantity_received">Quantity Received</string>
     <string name="returned_quantity">Returned Quantity</string>
     <string name="returning_quantity">Returning Quantity</string>
     <string name="select_location">Select Location</string>
@@ -193,6 +194,9 @@
     <string name="error_balance_returning_qty">Returning quantity should be equal or less than Material delivery balance quantity</string>
     <string name="error_sales_returning_qty">Returning quantity should be equal or less than Sold quantity</string>
     <string name="item_empty_message">"Please select Item from the list"</string>
+    <string name="error_quantity_is_mismatch_message">Goods Received Qty must match Ordered Qty</string>
+    <string name="error_quantity_is_more_than_ordered_qty_message">Received Qty should not exceed Ordered Qty</string>
+    <string name="error_quantity_is_less_than_required_qty_message">Received Qty  must be more than the Vendor Tolerance</string>
     <string name="return_qty_empty_message">"Please enter Return quantity"</string>
     <string name="qty_empty_message">"Please enter the Quantity"</string>
     <string name="alert">Alert</string>
