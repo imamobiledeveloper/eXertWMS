@@ -59,7 +59,8 @@ class AddStockItemViewModel(private val stringProvider: StringProvider) : BaseVi
                 SerialNumber = serialNum,
                 ManufactureDate = getFormattedDateFromDate(manufacture),
                 WarrantyPeriod = getWarrantyNumber(warranty),
-                1.0
+                1.0,
+                selected = true
             )
             _serialItem.postValue(item)
         }
