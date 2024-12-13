@@ -1,6 +1,7 @@
 package com.exert.wms.stockAdjustment
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -45,6 +46,7 @@ class StockAdjustmentItemsListAdapter(
 
             holderBinding.itemCountTV.text =item.getAdjustmentQtyString()
             holderBinding.itemNameTV.text =item.displayName
+            holderBinding.rightArrowIV.visibility = View.GONE
             holderBinding.executePendingBindings()
 
             itemName.setOnClickListener {

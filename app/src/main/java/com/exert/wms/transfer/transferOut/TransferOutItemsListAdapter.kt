@@ -1,6 +1,7 @@
 package com.exert.wms.transfer.transferOut
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +43,7 @@ class TransferOutItemsListAdapter(
             holderBinding.whiteBg = position % 2 == 0
             holderBinding.itemCountTV.text = item.getItemQuantityString()
             holderBinding.itemNameTV.text = item.displayName
+            holderBinding.rightArrowIV.visibility = View.GONE
             holderBinding.executePendingBindings()
 
             itemName.setOnClickListener {
