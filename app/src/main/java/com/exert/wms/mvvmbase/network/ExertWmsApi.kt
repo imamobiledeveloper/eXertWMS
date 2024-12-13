@@ -4,9 +4,7 @@ import com.exert.wms.delivery.api.*
 import com.exert.wms.itemStocks.api.ItemStocksRequestDto
 import com.exert.wms.itemStocks.api.ItemStocksResponseDto
 import com.exert.wms.itemStocks.api.WarehouseSerialItemsRequestDto
-import com.exert.wms.login.api.FinancialPeriodDto
-import com.exert.wms.login.api.LoginDto
-import com.exert.wms.login.api.LoginRequestDto
+import com.exert.wms.login.api.*
 import com.exert.wms.returns.api.*
 import com.exert.wms.stockAdjustment.api.SaveStockItemAdjustmentResponse
 import com.exert.wms.stockAdjustment.api.StockAdjustmentRequestDto
@@ -33,6 +31,16 @@ interface ExertWmsApi {
     suspend fun authenticateUser(
         @Body requestBody: LoginRequestDto
     ): LoginDto
+
+    @GET("api/Login/GetUserByEmail")
+    suspend fun getUserIdByEmail(
+        @Query("Email") Email: String
+    ): ForgotPasswordDto
+
+    @POST("api/Login/SetForgotPassword")
+    suspend fun setNewPassword(
+        @Body requestBody : ForgotPasswordRequestDto
+    ): SuccessResponse
 
     @POST("api/Items/GetItems?CurrentPage=1&PageSize=100")
     suspend fun getOnlineSalesItems(

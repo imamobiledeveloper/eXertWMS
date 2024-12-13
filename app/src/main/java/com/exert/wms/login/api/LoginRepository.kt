@@ -17,4 +17,11 @@ class LoginRepository(private val loginDatasource: LoginDataSource) {
         return loginDatasource.getApiAccess()
     }
 
+    fun getUserIdUsingEmailId(email : String): Flow<ForgotPasswordDto> {
+        return loginDatasource.getUserIdUsingEmailId(email)
+    }
+
+    fun setNewPassword(requestDto : ForgotPasswordRequestDto): Flow<SuccessResponse> {
+        return loginDatasource.setNewPassword(requestDto)
+    }
 }

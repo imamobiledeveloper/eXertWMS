@@ -49,7 +49,7 @@ class UserDefaults(context: Context) {
 
     internal fun getUserToken() = preferences.getString(KEY_USER_TOKEN, "") ?: ""
 
-    internal fun getUserId() = preferences.getLong(KEY_USER_ID, 0) ?: ""
+    internal fun getUserId() = preferences.getLong(KEY_USER_ID, 0) ?: 0
 
     internal fun getFinancialPeriod() = preferences.getLong(KEY_FINANCIAL_PERIOD, 0) ?: ""
 

@@ -14,6 +14,7 @@ class AlertDialogWithCallBack(
     private val dialogDto: AlertDialogDto,
     private val onPositiveButtonCallBack: () -> Unit,
     private val onNegativeButtonCallBack: () -> Unit,
+    private val hideCloseButton:Boolean
 ) : DialogFragment() {
 
     private lateinit var binding: DialogAlertLayoutBinding
@@ -33,6 +34,8 @@ class AlertDialogWithCallBack(
         super.onViewCreated(view, savedInstanceState)
         binding.alertDto = dialogDto
 
+        binding.closeButton.visibility = if(hideCloseButton) View.GONE else View.VISIBLE
+
         binding.closeButton.setOnClickListener {
             dismiss()
         }
@@ -50,7 +53,8 @@ class AlertDialogWithCallBack(
         fun newInstance(
             dialogDto: AlertDialogDto,
             onPositiveButtonCallBack: () -> Unit = {},
-            onNegativeButtonCallBack: () -> Unit = {}
-        ) = AlertDialogWithCallBack(dialogDto, onPositiveButtonCallBack, onNegativeButtonCallBack)
+            onNegativeButtonCallBack: () -> Unit = {},
+            hideCloseButton:Boolean = false
+        ) = AlertDialogWithCallBack(dialogDto, onPositiveButtonCallBack, onNegativeButtonCallBack, hideCloseButton)
     }
 }

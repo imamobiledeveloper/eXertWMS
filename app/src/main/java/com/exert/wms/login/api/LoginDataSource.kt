@@ -45,6 +45,30 @@ class LoginDataSource(
         return loginDataSourceRemote.getApiAccess()
     }
 
+    fun getUserIdUsingEmailId(email : String): Flow<ForgotPasswordDto> {
+        return flow {
+            emit(
+                getUserIdUsingEmailIdFromRemote(email)
+            )
+        }
+    }
+
+    private suspend fun getUserIdUsingEmailIdFromRemote(email : String): ForgotPasswordDto {
+        return loginDataSourceRemote.getUserIdUsingEmailId(email)
+    }
+
+    fun setNewPassword(requestDto : ForgotPasswordRequestDto): Flow<SuccessResponse> {
+        return flow {
+            emit(
+                setNewPasswordInRemote(requestDto)
+            )
+        }
+    }
+
+    private suspend fun setNewPasswordInRemote(requestDto : ForgotPasswordRequestDto): SuccessResponse {
+        return loginDataSourceRemote.setNewPassword(requestDto)
+    }
+
     fun clearLoginCache() {
         loginDataSourceLocal.clear()
     }

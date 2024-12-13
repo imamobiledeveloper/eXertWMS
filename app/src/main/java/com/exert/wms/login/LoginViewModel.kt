@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.exert.wms.R
+import com.exert.wms.login.api.ForgotPasswordRequestDto
 import com.exert.wms.login.api.LoginDto
 import com.exert.wms.login.api.LoginRepository
 import com.exert.wms.login.api.LoginRequestDto
 import com.exert.wms.mvvmbase.BaseViewModel
+import com.exert.wms.utils.Event
 import com.exert.wms.utils.StringProvider
 import com.exert.wms.utils.UserDefaults
 import kotlinx.coroutines.CoroutineDispatcher
@@ -57,6 +59,12 @@ class LoginViewModel(
 
     private val _savedUserPassword = MutableLiveData<String>()
     val savedUserPassword: LiveData<String> = _savedUserPassword
+
+    private val _showNewPwdScreen = MutableLiveData<Event<Boolean>>()
+    val showNewPwdScreen: LiveData<Event<Boolean>> = _showNewPwdScreen
+
+    private val _navigateToNextScreen = MutableLiveData<Event<Boolean>>()
+    val navigateToNextScreen: LiveData<Event<Boolean>> = _navigateToNextScreen
 
     init {
         rememberMe = getRememberMeCheckBoxStatus()
@@ -187,6 +195,31 @@ class LoginViewModel(
         }else{
             _errorNewPasswordMessage.postValue("")
             _errorConfirmPasswordMessage.postValue("")
+            setNewPassword(newPwd)
+        }
+    }
+
+    private fun setNewPassword(newPwd: String) {
+        if (newPwd.isNotEmpty()) {
+            showProgressIndicator()
+            checkRememberMeStatusAndSaveDetails()
+            coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
+                val userId= userDefaults.getUserId()
+                loginRepo.setNewPassword(ForgotPasswordRequestDto(userID = userId, password = newPwd))
+                    .collect { dto ->
+                        hideProgressIndicator()
+                        if (dto != null && dto.success) {
+                            _navigateToNextScreen.postValue(Event(true))
+                        } else {
+                            _errorLoginMessage.postValue(
+                                stringProvider.getString(
+                                    R.string.reset_pwd_failed_message
+                                )
+                            )
+                        }
+                    }
+
+            }
         }
     }
 
@@ -195,6 +228,32 @@ class LoginViewModel(
             _errorUsernameEmailMessage.postValue(stringProvider.getString(R.string.error_email_or_username_empty))
         } else {
             _errorUsernameEmailMessage.postValue("")
+            getUserIdByEmailId(username)
+        }
+    }
+
+    private fun getUserIdByEmailId(emailId: String) {
+        if (emailId.isNotEmpty()) {
+            showProgressIndicator()
+            checkRememberMeStatusAndSaveDetails()
+            coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
+                loginRepo.getUserIdUsingEmailId(email = "imamobiledeveloper@gmail.com")//emailId))
+                    .collect { dto ->
+                        hideProgressIndicator()
+                        if (dto != null && dto.success) {
+                            userDefaults.saveUserId(dto.UserID)
+                            userDefaults.saveUserName(dto.UserName)
+                            _showNewPwdScreen.postValue(Event(true))
+                        } else {
+                            _errorLoginMessage.postValue(
+                                stringProvider.getString(
+                                    R.string.error_user_id_message
+                                )
+                            )
+                        }
+                    }
+
+            }
         }
     }
 }

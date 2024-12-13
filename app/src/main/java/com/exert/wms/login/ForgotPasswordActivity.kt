@@ -10,6 +10,8 @@ import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.exert.wms.BR
 import com.exert.wms.R
+import com.exert.wms.alertDialog.AlertDialogDto
+import com.exert.wms.alertDialog.AlertDialogWithCallBack
 import com.exert.wms.databinding.ActivityForgotPasswordBinding
 import com.exert.wms.mvvmbase.BaseActivity
 import com.exert.wms.utils.hide
@@ -111,8 +113,13 @@ class ForgotPasswordActivity :
         binding.usernameEmailLayout.show()
         binding.createNewPasswordLayout.hide()
 
-//        binding.usernameEmailLayout.hide()
-//        binding.createNewPasswordLayout.show()
+        mViewModel.isLoadingData.observe(this) { status ->
+            if (status) {
+                binding.progressBar.show()
+            } else {
+                binding.progressBar.hide()
+            }
+        }
 
         mViewModel.errorNewPasswordMessage.observe(this) { msg ->
             if (msg.isNotEmpty()) {
@@ -157,6 +164,21 @@ class ForgotPasswordActivity :
                 )
             }
         }
+        mViewModel.showNewPwdScreen.observe(this) { event ->
+            event?.getContentIfNotHandled()?.let { state ->
+                if (state) {
+                    binding.usernameEmailLayout.hide()
+                    binding.createNewPasswordLayout.show()
+                }
+            }
+        }
+        mViewModel.navigateToNextScreen.observe(this) { event ->
+            event?.getContentIfNotHandled()?.let { state ->
+                if (state) {
+                    showAlertDialog()
+                }
+            }
+        }
 
     }
 
@@ -184,5 +206,18 @@ class ForgotPasswordActivity :
             text = ss
             movementMethod = LinkMovementMethod.getInstance()
         }
+    }
+
+    private fun showAlertDialog() {
+        val alertDialogDto = AlertDialogDto(
+            title = getString(R.string.alert),
+            message = getString(R.string.reset_pwd_success_message),
+            positiveButtonText = getString(R.string.ok),
+            showNegativeButton = false
+        )
+        AlertDialogWithCallBack.newInstance(alertDialogDto, onPositiveButtonCallBack = {
+            LoginActivity.relaunch(this)
+        }, hideCloseButton = true)
+            .show(this.supportFragmentManager, "AlertDialogWithCallBack")
     }
 }
