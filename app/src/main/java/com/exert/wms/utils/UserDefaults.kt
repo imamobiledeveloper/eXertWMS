@@ -11,6 +11,7 @@ class UserDefaults(context: Context) {
         private const val KEY_USER_PASSWORD = "KEY_USER_PASSWORD"
         private const val KEY_FINANCIAL_PERIOD = "KEY_FINANCIAL_PERIOD"
         private const val KEY_LOGIN_REMEMBER_ME = "KEY_LOGIN_REMEMBER_ME"
+        private const val KEY_USER_LOGIN_ERROR_MSG = "KEY_USER_LOGIN_ERROR_MSG"
     }
 
     private val preferences =
@@ -35,11 +36,15 @@ class UserDefaults(context: Context) {
     internal fun saveUserPassword(pwd: String) =
         preferencesEditor.putString(KEY_USER_PASSWORD, pwd).commit()
 
+    internal fun saveErrorMessage(error: String) =
+        preferencesEditor.putString(KEY_USER_LOGIN_ERROR_MSG, error).commit()
+
     internal fun saveRememberMeStatus(status: Boolean) =
         preferencesEditor.putBoolean(KEY_LOGIN_REMEMBER_ME, status).commit()
     internal fun getUserName() = preferences.getString(KEY_USER_NAME, "") ?: ""
 
     internal fun getUserPassword() = preferences.getString(KEY_USER_PASSWORD, "") ?: ""
+    internal fun getUserLoginError() = preferences.getString(KEY_USER_LOGIN_ERROR_MSG, "") ?: ""
     internal fun getRememberMeStatus() = preferences.getBoolean(KEY_LOGIN_REMEMBER_ME, false)
 
     internal fun getUserToken() = preferences.getString(KEY_USER_TOKEN, "") ?: ""

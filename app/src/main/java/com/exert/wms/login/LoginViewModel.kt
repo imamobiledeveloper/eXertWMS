@@ -80,6 +80,7 @@ class LoginViewModel(
             loginRepo.authenticateUser(requestDto)
                 .collect { response ->
                     hideProgressIndicator()
+                    userDefaults.saveErrorMessage("")
                     if (response != null) {
                         processLoginResponse(response)
                         _loginUserStatus.postValue(response.success)
@@ -149,6 +150,7 @@ class LoginViewModel(
 
     override fun handleException(throwable: Throwable) {
         hideProgressIndicator()
+        userDefaults.saveErrorMessage(throwable.message?.let { it } ?: "")
         _errorLoginMessage.postValue(
             if (throwable.message?.isNotEmpty() == true) throwable.message else stringProvider.getString(
                 R.string.error_login_message
