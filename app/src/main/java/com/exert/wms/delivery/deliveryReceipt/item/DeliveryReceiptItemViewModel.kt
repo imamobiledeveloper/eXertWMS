@@ -242,6 +242,7 @@ class DeliveryReceiptItemViewModel(
         val orderQuantity = selectedItemDto?.QTYOrdered ?: 0.0
         val receivedQuantity = selectedItemDto?.QTYReceived ?: 0.0
 
+//        VendorTolerancePercentage = 100.0
         // Case 1: VendorTolerancePercentage = 0%
         if (VendorTolerancePercentage == 0.0) {
             // Only the exact order quantity is allowed
@@ -252,15 +253,19 @@ class DeliveryReceiptItemViewModel(
 //            } else {
 //                stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
 //            }
+            return if (quantity == orderQuantity) {
+                true
+            } else {
+                val errorMsg = when {
+                    quantity > orderQuantity -> stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
+                    quantity != orderQuantity -> stringProvider.getString(R.string.error_quantity_is_mismatch_message)
+                    else -> stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
+                }
 
-            val errorMsg = when {
-                quantity > orderQuantity -> stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
-                quantity != orderQuantity -> stringProvider.getString(R.string.error_quantity_is_mismatch_message)
-                else -> stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
+                _errorQuantity.postValue(errorMsg)
+                false
             }
 
-            _errorQuantity.postValue(errorMsg)
-            return false
         }
         // Case 2: VendorTolerancePercentage > 0% and <= 100%
         else if (VendorTolerancePercentage > 0.0 && VendorTolerancePercentage < 100.0) {
@@ -290,14 +295,17 @@ class DeliveryReceiptItemViewModel(
 //            } else {
 //                stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
 //            }
-
-            val errorMsg = when {
-                quantity > orderQuantity -> stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
-                quantity < 1 || quantity > orderQuantity -> stringProvider.getString(R.string.error_quantity_is_mismatch_message)
-                else -> stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
+            return if (quantity <= orderQuantity) {
+                true
+            } else {
+                val errorMsg = when {
+                    quantity > orderQuantity -> stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
+                    quantity < 1 || quantity > orderQuantity -> stringProvider.getString(R.string.error_quantity_is_mismatch_message)
+                    else -> stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
+                }
+                _errorQuantity.postValue(errorMsg)
+                false
             }
-            _errorQuantity.postValue(errorMsg)
-            return false
         }
 
         // All conditions passed

@@ -1,5 +1,6 @@
 package com.exert.wms.login
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -226,10 +227,16 @@ class LoginViewModel(
     fun checkEmailOrUsername(username: String) {
         if (username.isEmpty()) {
             _errorUsernameEmailMessage.postValue(stringProvider.getString(R.string.error_email_or_username_empty))
-        } else {
+        } else if (!isValidEmail(username)) {
+            _errorUsernameEmailMessage.postValue(stringProvider.getString(R.string.error_invalid_email_id))
+        } else{
             _errorUsernameEmailMessage.postValue("")
             getUserIdByEmailId(username)
         }
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     private fun getUserIdByEmailId(emailId: String) {
@@ -237,7 +244,7 @@ class LoginViewModel(
             showProgressIndicator()
             checkRememberMeStatusAndSaveDetails()
             coroutineJob = viewModelScope.launch(dispatcher + exceptionHandler) {
-                loginRepo.getUserIdUsingEmailId(email = "imamobiledeveloper@gmail.com")//emailId))
+                loginRepo.getUserIdUsingEmailId(email = emailId)
                     .collect { dto ->
                         hideProgressIndicator()
                         if (dto != null && dto.success) {

@@ -180,7 +180,7 @@
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:text="@string/select_purchase_invoice_no"
+                        android:text="@string/select_sales_invoice_no"
                         android:textAlignment="gravity"
                         app:drawableEndCompat="@drawable/ic_arrow_down"
                         app:layout_constraintEnd_toEndOf="parent"
