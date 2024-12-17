@@ -19,7 +19,7 @@ class FeaturesListDto {
         list.add(FeatureDto("Material Delivery", R.drawable.ic_delivery_note))
         list.add(FeatureDto("Purchase Return", R.drawable.ic_purchase_return))
         list.add(FeatureDto("Sales Return", R.drawable.ic_sales_return))
-        list.add(FeatureDto("Logout", R.drawable.ic_logout))
+        list.add(FeatureDto("Logout", R.drawable.logout_icon_new)) //ic_logout
         return list.toList()
     }
 }
