@@ -10,15 +10,11 @@ import com.exert.wms.itemStocks.api.*
 import com.exert.wms.mvvmbase.BaseViewModel
 import com.exert.wms.stockAdjustment.api.StockItemsDetailsDto
 import com.exert.wms.utils.StringProvider
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.math.ceil
 
 class DeliveryReceiptItemViewModel(
     private val stringProvider: StringProvider,
-    private val itemStocksRepo: ItemStocksRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BaseViewModel() {
     private var coroutineJob: Job? = null
 
@@ -241,18 +237,11 @@ class DeliveryReceiptItemViewModel(
     private fun validateQuantity(quantity: Double): Boolean? {
         val orderQuantity = selectedItemDto?.QTYOrdered ?: 0.0
         val receivedQuantity = selectedItemDto?.QTYReceived ?: 0.0
+        val balanceQty = orderQuantity- receivedQuantity
 
-//        VendorTolerancePercentage = 100.0
         // Case 1: VendorTolerancePercentage = 0%
         if (VendorTolerancePercentage == 0.0) {
             // Only the exact order quantity is allowed
-//            val errorMsg = if (quantity > orderQuantity) {
-//                stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
-//            } else if (quantity != orderQuantity) {
-//                stringProvider.getString(R.string.error_quantity_is_mismatch_message)
-//            } else {
-//                stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
-//            }
             return if (quantity == orderQuantity) {
                 true
             } else {
@@ -288,14 +277,7 @@ class DeliveryReceiptItemViewModel(
         // Case 3: VendorTolerancePercentage = 100%
         else if (VendorTolerancePercentage == 100.0) {
             // The user can transact for any quantity between 1 and orderQuantity
-//            val errorMsg = if (quantity > orderQuantity) {
-//                stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
-//            } else if (quantity < 1 || quantity > orderQuantity) {
-//                stringProvider.getString(R.string.error_quantity_is_mismatch_message)
-//            } else {
-//                stringProvider.getString(R.string.error_quantity_must_not_exceed_received_qty_message)
-//            }
-            return if (quantity <= orderQuantity) {
+            return if (quantity <= orderQuantity && quantity <= balanceQty) {
                 true
             } else {
                 val errorMsg = when {

@@ -175,9 +175,12 @@ class ForgotPasswordActivity :
         mViewModel.navigateToNextScreen.observe(this) { event ->
             event?.getContentIfNotHandled()?.let { state ->
                 if (state) {
-                    showAlertDialog()
+                    showAlertDialog(title = getString(R.string.success), getString(R.string.new_pwd_message))
                 }
             }
+        }
+        mViewModel.errorLoginMessage.observe(this) { status ->
+            showBriefToastMessage(status, coordinateLayout)
         }
 
     }
@@ -208,10 +211,10 @@ class ForgotPasswordActivity :
         }
     }
 
-    private fun showAlertDialog() {
+    private fun showAlertDialog(title : String = getString(R.string.alert),msg : String = getString(R.string.reset_pwd_success_message)) {
         val alertDialogDto = AlertDialogDto(
-            title = getString(R.string.alert),
-            message = getString(R.string.reset_pwd_success_message),
+            title = title,
+            message = msg,
             positiveButtonText = getString(R.string.ok),
             showNegativeButton = false
         )

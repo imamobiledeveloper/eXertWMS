@@ -77,7 +77,7 @@ val viewModelModule = module {
         DeliveryReceiptBaseViewModel(get(), get(), get())
     }
     viewModel {
-        DeliveryReceiptItemViewModel(get(), get())
+        DeliveryReceiptItemViewModel(get())
     }
     viewModel {
         DeliveryNoteBaseViewModel(get(), get(), get())

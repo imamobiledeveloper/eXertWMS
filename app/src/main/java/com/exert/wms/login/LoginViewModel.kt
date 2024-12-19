@@ -224,14 +224,14 @@ class LoginViewModel(
         }
     }
 
-    fun checkEmailOrUsername(username: String) {
-        if (username.isEmpty()) {
+    fun checkEmailOrUsername(email: String) {
+        if (email.isEmpty()) {
             _errorUsernameEmailMessage.postValue(stringProvider.getString(R.string.error_email_or_username_empty))
-        } else if (!isValidEmail(username)) {
+        } else if (!isValidEmail(email)) {
             _errorUsernameEmailMessage.postValue(stringProvider.getString(R.string.error_invalid_email_id))
         } else{
             _errorUsernameEmailMessage.postValue("")
-            getUserIdByEmailId(username)
+            getUserIdByEmailId(email)
         }
     }
 
@@ -250,13 +250,15 @@ class LoginViewModel(
                         if (dto != null && dto.success) {
                             userDefaults.saveUserId(dto.UserID)
                             userDefaults.saveUserName(dto.UserName)
-                            _showNewPwdScreen.postValue(Event(true))
+//                            _showNewPwdScreen.postValue(Event(true))
+                            _navigateToNextScreen.postValue(Event(true))
                         } else {
-                            _errorLoginMessage.postValue(
+                            val errorMsg = dto.ErrorMessage.ifEmpty {
                                 stringProvider.getString(
                                     R.string.error_user_id_message
                                 )
-                            )
+                            }
+                            _errorLoginMessage.postValue( errorMsg)
                         }
                     }
 

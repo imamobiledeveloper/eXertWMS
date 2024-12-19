@@ -221,6 +221,8 @@
     <string name="quantity_empty_message">Quantity should not be empty</string>
     <string name="reset_pwd_success_message">Your password has been updated successfully!</string>
     <string name="reset_pwd_failed_message">Failed to update Password. Please try again!</string>
+    <string name="new_pwd_message">Your new password has been sent to entered email id. Please login with your new password</string>
+    <string name="success">Success</string>
     <string name="zero">0.0</string>
 
     <string-array name="features_list">
